@@ -8,3 +8,18 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Secrets — never commit tokens or credentials
+*.token
+.hf_token
+deploy/sethfToken.sh
+**/HF_TOKEN
+.env
+*.env
+
+# Runtime outputs (live on storage drives, not in repo)
+run-report-*.md
+deploy/verify-environment-report-*.md
+deploy/run-report-*.md
+verification/verification-reports/
+chat/
