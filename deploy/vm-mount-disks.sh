@@ -76,16 +76,92 @@ WIPE=false
 DRY_RUN=false
 
 # ---------------------------------------------------------------------------
+# Report file — written alongside the script output
+# ---------------------------------------------------------------------------
+REPORT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPORT_FILE="$REPORT_DIR/disk-setup-report-$(date +%Y-%m-%d_%H-%M-%S).md"
+REPORT_LINES=()   # accumulated lines, flushed at the end
+
+rpt() {
+    # Append a line to the in-memory report buffer (no colour codes)
+    REPORT_LINES+=("$*")
+}
+
+flush_report() {
+    printf '%s\n' "${REPORT_LINES[@]}" > "$REPORT_FILE"
+}
+
+# ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-info()  { echo -e "\033[1;32m[INFO]\033[0m    $*"; }
-warn()  { echo -e "\033[1;33m[WARN]\033[0m    $*"; }
-error() { echo -e "\033[1;31m[ERROR]\033[0m   $*" >&2; exit 1; }
+TS()    { date '+%H:%M:%S'; }
+
+# Coloured console + plain report
+info()  {
+    echo -e "\033[1;32m[$(TS) INFO]\033[0m  $*"
+    rpt "  ✓ $*"
+}
+warn()  {
+    echo -e "\033[1;33m[$(TS) WARN]\033[0m  $*"
+    rpt "  ⚠ $*"
+}
+error() {
+    echo -e "\033[1;31m[$(TS) ERROR]\033[0m $*" >&2
+    rpt "  ✗ ERROR: $*"
+    flush_report
+    exit 1
+}
+step()  {
+    # Section header — bold cyan on console, markdown heading in report
+    echo ""
+    echo -e "\033[1;36m━━━  $*  ━━━\033[0m"
+    echo ""
+    rpt ""
+    rpt "## $*"
+    rpt ""
+}
+disk_banner() {
+    # Per-disk operation header — highly visible
+    local disk=$1 role=$2 size=$3
+    echo ""
+    echo -e "\033[1;45m  ▶  /dev/$disk  ($role, $size)  \033[0m"
+    echo ""
+    rpt ""
+    rpt "### /dev/$disk — $role ($size)"
+    rpt ""
+}
+ok()    {
+    echo -e "      \033[1;32m✔\033[0m  $*"
+    rpt "  - ✔ $*"
+}
 run()   {
+    # Execute a command, show it, capture and display output
     if $DRY_RUN; then
-        echo -e "\033[1;34m[DRY-RUN]\033[0m $*"
-    else
-        eval "$*"
+        echo -e "      \033[1;34m[DRY-RUN]\033[0m $*"
+        rpt "  - [DRY-RUN] \`$*\`"
+        return
+    fi
+    echo -e "      \033[2m\$ $*\033[0m"
+    rpt "  - \`$*\`"
+    eval "$*"
+}
+run_capture() {
+    # Run a command and capture+display its output (for sgdisk verbose info)
+    if $DRY_RUN; then
+        echo -e "      \033[1;34m[DRY-RUN]\033[0m $*"
+        rpt "  - [DRY-RUN] \`$*\`"
+        return
+    fi
+    echo -e "      \033[2m\$ $*\033[0m"
+    rpt "  - \`$*\`"
+    local out
+    out=$(eval "$*" 2>&1) || true
+    if [[ -n "$out" ]]; then
+        echo "$out" | sed 's/^/        /'
+        rpt "\`\`\`"
+        echo "$out" >> /dev/null   # already captured
+        while IFS= read -r l; do rpt "    $l"; done <<< "$out"
+        rpt "\`\`\`"
     fi
 }
 
@@ -107,29 +183,115 @@ first_partition() {
 # Only called when --wipe is active.
 wipe_and_partition() {
     local disk=$1 label=$2
-    info "  Wiping /dev/$disk — zeroing first/last 10 MB…"
-    # Zero the beginning (MBR, GPT header) and end (GPT backup) of the disk
-    run "dd if=/dev/zero of='/dev/$disk' bs=1M count=10 status=none"
-    local disk_bytes
+    local disk_bytes size_gib
+
     disk_bytes=$(lsblk -bdno SIZE "/dev/$disk" 2>/dev/null || echo 0)
+    size_gib=$(( disk_bytes / 1024 / 1024 / 1024 ))
+
+    # ── Step A: Zero first 10 MB (MBR + GPT primary header) ──────────────
+    echo -e "    \033[33m[1/5]\033[0m  Zeroing first 10 MB of /dev/$disk  (MBR + GPT header)…"
+    rpt "  **[1/5] Zero first 10 MB** (MBR / GPT primary header)"
+    if ! $DRY_RUN; then
+        dd if=/dev/zero of="/dev/$disk" bs=1M count=10 conv=fsync status=progress 2>&1 \
+            | tail -1 | sed 's/^/        /'
+        rpt "  - \`dd if=/dev/zero of=/dev/$disk bs=1M count=10\` — done"
+    else
+        echo -e "        \033[2m[DRY-RUN] dd if=/dev/zero of=/dev/$disk bs=1M count=10\033[0m"
+        rpt "  - [DRY-RUN] dd zeroing skipped"
+    fi
+    ok "First 10 MB zeroed"
+
+    # ── Step B: Zero last 10 MB (GPT backup header) ───────────────────────
+    echo -e "    \033[33m[2/5]\033[0m  Zeroing last 10 MB of /dev/$disk   (GPT backup header)…"
+    rpt "  **[2/5] Zero last 10 MB** (GPT backup header)"
     if [[ "$disk_bytes" -gt 0 ]] && ! $DRY_RUN; then
-        local end_offset=$(( disk_bytes / 512 - 20480 ))  # 10 MB from end in 512-byte sectors
-        dd if=/dev/zero of="/dev/$disk" bs=512 count=20480 seek="$end_offset" status=none 2>/dev/null || true
+        local end_offset=$(( disk_bytes / 512 - 20480 ))
+        dd if=/dev/zero of="/dev/$disk" bs=512 count=20480 seek="$end_offset" \
+           conv=fsync status=none 2>/dev/null || true
+        rpt "  - \`dd if=/dev/zero ... seek=$end_offset\` — done"
+    else
+        echo -e "        \033[2m[DRY-RUN] dd tail-zeroing skipped\033[0m"
+        rpt "  - [DRY-RUN] skipped"
+    fi
+    ok "Last 10 MB zeroed"
+
+    # ── Step C: Zap any remaining GPT/MBR remnants ───────────────────────
+    echo -e "    \033[33m[3/5]\033[0m  Zapping all GPT/MBR signatures on /dev/$disk  (sgdisk -Z)…"
+    rpt "  **[3/5] sgdisk -Z** — destroy all GPT/MBR structures"
+    if ! $DRY_RUN; then
+        local zap_out
+        zap_out=$(sgdisk -Z "/dev/$disk" 2>&1) || true
+        echo "$zap_out" | sed 's/^/        /'
+        while IFS= read -r l; do rpt "    $l"; done <<< "$zap_out"
+    else
+        echo -e "        \033[2m[DRY-RUN] sgdisk -Z /dev/$disk\033[0m"
+        rpt "  - [DRY-RUN] sgdisk -Z skipped"
+    fi
+    ok "GPT/MBR signatures destroyed"
+
+    # ── Step D: Create fresh GPT + single partition ───────────────────────
+    echo -e "    \033[33m[4/5]\033[0m  Creating GPT partition table + partition 1 on /dev/$disk…"
+    rpt "  **[4/5] Create GPT + partition**"
+    rpt "  - Partition: type=8300 (Linux filesystem), spans 100% of disk, label=\`$label\`"
+    if ! $DRY_RUN; then
+        local gpt_out
+        gpt_out=$(sgdisk \
+            -n "0:0:0" \
+            -t "0:8300" \
+            -c "0:$label" \
+            "/dev/$disk" 2>&1)
+        echo "$gpt_out" | sed 's/^/        /'
+        while IFS= read -r l; do rpt "    $l"; done <<< "$gpt_out"
+
+        # Show the resulting partition table
+        local pt_out
+        pt_out=$(sgdisk -p "/dev/$disk" 2>&1)
+        echo ""
+        echo "$pt_out" | sed 's/^/        /'
+        rpt ""
+        rpt "  Partition table after creation:"
+        rpt "  \`\`\`"
+        while IFS= read -r l; do rpt "    $l"; done <<< "$pt_out"
+        rpt "  \`\`\`"
+    else
+        echo -e "        \033[2m[DRY-RUN] sgdisk -n 0:0:0 -t 0:8300 -c 0:$label /dev/$disk\033[0m"
+        rpt "  - [DRY-RUN] sgdisk create partition skipped"
+    fi
+    ok "GPT created, partition 1 spans full disk, label=$label"
+
+    # ── Step E: Reload partition table in kernel ──────────────────────────
+    echo -e "    \033[33m[5/5]\033[0m  Reloading partition table in kernel…"
+    rpt "  **[5/5] Reload partition table** (partprobe / blockdev)"
+    if ! $DRY_RUN; then
+        partprobe "/dev/$disk" 2>/dev/null \
+            || blockdev --rereadpt "/dev/$disk" 2>/dev/null \
+            || true
+        sleep 2   # give udev time to create /dev/sdX1
+        # Confirm the partition node exists
+        if [[ -b "/dev/${disk}1" ]]; then
+            ok "Partition node /dev/${disk}1 confirmed"
+            rpt "  - /dev/${disk}1 exists and is a block device ✔"
+        else
+            warn "/dev/${disk}1 not yet visible — waiting 3 more seconds…"
+            sleep 3
+            if [[ -b "/dev/${disk}1" ]]; then
+                ok "Partition node /dev/${disk}1 confirmed (after extra wait)"
+                rpt "  - /dev/${disk}1 visible after extra wait ✔"
+            else
+                warn "/dev/${disk}1 still not visible — continuing anyway (may fail at mkfs)"
+                rpt "  - /dev/${disk}1 NOT YET VISIBLE — check kernel messages"
+            fi
+        fi
+    else
+        echo -e "        \033[2m[DRY-RUN] partprobe /dev/$disk\033[0m"
+        rpt "  - [DRY-RUN] partprobe skipped"
     fi
 
-    info "  Creating fresh GPT partition table on /dev/$disk…"
-    # sgdisk -Z: zap all GPT/MBR structures
-    # sgdisk -n 0:0:0: new partition, auto-number, start=first usable, end=last usable
-    # sgdisk -t 0:8300: type Linux filesystem
-    # sgdisk -c 0:<label>: set partition name
-    run "sgdisk -Z '/dev/$disk'"
-    run "sgdisk -n 0:0:0 -t 0:8300 -c '0:$label' '/dev/$disk'"
+    echo ""
+    echo -e "    \033[1;32m✔  /dev/$disk  fully wiped and repartitioned → /dev/${disk}1\033[0m"
+    rpt ""
+    rpt "  **Result:** /dev/${disk}1 ready for ext4 formatting"
 
-    # Inform the kernel of the new partition table
-    run "partprobe '/dev/$disk'" || run "blockdev --rereadpt '/dev/$disk'"
-    sleep 1   # give udev a moment to create the device node
-
-    # The new partition is always disk-name + "1" (sgdisk auto-numbers from 1)
     echo "${disk}1"
 }
 
@@ -163,15 +325,28 @@ ROOT_DISK=$(lsblk -no PKNAME "$(findmnt -n -o SOURCE /)" 2>/dev/null \
             || echo "")
 ROOT_DISK=$(basename "${ROOT_DISK:-}")
 
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Disk Discovery"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+# ── Report header ─────────────────────────────────────────────────────────
+RUN_TIME=$(date '+%Y-%m-%d %H:%M:%S %Z')
+HOSTNAME=$(hostname)
+rpt "# Disk Setup Report"
+rpt ""
+rpt "| Field | Value |"
+rpt "|-------|-------|"
+rpt "| Host | $HOSTNAME |"
+rpt "| Run time | $RUN_TIME |"
+rpt "| Script | vm-mount-disks.sh |"
+rpt "| Mode | $( $WIPE && echo '--wipe (full repartition)' || ( $FORCE_FORMAT && echo '--force-format' || echo 'mount only' ) ) |"
+rpt "| Dry run | $DRY_RUN |"
+rpt ""
+rpt "---"
+
+step "Disk Discovery"
 printf "  %-10s %-8s %-10s %-28s %-22s %s\n" \
        "DISK" "SIZE" "SIZE_GiB" "MODEL" "SERIAL" "ROOT?"
 printf "  %-10s %-8s %-10s %-28s %-22s %s\n" \
        "----" "----" "--------" "-----" "------" "-----"
+rpt "| Device | Size | GiB | Model | Serial | Root? |"
+rpt "|--------|------|-----|-------|--------|-------|"
 
 declare -A DISK_SIZE_GIB   # disk name → size in GiB
 declare -A DISK_SERIAL     # disk name → serial number
@@ -201,6 +376,7 @@ while IFS= read -r diskname; do
 
     printf "  %-10s %-8s %-10s %-28s %-22s %s\n" \
            "/dev/$diskname" "$size_h" "$size_gib" "${model:--}" "${serial:--}" "$is_root"
+    rpt "| /dev/$diskname | $size_h | $size_gib | ${model:--} | ${serial:--} | ${is_root:-no} |"
 
     # Enumerate partitions for this disk
     while IFS= read -r partname; do
@@ -213,15 +389,7 @@ while IFS= read -r diskname; do
 
 done < <(lsblk -dno NAME 2>/dev/null | grep -v "^loop\|^sr\|^fd\|^ram")
 
-echo ""
-
-# ---------------------------------------------------------------------------
-# Step 2: Match disks to roles — serial first, capacity fallback
-# ---------------------------------------------------------------------------
-echo "════════════════════════════════════════════════════════════════"
-echo "  Drive Assignment"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+step "Drive Assignment"
 
 DEV_D1="" DEV_D2="" DEV_D3="" DEV_D5=""
 
