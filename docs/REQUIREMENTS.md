@@ -223,17 +223,27 @@ Abliterated variants of the major models in our archive. "Abliteration" removes 
 
 ### Drive Inventory
 
-| Label | Capacity | Usable (~95%) | Assigned Role |
-|-------|----------|---------------|---------------|
-| D1 | 6 TB | ~5.7 TB | Raw giants: DeepSeek-V3, DeepSeek-R1, Llama 405B, DeepSeek-Coder-V2 |
-| D2 | 3 TB | ~2.85 TB | Raw mid-size: Tier A remainder (70B–246B models) + Tier B code (≤64B) |
-| D3 | 3 TB | ~2.85 TB | Tier C (all GGUF) + Tier D GGUF |
-| D4 | 2 TB | ~1.9 TB | Tier D raw (uncensored BF16) + overflow Tier B |
-| D5 | 1 TB | ~0.95 TB | Primary archive/ (registry, checksums, manifests), logs, .tmp scratch |
+Labelled capacity ≠ usable capacity. Drive manufacturers use SI (1 TB = 10¹² bytes) while
+Linux reports in GiB (2³⁰ bytes), and ext4 reserves ~1% for root. Realistic usable figures:
+
+| Label | Labelled | Raw GiB (lsblk) | Usable after ext4 | Assigned Role |
+|-------|----------|-----------------|-------------------|---------------|
+| D1 | 6 TB | ~5,400–5,590 GiB | **~5.3 TB** | Raw giants: DeepSeek-V3, DeepSeek-R1, Llama 405B, DeepSeek-Coder-V2 |
+| D2 | 3 TB | ~2,700–2,800 GiB | **~2.6 TB** | Raw mid-size: Tier A remainder + Tier B code + **Tier D uncensored raw BF16** |
+| D3 | 3 TB | ~2,700–2,800 GiB | **~2.6 TB** | Tier C (all GGUF) + Tier D GGUF |
+| D5 | 1 TB | ~850–960 GiB | **~0.87 TB** | Primary archive/ (registry, checksums, manifests), logs |
+
+> **Note:** The 2 TB drive (formerly D4) has been removed from the plan due to hardware issues.
+> The ~564 GB of Tier D raw BF16 models have been moved to D2, which has sufficient headroom.
+>
+> **`.tmp` scratch** (in-progress downloads) was moved from D5 to **D1** (`/mnt/models/d1/.tmp`).
+> D1 has ~1.9 TB usable headroom after all planned downloads — far safer than D5's ~0.82 TB total.
 
 ### Detailed Allocation
 
 #### D1 — 6 TB (`/mnt/d1`) — Raw Giants
+
+Usable capacity assumed: **~5,300 GB** (conservative, post-format on a 6 TB drive).
 
 | Model | Size | Running Total |
 |-------|------|---------------|
@@ -241,9 +251,11 @@ Abliterated variants of the major models in our archive. "Abliteration" removes 
 | DeepSeek-R1 (Tier A) | ~850 GB | 2,190 GB |
 | Llama 3.1 405B Instruct (Tier A) | ~756 GB | 2,946 GB |
 | DeepSeek-Coder-V2-Instruct (Tier B) | ~440 GB | 3,386 GB |
-| **Free** | | **~2,314 GB** (~2.3 TB headroom for 671B abliterated or future large models) |
+| **Free** | | **~1,914 GB** (~1.9 TB — hosts `.tmp` scratch for in-progress downloads) |
 
-#### D2 — 3 TB (`/mnt/d2`) — Raw Mid-Size
+#### D2 — 3 TB (`/mnt/d2`) — Raw Mid-Size + Tier D Uncensored
+
+Usable capacity assumed: **~2,600 GB** (conservative, post-format on a 3 TB drive).
 
 | Model | Tier | Size | Running Total |
 |-------|------|------|---------------|
@@ -266,9 +278,18 @@ Abliterated variants of the major models in our archive. "Abliteration" removes 
 | DeepSeek-Coder-V2-Lite Instruct | B | ~30 GB | 1,445 GB |
 | Codestral 22B v0.1 | B | ~44 GB | 1,489 GB |
 | Devstral Small 2507 | B | ~48 GB | 1,537 GB |
-| **Free** | | | **~1,313 GB** (~1.3 TB headroom) |
+| Llama-3.3-70B-abliterated | D | ~140 GB | 1,677 GB |
+| Llama-3.1-70B-lorablated | D | ~140 GB | 1,817 GB |
+| DS-R1-Distill-Llama-70B-abliterated | D | ~140 GB | 1,957 GB |
+| DS-R1-Distill-Qwen-32B-abliterated | D | ~64 GB | 2,021 GB |
+| Mistral-Small-24B-abliterated | D | ~48 GB | 2,069 GB |
+| Dolphin3.0-Llama3.1-8B | D | ~16 GB | 2,085 GB |
+| NeuralDaredevil-8B-abliterated | D | ~16 GB | 2,101 GB |
+| **Free** | | | **~499 GB** (~0.5 TB headroom — based on 2,600 GB usable) |
 
 #### D3 — 3 TB (`/mnt/d3`) — Quantized GGUF (Tier C + D-quants)
+
+Usable capacity assumed: **~2,600 GB** (conservative, post-format on a 3 TB drive).
 
 | Model | Q-level | Size | Running Total |
 |-------|---------|------|---------------|
@@ -294,65 +315,61 @@ Abliterated variants of the major models in our archive. "Abliteration" removes 
 | NeuralDaredevil-8B-abliterated | Q8_0 | ~9 GB | 1,338 GB |
 | Dolphin3.0-Llama3.1-8B | Q8_0 | ~9 GB | 1,347 GB |
 | Mistral-Small-24B-abliterated | Q8_0 | ~25 GB | 1,372 GB |
-| **Free** | | | **~1,478 GB** (~1.5 TB headroom) |
-
-#### D4 — 2 TB (`/mnt/d4`) — Uncensored Raw BF16 (Tier D)
-
-| Model | Size | Running Total |
-|-------|------|---------------|
-| Llama-3.3-70B-abliterated | ~140 GB | 140 GB |
-| Llama-3.1-70B-lorablated (mlabonne) | ~140 GB | 280 GB |
-| DS-R1-Distill-Llama-70B-abliterated | ~140 GB | 420 GB |
-| DS-R1-Distill-Qwen-32B-abliterated | ~64 GB | 484 GB |
-| Mistral-Small-24B-abliterated | ~48 GB | 532 GB |
-| Dolphin3.0-Llama3.1-8B | ~16 GB | 548 GB |
-| NeuralDaredevil-8B-abliterated | ~16 GB | 564 GB |
-| **Free** | | **~1,436 GB** (~1.4 TB headroom for future uncensored large models or D-tier expansion) |
+| **Free** | | | **~1,228 GB** (~1.2 TB headroom — based on 2,600 GB usable) |
 
 #### D5 — 1 TB (`/mnt/d5`) — Infrastructure & Scratch
 
+Usable capacity assumed: **~870 GB** (conservative, post-format on a 1 TB drive).
+
 ```
 /mnt/models/d5/
-├── archive/           ← canonical copy; replicated to d1–d4/archive/ after every download
+├── archive/           ← canonical copy; replicated to d1–d3/archive/ after every download
 │   ├── registry.yaml
 │   ├── checksums/
 │   │   └── global_index.jsonl
 │   └── manifests/
 ├── logs/
-└── .tmp/              ← in-progress download scratch for all drives
+├── run_state.json
+└── STATUS.md
 ```
 
-> All `.tmp/` partial downloads for any drive land on D5 first, then are moved  
-> atomically to the target drive on completion. Keeps partial state centralised.  
-> After each successful model download, `archive/` is synced from D5 to all other drives.
+> **`.tmp/` scratch has been moved to D1** (`/mnt/models/d1/.tmp`).  
+> D1 has ~1.9 TB of headroom post-downloads; D5's ~870 GB total is insufficient  
+> to buffer a large model (DeepSeek-R1 = 850 GB) mid-download.  
+> After each successful model download, `archive/` is synced from D5 to D1–D3.
 
 ### Mount Points Summary
 
 | Drive | Device (placeholder) | Mount Point | Role |
 |-------|----------------------|-------------|------|
-| D1 | `[DEVICE_D1]` | `/mnt/models/d1` | Raw giants |
-| D2 | `[DEVICE_D2]` | `/mnt/models/d2` | Raw mid-size |
+| D1 | `[DEVICE_D1]` | `/mnt/models/d1` | Raw giants + `.tmp` scratch |
+| D2 | `[DEVICE_D2]` | `/mnt/models/d2` | Raw mid-size + Tier D uncensored raw |
 | D3 | `[DEVICE_D3]` | `/mnt/models/d3` | GGUF quants |
-| D4 | `[DEVICE_D4]` | `/mnt/models/d4` | Uncensored raw |
-| D5 | `[DEVICE_D5]` | `/mnt/models/d5` | Primary archive/ + logs + .tmp scratch |
+| D5 | `[DEVICE_D5]` | `/mnt/models/d5` | Primary archive/ + logs + run_state |
 
 All mounts: ext4, `noatime,nodiratime,defaults`, `large_file` support enabled (default `mkfs.ext4`).
 
 ### Headroom Summary
 
-| Drive | Used | Capacity | Free |
-|-------|------|----------|------|
-| D1 | ~3.4 TB | 6 TB | **~2.3 TB** |
-| D2 | ~1.5 TB | 3 TB | **~1.3 TB** |
-| D3 | ~1.4 TB | 3 TB | **~1.5 TB** |
-| D4 | ~0.6 TB | 2 TB | **~1.4 TB** |
-| D5 | ~0.05 TB | 1 TB | **~0.95 TB** |
-| **Total** | **~7.0 TB** | **15 TB** | **~7.5 TB** |
+Using **conservative usable figures** (actual formatted space on real drives is typically
+5–8% below labelled capacity):
 
-The ~7.5 TB of free space across the array is sufficient to add:
-- The abliterated 671B DeepSeek models (D1 headroom)
-- Future major model releases (D2/D3 headroom)
-- Additional uncensored fine-tunes (D4 headroom)
+| Drive | Used | Labelled | Usable (realistic) | Free |
+|-------|------|----------|--------------------|------|
+| D1 | ~3.4 TB | 6 TB | **~5.3 TB** | **~1.9 TB** (hosts `.tmp`) |
+| D2 | ~2.1 TB | 3 TB | **~2.6 TB** | **~0.5 TB** |
+| D3 | ~1.4 TB | 3 TB | **~2.6 TB** | **~1.2 TB** |
+| D5 | ~0.05 TB | 1 TB | **~0.87 TB** | **~0.82 TB** |
+| **Total** | **~6.9 TB** | **13 TB** | **~11.4 TB** | **~4.4 TB** |
+
+> D4 (2 TB Seagate) removed from plan due to hardware issues. Total array capacity reduced from 15 TB to 13 TB.
+
+The ~4.4 TB of free space (conservative) is sufficient to add:
+- Abliterated 671B DeepSeek models on D1 (~850 GB each, fits in D1 headroom)
+- Future major model releases (D3 has ~1.2 TB headroom)
+
+> **D2 is the tightest drive** (~0.5 TB headroom). If a gated model is larger than
+> expected, reduce the Tier D allocation or offload some mid-size models to D3.
 
 ---
 
@@ -396,7 +413,7 @@ Five drives, unified namespace under `/mnt/models/`. Each drive mounted at its o
 │       │   └── global_index.jsonl
 │       └── manifests/
 │
-├── d2/                                # 3 TB — raw mid-size (Tier A remainder + Tier B small)
+├── d2/                                # 3 TB — raw mid-size (Tier A remainder + Tier B small + Tier D uncensored)
 │   ├── raw/
 │   │   └── <org>/<model-name>/<commit-sha>/  (same structure)
 │   └── archive/                       # replicated checksum/registry copy
@@ -411,15 +428,6 @@ Five drives, unified namespace under `/mnt/models/`. Each drive mounted at its o
 │   │       ├── manifest.json
 │   │       ├── <model>.Q4_K_M.gguf + .sha256
 │   │       └── <model>.Q8_0.gguf   + .sha256
-│   └── archive/                       # replicated checksum/registry copy
-│       ├── registry.yaml
-│       ├── checksums/
-│       │   └── global_index.jsonl
-│       └── manifests/
-│
-├── d4/                                # 2 TB — uncensored raw BF16 (Tier D)
-│   ├── uncensored/
-│   │   └── <org>/<model-name>/<commit-sha>/  (same structure as raw/)
 │   └── archive/                       # replicated checksum/registry copy
 │       ├── registry.yaml
 │       ├── checksums/

@@ -60,7 +60,8 @@ sudo apt-get install -y \
   wget \
   ca-certificates \
   htop \
-  nvme-cli
+  nvme-cli \
+  gdisk
 
 # Verify aria2c
 aria2c --version | head -1 && info "aria2c OK"
@@ -113,7 +114,7 @@ uv run archiver list --tier A 2>/dev/null | head -5 || warn "Registry list retur
 # 5. Drive mount directories
 # ---------------------------------------------------------------------------
 info "Creating mount point directories under /mnt/models/…"
-for d in d1 d2 d3 d4 d5; do
+for d in d1 d2 d3 d5; do
   sudo mkdir -p "/mnt/models/$d"
   sudo chown "$(id -u):$(id -g)" "/mnt/models/$d"
 done

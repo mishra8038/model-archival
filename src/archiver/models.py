@@ -56,6 +56,7 @@ class DriveConfig:
     label: str          # d1 .. d5
     mount_point: Path
     role: str
+    tmp_dir: Optional[Path] = None   # override scratch dir (defaults to mount_point/.tmp)
 
 
 @dataclass
@@ -89,10 +90,12 @@ def load_registry(registry_path: Path, drives_path: Optional[Path] = None) -> Re
         with drives_path.open() as f:
             drives_data = yaml.safe_load(f) or {}
         for label, cfg in drives_data.items():
+            raw_tmp = cfg.get("tmp_dir")
             drives[label] = DriveConfig(
                 label=label,
                 mount_point=Path(cfg["mount_point"]),
                 role=cfg.get("role", ""),
+                tmp_dir=Path(raw_tmp) if raw_tmp else None,
             )
 
     models = []

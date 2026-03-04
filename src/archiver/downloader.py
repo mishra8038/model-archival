@@ -52,6 +52,7 @@ from archiver.verifier import (
     read_sidecar,
     write_sidecar,
     write_manifest,
+    write_descriptor,
     append_global_index,
 )
 
@@ -102,6 +103,32 @@ class Downloader:
         """
         log.info("Starting download: %s (tier=%s drive=%s)", model.id, model.tier, model.drive)
 
+        if model.model_dir is None:
+            raise DownloadError(f"Cannot determine model_dir for {model.id} — drive_path not set")
+
+        # Fast-path: if manifest.json already exists and every file listed in it has
+        # a matching .sha256 sidecar, the model is fully complete — skip the HF API
+        # call entirely and return immediately. This is the primary guard against
+        # re-downloading already-complete models when run_state.json is unavailable.
+        existing_manifest = _check_manifest_complete(model.model_dir)
+        if existing_manifest:
+            log.info("SKIP %s — manifest.json present and all sidecars verified", model.id)
+            model.commit_sha = existing_manifest.get("commit_sha")
+            # Back-fill descriptor if this model was archived before DESCRIPTOR files were added
+            if not (model.model_dir / "DESCRIPTOR.json").exists():
+                write_descriptor(
+                    model_id=model.id,
+                    hf_repo=model.hf_repo,
+                    commit_sha=model.commit_sha or "",
+                    tier=model.tier,
+                    licence=model.licence,
+                    requires_auth=model.requires_auth,
+                    notes=model.notes,
+                    files=existing_manifest.get("files", []),
+                    dest_dir=model.model_dir,
+                )
+            return existing_manifest
+
         try:
             repo_files = self._resolve_files(model)
         except (RepositoryNotFoundError, EntryNotFoundError) as e:
@@ -112,9 +139,6 @@ class Downloader:
 
         commit_sha = repo_files[0]["commit_sha"]
         model.commit_sha = commit_sha
-
-        if model.model_dir is None:
-            raise DownloadError(f"Cannot determine model_dir for {model.id} — drive_path not set")
 
         dest_dir = model.model_dir
         dest_dir.mkdir(parents=True, exist_ok=True)
@@ -146,6 +170,17 @@ class Downloader:
             hf_repo=model.hf_repo,
             commit_sha=commit_sha,
             tier=model.tier,
+            files=completed_files,
+            dest_dir=dest_dir,
+        )
+        write_descriptor(
+            model_id=model.id,
+            hf_repo=model.hf_repo,
+            commit_sha=commit_sha,
+            tier=model.tier,
+            licence=model.licence,
+            requires_auth=model.requires_auth,
+            notes=model.notes,
             files=completed_files,
             dest_dir=dest_dir,
         )
@@ -440,3 +475,36 @@ def _is_weight_file(name: str) -> bool:
 def _is_config_file(name: str) -> bool:
     base = Path(name).name
     return base in _CONFIG_NAMES or Path(name).suffix.lower() in _CONFIG_EXTENSIONS
+
+
+def _check_manifest_complete(model_dir: Path) -> Optional[dict]:
+    """
+    Return the manifest dict if:
+      1. manifest.json exists in model_dir, AND
+      2. every file listed in the manifest exists at its final path, AND
+      3. every such file has a .sha256 sidecar (written only after successful verify)
+
+    Returns None if any condition fails — triggering a normal download pass.
+    The sidecar check is intentionally lightweight (existence only, not re-hash)
+    because the sidecar is only written after a successful SHA-256 verification
+    at download time. A full re-hash is available via `archiver verify`.
+    """
+    manifest_path = model_dir / "manifest.json"
+    if not manifest_path.exists():
+        return None
+
+    try:
+        import json
+        manifest = json.loads(manifest_path.read_text())
+    except Exception:
+        return None
+
+    for entry in manifest.get("files", []):
+        file_path = model_dir / entry["path"]
+        if not file_path.exists():
+            return None
+        sidecar = file_path.with_suffix(file_path.suffix + ".sha256")
+        if not sidecar.exists():
+            return None
+
+    return manifest if manifest.get("files") else None

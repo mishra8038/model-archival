@@ -33,6 +33,22 @@ def _d5_path(reg: Registry) -> Path:
     return d5.mount_point if d5 else Path("/tmp/archiver")
 
 
+def _tmp_dir(reg: Registry) -> Path:
+    """
+    Return the scratch directory for in-progress downloads.
+    Reads tmp_dir from D1 in drives.yaml (D1 has ~2.3 TB headroom post-downloads,
+    far more than the 1 TB D5 drive). Falls back to <d5>/.tmp for safety.
+    """
+    d1 = reg.drives.get("d1")
+    if d1 and d1.tmp_dir:
+        return d1.tmp_dir
+    # Fallback: .tmp on whichever drive has a configured tmp_dir
+    for drive in reg.drives.values():
+        if drive.tmp_dir:
+            return drive.tmp_dir
+    return _d5_path(reg) / ".tmp"
+
+
 def _state_path(reg: Registry) -> Path:
     """run_state.json always lives on D5, never on the root SSD."""
     return _d5_path(reg) / "run_state.json"
@@ -142,9 +158,9 @@ def cmd_download(
     verbose: bool = ctx.obj["verbose"]
     reg, state = _load(registry_path, drives_path)
 
-    # All runtime paths derived from D5 — nothing written to the root SSD.
+    # All runtime paths derived from storage drives — nothing written to the root SSD.
     d5 = _d5_path(reg)
-    tmp_dir     = d5 / ".tmp"
+    tmp_dir     = _tmp_dir(reg)      # D1/.tmp — 2.3 TB headroom, not D5's 1 TB
     logs_dir    = d5 / "logs"
     archive_dir = d5 / "archive"
     index_path  = archive_dir / "checksums" / "global_index.jsonl"
@@ -169,7 +185,7 @@ def cmd_download(
     for w in warnings:
         console.print(f"[yellow]⚠ {w}[/]")
 
-    # Create D5 subdirectories only after pre-flight confirms D5 is mounted
+    # Create required subdirectories only after pre-flight confirms drives are mounted
     for d in [tmp_dir, logs_dir, archive_dir, archive_dir / "checksums"]:
         d.mkdir(parents=True, exist_ok=True)
 
@@ -187,7 +203,7 @@ def cmd_download(
     models = sorted(models, key=lambda m: (m.priority, m.drive, m.id))
 
     if dry_run:
-        _print_download_plan(models, reg, d5)
+        _print_download_plan(models, d5, tmp_dir)
         return
 
     status_display = StatusDisplay(
@@ -544,7 +560,7 @@ def _fmt_bytes_cli(b: int) -> str:
     return f"{b:.1f} PB"
 
 
-def _print_download_plan(models, reg, d5: Path) -> None:
+def _print_download_plan(models, d5: Path, tmp_dir: Path) -> None:
     table = Table(title="Download Plan (dry run)")
     table.add_column("Model", style="cyan")
     table.add_column("Tier", width=4)
@@ -561,9 +577,9 @@ def _print_download_plan(models, reg, d5: Path) -> None:
         )
     console.print(table)
     console.print(f"\n[dim]{len(models)} model(s) would be downloaded[/]")
-    console.print(f"\n[dim]Runtime paths (all on D5):[/]")
-    console.print(f"  tmp:        {d5 / '.tmp'}")
-    console.print(f"  logs:       {d5 / 'logs'}")
+    console.print(f"\n[dim]Runtime paths:[/]")
+    console.print(f"  tmp (D1):   {tmp_dir}")
+    console.print(f"  logs (D5):  {d5 / 'logs'}")
     console.print(f"  archive:    {d5 / 'archive'}")
     console.print(f"  state:      {d5 / 'run_state.json'}")
     console.print(f"  STATUS.md:  {d5 / 'STATUS.md'}")

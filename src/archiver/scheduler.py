@@ -1,7 +1,7 @@
 """
 Drive-aware download scheduler.
 
-One worker thread per drive (D1–D4). Workers pull from a per-drive queue.
+One worker thread per drive (D1–D3, D5). Workers pull from a per-drive queue.
 A bandwidth sampler decides whether to open additional drive slots.
 """
 

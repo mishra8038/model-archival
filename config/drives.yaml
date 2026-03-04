@@ -4,18 +4,15 @@
 d1:
   mount_point: /mnt/models/d1
   role: "Raw giants (Tier A large + Tier B large)"
+  tmp_dir: /mnt/models/d1/.tmp   # in-progress downloads live here (2.3 TB headroom)
 
 d2:
   mount_point: /mnt/models/d2
-  role: "Raw mid-size (Tier A remainder + Tier B small)"
+  role: "Raw mid-size (Tier A remainder + Tier B small + Tier D uncensored raw)"
 
 d3:
   mount_point: /mnt/models/d3
   role: "Quantized GGUF (Tier C + Tier D quants)"
-
-d4:
-  mount_point: /mnt/models/d4
-  role: "Uncensored raw BF16 (Tier D raw)"
 
 d5:
   mount_point: /mnt/models/d5

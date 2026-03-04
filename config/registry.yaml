@@ -420,7 +420,7 @@ models:
   - id: huihui-ai/Llama-3.3-70B-Instruct-abliterated
     hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: llama3.3
@@ -431,7 +431,7 @@ models:
   - id: mlabonne/Llama-3.1-70B-Instruct-lorablated
     hf_repo: mlabonne/Llama-3.1-70B-Instruct-lorablated
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: llama3.1
@@ -442,7 +442,7 @@ models:
   - id: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated
     hf_repo: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: MIT
@@ -453,7 +453,7 @@ models:
   - id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
     hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: MIT
@@ -464,7 +464,7 @@ models:
   - id: cognitivecomputations/Dolphin3.0-Llama3.1-8B
     hf_repo: cognitivecomputations/Dolphin3.0-Llama3.1-8B
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: llama3.1
@@ -475,7 +475,7 @@ models:
   - id: mlabonne/NeuralDaredevil-8B-abliterated
     hf_repo: mlabonne/NeuralDaredevil-8B-abliterated
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: llama3.1
@@ -486,7 +486,7 @@ models:
   - id: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
     hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
     tier: D
-    drive: d4
+    drive: d2
     commit_sha: null
     priority: 1
     licence: Apache-2.0
