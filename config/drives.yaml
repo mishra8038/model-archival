@@ -1,0 +1,22 @@
+# Physical drive configuration.
+# Update mount_point values to match your actual fstab/UUID mounts.
+
+d1:
+  mount_point: /mnt/models/d1
+  role: "Raw giants (Tier A large + Tier B large)"
+
+d2:
+  mount_point: /mnt/models/d2
+  role: "Raw mid-size (Tier A remainder + Tier B small)"
+
+d3:
+  mount_point: /mnt/models/d3
+  role: "Quantized GGUF (Tier C + Tier D quants)"
+
+d4:
+  mount_point: /mnt/models/d4
+  role: "Uncensored raw BF16 (Tier D raw)"
+
+d5:
+  mount_point: /mnt/models/d5
+  role: "Primary archive/ + logs + .tmp scratch"

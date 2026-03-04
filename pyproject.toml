@@ -1,0 +1,35 @@
+[project]
+name = "archiver"
+version = "0.1.0"
+description = "Unattended offline archival of open-source LLM/LRM weights from Hugging Face"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "huggingface-hub>=0.23",
+    "aria2p>=0.12.1",
+    "httpx>=0.27",
+    "click>=8.1",
+    "rich>=13.0",
+    "pyyaml>=6.0",
+    "python-json-logger>=2.0",
+    "psutil>=5.9",
+]
+
+[project.optional-dependencies]
+fast = ["hf-transfer>=0.1.4"]
+
+[project.scripts]
+archiver = "archiver.cli:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/archiver"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+]
