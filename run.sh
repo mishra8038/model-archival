@@ -50,9 +50,9 @@ source "$REPO_DIR/deploy/_common.sh"
 # Defaults
 # ---------------------------------------------------------------------------
 DRY_RUN=false
-PRIORITY_ONLY=1
+PRIORITY_ONLY=""       # empty = download all priorities (P1 + P2)
 TIER=""
-DOWNLOAD_ALL=false
+DOWNLOAD_ALL=true      # default: download everything
 REHASH=false
 SKIP_ENV_CHECK=false
 SKIP_VERIFY=false
@@ -104,7 +104,7 @@ _rpt "| User | $(whoami) |"
 _rpt "| Started | $(date '+%Y-%m-%d %H:%M:%S %Z') |"
 _rpt "| Repo | \`$REPO_DIR\` |"
 _rpt "| Dry run | $DRY_RUN |"
-_rpt "| Priority only | ${PRIORITY_ONLY:-all} |"
+_rpt "| Priority filter | ${PRIORITY_ONLY:-all (P1 + P2)} |"
 _rpt "| Tier filter | ${TIER:-all} |"
 _rpt "| Download all | $DOWNLOAD_ALL |"
 _rpt "| Rehash verify | $REHASH |"
@@ -153,6 +153,29 @@ if uv sync --project "$REPO_DIR" 2>&1; then
 else
     error "uv sync failed — check pyproject.toml and network access."
 fi
+
+# ---------------------------------------------------------------------------
+# HF Token — load from ~/.hf_token if not already in environment
+# ---------------------------------------------------------------------------
+if [[ -z "${HF_TOKEN:-}" ]]; then
+    if [[ -f "$HOME/.hf_token" ]]; then
+        HF_TOKEN=$(cat "$HOME/.hf_token")
+        export HF_TOKEN
+        ok "HF_TOKEN loaded from ~/.hf_token"
+    else
+        warn "HF_TOKEN not set and ~/.hf_token not found."
+        warn "Gated models (Priority 2) will be skipped."
+        warn "Set token with:  bash deploy/sethfToken.sh hf_YOURTOKEN"
+    fi
+else
+    ok "HF_TOKEN already set in environment"
+fi
+
+# Redact token in report — show only first 6 chars
+TOKEN_DISPLAY="${HF_TOKEN:+${HF_TOKEN:0:6}…(redacted)}"
+_rpt "| HF Token | ${TOKEN_DISPLAY:-not set} |"
+_rpt ""
+flush_report
 
 # ---------------------------------------------------------------------------
 # Step counters
@@ -312,13 +335,8 @@ _rpt "## Step 2 — Download Plan"
 _rpt ""
 
 # Build archiver download args
-DOWNLOAD_ARGS=()
-if $DOWNLOAD_ALL; then
-    DOWNLOAD_ARGS+=("--all")
-else
-    DOWNLOAD_ARGS+=("--all")  # default to --all; priority/tier filter below
-fi
-[[ -n "$TIER" ]]         && DOWNLOAD_ARGS+=("--tier" "$TIER")
+DOWNLOAD_ARGS=("--all")   # always pass --all; filters narrow it down
+[[ -n "$TIER" ]]          && DOWNLOAD_ARGS+=("--tier" "$TIER")
 [[ -n "$PRIORITY_ONLY" ]] && DOWNLOAD_ARGS+=("--priority-only" "$PRIORITY_ONLY")
 [[ -n "$BANDWIDTH_CAP" ]] && DOWNLOAD_ARGS+=("--bandwidth-cap" "$BANDWIDTH_CAP")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
