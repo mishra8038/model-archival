@@ -121,17 +121,34 @@ step "1 — System Tools"
 _rpt "| Result | Check |"
 _rpt "|--------|-------|"
 
+# Runtime tools — required for the archiver to function
 check_tool "python3"   "apt install python3 / pacman -S python"
+check_tool "uv"        "curl -LsSf https://astral.sh/uv/install.sh | sh"
 check_tool "aria2c"    "apt install aria2   / pacman -S aria2"
 check_tool "git"       "apt install git     / pacman -S git"
-check_tool "screen"    "apt install screen  / pacman -S screen"
-check_tool "rsync"     "apt install rsync   / pacman -S rsync"
-check_tool "sgdisk"    "apt install gdisk   / pacman -S gptfdisk"
-check_tool "wipefs"    "apt install util-linux (should be present)"
-check_tool "lsblk"     "apt install util-linux (should be present)"
-check_tool "blkid"     "apt install util-linux (should be present)"
 check_tool "curl"      "apt install curl    / pacman -S curl"
-check_tool "uv"        "curl -LsSf https://astral.sh/uv/install.sh | sh"
+check_tool "rsync"     "apt install rsync   / pacman -S rsync"
+
+# Disk management tools — required on the VM; warn (not fail) if absent on a dev machine
+echo ""
+echo -e "  ${_C_DIM}[Disk management tools — required on VM, not on dev machine]${_C_RESET}"
+for tool_entry in \
+    "screen:apt install screen  / pacman -S screen" \
+    "sgdisk:apt install gdisk   / pacman -S gptfdisk" \
+    "wipefs:apt install util-linux" \
+    "lsblk:apt install util-linux" \
+    "blkid:apt install util-linux"
+do
+    tool="${tool_entry%%:*}"
+    hint="${tool_entry#*:}"
+    if command -v "$tool" &>/dev/null; then
+        ver=$("$tool" --version 2>&1 | head -1 || true)
+        pass "$tool found — $ver"
+    else
+        # Downgrade to warning — these are installed by setup scripts on the VM
+        warn_check "$tool not found (install on VM: $hint)"
+    fi
+done
 
 # ---------------------------------------------------------------------------
 # SECTION 2 — Python / Virtual Environment
@@ -159,11 +176,9 @@ else
             fail "Could not execute Python in .venv"
         fi
 
-        ARCHIVER_VER=$(uv run --project "$REPO_DIR" archiver --version 2>&1 \
-                       || uv run --project "$REPO_DIR" archiver --help 2>&1 | head -1 \
-                       || echo "")
-        if [[ -n "$ARCHIVER_VER" ]]; then
-            pass "archiver CLI accessible — $ARCHIVER_VER"
+        ARCHIVER_HELP=$(uv run --project "$REPO_DIR" archiver --help 2>&1 | head -1 || echo "")
+        if echo "$ARCHIVER_HELP" | grep -q "archiver"; then
+            pass "archiver CLI accessible"
         else
             fail "archiver CLI not accessible (uv run archiver --help failed)"
         fi

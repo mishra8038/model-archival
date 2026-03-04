@@ -139,13 +139,19 @@ if $DRY_RUN; then
 fi
 
 # ---------------------------------------------------------------------------
-# Guard: uv must exist
+# Guard: uv must exist, then ensure .venv is up to date
 # ---------------------------------------------------------------------------
 if ! command -v uv &>/dev/null; then
     error "uv not found in PATH. Run deploy/setup-mxlinux.sh or deploy/setup-artix.sh first."
 fi
-if [[ ! -d "$REPO_DIR/.venv" ]]; then
-    error ".venv not found at $REPO_DIR — run: cd $REPO_DIR && uv sync"
+
+# Always run uv sync to ensure the venv is present and dependencies are current.
+# This is fast (no-op) if nothing has changed.
+info "Syncing Python environment (uv sync)…"
+if uv sync --project "$REPO_DIR" 2>&1; then
+    ok "uv sync — environment up to date"
+else
+    error "uv sync failed — check pyproject.toml and network access."
 fi
 
 # ---------------------------------------------------------------------------
@@ -204,12 +210,14 @@ else
     fi
     rm -f "$ENV_OUT_FILE"
 
-    if [[ $ENV_RC -ne 0 || $ENV_FAIL -gt 0 ]]; then
-        record_step_fail "Environment check: $ENV_FAIL failure(s)"
-        if ! $DRY_RUN; then
-            error "Environment check failed — fix the issues above before running downloads."
+    if [[ $ENV_FAIL -gt 0 ]]; then
+        if $DRY_RUN; then
+            # In dry-run: treat env failures as warnings — the VM will have everything installed
+            record_step_warn "Environment check: $ENV_FAIL tool(s) missing (expected on dev machine — VM setup scripts install them)"
+            warn "Environment check: $ENV_FAIL tool(s) missing — acceptable on dev machine, must be fixed on the VM before a real run"
         else
-            warn "Environment issues detected (dry-run continues anyway)"
+            record_step_fail "Environment check: $ENV_FAIL failure(s) — cannot proceed"
+            error "Environment check failed — fix the issues above before running downloads."
         fi
     elif [[ $ENV_WARN -gt 0 ]]; then
         record_step_warn "Environment check passed with $ENV_WARN warning(s)"
@@ -217,6 +225,78 @@ else
     else
         record_step_pass "Environment check: all checks passed"
         ok "Environment check: all checks passed"
+    fi
+fi
+
+flush_report
+
+# ---------------------------------------------------------------------------
+# ════════════════════════════════════════════════════════════════════════════
+# STEP 1b — Drive Mount Check  (fast, always run, blocks real downloads)
+# ════════════════════════════════════════════════════════════════════════════
+# ---------------------------------------------------------------------------
+step "Step 1b — Drive Mount Check"
+_rpt "## Step 1b — Drive Mount Check"
+_rpt ""
+_rpt "| Drive | Mount | Mounted | Writable | Free |"
+_rpt "|-------|-------|---------|----------|------|"
+
+DRIVES_FILE="$REPO_DIR/config/drives.yaml"
+DRIVES_ALL_OK=true
+
+while IFS= read -r line; do
+    # Match lines like: "d1:", "d2:", etc.
+    if [[ "$line" =~ ^(d[0-9]+): ]]; then
+        CURRENT_LABEL="${BASH_REMATCH[1]}"
+    fi
+    if [[ "$line" =~ mount_point:\ *(.+) && -n "${CURRENT_LABEL:-}" ]]; then
+        MP="${BASH_REMATCH[1]}"
+        MP="${MP//\"/}"   # strip quotes
+
+        # Check exists and is a real separate mount (not root fs)
+        if [[ ! -d "$MP" ]]; then
+            echo -e "      ${_C_RED}✗  FAIL${_C_RESET}  Drive $CURRENT_LABEL ($MP): NOT MOUNTED — directory does not exist"
+            _rpt "| $CURRENT_LABEL | $MP | ✗ not mounted | — | — |"
+            DRIVES_ALL_OK=false
+        else
+            MP_DEV=$(stat -c '%d' "$MP" 2>/dev/null || echo "0")
+            ROOT_DEV=$(stat -c '%d' / 2>/dev/null || echo "1")
+            if [[ "$MP_DEV" == "$ROOT_DEV" ]]; then
+                warn "Drive $CURRENT_LABEL ($MP): on root filesystem — not a separate disk mount"
+                _rpt "| $CURRENT_LABEL | $MP | ⚠ on root fs | — | — |"
+                DRIVES_ALL_OK=false
+            else
+                # Writable?
+                TEST_FILE="$MP/.run_write_test_$$"
+                if touch "$TEST_FILE" 2>/dev/null; then
+                    rm -f "$TEST_FILE"
+                    WRITABLE="✔"
+                else
+                    WRITABLE="✗ not writable"
+                    DRIVES_ALL_OK=false
+                fi
+                # Free space
+                FREE_B=$(df -B1 "$MP" 2>/dev/null | tail -1 | awk '{print $4}' || echo "0")
+                FREE_GB=$(echo "scale=1; $FREE_B/1073741824" | bc 2>/dev/null || echo "?")
+                ok "Drive $CURRENT_LABEL: $MP  free=${FREE_GB} GB  writable=${WRITABLE}"
+                _rpt "| $CURRENT_LABEL | $MP | ✔ mounted | $WRITABLE | ${FREE_GB} GB |"
+            fi
+        fi
+        CURRENT_LABEL=""
+    fi
+done < "$DRIVES_FILE"
+
+_rpt ""
+
+if $DRIVES_ALL_OK; then
+    record_step_pass "All drives mounted and writable"
+else
+    if ! $DRY_RUN; then
+        record_step_fail "One or more drives not mounted/writable — cannot start downloads"
+        error "Drive check failed. Run deploy/vm-mount-disks.sh on the VM first, then retry."
+    else
+        record_step_warn "Drive check: some drives not mounted (expected in dry-run on dev machine)"
+        warn "Drive mount issues noted — must be resolved on the VM before real downloads."
     fi
 fi
 
@@ -244,7 +324,8 @@ fi
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
 
 info "Running dry-run to capture download plan…"
-PLAN_OUT=$(cd "$REPO_DIR" && uv run archiver download "${DOWNLOAD_ARGS[@]}" --dry-run 2>&1 || true)
+PLAN_RC=0
+PLAN_OUT=$(cd "$REPO_DIR" && uv run archiver download "${DOWNLOAD_ARGS[@]}" --dry-run 2>&1) || PLAN_RC=$?
 echo "$PLAN_OUT"
 
 _rpt "\`\`\`"
@@ -252,9 +333,21 @@ echo "$PLAN_OUT" | while IFS= read -r l; do _rpt "$l"; done
 _rpt "\`\`\`"
 _rpt ""
 
-# Count models from plan output
-MODEL_COUNT=$(echo "$PLAN_OUT" | grep -c "│" 2>/dev/null || echo "?")
-record_step_pass "Download plan generated ($MODEL_COUNT table rows shown above)"
+# A non-zero exit here means pre-flight caught a missing tool (e.g. aria2c on dev machine).
+# That is expected and correct — it will pass on the VM. Only flag as failure if it's a
+# Python traceback / config error (i.e. the plan output contains "Traceback" or "Error:").
+if echo "$PLAN_OUT" | grep -q "Traceback\|Error: No such\|ImportError\|ModuleNotFoundError"; then
+    record_step_fail "Download plan: Python/config error detected"
+elif echo "$PLAN_OUT" | grep -qi "Pre-flight FAILED" && ! $DRY_RUN; then
+    record_step_fail "Download plan: pre-flight failure (on the VM, not dry-run)"
+else
+    MODEL_COUNT=$(echo "$PLAN_OUT" | grep -c "│" 2>/dev/null || echo "?")
+    if [[ $PLAN_RC -ne 0 ]]; then
+        record_step_warn "Download plan shown (pre-flight noted missing tools — install on VM first)"
+    else
+        record_step_pass "Download plan generated ($MODEL_COUNT table rows shown above)"
+    fi
+fi
 
 flush_report
 
@@ -273,19 +366,57 @@ if $DRY_RUN; then
     _rpt ""
     record_step_warn "Download skipped (dry-run)"
 else
-    info "Starting download — this may run for hours."
-    info "Logs → $(cd "$REPO_DIR" && uv run python3 -c "
+    # Resolve logs dir for display
+    LOGS_DIR=$(cd "$REPO_DIR" && uv run python3 -c "
 import sys; sys.path.insert(0,'src')
 from archiver.models import load_registry
 from pathlib import Path
 reg = load_registry(Path('config/registry.yaml'), Path('config/drives.yaml'))
 d5 = reg.drives.get('d5')
 print(d5.mount_point / 'logs' if d5 else '/tmp/archiver/logs')
-" 2>/dev/null || echo "<d5>/logs")"
+" 2>/dev/null || echo "/tmp/archiver/logs")
 
+    info "Logs directory → $LOGS_DIR"
     _rpt "Download started at $(date '+%Y-%m-%d %H:%M:%S %Z')"
+    _rpt "Logs: \`$LOGS_DIR\`"
     _rpt ""
 
+    # ── screen detection ─────────────────────────────────────────────────────
+    # If we are NOT already inside a screen/tmux session, warn loudly and offer
+    # to launch inside screen.  Downloads run for many hours; an SSH disconnect
+    # without screen will kill the process and waste progress.
+    IN_SCREEN=false
+    [[ -n "${STY:-}"  ]] && IN_SCREEN=true   # screen sets $STY
+    [[ -n "${TMUX:-}" ]] && IN_SCREEN=true   # tmux sets $TMUX
+
+    if ! $IN_SCREEN; then
+        if command -v screen &>/dev/null; then
+            echo ""
+            echo -e "  ${_C_YELLOW}┌──────────────────────────────────────────────────────────────┐${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│  ⚠  WARNING: not running inside screen or tmux.              │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│     An SSH disconnect will kill the download.                 │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│     Recommended: run inside screen:                          │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│       screen -S archiver                                     │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│       bash run.sh [OPTIONS]                                  │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│                                                              │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│     Proceeding in foreground in 10 seconds...                │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}│     Press Ctrl+C to abort, then start inside screen.         │${_C_RESET}"
+            echo -e "  ${_C_YELLOW}└──────────────────────────────────────────────────────────────┘${_C_RESET}"
+            echo ""
+            _rpt "> ⚠ Download started outside screen/tmux — SSH disconnect risk."
+            sleep 10
+        else
+            warn "screen not installed — cannot protect against SSH disconnects."
+            warn "Consider: sudo apt install screen  then: screen -S archiver"
+            _rpt "> ⚠ screen not installed — SSH disconnect will kill the download."
+        fi
+    else
+        ok "Running inside screen/tmux — safe from SSH disconnects."
+        _rpt "> ✔ Running inside screen/tmux session."
+    fi
+
+    # ── Run download ──────────────────────────────────────────────────────────
+    info "Starting download — this may run for hours."
     DL_RC=0
     cd "$REPO_DIR" && uv run archiver download "${DOWNLOAD_ARGS[@]}" || DL_RC=$?
 
