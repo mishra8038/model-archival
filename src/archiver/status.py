@@ -1,10 +1,17 @@
 """
-Console display (rich Live) and STATUS.md writer.
-Both are updated from SchedulerStats by the scheduler callbacks.
+Console display (rich Live), STATUS.md writer, and RunReport.
+
+RunReport writes a timestamped Markdown run report to the logs directory
+that captures the full session: pre-flight results, per-model outcomes
+(start / complete / fail / skip), drive usage snapshots, and a final summary.
+It is written incrementally so that if the process is interrupted the report
+still contains everything up to that point.
 """
 
 from __future__ import annotations
 
+import platform
+import socket
 import sys
 import threading
 import time
@@ -20,6 +27,7 @@ from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
 from rich.progress import BarColumn, Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
+from rich.rule import Rule
 from rich.table import Table
 from rich.text import Text
 
@@ -302,5 +310,359 @@ class StatusDisplay:
         try:
             tmp.write_text(content, encoding="utf-8")
             tmp.replace(self.status_md_path)
-        except Exception as e:
+        except Exception:
             pass  # Non-fatal — don't crash the downloader over a status file
+
+
+# ---------------------------------------------------------------------------
+# RunReport — timestamped Markdown report for the entire archiver session
+# ---------------------------------------------------------------------------
+
+def _h(b: int) -> str:
+    """Human-readable byte size."""
+    for unit in ("B", "KB", "MB", "GB", "TB"):
+        if abs(b) < 1024:
+            return f"{b:.1f} {unit}"
+        b /= 1024  # type: ignore[assignment]
+    return f"{b:.1f} PB"
+
+
+class RunReport:
+    """
+    Writes a timestamped Markdown run-report file to ``log_dir``.
+
+    The report is written **incrementally** — each section is appended as
+    events arrive so that an interrupted run still produces a useful record.
+
+    Usage::
+
+        report = RunReport(log_dir=logs_dir, registry=reg)
+        report.open(hf_token_set=True, models=selected_models)
+        ...
+        report.record_model_start(model)
+        report.record_model_complete(model, manifest)
+        report.record_model_fail(model, reason)
+        ...
+        report.close(stats)
+    """
+
+    def __init__(self, log_dir: Path, registry: Registry) -> None:
+        self.log_dir = log_dir
+        self.registry = registry
+        self._path: Optional[Path] = None
+        self._lock = threading.Lock()
+        self._start_time = time.time()
+        self._console = Console()
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
+
+    @property
+    def path(self) -> Optional[Path]:
+        return self._path
+
+    def open(
+        self,
+        hf_token_set: bool,
+        models: list,
+        preflight_warnings: list[str] | None = None,
+        preflight_token_results: dict[str, bool] | None = None,
+        cli_args: dict | None = None,
+    ) -> None:
+        """Write the report header and pre-flight summary. Call once before downloads start."""
+        self.log_dir.mkdir(parents=True, exist_ok=True)
+        ts = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        self._path = self.log_dir / f"run-report-{ts}.md"
+        self._start_time = time.time()
+
+        lines: list[str] = []
+        now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+        lines += [
+            "# Archiver Run Report",
+            "",
+            f"**Started:** {now_str}  ",
+            f"**Host:** {socket.gethostname()}  ",
+            f"**Python:** {platform.python_version()}  ",
+            f"**OS:** {platform.system()} {platform.release()}  ",
+            "",
+            "---",
+            "",
+        ]
+
+        # CLI options summary
+        if cli_args:
+            lines += ["## Run Options", ""]
+            lines += [f"| Option | Value |", "|--------|-------|"]
+            for k, v in cli_args.items():
+                lines.append(f"| `{k}` | `{v}` |")
+            lines += ["", "---", ""]
+
+        # Pre-flight
+        lines += ["## Pre-flight", ""]
+        lines.append(f"- HF token present: **{'yes' if hf_token_set else 'no'}**")
+
+        if preflight_warnings:
+            lines.append("")
+            lines.append("**Warnings:**")
+            for w in preflight_warnings:
+                lines.append(f"- ⚠ {w}")
+
+        if preflight_token_results:
+            lines += ["", "**Token access:**", ""]
+            lines += ["| Model | Accessible |", "|-------|------------|"]
+            for mid, ok in preflight_token_results.items():
+                lines.append(f"| {mid} | {'✔ yes' if ok else '✗ no'} |")
+
+        lines += ["", "---", ""]
+
+        # Model queue summary
+        lines += ["## Download Queue", ""]
+        lines += [
+            f"| # | Model | Tier | Drive | P | Auth |",
+            "|---|-------|------|-------|---|------|",
+        ]
+        for i, m in enumerate(models, 1):
+            auth = "yes" if m.requires_auth else "no"
+            lines.append(
+                f"| {i} | `{m.id}` | {m.tier} | {m.drive.upper()} | {m.priority} | {auth} |"
+            )
+
+        lines += ["", "---", "", "## Model Events", ""]
+
+        # Drive snapshot
+        lines += self._drive_snapshot_section()
+        lines += ["", "---", ""]
+
+        self._write_lines(lines)
+
+        # Print report path to console
+        self._console.print(
+            f"  [dim]Run report → [bold]{self._path}[/bold][/dim]"
+        )
+
+    def record_model_start(self, model) -> None:
+        ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
+        lines = [
+            f"### ▶ `{model.id}`",
+            "",
+            f"- **Started:** {ts}  ",
+            f"- **Tier:** {model.tier}  Drive: {model.drive.upper()}  "
+            f"Priority: {model.priority}  Auth: {'yes' if model.requires_auth else 'no'}",
+            "",
+        ]
+        self._write_lines(lines)
+        self._console.print(
+            f"  [cyan]▶ START[/cyan]  [bold]{model.id}[/bold]  "
+            f"[dim](tier {model.tier} / {model.drive.upper()})[/dim]"
+        )
+
+    def record_model_complete(self, model, manifest: dict) -> None:
+        ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
+        total_bytes = manifest.get("total_size_bytes", 0)
+        n_files = len(manifest.get("files", []))
+        commit = (manifest.get("commit_sha") or model.commit_sha or "—")[:16]
+        elapsed = time.time() - self._start_time
+
+        lines = [
+            f"- **Completed:** {ts}  ",
+            f"- **Size:** {_h(total_bytes)}  Files: {n_files}  Commit: `{commit}`  ",
+            f"- **Status:** ✔ COMPLETE",
+            "",
+        ]
+        self._write_lines(lines)
+        self._console.print(
+            f"  [green]✔ DONE[/green]   [bold]{model.id}[/bold]  "
+            f"[dim]{_h(total_bytes)} / {n_files} files / {commit}[/dim]"
+        )
+
+    def record_model_fail(self, model, reason: str) -> None:
+        ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
+        lines = [
+            f"- **Failed:** {ts}  ",
+            f"- **Error:** `{reason}`  ",
+            f"- **Status:** ✗ FAILED",
+            "",
+        ]
+        self._write_lines(lines)
+        self._console.print(
+            f"  [red]✗ FAIL[/red]   [bold]{model.id}[/bold]  [dim]{reason[:100]}[/dim]"
+        )
+
+    def record_verification(
+        self,
+        model_id: str,
+        results: list[dict],
+        *,
+        re_hash: bool = False,
+    ) -> None:
+        """
+        Record post-download checksum verification results in the report.
+
+        ``results`` is the list returned by ``verifier.verify_model_dir``:
+        each entry has ``path``, ``ok``, ``expected``, ``actual``, ``size_bytes``.
+
+        ``re_hash=True`` means every file was fully re-hashed from disk (slow path);
+        ``re_hash=False`` means only sidecar existence was confirmed (fast path used
+        immediately after download when the digest is already known).
+        """
+        n_pass = sum(1 for r in results if r.get("ok"))
+        n_fail = sum(1 for r in results if not r.get("ok"))
+        total_bytes = sum(r.get("size_bytes", 0) for r in results)
+        method = "full re-hash" if re_hash else "sidecar cross-check"
+
+        ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
+
+        status_icon = "✔" if n_fail == 0 else "✗"
+        status_label = "ALL PASS" if n_fail == 0 else f"{n_fail} FAILED"
+
+        lines = [
+            f"#### {status_icon} Verification — `{model_id}`",
+            "",
+            f"- **Method:** {method}  ",
+            f"- **At:** {ts}  ",
+            f"- **Files:** {n_pass} passed  {n_fail} failed  ({_h(total_bytes)} total)  ",
+            f"- **Result:** {status_label}",
+            "",
+        ]
+
+        if n_fail > 0 or len(results) <= 20:
+            # Show full table for small models or when there are failures
+            lines += [
+                "| File | Size | Status |",
+                "|------|------|--------|",
+            ]
+            for r in results:
+                icon = "✔" if r.get("ok") else "✗"
+                colour_open  = "" if r.get("ok") else ""
+                size = _h(r.get("size_bytes", 0))
+                fname = Path(r["path"]).name
+                lines.append(f"| `{fname}` | {size} | {icon} |")
+            lines.append("")
+        else:
+            # Large model — just summarise
+            lines += [f"  _(all {n_pass} files passed — table omitted for brevity)_", ""]
+
+        self._write_lines(lines)
+
+        # Console feedback
+        if n_fail == 0:
+            self._console.print(
+                f"  [green]✔ VERIFY[/green] [bold]{model_id}[/bold]  "
+                f"[dim]{n_pass} files OK  {_h(total_bytes)}  ({method})[/dim]"
+            )
+        else:
+            self._console.print(
+                f"  [red]✗ VERIFY[/red] [bold]{model_id}[/bold]  "
+                f"[red]{n_fail} file(s) FAILED[/red]  "
+                f"[dim]{n_pass} passed  ({method})[/dim]"
+            )
+
+    def record_model_skip(self, model_id: str, reason: str) -> None:
+        ts = datetime.now(timezone.utc).strftime("%H:%M:%S")
+        lines = [
+            f"### — `{model_id}` (skipped)",
+            "",
+            f"- **Skipped:** {ts}  Reason: {reason}",
+            "",
+        ]
+        self._write_lines(lines)
+
+    def record_preflight_fail(self, error: str) -> None:
+        lines = [
+            "## ✗ Pre-flight FAILED",
+            "",
+            f"> **Error:** {error}",
+            "",
+            f"Run aborted at {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}",
+        ]
+        self._write_lines(lines)
+        self._flush_report_path()
+
+    def close(self, stats: Optional[SchedulerStats]) -> None:
+        """Write the final summary section and close the report."""
+        elapsed = time.time() - self._start_time
+        h, rem = divmod(int(elapsed), 3600)
+        m, s = divmod(rem, 60)
+        elapsed_str = f"{h}h {m}m {s}s" if h else (f"{m}m {s}s" if m else f"{s}s")
+
+        now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+        n_complete = len(stats.completed) if stats else 0
+        n_failed   = len(stats.failed)    if stats else 0
+        done_bytes = stats.done_bytes      if stats else 0
+
+        lines: list[str] = [
+            "---",
+            "",
+            "## Final Summary",
+            "",
+            f"| Metric | Value |",
+            "|--------|-------|",
+            f"| Completed | {n_complete} |",
+            f"| Failed | {n_failed} |",
+            f"| Downloaded | {_h(done_bytes)} |",
+            f"| Elapsed | {elapsed_str} |",
+            f"| Finished | {now_str} |",
+            "",
+        ]
+
+        # Completed model list
+        if stats and stats.completed:
+            lines += ["**Completed models:**", ""]
+            for mid in stats.completed:
+                lines.append(f"- ✔ `{mid}`")
+            lines.append("")
+
+        # Failed model list
+        if stats and stats.failed:
+            lines += ["**Failed models:**", ""]
+            for mid in stats.failed:
+                lines.append(f"- ✗ `{mid}`")
+            lines.append("")
+
+        # Drive snapshot at end
+        lines += self._drive_snapshot_section()
+
+        result = "SUCCESS" if (not stats or not stats.failed) else f"PARTIAL ({n_failed} failed)"
+        lines += ["", f"---", "", f"**Result: {result}**", ""]
+
+        self._write_lines(lines)
+        self._flush_report_path()
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+
+    def _drive_snapshot_section(self) -> list[str]:
+        lines = ["### Drive Usage Snapshot", ""]
+        lines += ["| Drive | Mount | Used | Free | Total | Use% |",
+                  "|-------|-------|------|------|-------|------|"]
+        for label, drive in self.registry.drives.items():
+            try:
+                u = psutil.disk_usage(str(drive.mount_point))
+                lines.append(
+                    f"| {label.upper()} | {drive.mount_point} "
+                    f"| {u.used/1024**3:.1f} GB | {u.free/1024**3:.1f} GB "
+                    f"| {u.total/1024**3:.1f} GB | {u.percent:.1f}% |"
+                )
+            except Exception:
+                lines.append(f"| {label.upper()} | {drive.mount_point} | — | — | — | — |")
+        return lines
+
+    def _write_lines(self, lines: list[str]) -> None:
+        if not self._path:
+            return
+        with self._lock:
+            try:
+                with self._path.open("a", encoding="utf-8") as fh:
+                    fh.write("\n".join(lines) + "\n")
+            except Exception:
+                pass
+
+    def _flush_report_path(self) -> None:
+        if self._path:
+            self._console.print(
+                f"\n  [dim]Run report → [bold]{self._path}[/bold][/dim]"
+            )

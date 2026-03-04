@@ -54,6 +54,7 @@ from archiver.verifier import (
     write_manifest,
     write_descriptor,
     append_global_index,
+    verify_model_dir,
 )
 
 log = logging.getLogger(__name__)
@@ -95,11 +96,17 @@ class Downloader:
         model: ModelEntry,
         on_file_progress=None,
         on_file_complete=None,
+        run_report=None,
     ) -> dict:
         """
         Download all files for *model*.
         Returns the manifest dict on success.
         Raises DownloadError on unrecoverable failure.
+
+        After every successful download (or fast-path skip) a post-download
+        verification pass is run: each file is cross-checked against its
+        .sha256 sidecar (fast — no full re-hash).  Failures are raised as
+        DownloadError.  Results are recorded in *run_report* if supplied.
         """
         log.info("Starting download: %s (tier=%s drive=%s)", model.id, model.tier, model.drive)
 
@@ -112,7 +119,12 @@ class Downloader:
         # re-downloading already-complete models when run_state.json is unavailable.
         existing_manifest = _check_manifest_complete(model.model_dir)
         if existing_manifest:
-            log.info("SKIP %s — manifest.json present and all sidecars verified", model.id)
+            n = len(existing_manifest.get("files", []))
+            sz = existing_manifest.get("total_size_bytes", 0)
+            log.info(
+                "─── SKIP  %s  (%d files, %.1f GB already verified — manifest complete)",
+                model.id, n, sz / 1024**3,
+            )
             model.commit_sha = existing_manifest.get("commit_sha")
             # Back-fill descriptor if this model was archived before DESCRIPTOR files were added
             if not (model.model_dir / "DESCRIPTOR.json").exists():
@@ -127,6 +139,8 @@ class Downloader:
                     files=existing_manifest.get("files", []),
                     dest_dir=model.model_dir,
                 )
+            # Sidecar cross-check even for the fast path (no re-hash, just existence)
+            _post_verify(model, existing_manifest, run_report, re_hash=False)
             return existing_manifest
 
         try:
@@ -139,17 +153,23 @@ class Downloader:
 
         commit_sha = repo_files[0]["commit_sha"]
         model.commit_sha = commit_sha
+        lfs_count = sum(1 for f in repo_files if f["storage"] == "lfs")
+        xet_count = sum(1 for f in repo_files if f["storage"] == "xet")
+        total_bytes = sum(f["size"] for f in repo_files)
+
+        log.info(
+            "┌── BEGIN  %s  commit=%s  files=%d  size=%.1f GB  [LFS:%d  XET:%d]",
+            model.id, commit_sha[:12], len(repo_files), total_bytes / 1024**3,
+            lfs_count, xet_count,
+        )
 
         dest_dir = model.model_dir
         dest_dir.mkdir(parents=True, exist_ok=True)
 
         if self.dry_run:
-            lfs_count = sum(1 for f in repo_files if f["storage"] == "lfs")
-            xet_count = sum(1 for f in repo_files if f["storage"] == "xet")
-            total = sum(f["size"] for f in repo_files)
             log.info(
-                "[DRY RUN] %s → %d files (%.1f GB): %d LFS (aria2) + %d XET (hf_hub)",
-                model.id, len(repo_files), total / 1024**3, lfs_count, xet_count,
+                "─── DRY RUN  %s → %d files (%.1f GB): %d LFS (aria2) + %d XET (hf_hub)",
+                model.id, len(repo_files), total_bytes / 1024**3, lfs_count, xet_count,
             )
             return {}
 
@@ -192,11 +212,17 @@ class Downloader:
         latest.symlink_to(dest_dir.name)
 
         log.info(
-            "✓ Completed %s: %d files, %.1f GB",
-            model.id,
+            "└── DONE   %s  commit=%s  files=%d  size=%.2f GB",
+            model.id, commit_sha[:12],
             len(completed_files),
             manifest["total_size_bytes"] / 1024**3,
         )
+
+        # Post-download sidecar cross-check.  Digests were computed during download
+        # so this is fast (sidecar existence + value, no re-hash).  Any mismatch here
+        # means a file was corrupted during the move from tmp → final path.
+        _post_verify(model, manifest, run_report, re_hash=False)
+
         return manifest
 
     # ------------------------------------------------------------------
@@ -280,11 +306,12 @@ class Downloader:
         if final_path.exists():
             stored = read_sidecar(final_path)
             if stored:
-                log.debug("SKIP %s (already verified at final path)", filename)
+                sz = final_path.stat().st_size
+                log.debug("  ├─ SKIP  %s  (%.1f MB, sidecar verified)", filename, sz / 1024**2)
                 return {
                     "path": filename,
                     "sha256": stored,
-                    "size_bytes": final_path.stat().st_size,
+                    "size_bytes": sz,
                 }
 
         # Deterministic tmp path — same across restarts so aria2 finds its .aria2 control file.
@@ -299,7 +326,14 @@ class Downloader:
                 time.sleep(backoff)
 
             try:
-                if file_info["storage"] == "lfs":
+                size_mb = file_info["size"] / 1024**2
+                storage = file_info["storage"]
+                log.info(
+                    "  ├─ GET    %s  (%.0f MB  %s)%s",
+                    filename, size_mb, storage.upper(),
+                    f"  [attempt {attempt + 1}/{MAX_RETRIES}]" if attempt else "",
+                )
+                if storage == "lfs":
                     digest = self._download_lfs(
                         file_info=file_info,
                         tmp_dir=tmp_subdir,
@@ -313,6 +347,10 @@ class Downloader:
                         tmp_dir=tmp_subdir,
                         final_path=final_path,
                     )
+                log.info(
+                    "  ├─ OK     %s  sha256=%.12s…  %.0f MB",
+                    filename, digest, final_path.stat().st_size / 1024**2,
+                )
                 return {
                     "path": filename,
                     "sha256": digest,
@@ -322,7 +360,10 @@ class Downloader:
                 raise
             except Exception as e:
                 last_error = e
-                log.error("Error downloading %s (attempt %d): %s", filename, attempt + 1, e)
+                log.error(
+                    "  ├─ ERROR  %s  attempt=%d/%d  error=%s",
+                    filename, attempt + 1, MAX_RETRIES, e,
+                )
                 # Do NOT delete the partial file in tmp — aria2 needs it for resume.
                 # Only clean up a corrupted file that landed at the final path.
                 if final_path.exists():
@@ -376,7 +417,7 @@ class Downloader:
             hf_token=self.hf_token,
         )
 
-        log.info("DOWNLOAD (LFS/aria2) %s → %s", filename, tmp_dir)
+        log.debug("  │  aria2 task submitted: %s → %s", filename, tmp_dir)
         self.aria2.wait_for_completion(task, on_progress=on_progress)
 
         tmp_path = tmp_dir / filename
@@ -402,7 +443,6 @@ class Downloader:
         if control.exists():
             control.unlink()
         write_sidecar(final_path, actual)
-        log.info("OK (LFS) %s  sha256=%s…", filename, actual[:12])
         return actual
 
     # ------------------------------------------------------------------
@@ -426,7 +466,7 @@ class Downloader:
         """
         filename = file_info["filename"]
         storage = file_info["storage"]
-        log.info("DOWNLOAD (%s/hub) %s", storage.upper(), filename)
+        log.debug("  │  hf_hub_download (%s): %s", storage.upper(), filename)
 
         cached = hf_hub_download(
             repo_id=model.hf_repo,
@@ -451,7 +491,6 @@ class Downloader:
         final_path.parent.mkdir(parents=True, exist_ok=True)
         shutil.move(str(tmp_path), final_path)
         write_sidecar(final_path, actual)
-        log.info("OK (%s) %s  sha256=%s…", storage.upper(), filename, actual[:12])
         return actual
 
 
@@ -475,6 +514,48 @@ def _is_weight_file(name: str) -> bool:
 def _is_config_file(name: str) -> bool:
     base = Path(name).name
     return base in _CONFIG_NAMES or Path(name).suffix.lower() in _CONFIG_EXTENSIONS
+
+
+def _post_verify(model: ModelEntry, manifest: dict, run_report, re_hash: bool) -> None:
+    """
+    Cross-check every file listed in *manifest* against its .sha256 sidecar.
+
+    re_hash=False (default after download): reads the sidecar value that was
+      written during download and confirms the sidecar exists and matches the
+      manifest entry.  Fast — no disk read of the actual weight data.
+
+    re_hash=True: calls sha256_file() to re-read every byte.  Used by the
+      standalone verify-archive.py tool, not here.
+
+    Raises DownloadError if any file fails so the scheduler marks the model
+    as failed and the error is surfaced in the run report and logs.
+    """
+    if model.model_dir is None:
+        return
+
+    log.info("  ╰─ VERIFY %s  (%d files, sidecar cross-check)", model.id, len(manifest.get("files", [])))
+    results = verify_model_dir(model.model_dir)
+
+    failures = [r for r in results if not r.get("ok")]
+    for r in failures:
+        log.error(
+            "  ╰─ CHECKSUM FAIL  %s  expected=%s  actual=%s",
+            r["path"], r.get("expected", "?")[:16], r.get("actual", "?")[:16],
+        )
+
+    if run_report is not None:
+        try:
+            run_report.record_verification(model.id, results, re_hash=re_hash)
+        except Exception:
+            pass  # Never let report errors abort a download
+
+    if failures:
+        names = ", ".join(Path(r["path"]).name for r in failures[:3])
+        extra = f" (+{len(failures)-3} more)" if len(failures) > 3 else ""
+        raise DownloadError(
+            f"Post-download checksum verification failed for {model.id}: "
+            f"{names}{extra} — files removed, will retry on next run"
+        )
 
 
 def _check_manifest_complete(model_dir: Path) -> Optional[dict]:

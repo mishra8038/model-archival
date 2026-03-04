@@ -4,11 +4,11 @@
 # Run on the Proxmox HOST (not inside the VM).
 #
 # Discovers all physical HDDs/SSDs that are NOT the Proxmox root/boot disk,
-# shows full details for each one, asks for per-disk confirmation, then
-# passes confirmed disks through to VM 106 as SCSI passthrough devices.
+# shows full details for each, asks for per-disk confirmation, then passes
+# confirmed disks through to a target VM as SCSI passthrough devices.
 #
-# Prerequisites on the Proxmox host:
-#   - qm, lsblk, udevadm  (all included in Proxmox VE)
+# Prerequisites (all present on a standard Proxmox VE host):
+#   qm, lsblk, udevadm
 #
 # Usage:
 #   bash proxmox-attach-disks.sh [--vm-id 106] [--yes-all]
@@ -22,6 +22,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/_common.sh"
+
 # ---------------------------------------------------------------------------
 # Defaults
 # ---------------------------------------------------------------------------
@@ -30,86 +33,89 @@ YES_ALL=false
 SCSI_START=1
 
 # ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-info()    { echo -e "\033[1;32m[INFO]\033[0m    $*"; }
-warn()    { echo -e "\033[1;33m[WARN]\033[0m    $*"; }
-error()   { echo -e "\033[1;31m[ERROR]\033[0m   $*" >&2; exit 1; }
-header()  { echo -e "\033[1;36m$*\033[0m"; }
-confirm() {
-    # confirm <prompt>  → returns 0 (yes) or 1 (no)
-    local answer
-    while true; do
-        read -rp "$1 [y/n]: " answer
-        case "${answer,,}" in
-            y|yes) return 0 ;;
-            n|no)  return 1 ;;
-            *) echo "  Please answer y or n." ;;
-        esac
-    done
-}
-
-# ---------------------------------------------------------------------------
 # Argument parsing
 # ---------------------------------------------------------------------------
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --vm-id)  VM_ID="$2"; shift 2 ;;
+        --vm-id)   VM_ID="$2"; shift 2 ;;
         --yes-all) YES_ALL=true; shift ;;
         *) error "Unknown argument: $1" ;;
     esac
 done
 
 # ---------------------------------------------------------------------------
-# Sanity checks
+# Initialise report
 # ---------------------------------------------------------------------------
-[[ $(id -u) -eq 0 ]] || error "This script must be run as root on the Proxmox host."
-command -v qm    &>/dev/null || error "'qm' not found — are you on the Proxmox host?"
-command -v lsblk &>/dev/null || error "'lsblk' not found."
+init_report "proxmox-attach-disks"
+_rpt "| Target VM | $VM_ID |"
+_rpt "| --yes-all | $YES_ALL |"
+_rpt ""
 
-qm status "$VM_ID" &>/dev/null || error "VM $VM_ID does not exist."
+# ---------------------------------------------------------------------------
+# Pre-flight
+# ---------------------------------------------------------------------------
+step "Pre-flight Checks"
+
+[[ $(id -u) -eq 0 ]] || error "Must be run as root on the Proxmox host."
+ok "Running as root"
+
+command -v qm     &>/dev/null || error "'qm' not found — run this on the Proxmox host."
+command -v lsblk  &>/dev/null || error "'lsblk' not found."
+command -v udevadm &>/dev/null || error "'udevadm' not found."
+ok "qm, lsblk, udevadm available"
+
+qm status "$VM_ID" &>/dev/null || error "VM $VM_ID does not exist. Check --vm-id."
 
 VM_STATUS=$(qm status "$VM_ID" | awk '{print $2}')
 if [[ "$VM_STATUS" != "stopped" ]]; then
     error "VM $VM_ID is currently '$VM_STATUS'. Shut it down first:
        qm shutdown $VM_ID"
 fi
-info "VM $VM_ID is stopped — safe to attach disks."
-echo ""
+ok "VM $VM_ID exists and is stopped"
+_rpt "| VM $VM_ID status | stopped ✔ |"
 
 # ---------------------------------------------------------------------------
-# Step 1: Identify the Proxmox root disk (excluded from passthrough)
+# Step 1: Identify Proxmox root disk
 # ---------------------------------------------------------------------------
+step "1 — Identify Proxmox Root Disk (excluded from passthrough)"
+
 ROOT_DISK=$(lsblk -no PKNAME "$(findmnt -n -o SOURCE /)" 2>/dev/null \
-            || lsblk -no PKNAME "$(df / | tail -1 | awk '{print $1}')" 2>/dev/null \
+            || lsblk -no PKNAME "$(df / | awk 'NR==2{print $1}')" 2>/dev/null \
             || echo "")
-ROOT_DISK=$(basename "$ROOT_DISK")
-info "Proxmox root disk (will be excluded): ${ROOT_DISK:-unknown}"
-echo ""
+ROOT_DISK=$(basename "${ROOT_DISK:-}")
+
+ROOT_MODEL=$(lsblk -dno MODEL "/dev/$ROOT_DISK" 2>/dev/null | xargs || echo "unknown")
+ROOT_SIZE=$(lsblk -dno SIZE "/dev/$ROOT_DISK" 2>/dev/null || echo "?")
+ROOT_SERIAL=$(udevadm info --query=property --name="/dev/$ROOT_DISK" 2>/dev/null \
+              | grep -m1 ID_SERIAL_SHORT | cut -d= -f2 || echo "unknown")
+
+info "Proxmox root disk: /dev/$ROOT_DISK  ($ROOT_SIZE, $ROOT_MODEL, s/n $ROOT_SERIAL)"
+ok "Root disk identified — will be excluded"
+_rpt "| Root disk | /dev/$ROOT_DISK |"
+_rpt "| Root model | $ROOT_MODEL |"
+_rpt "| Root size | $ROOT_SIZE |"
+_rpt "| Root serial | $ROOT_SERIAL |"
 
 # ---------------------------------------------------------------------------
-# Step 2: Enumerate candidate disks with full detail
+# Step 2: Enumerate candidate disks
 # ---------------------------------------------------------------------------
-header "════════════════════════════════════════════════════════════════"
-header "  Disk Discovery"
-header "════════════════════════════════════════════════════════════════"
-echo ""
+step "2 — Disk Discovery"
 
-# Collect current VM config once for idempotency checks
 CURRENT_CONF=$(qm config "$VM_ID" 2>/dev/null || true)
-MAX_SCSI=$(echo "$CURRENT_CONF" | grep -oP 'scsi\K[0-9]+' | sort -n | tail -1 || echo "0")
+MAX_SCSI=$(echo "$CURRENT_CONF" | grep -oP 'scsi\K[0-9]+' | sort -n | tail -1 2>/dev/null || echo "0")
 NEXT_SLOT=$(( MAX_SCSI + 1 ))
 [[ "$NEXT_SLOT" -lt "$SCSI_START" ]] && NEXT_SLOT=$SCSI_START
 
-# Arrays built during enumeration
 DISK_NAMES=()
 DISK_SIZES=()
 DISK_TYPES=()
 DISK_MODELS=()
 DISK_SERIALS=()
-DISK_PATHS=()      # by-id or /dev/sdX
-DISK_SLOTS=()      # scsi<N> slot assignment
-DISK_SKIP=()       # reason to skip, or ""
+DISK_WWNS=()
+DISK_PATHS=()
+DISK_SLOTS=()
+DISK_SKIP=()
+DISK_PARTS=()
 
 SLOT_CURSOR=$NEXT_SLOT
 
@@ -121,44 +127,39 @@ while IFS= read -r line; do
     type=$([[ "$rota" == "1" ]] && echo "HDD" || echo "SSD/NVMe")
 
     serial=$(udevadm info --query=property --name="/dev/$name" 2>/dev/null \
-             | grep -m1 ID_SERIAL_SHORT | cut -d= -f2 || echo "unknown")
-
+             | grep -m1 ID_SERIAL_SHORT | cut -d= -f2 || echo "")
     wwn=$(udevadm info --query=property --name="/dev/$name" 2>/dev/null \
           | grep -m1 ID_WWN | cut -d= -f2 || echo "")
+    parts=$(lsblk -no NAME "/dev/$name" 2>/dev/null | grep -vc "^${name}$" || echo 0)
 
-    # Partitions present?
-    parts=$(lsblk -no NAME "/dev/$name" 2>/dev/null | grep -v "^$name$" | wc -l || echo 0)
-
-    # by-id path
     BY_ID=$(ls -1 /dev/disk/by-id/ 2>/dev/null \
             | grep -v "part\|wwn-\|dm-\|md-" \
-            | xargs -I{} bash -c \
-                'target=$(readlink -f /dev/disk/by-id/{}); \
-                 [[ "$target" == "/dev/'"$name"'" ]] && echo "{}"' \
-            | head -1 || true)
+            | while read -r id; do
+                target=$(readlink -f "/dev/disk/by-id/$id" 2>/dev/null || true)
+                [[ "$target" == "/dev/$name" ]] && echo "$id" && break
+              done | head -1 || true)
 
-    if [[ -n "$BY_ID" ]]; then
-        disk_path="/dev/disk/by-id/${BY_ID}"
-    else
-        disk_path="/dev/$name"
-    fi
+    disk_path=$([[ -n "$BY_ID" ]] && echo "/dev/disk/by-id/$BY_ID" || echo "/dev/$name")
 
-    # Determine skip reason
     skip_reason=""
     if [[ "$name" == "$ROOT_DISK" ]]; then
         skip_reason="Proxmox root disk"
-    elif echo "$CURRENT_CONF" | grep -q "$name\|$BY_ID"; then
+    elif echo "$CURRENT_CONF" | grep -qF "$name"; then
         skip_reason="already attached to VM $VM_ID"
+    elif [[ -n "$BY_ID" ]] && echo "$CURRENT_CONF" | grep -qF "$BY_ID"; then
+        skip_reason="already attached to VM $VM_ID (by-id)"
     fi
 
     DISK_NAMES+=("$name")
     DISK_SIZES+=("$size")
     DISK_TYPES+=("$type")
     DISK_MODELS+=("${model:-unknown}")
-    DISK_SERIALS+=("$serial")
+    DISK_SERIALS+=("${serial:-unknown}")
+    DISK_WWNS+=("${wwn:-}")
     DISK_PATHS+=("$disk_path")
     DISK_SLOTS+=("scsi${SLOT_CURSOR}")
     DISK_SKIP+=("$skip_reason")
+    DISK_PARTS+=("$parts")
 
     [[ -z "$skip_reason" ]] && SLOT_CURSOR=$(( SLOT_CURSOR + 1 ))
 
@@ -167,16 +168,21 @@ done < <(lsblk -dno NAME,SIZE,ROTA,MODEL --include 8,259,252 2>/dev/null \
 
 if [[ ${#DISK_NAMES[@]} -eq 0 ]]; then
     warn "No block devices found."
+    finish_report "NO DISKS FOUND"
+    print_report_path
     exit 0
 fi
 
-# ---------------------------------------------------------------------------
-# Step 3: Print full summary table of ALL disks
-# ---------------------------------------------------------------------------
-printf "  %-6s  %-8s  %-8s  %-28s  %-16s  %-10s  %s\n" \
-       "DEVICE" "SIZE" "TYPE" "MODEL" "SERIAL" "SCSI SLOT" "STATUS"
-printf "  %-6s  %-8s  %-8s  %-28s  %-16s  %-10s  %s\n" \
-       "------" "----" "----" "-----" "------" "---------" "------"
+# Print summary table
+printf "\n"
+printf "  %-8s  %-7s  %-8s  %-26s  %-18s  %-6s  %-10s  %s\n" \
+       "DEVICE" "SIZE" "TYPE" "MODEL" "SERIAL" "PARTS" "SCSI SLOT" "STATUS"
+printf "  %-8s  %-7s  %-8s  %-26s  %-18s  %-6s  %-10s  %s\n" \
+       "--------" "-------" "--------" "--------------------------" \
+       "------------------" "------" "----------" "------"
+
+_rpt "| Device | Size | Type | Model | Serial | Parts | SCSI Slot | Status |"
+_rpt "|--------|------|------|-------|--------|-------|-----------|--------|"
 
 for i in "${!DISK_NAMES[@]}"; do
     skip="${DISK_SKIP[$i]}"
@@ -184,24 +190,25 @@ for i in "${!DISK_NAMES[@]}"; do
     if [[ -n "$skip" ]]; then
         slot="—"
         status="SKIP ($skip)"
-        colour="\033[2m"   # dim
+        colour="${_C_DIM}"
     else
-        status="will attach → VM${VM_ID}:${slot}"
-        colour="\033[0m"
+        status="→ VM${VM_ID}:${slot}"
+        colour="${_C_RESET}"
     fi
-    printf "${colour}  %-6s  %-8s  %-8s  %-28s  %-16s  %-10s  %s\033[0m\n" \
-           "${DISK_NAMES[$i]}" \
+    printf "${colour}  %-8s  %-7s  %-8s  %-26s  %-18s  %-6s  %-10s  %s${_C_RESET}\n" \
+           "/dev/${DISK_NAMES[$i]}" \
            "${DISK_SIZES[$i]}" \
            "${DISK_TYPES[$i]}" \
-           "${DISK_MODELS[$i]:0:28}" \
-           "${DISK_SERIALS[$i]:0:16}" \
+           "${DISK_MODELS[$i]:0:26}" \
+           "${DISK_SERIALS[$i]:0:18}" \
+           "${DISK_PARTS[$i]}" \
            "$slot" \
            "$status"
+    _rpt "| /dev/${DISK_NAMES[$i]} | ${DISK_SIZES[$i]} | ${DISK_TYPES[$i]} | ${DISK_MODELS[$i]} | ${DISK_SERIALS[$i]} | ${DISK_PARTS[$i]} | $slot | $status |"
 done
 
 echo ""
 
-# Check there is anything left to attach
 PENDING=()
 for i in "${!DISK_NAMES[@]}"; do
     [[ -z "${DISK_SKIP[$i]}" ]] && PENDING+=("$i")
@@ -209,103 +216,169 @@ done
 
 if [[ ${#PENDING[@]} -eq 0 ]]; then
     warn "All candidate disks are already attached or excluded. Nothing to do."
+    finish_report "NOTHING TO DO"
+    print_report_path
     exit 0
 fi
 
 # ---------------------------------------------------------------------------
-# Step 4: Per-disk confirmation
+# Step 3: Per-disk confirmation
 # ---------------------------------------------------------------------------
-header "════════════════════════════════════════════════════════════════"
-header "  Per-Disk Confirmation"
-header "════════════════════════════════════════════════════════════════"
-echo ""
+step "3 — Per-Disk Confirmation"
 
-CONFIRMED=()   # indices from DISK_NAMES[] that the user approved
+_rpt "| Disk | Serial | Slot | User Decision |"
+_rpt "|------|--------|------|---------------|"
+
+CONFIRMED=()
 
 for i in "${PENDING[@]}"; do
-    echo -e "\033[1m  Disk:    /dev/${DISK_NAMES[$i]}\033[0m"
-    echo    "  Size:    ${DISK_SIZES[$i]}"
-    echo    "  Type:    ${DISK_TYPES[$i]}"
-    echo    "  Model:   ${DISK_MODELS[$i]}"
-    echo    "  Serial:  ${DISK_SERIALS[$i]}"
-    echo    "  Path:    ${DISK_PATHS[$i]}"
-    echo    "  → Will be attached as VM${VM_ID}:${DISK_SLOTS[$i]}"
-    echo    ""
+    banner "/dev/${DISK_NAMES[$i]}"
+    printf "  %-16s %s\n" "Size:"   "${DISK_SIZES[$i]}"
+    printf "  %-16s %s\n" "Type:"   "${DISK_TYPES[$i]}"
+    printf "  %-16s %s\n" "Model:"  "${DISK_MODELS[$i]}"
+    printf "  %-16s %s\n" "Serial:" "${DISK_SERIALS[$i]}"
+    [[ -n "${DISK_WWNS[$i]}" ]] && printf "  %-16s %s\n" "WWN:" "${DISK_WWNS[$i]}"
+    printf "  %-16s %s\n" "Partitions:" "${DISK_PARTS[$i]}"
+    printf "  %-16s %s\n" "by-id path:" "${DISK_PATHS[$i]}"
+    printf "  %-16s %s\n" "VM slot:"    "VM${VM_ID}:${DISK_SLOTS[$i]}"
+    echo ""
 
     if $YES_ALL; then
-        info "  --yes-all set — auto-confirming."
+        info "--yes-all: auto-confirming /dev/${DISK_NAMES[$i]}"
         CONFIRMED+=("$i")
+        _rpt "| /dev/${DISK_NAMES[$i]} | ${DISK_SERIALS[$i]} | ${DISK_SLOTS[$i]} | ✔ confirmed (--yes-all) |"
     else
-        if confirm "  Attach /dev/${DISK_NAMES[$i]} to VM ${VM_ID}?"; then
-            CONFIRMED+=("$i")
-            info "  Confirmed."
-        else
-            warn "  Skipped by user."
-        fi
+        local disk_answer
+        while true; do
+            read -rp "  Attach /dev/${DISK_NAMES[$i]} to VM ${VM_ID} as ${DISK_SLOTS[$i]}? [y/n]: " disk_answer
+            case "${disk_answer,,}" in
+                y|yes)
+                    CONFIRMED+=("$i")
+                    ok "Confirmed — /dev/${DISK_NAMES[$i]}"
+                    _rpt "| /dev/${DISK_NAMES[$i]} | ${DISK_SERIALS[$i]} | ${DISK_SLOTS[$i]} | ✔ confirmed |"
+                    break ;;
+                n|no)
+                    warn "Skipped — /dev/${DISK_NAMES[$i]}"
+                    _rpt "| /dev/${DISK_NAMES[$i]} | ${DISK_SERIALS[$i]} | ${DISK_SLOTS[$i]} | ✗ skipped by user |"
+                    break ;;
+                *) echo "  Please answer y or n." ;;
+            esac
+        done
     fi
     echo ""
 done
 
 if [[ ${#CONFIRMED[@]} -eq 0 ]]; then
     warn "No disks confirmed. Nothing was changed."
+    finish_report "NO DISKS CONFIRMED"
+    print_report_path
     exit 0
 fi
 
 # ---------------------------------------------------------------------------
-# Step 5: Final confirmation — show exactly what will be run
+# Step 4: Execution plan
 # ---------------------------------------------------------------------------
-header "════════════════════════════════════════════════════════════════"
-header "  Execution Plan"
-header "════════════════════════════════════════════════════════════════"
-echo ""
+step "4 — Execution Plan"
+
+_rpt "**Commands to be executed:**"
+_rpt "\`\`\`"
+
+NEEDS_CONTROLLER=false
+! echo "$CURRENT_CONF" | grep -q "scsihw:" && NEEDS_CONTROLLER=true
 
 for i in "${CONFIRMED[@]}"; do
-    echo "  qm set ${VM_ID} --${DISK_SLOTS[$i]} ${DISK_PATHS[$i]},backup=0,cache=none,aio=native"
+    CMD="qm set ${VM_ID} --${DISK_SLOTS[$i]} ${DISK_PATHS[$i]},backup=0,cache=none,aio=native"
+    echo "  $CMD"
+    _rpt "$CMD"
 done
 
-if ! echo "$CURRENT_CONF" | grep -q "scsihw:"; then
-    echo "  qm set ${VM_ID} --scsihw virtio-scsi-single"
+if $NEEDS_CONTROLLER; then
+    CMD="qm set ${VM_ID} --scsihw virtio-scsi-single"
+    echo "  $CMD"
+    _rpt "$CMD"
 fi
+_rpt "\`\`\`"
 
 echo ""
-if ! confirm "Execute the above commands now?"; then
+read -rp "  Execute the above commands now? [y/n]: " exec_answer
+if [[ "${exec_answer,,}" != "y" && "${exec_answer,,}" != "yes" ]]; then
     warn "Aborted — no changes made."
+    _rpt ""
+    _rpt "> **ABORTED** by user at final confirmation."
+    finish_report "ABORTED"
+    print_report_path
     exit 0
 fi
+_rpt ""
+_rpt "> User confirmed: **YES** — executing."
 
 # ---------------------------------------------------------------------------
-# Step 6: Execute
+# Step 5: Execute
 # ---------------------------------------------------------------------------
-echo ""
-header "════════════════════════════════════════════════════════════════"
-header "  Attaching Disks"
-header "════════════════════════════════════════════════════════════════"
-echo ""
+step "5 — Attaching Disks"
 
-ATTACHED_COUNT=0
+_rpt "| Disk | Slot | Path | Result |"
+_rpt "|------|------|------|--------|"
+
+ATTACHED=0
+FAILED=0
+
 for i in "${CONFIRMED[@]}"; do
-    info "Attaching /dev/${DISK_NAMES[$i]} → VM${VM_ID}:${DISK_SLOTS[$i]}"
-    qm set "${VM_ID}" \
-        --"${DISK_SLOTS[$i]}" "${DISK_PATHS[$i]},backup=0,cache=none,aio=native"
-    info "  ✓ Done"
-    ATTACHED_COUNT=$(( ATTACHED_COUNT + 1 ))
+    banner "/dev/${DISK_NAMES[$i]}  →  VM${VM_ID}:${DISK_SLOTS[$i]}"
+
+    CMD="qm set ${VM_ID} --${DISK_SLOTS[$i]} ${DISK_PATHS[$i]},backup=0,cache=none,aio=native"
+    echo -e "      ${_C_DIM}\$ $CMD${_C_RESET}"
+    _rpt "  - \`$CMD\`"
+
+    if qm set "${VM_ID}" \
+           --"${DISK_SLOTS[$i]}" "${DISK_PATHS[$i]},backup=0,cache=none,aio=native"; then
+        ok "Attached /dev/${DISK_NAMES[$i]} → VM${VM_ID}:${DISK_SLOTS[$i]}"
+        _rpt "| /dev/${DISK_NAMES[$i]} | ${DISK_SLOTS[$i]} | ${DISK_PATHS[$i]} | ✔ attached |"
+        ATTACHED=$(( ATTACHED + 1 ))
+    else
+        warn "Failed to attach /dev/${DISK_NAMES[$i]}"
+        _rpt "| /dev/${DISK_NAMES[$i]} | ${DISK_SLOTS[$i]} | ${DISK_PATHS[$i]} | ✗ FAILED |"
+        FAILED=$(( FAILED + 1 ))
+    fi
 done
 
-if ! echo "$CURRENT_CONF" | grep -q "scsihw:"; then
-    info "Adding SCSI controller (virtio-scsi-single)"
-    qm set "${VM_ID}" --scsihw virtio-scsi-single
+if $NEEDS_CONTROLLER; then
+    info "Adding SCSI controller (virtio-scsi-single)…"
+    run_cmd "qm set ${VM_ID} --scsihw virtio-scsi-single"
+    ok "SCSI controller set"
 fi
 
 # ---------------------------------------------------------------------------
-# Summary
+# Final summary
 # ---------------------------------------------------------------------------
+step "Summary"
+
+echo -e "${_C_GREEN}  ┌──────────────────────────────────────────────────────────────┐${_C_RESET}"
+printf  "${_C_GREEN}  │  %-62s│${_C_RESET}\n" "✔  $ATTACHED disk(s) attached to VM ${VM_ID}."
+[[ $FAILED -gt 0 ]] && \
+printf  "\033[1;31m  │  ✗  $FAILED disk(s) FAILED to attach.%-33s│\033[0m\n" ""
+echo -e "${_C_GREEN}  └──────────────────────────────────────────────────────────────┘${_C_RESET}"
 echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Done. ${ATTACHED_COUNT} disk(s) attached to VM ${VM_ID}."
+echo "  Verify config:       qm config ${VM_ID}"
+echo "  Start VM:            qm start ${VM_ID}"
+echo "  Inside VM — confirm: lsblk -o NAME,SIZE,MODEL,SERIAL"
+echo "  Then run:            sudo bash deploy/vm-mount-disks.sh --wipe"
 echo ""
-echo "  Verify config:        qm config ${VM_ID}"
-echo "  Start VM:             qm start ${VM_ID}"
-echo "  Inside VM — confirm:  lsblk"
-echo "                        ls /dev/disk/by-id/"
-echo "  Then run:             bash deploy/setup-mxlinux.sh"
-echo "════════════════════════════════════════════════════════════════"
+
+_rpt ""
+_rpt "| Metric | Count |"
+_rpt "|--------|-------|"
+_rpt "| Disks attached | $ATTACHED |"
+_rpt "| Disks failed | $FAILED |"
+_rpt ""
+_rpt "**Post-attach commands:**"
+_rpt "\`\`\`"
+_rpt "qm config ${VM_ID}"
+_rpt "qm start ${VM_ID}"
+_rpt "\`\`\`"
+
+RESULT="SUCCESS"
+[[ $FAILED -gt 0 ]] && RESULT="PARTIAL ($ATTACHED attached, $FAILED failed)"
+
+finish_report "$RESULT"
+print_report_path

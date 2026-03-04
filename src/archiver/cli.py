@@ -6,13 +6,17 @@ import json
 import logging
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
 import click
 import psutil
 from rich.console import Console
+from rich.panel import Panel
+from rich.rule import Rule
 from rich.table import Table
+from rich.text import Text
 
 from archiver.models import load_registry, save_registry, Registry
 from archiver.state import RunState, STATUS_COMPLETE, STATUS_FAILED, sync_archive
@@ -149,7 +153,7 @@ def cmd_download(
     from archiver.aria2_manager import Aria2Manager
     from archiver.downloader import Downloader
     from archiver.scheduler import DriveScheduler
-    from archiver.status import StatusDisplay
+    from archiver.status import StatusDisplay, RunReport
     from archiver.state import sync_archive
     import archiver.preflight as preflight
 
@@ -168,28 +172,43 @@ def cmd_download(
 
     _setup_logging(verbose, log_dir=logs_dir if not dry_run else None)
 
+    # ── Startup banner ────────────────────────────────────────────────────
+    _print_startup_banner(reg, d5, tmp_dir, logs_dir, dry_run)
+
     # Warn if root SSD is unexpectedly low
     root_warn = _check_root_ssd_space()
     if root_warn:
-        console.print(f"[yellow]⚠ {root_warn}[/]")
+        console.print(f"[yellow]⚠  {root_warn}[/]")
 
     hf_token = os.environ.get("HF_TOKEN")
 
-    console.print("[bold]Running pre-flight checks…[/]")
+    # ── Pre-flight checks ────────────────────────────────────────────────
+    console.print(Rule("[bold cyan]Pre-flight Checks[/bold cyan]"))
     try:
         warnings, token_results = preflight.run_all(reg, hf_token)
+        console.print("[green]✔[/green]  All pre-flight checks passed")
     except preflight.PreflightError as e:
-        console.print(f"[bold red]Pre-flight FAILED:[/] {e}")
+        console.print(Panel(str(e), title="[bold red]Pre-flight FAILED[/bold red]",
+                            border_style="red"))
+        if not dry_run:
+            # Still create logs dir so the report can be written
+            try:
+                logs_dir.mkdir(parents=True, exist_ok=True)
+                run_report = RunReport(log_dir=logs_dir, registry=reg)
+                run_report.open(hf_token_set=bool(hf_token), models=[])
+                run_report.record_preflight_fail(str(e))
+            except Exception:
+                pass
         sys.exit(1)
 
     for w in warnings:
-        console.print(f"[yellow]⚠ {w}[/]")
+        console.print(f"[yellow]⚠  {w}[/]")
 
     # Create required subdirectories only after pre-flight confirms drives are mounted
     for d in [tmp_dir, logs_dir, archive_dir, archive_dir / "checksums"]:
         d.mkdir(parents=True, exist_ok=True)
 
-    # Select models
+    # ── Select models ────────────────────────────────────────────────────
     models = reg.models
     if tier:
         models = [m for m in models if m.tier == tier]
@@ -206,12 +225,35 @@ def cmd_download(
         _print_download_plan(models, d5, tmp_dir)
         return
 
+    # ── Run report ───────────────────────────────────────────────────────
+    run_report = RunReport(log_dir=logs_dir, registry=reg)
+    cli_args = {
+        "tier": tier or "all",
+        "priority_only": priority_only or "all",
+        "max_parallel_drives": max_parallel_drives,
+        "bandwidth_cap": bandwidth_cap or "unlimited",
+        "hf_token": "set" if hf_token else "not set",
+        "logs_dir": str(logs_dir),
+        "tmp_dir": str(tmp_dir),
+        "status_md": str(status_path),
+    }
+    run_report.open(
+        hf_token_set=bool(hf_token),
+        models=models,
+        preflight_warnings=warnings,
+        preflight_token_results=token_results,
+        cli_args=cli_args,
+    )
+
+    # ── Status display ───────────────────────────────────────────────────
     status_display = StatusDisplay(
         registry=reg,
         state=state,
         status_md_path=status_path,
         total_bytes=0,
     )
+
+    console.print(Rule("[bold cyan]Downloads[/bold cyan]"))
 
     with Aria2Manager(tmp_dir=tmp_dir) as aria2:
         downloader = Downloader(
@@ -223,16 +265,21 @@ def cmd_download(
         )
 
         def do_download(model):
-            return downloader.download_model(model)
+            run_report.record_model_start(model)
+            return downloader.download_model(model, run_report=run_report)
 
         replica_roots = [
             d.mount_point for label, d in reg.drives.items() if label != "d5"
         ]
 
         def on_complete(model, manifest):
+            run_report.record_model_complete(model, manifest)
             save_registry(reg, registry_path)
             sync_archive(archive_dir, replica_roots)
             status_display.update(scheduler._stats)
+
+        def on_failed(model, reason):
+            run_report.record_model_fail(model, reason)
 
         scheduler = DriveScheduler(
             registry=reg,
@@ -240,6 +287,7 @@ def cmd_download(
             download_fn=do_download,
             get_speed_fn=aria2.aggregate_speed_mbps,
             on_model_complete=on_complete,
+            on_model_failed=on_failed,
             on_status_update=status_display.update,
             token_accessible=token_results,
             max_parallel_drives=max_parallel_drives,
@@ -255,9 +303,15 @@ def cmd_download(
             status_display.stop()
             state.end_run(final_stats.__dict__ if final_stats else {})
 
-    n_ok = len(final_stats.completed) if final_stats else 0
-    n_fail = len(final_stats.failed) if final_stats else 0
-    console.print(f"\n[bold]Done:[/] {n_ok} complete, {n_fail} failed")
+    # ── Final summary ────────────────────────────────────────────────────
+    n_ok   = len(final_stats.completed) if final_stats else 0
+    n_fail = len(final_stats.failed)    if final_stats else 0
+
+    run_report.close(final_stats)
+
+    console.print(Rule())
+    _print_final_summary(n_ok, n_fail, final_stats, run_report.path)
+
     if n_fail:
         sys.exit(1)
 
@@ -560,26 +614,108 @@ def _fmt_bytes_cli(b: int) -> str:
     return f"{b:.1f} PB"
 
 
+def _print_startup_banner(reg, d5: Path, tmp_dir: Path, logs_dir: Path, dry_run: bool) -> None:
+    """Print a rich startup banner with run metadata and drive overview."""
+    from rich.rule import Rule
+    import socket
+    import platform
+
+    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+    console.print()
+    console.print(Rule("[bold magenta]  Model Archiver  [/bold magenta]"))
+    console.print()
+
+    info_table = Table(box=None, show_header=False, padding=(0, 2))
+    info_table.add_column("key",   style="dim",  width=18)
+    info_table.add_column("value", style="bold")
+    info_table.add_row("Started",  now_str)
+    info_table.add_row("Host",     socket.gethostname())
+    info_table.add_row("Python",   platform.python_version())
+    info_table.add_row("Mode",     "[yellow]DRY RUN[/yellow]" if dry_run else "[green]LIVE[/green]")
+    info_table.add_row("Tmp dir",  str(tmp_dir))
+    info_table.add_row("Logs dir", str(logs_dir))
+    info_table.add_row("Status",   str(d5 / "STATUS.md"))
+    console.print(info_table)
+
+    # Drive overview
+    console.print()
+    drive_table = Table(title="Drives", box=None, show_header=True, header_style="bold cyan")
+    drive_table.add_column("Label", width=6)
+    drive_table.add_column("Mount", width=22)
+    drive_table.add_column("Role")
+    drive_table.add_column("Free", width=10)
+    drive_table.add_column("Total", width=10)
+    for label, drive in reg.drives.items():
+        try:
+            u = psutil.disk_usage(str(drive.mount_point))
+            free  = _fmt_bytes_cli(u.free)
+            total = _fmt_bytes_cli(u.total)
+            colour = "green" if u.free / u.total > 0.2 else "yellow"
+            drive_table.add_row(
+                label.upper(), str(drive.mount_point), drive.role,
+                f"[{colour}]{free}[/]", total,
+            )
+        except Exception:
+            drive_table.add_row(label.upper(), str(drive.mount_point), drive.role,
+                                "[red]unavailable[/]", "—")
+    console.print(drive_table)
+    console.print()
+
+
 def _print_download_plan(models, d5: Path, tmp_dir: Path) -> None:
-    table = Table(title="Download Plan (dry run)")
-    table.add_column("Model", style="cyan")
-    table.add_column("Tier", width=4)
-    table.add_column("Drive", width=4)
+    from rich.rule import Rule
+
+    console.print(Rule("[bold cyan]Download Plan (dry run)[/bold cyan]"))
+    table = Table(show_header=True, header_style="bold")
+    table.add_column("#",        width=3)
+    table.add_column("Model",    style="cyan")
+    table.add_column("Tier",     width=5)
+    table.add_column("Drive",    width=5)
     table.add_column("Priority", width=4)
-    table.add_column("Auth")
-    for m in models:
+    table.add_column("Auth",     width=5)
+    for i, m in enumerate(models, 1):
         table.add_row(
-            m.id,
-            m.tier,
-            m.drive.upper(),
-            str(m.priority),
-            "yes" if m.requires_auth else "no",
+            str(i), m.id, m.tier, m.drive.upper(), str(m.priority),
+            "[yellow]yes[/]" if m.requires_auth else "no",
         )
     console.print(table)
-    console.print(f"\n[dim]{len(models)} model(s) would be downloaded[/]")
-    console.print(f"\n[dim]Runtime paths:[/]")
-    console.print(f"  tmp (D1):   {tmp_dir}")
-    console.print(f"  logs (D5):  {d5 / 'logs'}")
-    console.print(f"  archive:    {d5 / 'archive'}")
-    console.print(f"  state:      {d5 / 'run_state.json'}")
-    console.print(f"  STATUS.md:  {d5 / 'STATUS.md'}")
+    console.print(f"\n  [dim]{len(models)} model(s) would be downloaded[/]")
+    console.print()
+
+    path_table = Table(box=None, show_header=False, padding=(0, 2))
+    path_table.add_column("key",   style="dim",  width=18)
+    path_table.add_column("value", style="bold")
+    path_table.add_row("tmp (D1)",   str(tmp_dir))
+    path_table.add_row("logs (D5)",  str(d5 / "logs"))
+    path_table.add_row("archive",    str(d5 / "archive"))
+    path_table.add_row("state",      str(d5 / "run_state.json"))
+    path_table.add_row("STATUS.md",  str(d5 / "STATUS.md"))
+    console.print(path_table)
+    console.print()
+
+
+def _print_final_summary(n_ok: int, n_fail: int, final_stats, report_path) -> None:
+    """Print a final coloured summary panel after all downloads finish."""
+    total = n_ok + n_fail
+    if n_fail == 0:
+        style = "green"
+        title = "[bold green]  All Downloads Complete  [/bold green]"
+        icon  = "✔"
+    else:
+        style = "yellow" if n_ok > 0 else "red"
+        title = "[bold yellow]  Downloads Finished With Errors  [/bold yellow]"
+        icon  = "⚠"
+
+    done_bytes = final_stats.done_bytes if final_stats else 0
+
+    lines = Text()
+    lines.append(f"\n  {icon}  {n_ok}/{total} models completed successfully\n", style=style)
+    if n_fail:
+        lines.append(f"  ✗  {n_fail} model(s) failed — check logs for details\n", style="red")
+    lines.append(f"\n  Total downloaded:  {_fmt_bytes_cli(done_bytes)}\n", style="dim")
+    if report_path:
+        lines.append(f"  Run report:        {report_path}\n", style="dim")
+
+    console.print(Panel(lines, title=title, border_style=style))
+    console.print()

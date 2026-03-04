@@ -1,164 +1,306 @@
 #!/usr/bin/env bash
 # =============================================================================
 # deploy/setup-artix.sh
-# Bootstrap model-archival on Artix Linux (Arch/pacman-based, dinit init system)
+# Bootstrap model-archival on Artix Linux (Arch / pacman, dinit init system)
 #
 # Usage:
 #   bash setup-artix.sh [--repo-dir /path/to/model-archival]
 #
-# What this script does:
-#   1. Installs system packages: python, aria2, git, screen, rsync
-#   2. Installs uv (Astral) for the current user
-#   3. Creates / syncs the Python virtual environment via uv
-#   4. Installs the archiver package in editable mode
-#   5. Verifies the CLI entry point is accessible
-#   6. Prints a quick-start reminder
+# Steps:
+#   1. Install system packages via pacman
+#   2. Install uv (Astral) user-locally
+#   3. Pin Python 3.11 and sync the virtual environment
+#   4. Smoke-test the archiver CLI
+#   5. Create /mnt/models/dN mount point directories
+#   6. Add archiver-screen shell alias
 #
-# Run as a normal user with sudo privileges (NOT as root).
+# Run as a normal user WITH sudo privileges (not as root).
 # =============================================================================
 
 set -euo pipefail
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-info()  { echo -e "\033[1;32m[INFO]\033[0m  $*"; }
-warn()  { echo -e "\033[1;33m[WARN]\033[0m  $*"; }
-error() { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; exit 1; }
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/_common.sh"
 
 # ---------------------------------------------------------------------------
-# Parse arguments
+# Argument parsing
 # ---------------------------------------------------------------------------
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --repo-dir) REPO_DIR="$2"; shift 2 ;;
-    *) error "Unknown argument: $1" ;;
-  esac
+    case "$1" in
+        --repo-dir) REPO_DIR="$2"; shift 2 ;;
+        *) error "Unknown argument: $1" ;;
+    esac
 done
 
-info "Repository directory: $REPO_DIR"
-[[ -f "$REPO_DIR/pyproject.toml" ]] || error "pyproject.toml not found in $REPO_DIR — is --repo-dir correct?"
+# ---------------------------------------------------------------------------
+# Initialise report
+# ---------------------------------------------------------------------------
+init_report "setup-artix"
+_rpt "| Distro | Artix Linux (Arch/pacman, dinit) |"
+_rpt "| Repo dir | \`$REPO_DIR\` |"
+_rpt ""
 
 # ---------------------------------------------------------------------------
-# 1. System packages (pacman)
+# Pre-flight
 # ---------------------------------------------------------------------------
+step "Pre-flight Checks"
+
+[[ -f "$REPO_DIR/pyproject.toml" ]] \
+    || error "pyproject.toml not found in $REPO_DIR — pass --repo-dir if needed."
+ok "pyproject.toml found at $REPO_DIR"
+
+command -v sudo   &>/dev/null || error "'sudo' not available."
+command -v pacman &>/dev/null || error "'pacman' not found — is this Artix/Arch?"
+ok "sudo available"
+ok "pacman available"
+
+PACMAN_VER=$(pacman --version 2>&1 | head -1)
+_rpt "| pyproject.toml | found |"
+_rpt "| sudo | available |"
+_rpt "| pacman | $PACMAN_VER |"
+
+# ---------------------------------------------------------------------------
+# 1. System packages
+# ---------------------------------------------------------------------------
+step "1 — System Packages (pacman)"
+
+PACKAGES=(
+    python
+    aria2
+    git
+    screen
+    rsync
+    curl
+    wget
+    ca-certificates
+    htop
+    nvme-cli
+    gptfdisk
+)
+
 info "Syncing pacman database…"
-sudo pacman -Sy --noconfirm
+run_cmd --silent "sudo pacman -Sy --noconfirm"
+ok "Package database synced"
 
-info "Installing system dependencies…"
-sudo pacman -S --noconfirm --needed \
-  python \
-  aria2 \
-  git \
-  screen \
-  rsync \
-  curl \
-  wget \
-  ca-certificates \
-  htop \
-  nvme-cli \
-  gptfdisk
+info "Installing: ${PACKAGES[*]}"
+_rpt "**Packages:** \`${PACKAGES[*]}\`"
+_rpt ""
 
-# python-pip is bundled with python on Arch; python-virtualenv is not needed
-# (uv manages its own venvs)
+INSTALLED=()
+ALREADY=()
+for pkg in "${PACKAGES[@]}"; do
+    if pacman -Q "$pkg" &>/dev/null 2>&1; then
+        ver=$(pacman -Q "$pkg" 2>/dev/null | awk '{print $2}')
+        ok "$pkg  (already installed — $ver)"
+        ALREADY+=("$pkg")
+        _rpt "  - $pkg — already installed ($ver)"
+    else
+        echo -e "      ${_C_DIM}Installing $pkg…${_C_RESET}"
+        if sudo pacman -S --noconfirm --needed "$pkg" &>/dev/null; then
+            ver=$(pacman -Q "$pkg" 2>/dev/null | awk '{print $2}')
+            ok "$pkg  installed ($ver)"
+            INSTALLED+=("$pkg")
+            _rpt "  - $pkg — installed ($ver)"
+        else
+            warn "$pkg installation failed — continuing"
+            _rpt "  - $pkg — ⚠ FAILED"
+        fi
+    fi
+done
 
-# Verify aria2c
-aria2c --version | head -1 && info "aria2c OK"
+echo ""
+info "Packages: ${#INSTALLED[@]} newly installed, ${#ALREADY[@]} already present"
+_rpt ""
+_rpt "Summary: ${#INSTALLED[@]} newly installed, ${#ALREADY[@]} already present"
+
+echo ""
+info "Verifying key binaries…"
+for bin in aria2c python3 python git screen rsync sgdisk; do
+    if command -v "$bin" &>/dev/null; then
+        ver=$("$bin" --version 2>&1 | head -1 || true)
+        ok "$bin — $ver"
+        _rpt "  - \`$bin\` ✔  $ver"
+    else
+        # python vs python3 — Arch uses 'python'
+        [[ "$bin" == "python3" ]] && continue
+        warn "$bin not found after install"
+        _rpt "  - \`$bin\` ⚠ not found"
+    fi
+done
 
 # ---------------------------------------------------------------------------
-# 2. Install uv (user-local, no sudo needed)
+# 2. Install uv
 # ---------------------------------------------------------------------------
-if command -v uv &>/dev/null; then
-  info "uv already installed: $(uv --version)"
-else
-  info "Installing uv…"
-  curl -LsSf https://astral.sh/uv/install.sh | sh
-  export PATH="$HOME/.local/bin:$PATH"
-  info "uv installed: $(uv --version)"
-fi
+step "2 — Install uv (Python toolchain manager)"
 
 export PATH="$HOME/.local/bin:$PATH"
 
-for RC in "$HOME/.bashrc" "$HOME/.zshrc" "$HOME/.config/fish/config.fish"; do
-  if [[ -f "$RC" ]] && ! grep -q '\.local/bin' "$RC"; then
-    if [[ "$RC" == *.fish ]]; then
-      echo 'fish_add_path "$HOME/.local/bin"' >> "$RC"
+if command -v uv &>/dev/null; then
+    UV_VER=$(uv --version 2>&1)
+    info "uv already installed: $UV_VER"
+    ok "uv $UV_VER"
+    _rpt "uv already installed: \`$UV_VER\`"
+else
+    info "Downloading and installing uv from astral.sh…"
+    run_cmd "curl -LsSf https://astral.sh/uv/install.sh | sh"
+    export PATH="$HOME/.local/bin:$PATH"
+    UV_VER=$(uv --version 2>&1)
+    ok "uv installed: $UV_VER"
+    _rpt "uv installed: \`$UV_VER\`"
+fi
+
+_rpt ""
+_rpt "**PATH persistence:**"
+for RC in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    if [[ -f "$RC" ]] && ! grep -q '\.local/bin' "$RC"; then
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$RC"
+        ok "Added ~/.local/bin to PATH in $RC"
+        _rpt "  - Added to \`$RC\`"
     else
-      echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$RC"
+        [[ -f "$RC" ]] && { ok "$RC already has ~/.local/bin"; _rpt "  - \`$RC\` — already present"; }
     fi
-    info "Added ~/.local/bin to PATH in $RC"
-  fi
 done
 
+# fish shell
+FISH_CFG="$HOME/.config/fish/config.fish"
+if [[ -f "$FISH_CFG" ]] && ! grep -q '\.local/bin' "$FISH_CFG"; then
+    echo 'fish_add_path "$HOME/.local/bin"' >> "$FISH_CFG"
+    ok "Added ~/.local/bin to fish PATH in $FISH_CFG"
+    _rpt "  - fish: Added to \`$FISH_CFG\`"
+fi
+
 # ---------------------------------------------------------------------------
-# 3. Pin Python version and sync virtual environment
+# 3. Python environment
 # ---------------------------------------------------------------------------
-info "Setting up Python 3.11 environment with uv…"
+step "3 — Python 3.11 Virtual Environment (uv)"
+
+info "Changing to repo directory: $REPO_DIR"
 cd "$REPO_DIR"
 
-uv python pin 3.11
-uv sync
+info "Pinning Python 3.11…"
+run_cmd "uv python pin 3.11"
 
-info "Virtual environment ready at $REPO_DIR/.venv"
+info "Syncing virtual environment (uv sync)…"
+run_interactive "uv sync"
 
-# ---------------------------------------------------------------------------
-# 4. Smoke-test the CLI
-# ---------------------------------------------------------------------------
-info "Testing archiver CLI…"
-uv run archiver --help | head -5
-
-info "Testing registry load…"
-uv run archiver list --tier A 2>/dev/null | head -5 || warn "Registry list returned non-zero (drives not mounted yet — expected)"
+VENV_PYTHON=$(uv run python --version 2>&1)
+ok "Virtual environment ready — $VENV_PYTHON"
+_rpt ""
+_rpt "- Venv path: \`$REPO_DIR/.venv\`"
+_rpt "- Python: \`$VENV_PYTHON\`"
 
 # ---------------------------------------------------------------------------
-# 5. Drive mount directories
+# 4. Smoke-test CLI
 # ---------------------------------------------------------------------------
-info "Creating mount point directories under /mnt/models/…"
+step "4 — CLI Smoke Tests"
+
+info "Testing archiver --help…"
+HELP_OUT=$(uv run archiver --help 2>&1 | head -8)
+echo "$HELP_OUT" | sed 's/^/      /'
+ok "archiver --help returned output"
+_rpt "**archiver --help (first 8 lines):**"
+_rpt "\`\`\`"
+while IFS= read -r l; do _rpt "$l"; done <<< "$HELP_OUT"
+_rpt "\`\`\`"
+
+echo ""
+info "Testing registry list (drives not mounted yet — non-fatal)…"
+LIST_OUT=$(uv run archiver list --tier A 2>&1 | head -6) || true
+echo "$LIST_OUT" | sed 's/^/      /'
+_rpt ""
+_rpt "**archiver list --tier A (first 6 lines):**"
+_rpt "\`\`\`"
+while IFS= read -r l; do _rpt "$l"; done <<< "$LIST_OUT"
+_rpt "\`\`\`"
+ok "Registry list executed"
+
+# ---------------------------------------------------------------------------
+# 5. Mount point directories
+# ---------------------------------------------------------------------------
+step "5 — Mount Point Directories"
+
+info "Creating /mnt/models/dN directories…"
+_rpt "| Directory | Created | Owner |"
+_rpt "|-----------|---------|-------|"
+
 for d in d1 d2 d3 d5; do
-  sudo mkdir -p "/mnt/models/$d"
-  sudo chown "$(id -u):$(id -g)" "/mnt/models/$d"
+    mp="/mnt/models/$d"
+    if [[ -d "$mp" ]]; then
+        ok "$mp — already exists"
+        _rpt "| \`$mp\` | already exists | $(stat -c '%U:%G' "$mp" 2>/dev/null || echo '?') |"
+    else
+        sudo mkdir -p "$mp"
+        sudo chown "$(id -u):$(id -g)" "$mp"
+        ok "$mp — created"
+        _rpt "| \`$mp\` | created | $(id -un):$(id -gn) |"
+    fi
 done
-info "Mount points created. Add entries to /etc/fstab to auto-mount your drives."
 
 # ---------------------------------------------------------------------------
-# 6. Screen helper alias
+# 6. Shell alias
 # ---------------------------------------------------------------------------
-ALIAS_LINE='alias archiver-screen="cd $REPO_DIR && screen -S archiver uv run archiver"'
+step "6 — Shell Alias (archiver-screen)"
+
+ALIAS_LINE="alias archiver-screen='cd $REPO_DIR && screen -S archiver uv run archiver'"
+_rpt "Alias: \`$ALIAS_LINE\`"
+_rpt ""
+
 for RC in "$HOME/.bashrc" "$HOME/.zshrc"; do
-  if [[ -f "$RC" ]] && ! grep -q 'archiver-screen' "$RC"; then
-    echo "$ALIAS_LINE" >> "$RC"
-  fi
+    if [[ -f "$RC" ]]; then
+        if grep -q 'archiver-screen' "$RC"; then
+            ok "archiver-screen already in $RC"
+            _rpt "- \`$RC\` — already present"
+        else
+            echo "$ALIAS_LINE" >> "$RC"
+            ok "Added archiver-screen alias to $RC"
+            _rpt "- \`$RC\` — added"
+        fi
+    fi
 done
 
 # ---------------------------------------------------------------------------
-# Done
+# Final summary
 # ---------------------------------------------------------------------------
+step "Setup Complete"
+
+UV_VER_FINAL=$(uv --version 2>&1)
+PY_VER_FINAL=$(uv run python --version 2>&1)
+ARIA_VER=$(aria2c --version 2>&1 | head -1)
+
+echo -e "${_C_GREEN}  ┌──────────────────────────────────────────────────────────────┐${_C_RESET}"
+echo -e "${_C_GREEN}  │  ✔  Artix Linux (Arch/dinit) setup complete                  │${_C_RESET}"
+echo -e "${_C_GREEN}  └──────────────────────────────────────────────────────────────┘${_C_RESET}"
 echo ""
-echo "============================================================"
-echo "  Setup complete — Artix Linux (Arch/dinit)"
-echo "============================================================"
+printf "  %-20s %s\n" "uv:"     "$UV_VER_FINAL"
+printf "  %-20s %s\n" "Python:" "$PY_VER_FINAL"
+printf "  %-20s %s\n" "aria2c:" "$ARIA_VER"
+printf "  %-20s %s\n" "Repo:"   "$REPO_DIR"
 echo ""
-echo "  Next steps:"
-echo "  1. Mount your drives and update /etc/fstab, e.g.:"
-echo "       UUID=xxxx-xxxx  /mnt/models/d1  ext4  noatime,nodiratime,defaults  0 2"
+echo -e "${_C_BOLD}  Next steps:${_C_RESET}"
+echo "  1. Run the disk setup script (wipes + mounts the 4 drives):"
+echo "       sudo bash deploy/vm-mount-disks.sh --wipe"
 echo ""
-echo "  2. Edit config/drives.yaml to match your mount points:"
-echo "       $REPO_DIR/config/drives.yaml"
-echo ""
-echo "  3. (Optional) Set your HF token for gated models:"
+echo "  2. (Optional) Set HuggingFace token for gated models:"
 echo "       export HF_TOKEN=hf_..."
-echo "       # or add it to ~/.bashrc"
+echo "       echo 'export HF_TOKEN=hf_...' >> ~/.bashrc"
 echo ""
-echo "  4. Dry-run to confirm everything looks right:"
-echo "       cd $REPO_DIR"
-echo "       uv run archiver download --all --dry-run"
+echo "  3. Dry-run to verify the plan:"
+echo "       cd $REPO_DIR && uv run archiver download --all --dry-run"
 echo ""
-echo "  5. Start the archive in a screen session:"
+echo "  4. Start downloads in a screen session:"
 echo "       screen -S archiver"
-echo "       uv run archiver download --all"
-echo "       # Detach: Ctrl-A D   Reattach: screen -r archiver"
+echo "       uv run archiver download --all --priority-only 1"
+echo "       # Detach: Ctrl-A D    Reattach: screen -r archiver"
 echo ""
-echo "  STATUS.md is written to the working directory and updated every ~60s."
-echo ""
+
+_rpt "| Component | Version |"
+_rpt "|-----------|---------|"
+_rpt "| uv | $UV_VER_FINAL |"
+_rpt "| Python | $PY_VER_FINAL |"
+_rpt "| aria2c | $ARIA_VER |"
+_rpt "| Repo | \`$REPO_DIR\` |"
+
+finish_report "SUCCESS"
+print_report_path

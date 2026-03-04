@@ -547,35 +547,40 @@ fi
 # ---------------------------------------------------------------------------
 # Step 5: Show the plan and confirm
 # ---------------------------------------------------------------------------
-echo "════════════════════════════════════════════════════════════════"
-echo "  Proposed Mount Plan"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
-printf "  %-5s %-8s %-12s %-22s %-12s %s\n" \
+step "Proposed Mount Plan"
+
+printf "  %-5s %-10s %-12s %-22s %-14s %s\n" \
        "ROLE" "DISK" "PARTITION" "MOUNT POINT" "CURRENT FS" "ACTION"
-printf "  %-5s %-8s %-12s %-22s %-12s %s\n" \
+printf "  %-5s %-10s %-12s %-22s %-14s %s\n" \
        "----" "----" "---------" "-----------" "----------" "------"
+rpt "| Role | Disk | Partition | Mount Point | Current FS | Action |"
+rpt "|------|------|-----------|-------------|------------|--------|"
 
 show_row() {
     local role=$1 disk=$2 part=$3 mount=$4
-    [[ -z "$disk" ]] && { printf "  %-5s %-8s %-12s %-22s %-12s %s\n" \
-        "$role" "(none)" "(none)" "$mount" "—" "SKIPPED"; return; }
+    if [[ -z "$disk" ]]; then
+        printf "  %-5s %-10s %-12s %-22s %-14s %s\n" \
+            "$role" "(none)" "(none)" "$mount" "—" "SKIPPED"
+        rpt "| $role | (none) | (none) | $mount | — | SKIPPED |"
+        return
+    fi
     local fs action
     if $WIPE; then
         fs="(will wipe)"
-        action="zero + GPT + new partition + ext4"
+        action="zero + GPT + partition + ext4"
     else
         fs=${PART_FSTYPE[$part]:-none}
         if [[ "$fs" == "ext4" ]]; then
-            action="mount existing ext4 (use --wipe to reformat)"
+            action="mount existing ext4"
         elif [[ -z "$fs" || "$fs" == "none" ]]; then
             $FORCE_FORMAT && action="FORMAT ext4 + mount" || action="NEEDS --force-format"
         else
-            action="WARNING: unexpected fs=$fs — use --wipe to overwrite"
+            action="WARNING: unexpected fs=$fs"
         fi
     fi
-    printf "  %-5s %-8s %-12s %-22s %-12s %s\n" \
+    printf "  %-5s %-10s %-12s %-22s %-14s %s\n" \
            "$role" "/dev/$disk" "/dev/$part" "$mount" "$fs" "$action"
+    rpt "| $role | /dev/$disk | /dev/$part | $mount | $fs | $action |"
 }
 
 show_row "D1" "$DEV_D1" "$PART_D1" "$MOUNT_D1"
@@ -584,7 +589,8 @@ show_row "D3" "${DEV_D3:-}" "${PART_D3:-}" "$MOUNT_D3"
 show_row "D5" "$DEV_D5" "$PART_D5" "$MOUNT_D5"
 echo ""
 echo "  .tmp scratch → $MOUNT_D1/.tmp   (~1.9 TB headroom on D1 post-downloads)"
-echo ""
+rpt ""
+rpt "> .tmp scratch: \`$MOUNT_D1/.tmp\` (~1.9 TB headroom on D1 post-downloads)"
 
 # Check whether any partition needs formatting but --force-format is absent
 NEED_FORMAT=false
@@ -594,96 +600,139 @@ for p in "$PART_D1" "$PART_D5" ${PART_D2:+$PART_D2} ${PART_D3:+$PART_D3}; do
 done
 
 if $NEED_FORMAT && ! $FORCE_FORMAT; then
+    echo ""
     echo "  One or more partitions have no filesystem."
     echo "  Re-run with --force-format to create ext4 on them."
     echo "  WARNING: --force-format ERASES all data on unformatted partitions."
     echo ""
+    rpt ""
+    rpt "> **ABORTED** — partitions need formatting but --force-format not set."
+    flush_report
     exit 0
 fi
 
+echo ""
 if $WIPE; then
-    echo ""
-    echo "  ┌─────────────────────────────────────────────────────────┐"
-    echo "  │  ⚠  WARNING — --wipe flag is set                        │"
-    echo "  │  ALL DATA on the four partitions will be PERMANENTLY     │"
-    echo "  │  ERASED and reformatted as ext4. This cannot be undone. │"
-    echo "  └─────────────────────────────────────────────────────────┘"
+    echo -e "  \033[1;31m┌─────────────────────────────────────────────────────────────┐\033[0m"
+    echo -e "  \033[1;31m│  ⚠  WARNING — --wipe is set                                  │\033[0m"
+    echo -e "  \033[1;31m│  ALL DATA on all four disks will be PERMANENTLY ERASED and   │\033[0m"
+    echo -e "  \033[1;31m│  reformatted as ext4. This CANNOT be undone.                 │\033[0m"
+    echo -e "  \033[1;31m└─────────────────────────────────────────────────────────────┘\033[0m"
     echo ""
 fi
 
 read -rp "  Proceed with the above plan? [y/n]: " answer
-[[ "${answer,,}" == "y" || "${answer,,}" == "yes" ]] || { warn "Aborted."; exit 0; }
+if [[ "${answer,,}" != "y" && "${answer,,}" != "yes" ]]; then
+    warn "Aborted by user."
+    rpt ""
+    rpt "> **ABORTED** by user at confirmation prompt."
+    flush_report
+    exit 0
+fi
+rpt ""
+rpt "> User confirmed: **YES** — proceeding."
 
 # ---------------------------------------------------------------------------
-# Step 6: Format partitions that need it
+# Step 6: Wipe + Partition + Format
 # ---------------------------------------------------------------------------
+step "Wipe / Partition / Format"
+
 format_partition() {
-    local part=$1 label=$2
+    local disk=$1 part=$2 label=$3
+    local role=$4 mount=$5
+    disk_banner "$disk" "$role" "$(lsblk -dno SIZE /dev/$disk 2>/dev/null || echo '?')"
+
+    if [[ -z "${PART_FSTYPE[$part]+_}" ]]; then
+        PART_FSTYPE["$part"]=$(blkid -s TYPE -o value "/dev/$part" 2>/dev/null || echo "")
+    fi
     local fs=${PART_FSTYPE[$part]:-none}
 
     if [[ -z "$fs" || "$fs" == "none" ]]; then
-        if $FORCE_FORMAT; then
-            info "Formatting /dev/$part as ext4 (label=$label)…"
-            # -m 1: reserve 1% for root (not root-reserved, just less wasted space)
-            # -E lazy_*: skip slow inode table initialisation on first mkfs of large HDD
-            run "mkfs.ext4 -L '$label' -m 1 \
-                 -E lazy_itable_init=0,lazy_journal_init=0 '/dev/$part'"
+        echo -e "    \033[33m[fmt]\033[0m  Formatting /dev/$part as ext4 (label=$label)…"
+        rpt "  **Format ext4**"
+        rpt "  - Partition: /dev/$part"
+        rpt "  - Label: $label"
+        rpt "  - Reserved blocks: 1%"
+        if ! $DRY_RUN; then
+            # -m 1: 1% reserved blocks  -E lazy_*: faster initial format on large HDDs
+            mkfs.ext4 -L "$label" -m 1 \
+                -E lazy_itable_init=0,lazy_journal_init=0 \
+                "/dev/$part" 2>&1 | sed 's/^/        /'
             PART_UUID["$part"]=$(blkid -s UUID -o value "/dev/$part" 2>/dev/null || echo "")
-            info "  UUID: ${PART_UUID[$part]:-unknown}"
+            ok "ext4 formatted — UUID: ${PART_UUID[$part]}"
+            rpt "  - UUID: \`${PART_UUID[$part]}\`"
+            rpt "  - Status: ✔ formatted"
+        else
+            echo -e "        \033[2m[DRY-RUN] mkfs.ext4 -L $label /dev/$part\033[0m"
+            rpt "  - [DRY-RUN] mkfs.ext4 skipped"
         fi
     elif [[ "$fs" == "ext4" ]]; then
-        info "/dev/$part already ext4 — skipping format (use --wipe to reformat)"
+        info "  /dev/$part already ext4 — skipping format (use --wipe to reformat)"
+        rpt "  - Already ext4 — format skipped"
         [[ -z "${PART_UUID[$part]:-}" ]] && \
             PART_UUID["$part"]=$(blkid -s UUID -o value "/dev/$part" 2>/dev/null || echo "")
+        rpt "  - UUID: \`${PART_UUID[$part]}\`"
     else
-        error "/dev/$part has unexpected filesystem '$fs' — aborting to avoid data loss.
+        rpt "  - **ERROR**: unexpected filesystem '$fs'"
+        flush_report
+        error "/dev/$part has unexpected filesystem '$fs'.
   Re-run with --wipe to fully erase and reformat."
     fi
 }
 
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Partitioning + Formatting"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
-
 if $WIPE; then
-    # Wipe and repartition each raw disk first, then update PART_* vars
-    # with the freshly created partition names before mkfs runs.
+    # Per-disk: banner → zero → sgdisk -Z → sgdisk create → partprobe → mkfs
     PART_D1=$(wipe_and_partition "$DEV_D1" "models-d1")
+    format_partition "$DEV_D1" "$PART_D1" "models-d1" "D1 — 6TB raw giants" "$MOUNT_D1"
+
     PART_D5=$(wipe_and_partition "$DEV_D5" "models-d5")
-    [[ -n "$DEV_D2" ]] && PART_D2=$(wipe_and_partition "$DEV_D2" "models-d2")
-    [[ -n "$DEV_D3" ]] && PART_D3=$(wipe_and_partition "$DEV_D3" "models-d3")
-    # Reset fstype so format_partition proceeds unconditionally
-    for p in "$PART_D1" "$PART_D5" ${PART_D2:+$PART_D2} ${PART_D3:+$PART_D3}; do
-        PART_FSTYPE["$p"]="none"
-        PART_UUID["$p"]=""
-    done
+    format_partition "$DEV_D5" "$PART_D5" "models-d5" "D5 — 1TB archive/logs" "$MOUNT_D5"
+
+    if [[ -n "$DEV_D2" ]]; then
+        PART_D2=$(wipe_and_partition "$DEV_D2" "models-d2")
+        format_partition "$DEV_D2" "$PART_D2" "models-d2" "D2 — 3TB raw mid-size" "$MOUNT_D2"
+    fi
+    if [[ -n "$DEV_D3" ]]; then
+        PART_D3=$(wipe_and_partition "$DEV_D3" "models-d3")
+        format_partition "$DEV_D3" "$PART_D3" "models-d3" "D3 — 3TB GGUF quants" "$MOUNT_D3"
+    fi
+else
+    format_partition "$DEV_D1" "$PART_D1" "models-d1" "D1 — 6TB raw giants"   "$MOUNT_D1"
+    format_partition "$DEV_D5" "$PART_D5" "models-d5" "D5 — 1TB archive/logs" "$MOUNT_D5"
+    [[ -n "$DEV_D2" ]] && \
+        format_partition "$DEV_D2" "$PART_D2" "models-d2" "D2 — 3TB raw mid-size" "$MOUNT_D2"
+    [[ -n "$DEV_D3" ]] && \
+        format_partition "$DEV_D3" "$PART_D3" "models-d3" "D3 — 3TB GGUF quants"  "$MOUNT_D3"
 fi
 
-format_partition "$PART_D1" "models-d1"
-[[ -n "$PART_D2" ]] && format_partition "$PART_D2" "models-d2"
-[[ -n "$PART_D3" ]] && format_partition "$PART_D3" "models-d3"
-format_partition "$PART_D5" "models-d5"
-
 # ---------------------------------------------------------------------------
-# Step 7: Create mount points and mount
+# Step 7: Mount
 # ---------------------------------------------------------------------------
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Mounting"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+step "Mounting"
+rpt "| Partition | Mount Point | Result |"
+rpt "|-----------|-------------|--------|"
 
 do_mount() {
     local part=$1 mp=$2
-    run "mkdir -p '$mp'"
+    if ! $DRY_RUN; then
+        mkdir -p "$mp"
+    else
+        echo -e "        \033[2m[DRY-RUN] mkdir -p $mp\033[0m"
+    fi
     if mountpoint -q "$mp" 2>/dev/null; then
         info "  $mp already mounted — skipping"
+        rpt "| /dev/$part | $mp | already mounted |"
         return
     fi
-    info "  /dev/$part → $mp"
-    run "mount -o noatime,nodiratime '/dev/$part' '$mp'"
+    info "  Mounting /dev/$part → $mp"
+    if ! $DRY_RUN; then
+        mount -o noatime,nodiratime "/dev/$part" "$mp"
+        ok "  Mounted"
+        rpt "| /dev/$part | $mp | ✔ mounted |"
+    else
+        echo -e "        \033[2m[DRY-RUN] mount /dev/$part $mp\033[0m"
+        rpt "| /dev/$part | $mp | [DRY-RUN] |"
+    fi
 }
 
 do_mount "$PART_D1" "$MOUNT_D1"
@@ -692,67 +741,72 @@ do_mount "$PART_D1" "$MOUNT_D1"
 do_mount "$PART_D5" "$MOUNT_D5"
 
 # ---------------------------------------------------------------------------
-# Step 8: Create directory structure
+# Step 8: Directory structure
 # ---------------------------------------------------------------------------
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Directory Structure"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+step "Directory Structure"
 
-run "mkdir -p '$MOUNT_D1/raw/.keep' '$MOUNT_D1/.tmp'"
-info "  D1: raw/  .tmp/"
+mk() {
+    if ! $DRY_RUN; then mkdir -p "$1"; else echo -e "        \033[2m[DRY-RUN] mkdir -p $1\033[0m"; fi
+    ok "  $1"
+    rpt "  - \`$1\`"
+}
+
+rpt "**D1** — raw model storage + .tmp scratch:"
+mk "$MOUNT_D1/raw/.keep"
+mk "$MOUNT_D1/.tmp"
 
 if [[ -n "$DEV_D2" ]]; then
-    run "mkdir -p '$MOUNT_D2/raw/.keep' '$MOUNT_D2/uncensored/.keep'"
-    info "  D2: raw/  uncensored/"
+    rpt "**D2** — raw mid-size + uncensored:"
+    mk "$MOUNT_D2/raw/.keep"
+    mk "$MOUNT_D2/uncensored/.keep"
 fi
 
 if [[ -n "$DEV_D3" ]]; then
-    run "mkdir -p '$MOUNT_D3/quantized/.keep'"
-    info "  D3: quantized/"
+    rpt "**D3** — GGUF quantized:"
+    mk "$MOUNT_D3/quantized/.keep"
 fi
 
-run "mkdir -p '$MOUNT_D5/archive/checksums' '$MOUNT_D5/archive/manifests' '$MOUNT_D5/logs'"
-info "  D5: archive/  logs/"
+rpt "**D5** — archive + logs:"
+mk "$MOUNT_D5/archive/checksums"
+mk "$MOUNT_D5/archive/manifests"
+mk "$MOUNT_D5/logs"
 
 # ---------------------------------------------------------------------------
-# Step 9: Write /etc/fstab entries (UUID-based, idempotent)
+# Step 9: /etc/fstab
 # ---------------------------------------------------------------------------
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  /etc/fstab"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+step "/etc/fstab"
+rpt "| Mount Point | UUID | Entry added? |"
+rpt "|-------------|------|--------------|"
 
 write_fstab() {
     local part=$1 mp=$2
     local uuid=${PART_UUID[$part]:-}
     if [[ -z "$uuid" ]]; then
         warn "  No UUID for /dev/$part ($mp) — skipping fstab entry"
+        rpt "| $mp | (none) | ⚠ skipped — no UUID |"
         return
     fi
     local entry="UUID=$uuid  $mp  ext4  noatime,nodiratime,defaults  0  2"
-    # Remove any pre-existing line for this mount point (stale UUID after --wipe)
     if grep -qs "$mp" /etc/fstab 2>/dev/null; then
         if grep -qs "$uuid" /etc/fstab 2>/dev/null; then
-            info "  $mp already in /etc/fstab with correct UUID — skipping"
+            info "  $mp already in /etc/fstab with correct UUID"
+            rpt "| $mp | \`$uuid\` | already present |"
             return
         else
-            info "  Replacing stale /etc/fstab entry for $mp…"
+            info "  Replacing stale /etc/fstab entry for $mp"
             if ! $DRY_RUN; then
-                # Remove old line(s) for this mount point
                 sed -i "\| $mp |d" /etc/fstab
-            else
-                echo -e "\033[1;34m[DRY-RUN]\033[0m  sed -i remove old entry for $mp"
             fi
         fi
     fi
-    info "  Adding: $entry"
+    info "  Adding $mp → UUID=$uuid"
     if ! $DRY_RUN; then
         echo "$entry" >> /etc/fstab
+        ok "  Written"
+        rpt "| $mp | \`$uuid\` | ✔ added |"
     else
-        echo -e "\033[1;34m[DRY-RUN]\033[0m  >> /etc/fstab: $entry"
+        echo -e "        \033[2m[DRY-RUN] >> /etc/fstab: $entry\033[0m"
+        rpt "| $mp | \`$uuid\` | [DRY-RUN] |"
     fi
 }
 
@@ -762,35 +816,70 @@ write_fstab "$PART_D1" "$MOUNT_D1"
 write_fstab "$PART_D5" "$MOUNT_D5"
 
 # ---------------------------------------------------------------------------
-# Step 10: Verify
+# Step 10: Verify + final summary
 # ---------------------------------------------------------------------------
-echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Mount Verification"
-echo "════════════════════════════════════════════════════════════════"
-echo ""
+step "Mount Verification"
 
 MOUNT_LIST=("$MOUNT_D1" "$MOUNT_D5")
 [[ -n "$DEV_D2" ]] && MOUNT_LIST+=("$MOUNT_D2")
 [[ -n "$DEV_D3" ]] && MOUNT_LIST+=("$MOUNT_D3")
 
-df -h "${MOUNT_LIST[@]}" 2>/dev/null \
-    | awk 'NR==1 { printf "  %-24s %6s %6s %6s %5s %s\n",$1,$2,$3,$4,$5,$6; next }
-                 { printf "  %-24s %6s %6s %6s %5s %s\n",$1,$2,$3,$4,$5,$6 }'
+rpt "| Mount Point | Size | Used | Free | Use% |"
+rpt "|-------------|------|------|------|------|"
 
+if ! $DRY_RUN; then
+    df -h "${MOUNT_LIST[@]}" 2>/dev/null \
+        | awk 'NR==1 { printf "  %-24s %6s %6s %6s %5s\n","Filesystem",$2,$3,$4,$5; next }
+                     { printf "  %-24s %6s %6s %6s %5s\n",$1,$2,$3,$4,$5 }'
+    # Add df output to report
+    while IFS= read -r mp; do
+        read -r fs size used free pct _ < <(df -h "$mp" 2>/dev/null | tail -1)
+        rpt "| $mp | $size | $used | $free | $pct |"
+    done < <(printf '%s\n' "${MOUNT_LIST[@]}")
+else
+    echo "  [DRY-RUN] — no mounts to verify"
+    rpt "| (dry run) | — | — | — | — |"
+fi
+
+# ── Final summary ─────────────────────────────────────────────────────────
+FINISH_TIME=$(date '+%Y-%m-%d %H:%M:%S %Z')
 echo ""
-echo "════════════════════════════════════════════════════════════════"
-echo "  Done."
+echo -e "\033[1;32m════════════════════════════════════════════════════════════════\033[0m"
+echo -e "\033[1;32m  ✔  All done.\033[0m"
 echo ""
-echo "  Mounts active and written to /etc/fstab."
+echo -e "  \033[1mDisk → Mount summary:\033[0m"
+printf "    %-5s  %-10s  %-12s  %-22s  %s\n" "ROLE" "DISK" "PARTITION" "MOUNT" "UUID"
+printf "    %-5s  %-10s  %-12s  %-22s  %s\n" "----" "----" "---------" "-----" "----"
+printf "    %-5s  %-10s  %-12s  %-22s  %s\n" \
+    "D1" "/dev/$DEV_D1" "/dev/$PART_D1" "$MOUNT_D1" "${PART_UUID[$PART_D1]:-?}"
+[[ -n "$DEV_D2" ]] && printf "    %-5s  %-10s  %-12s  %-22s  %s\n" \
+    "D2" "/dev/$DEV_D2" "/dev/$PART_D2" "$MOUNT_D2" "${PART_UUID[$PART_D2]:-?}"
+[[ -n "$DEV_D3" ]] && printf "    %-5s  %-10s  %-12s  %-22s  %s\n" \
+    "D3" "/dev/$DEV_D3" "/dev/$PART_D3" "$MOUNT_D3" "${PART_UUID[$PART_D3]:-?}"
+printf "    %-5s  %-10s  %-12s  %-22s  %s\n" \
+    "D5" "/dev/$DEV_D5" "/dev/$PART_D5" "$MOUNT_D5" "${PART_UUID[$PART_D5]:-?}"
 echo ""
-echo "  Summary of assigned serials (for reference):"
-printf "    D1 %-12s → %s\n" "$SERIAL_D1" "$MOUNT_D1"
-printf "    D2 %-12s → %s\n" "$SERIAL_D2" "${MOUNT_D2:-skipped}"
-printf "    D3 %-12s → %s\n" "$SERIAL_D3" "${MOUNT_D3:-skipped}"
-printf "    D5 %-12s → %s\n" "$SERIAL_D5" "$MOUNT_D5"
-echo ""
-echo "  Next: deploy the archiver on this VM."
+echo "  Next: deploy the archiver."
 echo "    bash deploy/setup-mxlinux.sh    # MX Linux / Debian"
 echo "    bash deploy/setup-artix.sh      # Artix Linux / Arch"
-echo "════════════════════════════════════════════════════════════════"
+echo ""
+echo -e "  Report saved → \033[1m$REPORT_FILE\033[0m"
+echo -e "\033[1;32m════════════════════════════════════════════════════════════════\033[0m"
+
+rpt ""
+rpt "---"
+rpt ""
+rpt "## Final Summary"
+rpt ""
+rpt "| Role | Disk | Partition | Mount | UUID |"
+rpt "|------|------|-----------|-------|------|"
+rpt "| D1 | /dev/$DEV_D1 | /dev/$PART_D1 | $MOUNT_D1 | \`${PART_UUID[$PART_D1]:-?}\` |"
+[[ -n "$DEV_D2" ]] && rpt "| D2 | /dev/$DEV_D2 | /dev/$PART_D2 | $MOUNT_D2 | \`${PART_UUID[$PART_D2]:-?}\` |"
+[[ -n "$DEV_D3" ]] && rpt "| D3 | /dev/$DEV_D3 | /dev/$PART_D3 | $MOUNT_D3 | \`${PART_UUID[$PART_D3]:-?}\` |"
+rpt "| D5 | /dev/$DEV_D5 | /dev/$PART_D5 | $MOUNT_D5 | \`${PART_UUID[$PART_D5]:-?}\` |"
+rpt ""
+rpt "Completed: $FINISH_TIME"
+
+flush_report
+echo ""
+echo "  Report also available at: $REPORT_FILE"
