@@ -26,7 +26,7 @@ Run on the **Proxmox host**, not inside the VM.
 
 ```bash
 # Copy the script to Proxmox
-scp deploy/proxmox-attach-disks.sh root@<proxmox-host>:/root/
+scp local/deploy/proxmox-attach-disks.sh root@<proxmox-host>:/root/
 
 # SSH into Proxmox host
 ssh root@<proxmox-host>
@@ -52,6 +52,7 @@ SSH into the **VM** and run the appropriate setup script.
 ### MX Linux / Debian / Ubuntu
 
 ```bash
+cd /opt/model-archival/local
 bash deploy/setup-mxlinux.sh
 ```
 
@@ -60,6 +61,7 @@ Installs: `aria2`, `uv`, `python3`, `screen`, `git`, `smartmontools`, `gdisk`, `
 ### Artix Linux (dinit) / Arch Linux
 
 ```bash
+cd /opt/model-archival/local
 bash deploy/setup-artix.sh
 ```
 
@@ -104,7 +106,7 @@ Expected layout after mounting:
 ## Step 4 — Install Python environment
 
 ```bash
-cd /opt/model-archival   # or wherever you cloned the project
+cd /opt/model-archival/local   # or wherever you cloned the project
 uv sync
 ```
 
@@ -200,7 +202,7 @@ If Cursor IDE Remote SSH shows "Terminal sandbox could not start":
 
 ```bash
 # Copy to VM:
-scp deploy/fix-apparmor-cursor.sh root@<vm-ip>:/root/
+scp local/deploy/fix-apparmor-cursor.sh root@<vm-ip>:/root/
 
 # Run on VM:
 bash /root/fix-apparmor-cursor.sh

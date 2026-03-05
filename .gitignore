@@ -12,14 +12,18 @@ wheels/
 # Secrets — never commit tokens or credentials
 *.token
 .hf_token
-deploy/sethfToken.sh
+local/deploy/sethfToken.sh
 **/HF_TOKEN
 .env
 *.env
 
 # Runtime outputs (live on storage drives, not in repo)
 run-report-*.md
-deploy/verify-environment-report-*.md
-deploy/run-report-*.md
-verification/verification-reports/
-chat/
+local/deploy/verify-environment-report-*.md
+local/deploy/run-report-*.md
+local/verification/verification-reports/
+local/chat/
+
+# Colab outputs
+colab/**/*.ipynb_checkpoints
+colab/**/.colab_cache
