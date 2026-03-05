@@ -212,9 +212,9 @@ else
         | tee "$ENV_OUT_FILE" || ENV_RC=$?
 
     # Extract pass/warn/fail counts from the output
-    ENV_PASS=$(grep -c "✔  PASS" "$ENV_OUT_FILE" 2>/dev/null || echo 0)
-    ENV_WARN=$(grep -c "⚠  WARN" "$ENV_OUT_FILE" 2>/dev/null || echo 0)
-    ENV_FAIL=$(grep -c "✗  FAIL" "$ENV_OUT_FILE" 2>/dev/null || echo 0)
+    ENV_PASS=$(grep -c "PASS" "$ENV_OUT_FILE" 2>/dev/null || true); ENV_PASS=${ENV_PASS:-0}
+    ENV_WARN=$(grep -c "WARN" "$ENV_OUT_FILE" 2>/dev/null || true); ENV_WARN=${ENV_WARN:-0}
+    ENV_FAIL=$(grep -c "FAIL" "$ENV_OUT_FILE" 2>/dev/null || true); ENV_FAIL=${ENV_FAIL:-0}
 
     _rpt "Environment check completed."
     _rpt ""
@@ -475,8 +475,8 @@ else
     _rpt "\`\`\`"
     _rpt ""
 
-    N_COMPLETE=$(echo "$STATUS_OUT" | grep -c "complete" 2>/dev/null || echo 0)
-    N_FAILED=$(echo "$STATUS_OUT"   | grep -c "failed"   2>/dev/null || echo 0)
+    N_COMPLETE=$(echo "$STATUS_OUT" | grep -c "complete" 2>/dev/null || true); N_COMPLETE=${N_COMPLETE:-0}
+    N_FAILED=$(echo "$STATUS_OUT"   | grep -c "failed"   2>/dev/null || true); N_FAILED=${N_FAILED:-0}
     record_step_pass "Status captured: ~$N_COMPLETE complete, ~$N_FAILED failed"
 fi
 

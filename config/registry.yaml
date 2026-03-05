@@ -101,7 +101,7 @@ models:
     commit_sha: null
     priority: 1
     licence: CC-BY-NC
-    requires_auth: false
+    requires_auth: true
     notes: "CC-BY-NC — non-commercial use only"
 
   # ---------------------------------------------------------------------------
@@ -196,9 +196,9 @@ models:
     tier: B
     drive: d2
     commit_sha: null
-    priority: 1
+    priority: 2
     licence: Apache-2.0
-    requires_auth: false
+    requires_auth: true
 
   - id: deepseek-ai/DeepSeek-Coder-V2-Instruct
     hf_repo: deepseek-ai/DeepSeek-Coder-V2-Instruct

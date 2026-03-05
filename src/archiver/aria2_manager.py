@@ -74,7 +74,7 @@ class Aria2Manager:
             f"--max-connection-per-server={self.connections_per_file}",
             "--continue=true",           # resume partial downloads
             "--auto-file-renaming=false",
-            "--allow-overwrite=false",
+            "--allow-overwrite=true",
             "--retry-wait=30",
             "--max-tries=5",
             "--timeout=300",
@@ -144,11 +144,21 @@ class Aria2Manager:
     ) -> DownloadTask:
         """Submit a single file download to aria2c. Returns a DownloadTask."""
         dest_dir.mkdir(parents=True, exist_ok=True)
+
+        # If a partial file exists but its .aria2 control file does not, aria2 refuses
+        # to resume (it would truncate to 0 without the control file's byte-range map).
+        # Remove the orphaned partial so aria2 starts a fresh download for this file.
+        partial = dest_dir / filename
+        control = dest_dir / (filename + ".aria2")
+        if partial.exists() and not control.exists():
+            log.warning("Removing orphaned partial (no .aria2 control file): %s", partial)
+            partial.unlink()
+
         options: dict = {
             "dir": str(dest_dir),
             "out": filename,
             "auto-file-renaming": "false",
-            "allow-overwrite": "false",
+            "allow-overwrite": "true",
             "continue": "true",
         }
         if hf_token:

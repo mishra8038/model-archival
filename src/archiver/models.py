@@ -41,10 +41,11 @@ class ModelEntry:
 
     @property
     def model_dir(self) -> Optional[Path]:
-        if self.drive_path is None or self.commit_sha is None:
+        if self.drive_path is None:
             return None
         org, name = self.hf_repo.split("/", 1)
-        return self.drive_path / self.content_subdir / org / name / self.commit_sha
+        rev = self.commit_sha or "main"
+        return self.drive_path / self.content_subdir / org / name / rev
 
     @property
     def display_name(self) -> str:

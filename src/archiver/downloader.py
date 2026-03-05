@@ -43,7 +43,7 @@ from pathlib import Path
 from typing import Optional
 
 from huggingface_hub import HfApi, hf_hub_download, hf_hub_url
-from huggingface_hub.utils import EntryNotFoundError, RepositoryNotFoundError
+from huggingface_hub.utils import EntryNotFoundError, GatedRepoError, RepositoryNotFoundError
 
 from archiver.aria2_manager import Aria2Manager
 from archiver.models import ModelEntry
@@ -358,7 +358,13 @@ class Downloader:
                 }
             except AuthError:
                 raise
+            except GatedRepoError as e:
+                raise AuthError(f"Access denied (gated repo) for {filename}: {e}") from e
             except Exception as e:
+                # Promote HTTP 401/403 to AuthError — no point retrying
+                msg = str(e)
+                if "401" in msg or "403" in msg or "gated" in msg.lower() or "not in the authorized" in msg.lower():
+                    raise AuthError(f"Access denied for {filename}: {e}") from e
                 last_error = e
                 log.error(
                     "  ├─ ERROR  %s  attempt=%d/%d  error=%s",
