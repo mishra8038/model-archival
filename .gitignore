@@ -23,6 +23,7 @@ local/deploy/verify-environment-report-*.md
 local/deploy/run-report-*.md
 local/verification/verification-reports/
 local/chat/
+.chat/
 
 # Colab outputs
 colab/**/*.ipynb_checkpoints

@@ -137,33 +137,60 @@ class StatusDisplay:
         return layout
 
     def _overall_panel(self, stats: Optional[SchedulerStats]) -> Panel:
+        elapsed = time.time() - self._start_time
+        elapsed_str = _fmt_eta(elapsed)
         if stats is None or self.total_bytes == 0:
-            return Panel("[dim]Initialising…[/]", title="Archive Progress")
+            speed_str = _fmt_speed(stats.ewma_speed_mbps) if stats else "—"
+            return Panel(
+                f"[dim]Initialising…[/]  [cyan]{speed_str}[/]  elapsed: {elapsed_str}",
+                title="Archive Progress",
+            )
         done = stats.done_bytes
         pct = done / self.total_bytes * 100 if self.total_bytes else 0
-        bar_width = 40
+        bar_width = 38
         filled = int(bar_width * pct / 100)
         bar = "█" * filled + "░" * (bar_width - filled)
         eta = _fmt_eta(stats.eta_seconds)
         speed = _fmt_speed(stats.ewma_speed_mbps)
+        mbps_num = stats.ewma_speed_mbps
+        speed_colour = "green" if mbps_num >= 20 else ("yellow" if mbps_num >= 5 else "red")
         text = (
             f"[green]{bar}[/]  {pct:.1f}%  "
             f"{_fmt_bytes(done)} / {_fmt_bytes(self.total_bytes)}  "
-            f"[cyan]{speed}[/]  ETA: [yellow]{eta}[/]"
+            f"[{speed_colour}]{speed}[/]  ETA: [yellow]{eta}[/]  elapsed: [dim]{elapsed_str}[/]"
         )
         return Panel(text, title="Archive Progress")
 
     def _active_panel(self, stats: Optional[SchedulerStats]) -> Panel:
         table = Table(box=box.SIMPLE, show_header=True, header_style="bold")
         table.add_column("Drive", width=6)
-        table.add_column("Model", width=40)
-        table.add_column("Status")
+        table.add_column("Model", width=38)
+        table.add_column("Status", width=16)
+        table.add_column("Speed", width=12)
+        n_active = len(stats.active) if stats and stats.active else 0
         if stats and stats.active:
+            # Divide aggregate speed evenly across active drives as an estimate
+            per_drive_mbps = stats.ewma_speed_mbps / max(n_active, 1)
+            mbps_colour = "green" if per_drive_mbps >= 10 else ("yellow" if per_drive_mbps >= 2 else "red")
             for drive, model_id in stats.active.items():
-                table.add_row(drive.upper(), model_id, "[yellow]downloading…[/]")
+                table.add_row(
+                    drive.upper(),
+                    model_id,
+                    "[yellow]downloading…[/]",
+                    f"[{mbps_colour}]{_fmt_speed(per_drive_mbps)}[/]",
+                )
         else:
-            table.add_row("—", "—", "[dim]idle[/]")
-        return Panel(table, title="Active Downloads")
+            table.add_row("—", "—", "[dim]idle[/]", "—")
+        # Footer line: aggregate speed + total active
+        speed_total = _fmt_speed(stats.ewma_speed_mbps) if stats else "—"
+        mbps_total = stats.ewma_speed_mbps if stats else 0.0
+        mbps_col = "green" if mbps_total >= 20 else ("yellow" if mbps_total >= 5 else "red")
+        title = (
+            f"Active Downloads  [dim]│[/]  "
+            f"total: [{mbps_col}]{speed_total}[/]  "
+            f"([dim]{mbps_total*8:.0f} Mbps[/])"
+        )
+        return Panel(table, title=title)
 
     def _drives_panel(self) -> Panel:
         table = Table(box=box.SIMPLE, show_header=False)

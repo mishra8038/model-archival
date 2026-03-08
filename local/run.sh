@@ -17,9 +17,9 @@
 #
 # Options:
 #   --dry-run             Simulate everything; no actual downloads or writes
-#   --priority-only 1     Only download P1 (token-free) models  [default: 1]
+#   --priority-only 1     Only download P1 (token-free) models
 #   --tier A|B|C|D        Restrict downloads to one tier
-#   --all                 Download all models (P1 + P2; token required for P2)
+#   --all                 Download all models (P1 + P2; token required for P2)  [default]
 #   --rehash              After download, do full SHA-256 re-hash (slow)
 #   --skip-env-check      Skip the environment pre-check step
 #   --skip-verify         Skip the post-download integrity verification step
@@ -45,6 +45,37 @@ set -euo pipefail
 
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$REPO_DIR/deploy/_common.sh"
+
+# ---------------------------------------------------------------------------
+# Graceful shutdown — trap SIGINT / SIGTERM and forward to the archiver child
+# ---------------------------------------------------------------------------
+_ARCHIVER_PID=""
+_SHUTDOWN_REQUESTED=false
+
+_graceful_shutdown() {
+    if $_SHUTDOWN_REQUESTED; then return; fi
+    _SHUTDOWN_REQUESTED=true
+    echo ""
+    warn "Shutdown signal received — waiting for archiver to finish current shard…"
+    warn "  (send signal again to force-kill immediately)"
+    if [[ -n "$_ARCHIVER_PID" ]] && kill -0 "$_ARCHIVER_PID" 2>/dev/null; then
+        kill -SIGTERM "$_ARCHIVER_PID" 2>/dev/null || true
+        # Give it up to 5 minutes to flush current shard + write state
+        local deadline=$(( $(date +%s) + 300 ))
+        while kill -0 "$_ARCHIVER_PID" 2>/dev/null; do
+            if [[ $(date +%s) -ge $deadline ]]; then
+                warn "Timeout — force-killing archiver (pid $_ARCHIVER_PID)"
+                kill -SIGKILL "$_ARCHIVER_PID" 2>/dev/null || true
+                break
+            fi
+            sleep 2
+        done
+    fi
+    warn "Archiver stopped. Downloads are resumable — run again to continue."
+    exit 130
+}
+
+trap '_graceful_shutdown' SIGINT SIGTERM
 
 # ---------------------------------------------------------------------------
 # Defaults
@@ -435,8 +466,15 @@ print(d5.mount_point / 'logs' if d5 else '/tmp/archiver/logs')
 
     # ── Run download ──────────────────────────────────────────────────────────
     info "Starting download — this may run for hours."
+    info "  To stop gracefully:  kill -SIGTERM \$\$  (or Ctrl+C in this terminal)"
+    info "  Or run:              bash $REPO_DIR/stop.sh"
     DL_RC=0
-    cd "$REPO_DIR" && uv run archiver download "${DOWNLOAD_ARGS[@]}" || DL_RC=$?
+    cd "$REPO_DIR" && uv run archiver download "${DOWNLOAD_ARGS[@]}" &
+    _ARCHIVER_PID=$!
+    echo "$_ARCHIVER_PID" > "$REPO_DIR/.archiver.pid"
+    wait "$_ARCHIVER_PID" || DL_RC=$?
+    rm -f "$REPO_DIR/.archiver.pid"
+    _ARCHIVER_PID=""
 
     _rpt "Download finished at $(date '+%Y-%m-%d %H:%M:%S %Z')"
     _rpt ""

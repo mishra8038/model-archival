@@ -16,4 +16,4 @@ d3:
 
 d5:
   mount_point: /mnt/models/d5
-  role: "Primary archive/ + logs + .tmp scratch"
+  role: "Metadata: archive/, logs, run_state.json, STATUS.md"

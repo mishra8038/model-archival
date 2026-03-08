@@ -8,6 +8,8 @@ A bandwidth sampler decides whether to open additional drive slots.
 from __future__ import annotations
 
 import logging
+import os
+import signal
 import threading
 import time
 from collections import defaultdict, deque
@@ -112,11 +114,25 @@ class DriveScheduler:
         self._stats.pending = [m.id for q in self._queues.values() for m in q]
 
     def run(self) -> SchedulerStats:
-        """Start workers and block until all queues are drained."""
+        """Start workers and block until all queues are drained or shutdown requested."""
         active_drives = [d for d in self._queues if self._queues[d]]
         if not active_drives:
             log.info("Nothing to download.")
             return self._stats
+
+        # Install signal handlers so Ctrl+C / SIGTERM trigger a clean stop.
+        # Only install on the main thread (workers are daemon threads).
+        if threading.current_thread() is threading.main_thread():
+            def _handle_signal(signum, frame):
+                sig_name = signal.Signals(signum).name
+                log.warning(
+                    "Signal %s received — stopping after current shards finish. "
+                    "Downloads are resumable.",
+                    sig_name,
+                )
+                self._stop_event.set()
+            signal.signal(signal.SIGTERM, _handle_signal)
+            signal.signal(signal.SIGINT,  _handle_signal)
 
         # Limit parallel drives
         active_drives = active_drives[:self.max_parallel_drives]
@@ -152,12 +168,15 @@ class DriveScheduler:
 
     def _worker(self, drive: str) -> None:
         log.info("Worker started for drive %s", drive)
-        while True:
+        while not self._stop_event.is_set():
             model = self._next_model(drive)
             if model is None:
                 break
             self._run_model(model, drive)
-        log.info("Worker finished for drive %s", drive)
+        if self._stop_event.is_set():
+            log.info("Worker stopping (shutdown requested) for drive %s", drive)
+        else:
+            log.info("Worker finished for drive %s", drive)
         with self._active_lock:
             self._active_drives.pop(drive, None)
 

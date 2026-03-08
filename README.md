@@ -15,11 +15,11 @@ Self-contained Python project (`uv`). All code, config, docs, scripts, and deplo
 cd local
 uv sync
 bash run.sh --dry-run
+bash run.sh --all
 ```
 
-See [`local/docs/DEPLOYMENT.md`](local/docs/DEPLOYMENT.md) for full setup.
+See [`local/README.md`](local/README.md) for full documentation.
 
 ## colab/
 
-Notebooks and helpers for archiving to Google Drive via Google Colab.  
-See [`colab/README.md`](colab/README.md).
+Google Colab notebook for archiving to Google Drive. See [`colab/README.md`](colab/README.md).

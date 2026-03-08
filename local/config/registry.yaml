@@ -1,569 +1,482 @@
-# Model Archival Registry
-# priority 1 = token-free, download immediately
-# priority 2 = gated (requires HF_TOKEN), download after all priority-1 complete
-# commit_sha: null = resolved to latest on first download, then frozen
-
 models:
-
-  # ===========================================================================
-  # TIER A — Major Models: raw BF16 full-precision
-  # ===========================================================================
-
-  # ---------------------------------------------------------------------------
-  # Tier A1 — Token-free (priority 1)
-  # ---------------------------------------------------------------------------
-
-  - id: deepseek-ai/DeepSeek-V3
-    hf_repo: deepseek-ai/DeepSeek-V3
-    tier: A
-    drive: d1
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-
-  - id: deepseek-ai/DeepSeek-R1
-    hf_repo: deepseek-ai/DeepSeek-R1
-    tier: A
-    drive: d1
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-
-  - id: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
-    hf_repo: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-
-  - id: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-    hf_repo: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-
-  - id: Qwen/Qwen2.5-72B-Instruct
-    hf_repo: Qwen/Qwen2.5-72B-Instruct
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: Qwen
-    requires_auth: false
-
-  - id: Qwen/Qwen2.5-32B-Instruct
-    hf_repo: Qwen/Qwen2.5-32B-Instruct
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-
-  - id: Qwen/Qwen2.5-7B-Instruct
-    hf_repo: Qwen/Qwen2.5-7B-Instruct
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-
-  - id: mistralai/Mistral-7B-Instruct-v0.3
-    hf_repo: mistralai/Mistral-7B-Instruct-v0.3
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-
-  - id: microsoft/phi-4
-    hf_repo: microsoft/phi-4
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-
-  - id: CohereForAI/c4ai-command-r-plus
-    hf_repo: CohereForAI/c4ai-command-r-plus
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: CC-BY-NC
-    requires_auth: true
-    notes: "CC-BY-NC — non-commercial use only"
-
-  # ---------------------------------------------------------------------------
-  # Tier A1 — Gated (priority 2, HF token required)
-  # ---------------------------------------------------------------------------
-
-  - id: meta-llama/Llama-3.1-405B-Instruct
-    hf_repo: meta-llama/Llama-3.1-405B-Instruct
-    tier: A
-    drive: d1
-    commit_sha: null
-    priority: 2
-    licence: llama3.1
-    requires_auth: true
-    notes: "Accept licence at huggingface.co/meta-llama/Llama-3.1-405B-Instruct"
-
-  - id: meta-llama/Llama-3.1-70B-Instruct
-    hf_repo: meta-llama/Llama-3.1-70B-Instruct
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: llama3.1
-    requires_auth: true
-
-  - id: meta-llama/Llama-3.3-70B-Instruct
-    hf_repo: meta-llama/Llama-3.3-70B-Instruct
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: llama3.3
-    requires_auth: true
-
-  - id: meta-llama/Llama-3.1-8B-Instruct
-    hf_repo: meta-llama/Llama-3.1-8B-Instruct
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: llama3.1
-    requires_auth: true
-
-  - id: google/gemma-3-27b-it
-    hf_repo: google/gemma-3-27b-it
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: Gemma-ToU
-    requires_auth: true
-    notes: "Accept licence at huggingface.co/google/gemma-3-27b-it"
-
-  - id: google/gemma-3-27b-pt
-    hf_repo: google/gemma-3-27b-pt
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: Gemma-ToU
-    requires_auth: true
-
-  - id: google/gemma-3-12b-it
-    hf_repo: google/gemma-3-12b-it
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: Gemma-ToU
-    requires_auth: true
-
-  - id: mistralai/Mistral-Large-Instruct-2407
-    hf_repo: mistralai/Mistral-Large-Instruct-2407
-    tier: A
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: Mistral-Research
-    requires_auth: true
-    notes: "Accept licence at huggingface.co/mistralai/Mistral-Large-Instruct-2407"
-
-  # ===========================================================================
-  # TIER B — Code Models: raw BF16 full-precision
-  # ===========================================================================
-
-  # ---------------------------------------------------------------------------
-  # Tier B — Token-free (priority 1)
-  # ---------------------------------------------------------------------------
-
-  - id: Qwen/Qwen2.5-Coder-32B-Instruct
-    hf_repo: Qwen/Qwen2.5-Coder-32B-Instruct
-    tier: B
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: Apache-2.0
-    requires_auth: true
-
-  - id: deepseek-ai/DeepSeek-Coder-V2-Instruct
-    hf_repo: deepseek-ai/DeepSeek-Coder-V2-Instruct
-    tier: B
-    drive: d1
-    commit_sha: null
-    priority: 1
-    licence: DeepSeek
-    requires_auth: false
-
-  - id: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
-    hf_repo: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
-    tier: B
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: DeepSeek
-    requires_auth: false
-
-  - id: mistralai/Devstral-Small-2507
-    hf_repo: mistralai/Devstral-Small-2507
-    tier: B
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-
-  # ---------------------------------------------------------------------------
-  # Tier B — Gated (priority 2)
-  # ---------------------------------------------------------------------------
-
-  - id: mistralai/Codestral-22B-v0.1
-    hf_repo: mistralai/Codestral-22B-v0.1
-    tier: B
-    drive: d2
-    commit_sha: null
-    priority: 2
-    licence: Mistral-MNPL
-    requires_auth: true
-    notes: "Non-production licence. Accept at huggingface.co/mistralai/Codestral-22B-v0.1"
-
-  # ===========================================================================
-  # TIER C — Quantized GGUF (all priority 1, token-free)
-  # ===========================================================================
-
-  # General / Reasoning
-
-  - id: bartowski/Llama-3.3-70B-Instruct-GGUF
-    hf_repo: bartowski/Llama-3.3-70B-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: llama3.3
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
-    hf_repo: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: llama3.1
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: unsloth/DeepSeek-R1-GGUF
-    hf_repo: unsloth/DeepSeek-R1-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q4_K_M]
-    notes: "671B — Q4_K_M only (~340 GB)"
-
-  - id: bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
-    hf_repo: bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF
-    hf_repo: bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: unsloth/DeepSeek-V3-GGUF
-    hf_repo: unsloth/DeepSeek-V3-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q4_K_M]
-    notes: "671B — Q4_K_M only (~340 GB)"
-
-  - id: bartowski/Qwen2.5-72B-Instruct-GGUF
-    hf_repo: bartowski/Qwen2.5-72B-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Qwen
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/Qwen2.5-32B-Instruct-GGUF
-    hf_repo: bartowski/Qwen2.5-32B-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/Qwen2.5-7B-Instruct-GGUF
-    hf_repo: bartowski/Qwen2.5-7B-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/Mistral-7B-Instruct-v0.3-GGUF
-    hf_repo: bartowski/Mistral-7B-Instruct-v0.3-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/gemma-3-27b-it-GGUF
-    hf_repo: bartowski/gemma-3-27b-it-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Gemma-ToU
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/phi-4-GGUF
-    hf_repo: bartowski/phi-4-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  # Code GGUF
-
-  - id: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
-    hf_repo: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
-    hf_repo: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: DeepSeek
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: bartowski/Codestral-22B-v0.1-GGUF
-    hf_repo: bartowski/Codestral-22B-v0.1-GGUF
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Mistral-MNPL
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  - id: mistralai/Devstral-Small-2507_gguf
-    hf_repo: mistralai/Devstral-Small-2507_gguf
-    tier: C
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    quant_levels: [Q8_0]
-
-  # ===========================================================================
-  # TIER D — Uncensored / Abliterated (all priority 1, token-free)
-  # ===========================================================================
-
-  # Raw BF16
-
-  - id: huihui-ai/Llama-3.3-70B-Instruct-abliterated
-    hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: llama3.3
-    requires_auth: false
-    parent_model: meta-llama/Llama-3.3-70B-Instruct
-    method: abliteration
-
-  - id: mlabonne/Llama-3.1-70B-Instruct-lorablated
-    hf_repo: mlabonne/Llama-3.1-70B-Instruct-lorablated
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: llama3.1
-    requires_auth: false
-    parent_model: meta-llama/Llama-3.1-70B-Instruct
-    method: LoRA abliteration
-
-  - id: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated
-    hf_repo: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
-    method: abliteration
-
-  - id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
-    hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-    method: abliteration
-
-  - id: cognitivecomputations/Dolphin3.0-Llama3.1-8B
-    hf_repo: cognitivecomputations/Dolphin3.0-Llama3.1-8B
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: llama3.1
-    requires_auth: false
-    parent_model: meta-llama/Llama-3.1-8B
-    method: supervised-finetune
-
-  - id: mlabonne/NeuralDaredevil-8B-abliterated
-    hf_repo: mlabonne/NeuralDaredevil-8B-abliterated
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: llama3.1
-    requires_auth: false
-    parent_model: meta-llama/Llama-3.1-8B
-    method: DPO+abliteration
-
-  - id: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
-    hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
-    tier: D
-    drive: d2
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    parent_model: mistralai/Mistral-Small-24B
-    method: abliteration
-
-  # GGUF — abliterated
-
-  - id: huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
-    hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
-    tier: D
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: llama3.3
-    requires_auth: false
-    quant_levels: [Q8_0]
-    parent_model: meta-llama/Llama-3.3-70B-Instruct
-    method: abliteration
-
-  - id: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
-    hf_repo: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
-    tier: D
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q8_0]
-    parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
-    method: abliteration
-
-  - id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
-    hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
-    tier: D
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: MIT
-    requires_auth: false
-    quant_levels: [Q8_0]
-    parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
-    method: abliteration
-
-  - id: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
-    hf_repo: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
-    tier: D
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: llama3.1
-    requires_auth: false
-    quant_levels: [Q8_0]
-    parent_model: meta-llama/Llama-3.1-8B
-    method: DPO+abliteration
-
-  - id: huihui-ai/Mistral-Small-24B-abliterated-GGUF
-    hf_repo: huihui-ai/Mistral-Small-24B-abliterated-GGUF
-    tier: D
-    drive: d3
-    commit_sha: null
-    priority: 1
-    licence: Apache-2.0
-    requires_auth: false
-    quant_levels: [Q8_0]
-    parent_model: mistralai/Mistral-Small-24B
-    method: abliteration
-
-  # Dolphin3.0-Llama3.1-8B GGUF — community source (no official GGUF repo)
-  # Uncomment and update hf_repo once a canonical bartowski GGUF is published
-  # - id: community/Dolphin3.0-Llama3.1-8B-GGUF
-  #   hf_repo: bartowski/Dolphin3.0-Llama3.1-8B-GGUF
-  #   tier: D
-  #   drive: d3
-  #   commit_sha: null
-  #   priority: 1
-  #   licence: llama3.1
-  #   requires_auth: false
-  #   quant_levels: [Q8_0]
+- id: deepseek-ai/DeepSeek-V3
+  hf_repo: deepseek-ai/DeepSeek-V3
+  tier: A
+  drive: d1
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+- id: deepseek-ai/DeepSeek-R1
+  hf_repo: deepseek-ai/DeepSeek-R1
+  tier: A
+  drive: d1
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: 56d4cbbb4d29f4355bab4b9a39ccb717a14ad5ad
+- id: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+  hf_repo: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+  tier: A
+  drive: d2
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: b1c0b44b4369b597ad119a196caf79a9c40e141e
+- id: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+  hf_repo: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+  tier: A
+  drive: d2
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: 711ad2ea6aa40cfca18895e8aca02ab92df1a746
+- id: Qwen/Qwen2.5-72B-Instruct
+  hf_repo: Qwen/Qwen2.5-72B-Instruct
+  tier: A
+  drive: d2
+  priority: 1
+  licence: Qwen
+  requires_auth: false
+  commit_sha: 495f39366efef23836d0cfae4fbe635880d2be31
+- id: Qwen/Qwen2.5-32B-Instruct
+  hf_repo: Qwen/Qwen2.5-32B-Instruct
+  tier: A
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: 5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd
+- id: Qwen/Qwen2.5-7B-Instruct
+  hf_repo: Qwen/Qwen2.5-7B-Instruct
+  tier: A
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: a09a35458c702b33eeacc393d103063234e8bc28
+- id: mistralai/Mistral-7B-Instruct-v0.3
+  hf_repo: mistralai/Mistral-7B-Instruct-v0.3
+  tier: A
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+- id: microsoft/phi-4
+  hf_repo: microsoft/phi-4
+  tier: A
+  drive: d2
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+- id: CohereForAI/c4ai-command-r-plus
+  hf_repo: CohereForAI/c4ai-command-r-plus
+  tier: A
+  drive: d2
+  priority: 1
+  licence: CC-BY-NC
+  requires_auth: true
+  commit_sha: null
+  notes: CC-BY-NC — non-commercial use only
+- id: meta-llama/Llama-3.1-405B-Instruct
+  hf_repo: meta-llama/Llama-3.1-405B-Instruct
+  tier: A
+  drive: d1
+  priority: 2
+  licence: llama3.1
+  requires_auth: true
+  commit_sha: null
+  notes: Accept licence at huggingface.co/meta-llama/Llama-3.1-405B-Instruct
+- id: meta-llama/Llama-3.1-70B-Instruct
+  hf_repo: meta-llama/Llama-3.1-70B-Instruct
+  tier: A
+  drive: d2
+  priority: 2
+  licence: llama3.1
+  requires_auth: true
+  commit_sha: null
+- id: meta-llama/Llama-3.3-70B-Instruct
+  hf_repo: meta-llama/Llama-3.3-70B-Instruct
+  tier: A
+  drive: d2
+  priority: 2
+  licence: llama3.3
+  requires_auth: true
+  commit_sha: null
+- id: meta-llama/Llama-3.1-8B-Instruct
+  hf_repo: meta-llama/Llama-3.1-8B-Instruct
+  tier: A
+  drive: d2
+  priority: 2
+  licence: llama3.1
+  requires_auth: true
+  commit_sha: null
+- id: google/gemma-3-27b-it
+  hf_repo: google/gemma-3-27b-it
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+  notes: Accept licence at huggingface.co/google/gemma-3-27b-it
+- id: google/gemma-3-27b-pt
+  hf_repo: google/gemma-3-27b-pt
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+- id: google/gemma-3-12b-it
+  hf_repo: google/gemma-3-12b-it
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+- id: mistralai/Mistral-Large-Instruct-2407
+  hf_repo: mistralai/Mistral-Large-Instruct-2407
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Mistral-Research
+  requires_auth: true
+  commit_sha: null
+  notes: Accept licence at huggingface.co/mistralai/Mistral-Large-Instruct-2407
+- id: Qwen/Qwen2.5-Coder-32B-Instruct
+  hf_repo: Qwen/Qwen2.5-Coder-32B-Instruct
+  tier: B
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: true
+  commit_sha: null
+- id: deepseek-ai/DeepSeek-Coder-V2-Instruct
+  hf_repo: deepseek-ai/DeepSeek-Coder-V2-Instruct
+  tier: B
+  drive: d1
+  priority: 1
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: 2453c79a2a0947968a054947b53daa598cb3be52
+- id: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  hf_repo: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  tier: B
+  drive: d2
+  priority: 1
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: e434a23f91ba5b4923cf6c9d9a238eb4a08e3a11
+- id: mistralai/Devstral-Small-2507
+  hf_repo: mistralai/Devstral-Small-2507
+  tier: B
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+- id: mistralai/Codestral-22B-v0.1
+  hf_repo: mistralai/Codestral-22B-v0.1
+  tier: B
+  drive: d2
+  priority: 2
+  licence: Mistral-MNPL
+  requires_auth: true
+  commit_sha: null
+  notes: Non-production licence. Accept at huggingface.co/mistralai/Codestral-22B-v0.1
+- id: bartowski/Llama-3.3-70B-Instruct-GGUF
+  hf_repo: bartowski/Llama-3.3-70B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: llama3.3
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+  hf_repo: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: llama3.1
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: unsloth/DeepSeek-R1-GGUF
+  hf_repo: unsloth/DeepSeek-R1-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q4_K_M
+  notes: 671B — Q4_K_M only (~340 GB)
+- id: bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
+  hf_repo: bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF
+  hf_repo: bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: unsloth/DeepSeek-V3-GGUF
+  hf_repo: unsloth/DeepSeek-V3-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q4_K_M
+  notes: 671B — Q4_K_M only (~340 GB)
+- id: bartowski/Qwen2.5-72B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-72B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Qwen
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Qwen2.5-32B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-32B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Qwen2.5-7B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-7B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Mistral-7B-Instruct-v0.3-GGUF
+  hf_repo: bartowski/Mistral-7B-Instruct-v0.3-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/gemma-3-27b-it-GGUF
+  hf_repo: bartowski/gemma-3-27b-it-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Gemma-ToU
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/phi-4-GGUF
+  hf_repo: bartowski/phi-4-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
+  hf_repo: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Codestral-22B-v0.1-GGUF
+  hf_repo: bartowski/Codestral-22B-v0.1-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Mistral-MNPL
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: mistralai/Devstral-Small-2507_gguf
+  hf_repo: mistralai/Devstral-Small-2507_gguf
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: huihui-ai/Llama-3.3-70B-Instruct-abliterated
+  hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated
+  tier: D
+  drive: d2
+  priority: 1
+  licence: llama3.3
+  requires_auth: false
+  commit_sha: fa13334669544bab573e0e5313cad629a9c02e2c
+  parent_model: meta-llama/Llama-3.3-70B-Instruct
+  method: abliteration
+- id: mlabonne/Llama-3.1-70B-Instruct-lorablated
+  hf_repo: mlabonne/Llama-3.1-70B-Instruct-lorablated
+  tier: D
+  drive: d2
+  priority: 1
+  licence: llama3.1
+  requires_auth: false
+  commit_sha: null
+  parent_model: meta-llama/Llama-3.1-70B-Instruct
+  method: LoRA abliteration
+- id: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated
+  hf_repo: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated
+  tier: D
+  drive: d2
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: 116ff0fa55425b094a38a6bbf6faf2f5cafea335
+  parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+  method: abliteration
+- id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
+  hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
+  tier: D
+  drive: d2
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: 939b7e288235a393e2aac8a16ddc3d48f9406f03
+  parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+  method: abliteration
+- id: cognitivecomputations/Dolphin3.0-Llama3.1-8B
+  hf_repo: cognitivecomputations/Dolphin3.0-Llama3.1-8B
+  tier: D
+  drive: d2
+  priority: 1
+  licence: llama3.1
+  requires_auth: false
+  commit_sha: f065677950dfc7e708d518d64cf1f5041ee007a0
+  parent_model: meta-llama/Llama-3.1-8B
+  method: supervised-finetune
+- id: mlabonne/NeuralDaredevil-8B-abliterated
+  hf_repo: mlabonne/NeuralDaredevil-8B-abliterated
+  tier: D
+  drive: d2
+  priority: 1
+  licence: llama3.1
+  requires_auth: false
+  commit_sha: null
+  parent_model: meta-llama/Llama-3.1-8B
+  method: DPO+abliteration
+- id: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
+  hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
+  tier: D
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: mistralai/Mistral-Small-24B
+  method: abliteration
+- id: huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
+  hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
+  tier: D
+  drive: d3
+  priority: 1
+  licence: llama3.3
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+  parent_model: meta-llama/Llama-3.3-70B-Instruct
+  method: abliteration
+- id: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
+  hf_repo: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
+  tier: D
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+  parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
+  method: abliteration
+- id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
+  hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
+  tier: D
+  drive: d3
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+  parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+  method: abliteration
+- id: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
+  hf_repo: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
+  tier: D
+  drive: d3
+  priority: 1
+  licence: llama3.1
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+  parent_model: meta-llama/Llama-3.1-8B
+  method: DPO+abliteration
+- id: huihui-ai/Mistral-Small-24B-abliterated-GGUF
+  hf_repo: huihui-ai/Mistral-Small-24B-abliterated-GGUF
+  tier: D
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+  parent_model: mistralai/Mistral-Small-24B
+  method: abliteration

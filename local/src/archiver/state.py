@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import shutil
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -27,6 +28,7 @@ class RunState:
 
     def __init__(self, state_path: Path) -> None:
         self.state_path = state_path
+        self._lock = threading.Lock()
         self._data: dict = self._load()
 
     def _load(self) -> dict:
@@ -63,25 +65,27 @@ class RunState:
         error: Optional[str] = None,
         drive: Optional[str] = None,
     ) -> None:
-        entry = self._data["models"].setdefault(model_id, {})
-        entry["status"] = status
-        entry["updated_at"] = datetime.now(timezone.utc).isoformat()
-        if commit_sha:
-            entry["commit_sha"] = commit_sha
-        if total_bytes is not None:
-            entry["total_bytes"] = total_bytes
-        if error:
-            entry["error"] = error
-        if drive:
-            entry["drive"] = drive
-        if status == STATUS_COMPLETE:
-            entry["completed_at"] = datetime.now(timezone.utc).isoformat()
-            entry.pop("error", None)
+        with self._lock:
+            entry = self._data["models"].setdefault(model_id, {})
+            entry["status"] = status
+            entry["updated_at"] = datetime.now(timezone.utc).isoformat()
+            if commit_sha:
+                entry["commit_sha"] = commit_sha
+            if total_bytes is not None:
+                entry["total_bytes"] = total_bytes
+            if error:
+                entry["error"] = error
+            if drive:
+                entry["drive"] = drive
+            if status == STATUS_COMPLETE:
+                entry["completed_at"] = datetime.now(timezone.utc).isoformat()
+                entry.pop("error", None)
         self._save()
 
     def increment_retries(self, model_id: str) -> int:
-        entry = self._data["models"].setdefault(model_id, {})
-        entry["retries"] = entry.get("retries", 0) + 1
+        with self._lock:
+            entry = self._data["models"].setdefault(model_id, {})
+            entry["retries"] = entry.get("retries", 0) + 1
         self._save()
         return entry["retries"]
 
