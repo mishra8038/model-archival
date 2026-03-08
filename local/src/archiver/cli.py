@@ -114,8 +114,10 @@ def _check_root_ssd_space() -> Optional[str]:
 def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
     """Model archival tool — download, verify, and manage LLM weight archives."""
     ctx.ensure_object(dict)
-    ctx.obj["registry_path"] = Path(registry)
-    ctx.obj["drives_path"] = Path(drives)
+    # Resolve to absolute so worker threads inherit the correct path regardless
+    # of any working-directory changes made inside the process.
+    ctx.obj["registry_path"] = Path(registry).resolve()
+    ctx.obj["drives_path"] = Path(drives).resolve()
     ctx.obj["verbose"] = verbose
 
 

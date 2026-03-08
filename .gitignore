@@ -25,6 +25,15 @@ local/verification/verification-reports/
 local/chat/
 .chat/
 
-# Colab outputs
-colab/**/*.ipynb_checkpoints
-colab/**/.colab_cache
+# fingerprints sub-project
+fingerprints/.venv/
+fingerprints/data/
+fingerprints/output/
+
+# code-archival sub-project
+code-archival/.secrets
+code-archival/*.token
+code-archival/*.key
+code-archival/output/
+code-archival/*.part
+code-archival/*.tmp

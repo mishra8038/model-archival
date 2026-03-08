@@ -1,0 +1,9 @@
+# Secrets — never commit
+.secrets
+*.token
+*.key
+
+# Runtime output (large)
+/output/
+*.part
+*.tmp

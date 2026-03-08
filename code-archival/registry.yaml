@@ -1,0 +1,1472 @@
+# =============================================================================
+# code-archival registry
+#
+# Each entry archives the latest state of a project:
+#   - Shallow git clone (latest commit on default branch, no history)
+#   - Latest release tarball from GitHub
+#   - metadata.json (licence, description, stars, last commit, archived date)
+#
+# Risk levels:
+#   critical  Individual maintainer OR regulatory target OR no institutional backup
+#   high      Small org / VC-backed with unclear longevity / Chinese org
+#   medium    Institutional but could be gated or pivoted
+#   low       Large stable org, widely mirrored — archive as dependency anchor
+#
+# Categories:
+#   inference           Run model weights locally (CPU/GPU)
+#   inference-ui        Chat UIs and front-ends
+#   server              OpenAI-compatible API servers
+#   training            Fine-tune / train models
+#   quantization        Compress weights (GGUF, AWQ, EXL2, GPTQ, BnB)
+#   model-editing       Merge, splice, prune, and reshape model weights
+#   evaluation          Benchmark and evaluate models
+#   alignment           Safety, abliteration, red-teaming research
+#   interpretability    Mechanistic interpretability and probing tools
+#   observability       LLM tracing, monitoring, and debugging in production
+#   agents              Agent frameworks and tool-use orchestration
+#   web-agents          Browser/web automation AI agents
+#   coding-agents       Autonomous coding assistants and AI pair-programmers
+#   rag                 Retrieval-augmented generation pipelines
+#   tooling             Converters, tokenizers, model management utilities
+#   model-conversion    Cross-format export (ONNX, OpenVINO, TFLite, Triton)
+#   structured-llm      Structured output / schema validation for LLM responses
+#   synthetic-data      Synthetic dataset generation pipelines for training
+#   multimodal-training Vision-language model training codebases
+#   voice-pipeline      End-to-end spoken AI (STT + VAD + TTS + voice cloning)
+#   prompt-engineering  Prompt libraries, frameworks, and reference collections
+#   dataset             Training datasets and data pipelines
+#   reasoning           Open reasoning model training and reproduction
+#   memory              Long-context and persistent memory systems
+#
+# Last updated: 2026-03-05 — cross-referenced against live GitHub trending,
+#   OSS Insight AI rankings, and HuggingFace leaderboard data.
+#   Key additions: browser-use, Skyvern, open-r1, DSPy, Instructor, Khoj,
+#   LangGraph, opencode-ai/opencode, DeepSeek-R1, openai/gpt-oss
+# =============================================================================
+
+repos:
+
+  # ===========================================================================
+  # INFERENCE — core engines that run the weights we're archiving
+  # ===========================================================================
+
+  - id: ggml-org/llama.cpp
+    github: ggml-org/llama.cpp
+    category: inference
+    risk: medium
+    licence: MIT
+    notes: >
+      The primary CPU/GPU inference engine for GGUF models. Foundation of the
+      entire local LLM ecosystem. Also contains convert_hf_to_gguf.py for
+      BF16→GGUF conversion.
+
+  - id: ggml-org/ggml
+    github: ggml-org/ggml
+    category: inference
+    risk: medium
+    licence: MIT
+    notes: Tensor library underlying llama.cpp. Archiving the GGUF format spec.
+
+  - id: turboderp/exllamav2
+    github: turboderp/exllamav2
+    category: inference
+    risk: critical
+    licence: MIT
+    notes: >
+      Single maintainer. Only tool for EXL2 quantization and inference.
+      No institutional backup. Unique capability — no substitute.
+
+  - id: vllm-project/vllm
+    github: vllm-project/vllm
+    category: inference
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Best high-throughput GPU inference engine AND leading OpenAI-compatible server.
+      VC-backed startup (Anyscale spin-out) — could pivot or close.
+
+  - id: microsoft/DeepSpeed
+    github: microsoft/DeepSpeed
+    category: inference
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Microsoft's distributed training and inference library. Critical for
+      multi-GPU inference of large models (405B+).
+
+  - id: TimDettmers/bitsandbytes
+    github: TimDettmers/bitsandbytes
+    category: inference
+    risk: high
+    licence: MIT
+    notes: >
+      Original bitsandbytes (pre-foundation fork). 4-bit/8-bit load-time
+      quantization. Original author — canonical reference.
+
+  - id: bitsandbytes-foundation/bitsandbytes
+    github: bitsandbytes-foundation/bitsandbytes
+    category: inference
+    risk: high
+    licence: MIT
+    notes: Community fork of bitsandbytes. Foundation ownership — future uncertain.
+
+  - id: pytorch/pytorch
+    github: pytorch/pytorch
+    category: inference
+    risk: low
+    licence: BSD-3-Clause
+    notes: >
+      Foundation of all local LLM inference. Archiving pinned version as
+      dependency anchor — not at risk of disappearing but useful for offline setup.
+
+  - id: NVIDIA/TensorRT-LLM
+    github: NVIDIA/TensorRT-LLM
+    category: inference
+    risk: medium
+    licence: Apache-2.0
+    notes: NVIDIA's optimised inference library. Corporate — could be gated or closed.
+
+  - id: InternLM/lmdeploy
+    github: InternLM/lmdeploy
+    category: inference
+    risk: high
+    licence: Apache-2.0
+    notes: High-performance inference from Shanghai AI Lab. Chinese org — export risk.
+
+  # ===========================================================================
+  # INFERENCE UI — chat interfaces and front-ends
+  # ===========================================================================
+
+  - id: ollama/ollama
+    github: ollama/ollama
+    category: inference-ui
+    risk: medium
+    licence: MIT
+    notes: Most popular one-command local LLM runner. VC-backed — trajectory uncertain.
+
+  - id: oobabooga/text-generation-webui
+    github: oobabooga/text-generation-webui
+    category: inference-ui
+    risk: critical
+    licence: AGPL-3.0
+    notes: >
+      Most widely-used local LLM UI. Single maintainer. Supports every backend
+      (llama.cpp, ExLlama, transformers, GPTQ). Would be a major loss.
+
+  - id: LostRuins/koboldcpp
+    github: LostRuins/koboldcpp
+    category: inference-ui
+    risk: critical
+    licence: AGPL-3.0
+    notes: >
+      Single maintainer. Only tool with full KoboldAI story/roleplay API plus
+      llama.cpp backend. Unique capability for creative writing use cases.
+
+  - id: abetlen/llama-cpp-python
+    github: abetlen/llama-cpp-python
+    category: inference-ui
+    risk: critical
+    licence: MIT
+    notes: >
+      Python bindings for llama.cpp with OpenAI-compatible server.
+      Single maintainer. Used by most Python LLM pipelines as a drop-in.
+
+  - id: mudler/LocalAI
+    github: mudler/LocalAI
+    category: inference-ui
+    risk: critical
+    licence: MIT
+    notes: >
+      OpenAI-compatible API for local models. Single maintainer. Supports
+      llama.cpp, whisper, stable-diffusion. Full offline stack in one tool.
+
+  - id: lm-sys/FastChat
+    github: lm-sys/FastChat
+    category: inference-ui
+    risk: high
+    licence: Apache-2.0
+    notes: Powers Chatbot Arena. Academic project — may be abandoned.
+
+  - id: open-webui/open-webui
+    github: open-webui/open-webui
+    category: inference-ui
+    risk: high
+    licence: MIT
+    notes: >
+      Most popular Ollama/OpenAI web UI. Rapidly growing. Small org —
+      no institutional backing. Largest local LLM chat UI community.
+
+  - id: invoke-ai/InvokeAI
+    github: invoke-ai/InvokeAI
+    category: inference-ui
+    risk: medium
+    licence: Apache-2.0
+    notes: Leading Stable Diffusion UI. Relevant for multimodal archival.
+
+  - id: AUTOMATIC1111/stable-diffusion-webui
+    github: AUTOMATIC1111/stable-diffusion-webui
+    category: inference-ui
+    risk: critical
+    licence: AGPL-3.0
+    notes: >
+      Most widely used image generation UI. Single maintainer. Massive ecosystem
+      of extensions. Could vanish with a single DMCA or account ban.
+
+  # ===========================================================================
+  # SERVER — OpenAI-compatible API servers
+  # ===========================================================================
+
+  - id: huggingface/text-generation-inference
+    github: huggingface/text-generation-inference
+    category: server
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      HuggingFace TGI — production inference server powering HF Inference Endpoints.
+      Critical if running your own HF-compatible endpoint. Corporate — could be gated.
+
+  # ===========================================================================
+  # TRAINING & FINE-TUNING
+  # ===========================================================================
+
+  - id: unslothai/unsloth
+    github: unslothai/unsloth
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Best optimised fine-tuning library (2-5x faster, 60% less VRAM).
+      Small org, fast-growing. Key dependency for affordable consumer GPU training.
+
+  - id: hiyouga/LlamaFactory
+    github: hiyouga/LlamaFactory
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Most comprehensive fine-tuning toolkit. Supports every PEFT method.
+      Chinese org (Shanghai) — export control risk.
+
+  - id: axolotl-ai-cloud/axolotl
+    github: axolotl-ai-cloud/axolotl
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: Popular fine-tuning framework. Small org but strong community.
+
+  - id: huggingface/trl
+    github: huggingface/trl
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: HuggingFace RLHF/DPO/PPO/GRPO library. Core for alignment training.
+
+  - id: huggingface/peft
+    github: huggingface/peft
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: LoRA, QLoRA, and all parameter-efficient fine-tuning methods.
+
+  - id: microsoft/DeepSpeed
+    github: microsoft/DeepSpeed
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: ZeRO optimizer — essential for training large models on limited GPU memory.
+
+  - id: pytorch/torchtune
+    github: pytorch/torchtune
+    category: training
+    risk: low
+    licence: BSD-3-Clause
+    notes: PyTorch's official fine-tuning library. Institutional — stable.
+
+  - id: allenai/open-instruct
+    github: allenai/open-instruct
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: AllenAI's instruction-tuning codebase. Produced Tulu models we're archiving.
+
+  - id: OpenRLHF/OpenRLHF
+    github: OpenRLHF/OpenRLHF
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: Best open RLHF framework supporting PPO/GRPO at scale. Chinese team.
+
+  - id: volcengine/verl
+    github: volcengine/verl
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      ByteDance's RL training framework (DeepSeek-R1 style GRPO).
+      Chinese corp — export control risk. Critical for reproducing reasoning models.
+
+  # ===========================================================================
+  # QUANTIZATION
+  # ===========================================================================
+
+  - id: casper-hansen/AutoAWQ
+    github: casper-hansen/AutoAWQ
+    category: quantization
+    risk: critical
+    licence: MIT
+    notes: Single maintainer. Primary tool for AWQ 4-bit quantization. No backup.
+
+  - id: AutoGPTQ/AutoGPTQ
+    github: AutoGPTQ/AutoGPTQ
+    category: quantization
+    risk: high
+    licence: MIT
+    notes: Original GPTQ quantization tool. Original maintainer stepped away.
+
+  - id: huggingface/quanto
+    github: huggingface/quanto
+    category: quantization
+    risk: medium
+    licence: Apache-2.0
+    notes: HF's unified quantization library — may replace AutoGPTQ/AutoAWQ.
+
+  - id: ggml-org/llama.cpp
+    github: ggml-org/llama.cpp
+    category: quantization
+    risk: medium
+    licence: MIT
+    notes: llama-quantize binary — primary GGUF quantization tool.
+
+  - id: chu-tianxiang/llmc
+    github: ModelTC/llmc
+    category: quantization
+    risk: high
+    licence: Apache-2.0
+    notes: State-of-the-art quantization research toolkit. Chinese team (ModelTC).
+
+  # ===========================================================================
+  # EVALUATION & BENCHMARKING
+  # ===========================================================================
+
+  - id: EleutherAI/lm-evaluation-harness
+    github: EleutherAI/lm-evaluation-harness
+    category: evaluation
+    risk: medium
+    licence: MIT
+    notes: >
+      The standard open LLM benchmark suite. Powers the HF Open LLM Leaderboard.
+      Institutional (EleutherAI) — relatively stable.
+
+  - id: openai/evals
+    github: openai/evals
+    category: evaluation
+    risk: medium
+    licence: MIT
+    notes: OpenAI eval framework. Could be closed or gated with strategy changes.
+
+  - id: openai/simple-evals
+    github: openai/simple-evals
+    category: evaluation
+    risk: medium
+    licence: MIT
+    notes: Lightweight MMLU/MATH/GPQA eval scripts. Used to reproduce leaderboard scores.
+
+  - id: tatsu-lab/alpaca_eval
+    github: tatsu-lab/alpaca_eval
+    category: evaluation
+    risk: high
+    licence: Apache-2.0
+    notes: AlpacaEval — LLM-as-judge eval framework. Academic, may be abandoned.
+
+  - id: BerriAI/litellm
+    github: BerriAI/litellm
+    category: evaluation
+    risk: medium
+    licence: MIT
+    notes: >
+      Universal LLM API client. Used for eval pipelines calling local or cloud models.
+      Small startup — could pivot or close.
+
+  # ===========================================================================
+  # ALIGNMENT, ABLITERATION & SAFETY RESEARCH
+  # (highest regulatory risk — could be pulled with zero notice)
+  # ===========================================================================
+
+  - id: FailSpy/abliterator
+    github: FailSpy/abliterator
+    category: alignment
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      The original abliteration script. Directly regulatory-targeted.
+      Single author. Already has community forks but this is the canonical source.
+
+  - id: mlabonne/llm-course
+    github: mlabonne/llm-course
+    category: alignment
+    risk: critical
+    licence: Apache-2.0
+    notes: mlabonne's LLM course including abliteration and DPO notebooks. Individual.
+
+  - id: llm-attacks/llm-attacks
+    github: llm-attacks/llm-attacks
+    category: alignment
+    risk: critical
+    licence: MIT
+    notes: GCG adversarial attack research (Zou et al.). Already faced removal pressure.
+
+  - id: centerforaisafety/HarmBench
+    github: centerforaisafety/HarmBench
+    category: alignment
+    risk: high
+    licence: MIT
+    notes: Red-teaming benchmark. Academic — may be abandoned or pulled under pressure.
+
+  - id: paul-gauthier/aider
+    github: paul-gauthier/aider
+    category: coding-agents
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      Leading terminal-based AI coding assistant. Works with local models via
+      OpenAI-compatible API. Single maintainer — no institutional backup.
+
+  # ===========================================================================
+  # CODING AGENTS — autonomous coding assistants and AI pair-programmers
+  # ===========================================================================
+
+  - id: cline/cline
+    github: cline/cline
+    category: coding-agents
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Cline (formerly Claude Dev) — VS Code autonomous coding agent. Reads/writes
+      files, runs terminal commands, browses web. Works with any OpenAI-compatible
+      local model. Fast-growing, individual-started, no institutional backup.
+
+  - id: continuedev/continue
+    github: continuedev/continue
+    category: coding-agents
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Continue — open-source GitHub Copilot alternative for VS Code and JetBrains.
+      Supports local models via Ollama/llama.cpp. VC-backed but strong OSS commitment.
+
+  - id: All-Hands-AI/OpenHands
+    github: All-Hands-AI/OpenHands
+    category: coding-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      OpenHands (formerly OpenDevin) — autonomous software engineering agent.
+      Solves GitHub issues, writes and runs code end-to-end. Growing org,
+      well-funded but trajectory uncertain.
+
+  - id: princeton-nlp/SWE-agent
+    github: princeton-nlp/SWE-agent
+    category: coding-agents
+    risk: critical
+    licence: MIT
+    notes: >
+      SWE-agent — academic autonomous coding agent from Princeton.
+      Pioneered the "agent-computer interface" for solving real GitHub issues.
+      Academic project — likely to be abandoned or go unmaintained.
+
+  - id: stitionai/devika
+    github: stitionai/devika
+    category: coding-agents
+    risk: critical
+    licence: MIT
+    notes: >
+      Devika — open-source Devin alternative. Individual author, development
+      appears stalled. High vanishing risk. Archive while still accessible.
+
+  - id: gptscript-ai/gptscript
+    github: gptscript-ai/gptscript
+    category: coding-agents
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      GPTScript — scripting language for building LLM tool-use workflows.
+      Small org (Acorn Labs). Useful for composing local model pipelines.
+
+  - id: smol-ai/developer
+    github: smol-ai/developer
+    category: coding-agents
+    risk: critical
+    licence: MIT
+    notes: >
+      smol developer — one of the first autonomous repo-generating agents.
+      Individual author (Swyx), effectively archived. Historical reference
+      for the coding agent lineage.
+
+  - id: Significant-Gravitas/AutoGPT
+    github: Significant-Gravitas/AutoGPT
+    category: coding-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      AutoGPT — the original autonomous agent that sparked the agent movement.
+      Now evolved into an agent platform. Significant community — but org
+      has pivoted commercially.
+
+  - id: opencode-ai/opencode
+    github: opencode-ai/opencode
+    category: coding-agents
+    risk: critical
+    licence: MIT
+    notes: >
+      OpenCode — terminal-based AI coding agent (~11k stars before moving to
+      "Crush" by Charm team). Original repo now archived; new canonical project
+      has 120k+ stars. Archiving original for historical reference.
+      Single-author origin — very high risk of link rot.
+
+  # ===========================================================================
+  # AGENTS — orchestration, tool-use, autonomous agents
+  # ===========================================================================
+
+  - id: langchain-ai/langchain
+    github: langchain-ai/langchain
+    category: agents
+    risk: medium
+    licence: MIT
+    notes: Most widely-used agent/chain framework. VC-backed — trajectory uncertain.
+
+  - id: microsoft/autogen
+    github: microsoft/autogen
+    category: agents
+    risk: medium
+    licence: MIT
+    notes: Microsoft's multi-agent framework. Corporate — could be closed or pivoted.
+
+  - id: crewAIInc/crewAI
+    github: crewAIInc/crewAI
+    category: agents
+    risk: high
+    licence: MIT
+    notes: Popular role-based agent framework. Small startup — uncertain longevity.
+
+  - id: openai/openai-agents-python
+    github: openai/openai-agents-python
+    category: agents
+    risk: medium
+    licence: MIT
+    notes: OpenAI's official agents SDK. Works with local models via LiteLLM.
+
+  - id: microsoft/semantic-kernel
+    github: microsoft/semantic-kernel
+    category: agents
+    risk: medium
+    licence: MIT
+    notes: Microsoft's AI orchestration SDK. Enterprise use. Corporate risk.
+
+  - id: joaomdmoura/crewAI-tools
+    github: crewAIInc/crewAI-tools
+    category: agents
+    risk: high
+    licence: MIT
+    notes: Tool library for crewAI agents.
+
+  - id: openai/swarm
+    github: openai/swarm
+    category: agents
+    risk: medium
+    licence: MIT
+    notes: OpenAI's lightweight multi-agent coordination framework.
+
+  # ===========================================================================
+  # RAG — retrieval-augmented generation
+  # ===========================================================================
+
+  - id: run-llama/llama_index
+    github: run-llama/llama_index
+    category: rag
+    risk: medium
+    licence: MIT
+    notes: >
+      Most comprehensive RAG framework. VC-backed (LlamaIndex Inc.) — could pivot.
+      Critical for building knowledge retrieval over local models.
+
+  - id: chroma-core/chroma
+    github: chroma-core/chroma
+    category: rag
+    risk: medium
+    licence: Apache-2.0
+    notes: Most popular local vector database. VC-backed startup.
+
+  - id: qdrant/qdrant
+    github: qdrant/qdrant
+    category: rag
+    risk: medium
+    licence: Apache-2.0
+    notes: High-performance vector DB. VC-backed — but strong OSS commitment.
+
+  - id: facebookresearch/faiss
+    github: facebookresearch/faiss
+    category: rag
+    risk: low
+    licence: MIT
+    notes: Meta's vector similarity search library. Foundation of most RAG systems.
+
+  - id: nomic-ai/nomic
+    github: nomic-ai/nomic
+    category: rag
+    risk: high
+    licence: Apache-2.0
+    notes: nomic-embed-text — best local embedding model tooling. Small org.
+
+  # ===========================================================================
+  # TOOLING — model management, conversion, tokenization
+  # ===========================================================================
+
+  - id: huggingface/transformers
+    github: huggingface/transformers
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: Core HF library. Archiving pinned version as dependency anchor.
+
+  - id: huggingface/huggingface_hub
+    github: huggingface/huggingface_hub
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      HF Hub client. If HF goes offline, this + our archives = standalone operation.
+      Critical for the model-archival and model-fingerprints pipelines.
+
+  - id: huggingface/tokenizers
+    github: huggingface/tokenizers
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: Fast Rust tokenizer library. Required for running any HF model.
+
+  - id: huggingface/accelerate
+    github: huggingface/accelerate
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: Multi-GPU/CPU model loading and device mapping. Used by vLLM and TGI.
+
+  - id: huggingface/safetensors
+    github: huggingface/safetensors
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: The safetensors format spec and library. All our archived weights use this.
+
+  - id: openai/tiktoken
+    github: openai/tiktoken
+    category: tooling
+    risk: medium
+    licence: MIT
+    notes: OpenAI's fast BPE tokenizer. Required for OpenAI-compatible pipelines.
+
+  - id: simonw/llm
+    github: simonw/llm
+    category: tooling
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      Simon Willison's CLI LLM tool. Single maintainer. Best command-line interface
+      for querying local or remote models. Widely used by power users.
+
+  - id: Mozilla-Ocho/llamafile
+    github: Mozilla-Ocho/llamafile
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Mozilla's single-file executable LLM runner. Critical for true offline
+      portability — one file, no dependencies, runs anywhere.
+
+  - id: ggml-org/whisper.cpp
+    github: ggml-org/whisper.cpp
+    category: tooling
+    risk: medium
+    licence: MIT
+    notes: CPU/GPU speech-to-text. Part of the offline-capable local AI stack.
+
+  - id: Stability-AI/generative-models
+    github: Stability-AI/generative-models
+    category: tooling
+    risk: high
+    licence: MIT
+    notes: >
+      Stability AI's generative models codebase. Company is financially unstable —
+      high risk of shutdown or acquisition. Relevant for multimodal archival.
+
+  - id: comfyanonymous/ComfyUI
+    github: comfyanonymous/ComfyUI
+    category: tooling
+    risk: critical
+    licence: GPL-3.0
+    notes: >
+      Node-based diffusion / multimodal UI. Single maintainer. Huge ecosystem.
+      Now also supports LLM nodes — bridging image+text generation locally.
+
+  # ===========================================================================
+  # MULTIMODAL & DIFFUSION — image/audio/video generation
+  # ===========================================================================
+
+  - id: AUTOMATIC1111/stable-diffusion-webui-forge
+    github: lllyasviel/stable-diffusion-webui-forge
+    category: multimodal
+    risk: critical
+    licence: AGPL-3.0
+    notes: >
+      Forge — the dominant fork of A1111 with Flux/SD3 support. Single maintainer
+      (lllyasviel). Supersedes original A1111 for most users. Very high risk.
+
+  - id: lllyasviel/ControlNet
+    github: lllyasviel/ControlNet
+    category: multimodal
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      ControlNet — spatial conditioning for diffusion models. Single academic
+      author. Foundational technique used in all image generation pipelines.
+
+  - id: Stability-AI/stablediffusion
+    github: Stability-AI/stablediffusion
+    category: multimodal
+    risk: high
+    licence: MIT
+    notes: >
+      Original Stable Diffusion v1/v2 reference implementation. Stability AI
+      is financially troubled — high shutdown risk.
+
+  - id: black-forest-labs/flux
+    github: black-forest-labs/flux
+    category: multimodal
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      FLUX.1 — state-of-the-art open image generation model from Black Forest Labs.
+      Small company, could be acquired or shut down.
+
+  - id: openai/whisper
+    github: openai/whisper
+    category: multimodal
+    risk: medium
+    licence: MIT
+    notes: >
+      Whisper — OpenAI's speech-to-text model. Widely used for transcription
+      with local models. OpenAI could gate or deprecate.
+
+  - id: coqui-ai/TTS
+    github: coqui-ai/TTS
+    category: multimodal
+    risk: critical
+    licence: MPL-2.0
+    notes: >
+      Coqui TTS — best open-source text-to-speech library. Coqui the company
+      shut down in 2024. Repo is now community-maintained — high abandonment risk.
+
+  - id: suno-ai/bark
+    github: suno-ai/bark
+    category: multimodal
+    risk: critical
+    licence: MIT
+    notes: >
+      Bark — open-source text-to-audio model from Suno. Company has pivoted
+      to commercial SaaS. Open repo may be abandoned.
+
+  - id: facebookresearch/audiocraft
+    github: facebookresearch/audiocraft
+    category: multimodal
+    risk: medium
+    licence: MIT
+    notes: >
+      AudioCraft (MusicGen, AudioGen) — Meta's open music/audio generation.
+      Academic release — may be abandoned.
+
+  # ===========================================================================
+  # MODEL SERVING & DEPLOYMENT — production infrastructure
+  # ===========================================================================
+
+  - id: triton-inference-server/server
+    github: triton-inference-server/server
+    category: serving
+    risk: medium
+    licence: BSD-3-Clause
+    notes: >
+      NVIDIA Triton Inference Server — production model serving at scale.
+      Corporate (NVIDIA) — could be closed or gated.
+
+  - id: bentoml/BentoML
+    github: bentoml/BentoML
+    category: serving
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      BentoML — framework for packaging and deploying ML models as services.
+      VC-backed startup — trajectory uncertain.
+
+  - id: ray-project/ray
+    github: ray-project/ray
+    category: serving
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Ray — distributed computing framework. Powers Anyscale's Ray Serve for
+      LLM deployment. VC-backed — strong OSS community but company risk.
+
+  - id: modal-labs/modal-client
+    github: modal-labs/modal-client
+    category: serving
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Modal client — cloud GPU serverless platform. Archiving client SDK
+      for reference if service goes down.
+
+  # ===========================================================================
+  # WEB AGENTS — browser and web automation with AI
+  # (exploded in 2025; high vanishing risk as regulatory landscape shifts)
+  # ===========================================================================
+
+  - id: browser-use/browser-use
+    github: browser-use/browser-use
+    category: web-agents
+    risk: high
+    licence: MIT
+    notes: >
+      Browser Use — #1 open-source AI browser automation lib (~80k stars, Oct 2024).
+      Connects any LLM to the browser via natural language. Small org, fast-growing.
+      Key infrastructure for local model web agents.
+
+  - id: Skyvern-AI/skyvern
+    github: Skyvern-AI/skyvern
+    category: web-agents
+    risk: high
+    licence: AGPL-3.0
+    notes: >
+      Skyvern — computer vision + LLM browser automation, 85% on WebVoyager eval.
+      Small VC-backed startup (formerly Skyvern AI). Could pivot to closed SaaS.
+
+  - id: langchain-ai/langgraph
+    github: langchain-ai/langgraph
+    category: web-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      LangGraph — graph-based agentic workflow framework (~26k stars). Now the
+      primary LangChain substrate for complex multi-step and cyclical agent flows.
+      Separate repo from langchain but same org — archive both.
+
+  # ===========================================================================
+  # MEMORY & CONTEXT — long-context and memory systems
+  # ===========================================================================
+
+  - id: mem0ai/mem0
+    github: mem0ai/mem0
+    category: memory
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Mem0 — persistent memory layer for AI agents. Fast-growing small startup.
+      Key infrastructure for stateful local AI assistants.
+
+  - id: microsoft/graphrag
+    github: microsoft/graphrag
+    category: memory
+    risk: medium
+    licence: MIT
+    notes: >
+      GraphRAG — Microsoft's knowledge graph-based RAG. Significant improvement
+      over naive vector RAG for complex queries. Corporate — could be closed.
+
+  - id: getzep/zep
+    github: getzep/zep
+    category: memory
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Zep — long-term memory for LLM apps. Small startup. Key for building
+      persistent agent systems with local models.
+
+  - id: khoj-ai/khoj
+    github: khoj-ai/khoj
+    category: memory
+    risk: high
+    licence: AGPL-3.0
+    notes: >
+      Khoj — self-hostable AI second brain (~33k stars, trending Mar 2026).
+      Deep research, web search, personal doc Q&A. Uses local or cloud LLMs.
+      Small org but rapidly growing — key personal AI tool.
+
+  # ===========================================================================
+  # STRUCTURED LLM OUTPUT — schema validation and structured generation
+  # ===========================================================================
+
+  - id: instructor-ai/instructor
+    github: instructor-ai/instructor
+    category: structured-llm
+    risk: high
+    licence: MIT
+    notes: >
+      Instructor — Pydantic-based structured output extraction for any LLM
+      (~12k stars). Single maintainer (jxnl). Critical for any pipeline
+      that needs reliable JSON from local models.
+
+  - id: stanfordnlp/dspy
+    github: stanfordnlp/dspy
+    category: structured-llm
+    risk: medium
+    licence: MIT
+    notes: >
+      DSPy — self-optimising LLM program framework from Stanford. Used to
+      automate prompt optimisation and chain-of-thought construction.
+      Academic but widely adopted — potential abandonment risk.
+
+  - id: outlines-dev/outlines
+    github: outlines-dev/outlines
+    category: structured-llm
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Outlines — structured text generation via regex/JSON grammar constraints.
+      Key for constrained decoding with local models. Small org (dottxt-ai).
+
+  # ===========================================================================
+  # REASONING MODEL TRAINING — open reproduction of R1-style reasoning
+  # (new 2025 category — extremely high risk; regulatory + org instability)
+  # ===========================================================================
+
+  - id: huggingface/open-r1
+    github: huggingface/open-r1
+    category: reasoning
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Open-R1 — HuggingFace's fully open reproduction of DeepSeek-R1 (~26k stars).
+      Includes SFT, GRPO training scripts, and Mixture-of-Thoughts dataset.
+      Critical for reproducing reasoning capabilities offline.
+
+  - id: deepseek-ai/DeepSeek-R1
+    github: deepseek-ai/DeepSeek-R1
+    category: reasoning
+    risk: high
+    licence: MIT
+    notes: >
+      DeepSeek-R1 official repo (~89k stars). Training methodology, model cards,
+      and distillation recipes. Chinese org — export control risk.
+
+  - id: openai/gpt-oss
+    github: openai/gpt-oss
+    category: reasoning
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      OpenAI's gpt-oss-20b and gpt-oss-120b open-weight models with inference
+      and fine-tuning code (~20k stars, released 2025). OpenAI may gate or
+      remove open models as policy changes.
+
+  - id: deepseek-ai/DeepSeek-V3
+    github: deepseek-ai/DeepSeek-V3
+    category: reasoning
+    risk: high
+    licence: MIT
+    notes: >
+      DeepSeek-V3 official repo (~102k stars, most starred LLM repo as of 2026).
+      MoE training code, architecture details. Chinese org — export risk.
+
+  # ===========================================================================
+  # BENCHMARKS & LEADERBOARDS — evaluation infrastructure
+  # ===========================================================================
+
+  - id: openai/human-eval
+    github: openai/human-eval
+    category: evaluation
+    risk: medium
+    licence: MIT
+    notes: >
+      HumanEval — standard code generation benchmark. Basis for most coding
+      model comparisons. OpenAI could gate.
+
+  - id: declare-lab/flan-alpaca
+    github: declare-lab/flan-alpaca
+    category: evaluation
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      Flan-Alpaca evaluation datasets. Academic — likely to be abandoned.
+
+  - id: Stanford-Alpaca
+    github: tatsu-lab/stanford_alpaca
+    category: evaluation
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      Stanford Alpaca — original instruction-tuning dataset and code.
+      Historically significant. Academic, effectively abandoned.
+
+  # ===========================================================================
+  # DATASETS — training data (particularly at-risk)
+  # ===========================================================================
+
+  - id: EleutherAI/the-pile
+    github: EleutherAI/the-pile
+    category: dataset
+    risk: high
+    licence: MIT
+    notes: >
+      Scripts to reconstruct The Pile dataset. The actual data had takedowns;
+      archiving the pipeline code as reference.
+
+  - id: allenai/dolma
+    github: allenai/dolma
+    category: dataset
+    risk: medium
+    licence: Apache-2.0
+    notes: AllenAI's open training corpus toolkit. Used for OLMo training.
+
+  - id: huggingface/datatrove
+    github: huggingface/datatrove
+    category: dataset
+    risk: medium
+    licence: Apache-2.0
+    notes: HF's large-scale data processing library. Used to build web-crawl datasets.
+
+  - id: mlfoundations/open-clip
+    github: mlfoundations/open-clip
+    category: dataset
+    risk: medium
+    licence: MIT
+    notes: >
+      OpenCLIP — open reproduction of CLIP for vision-language models.
+      Required for multimodal models we're archiving (Qwen2.5-VL etc.).
+
+  # ===========================================================================
+  # MODEL EDITING — merge, splice, prune, and reshape model weights
+  # (community-created techniques; individual authors; high vanishing risk)
+  # ===========================================================================
+
+  - id: arcee-ai/mergekit
+    github: arcee-ai/mergekit
+    category: model-editing
+    risk: high
+    licence: LGPL-3.0
+    notes: >
+      MergeKit — the definitive tool for model merging (~20k stars). Supports
+      TIES, DARE, SLERP, task-arithmetic, and evolutionary merge search.
+      Almost every top community model on HF was created with this. Arcee AI
+      is a small startup — could pivot or shut down.
+
+  - id: EleutherAI/sparsegpt
+    github: IST-DASLab/sparsegpt
+    category: model-editing
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      SparseGPT — one-shot weight pruning to 50%+ sparsity. Academic paper
+      repo (IST Austria + EleutherAI). Likely unmaintained — archive now.
+
+  - id: jaymody/picoGPT
+    github: jaymody/picoGPT
+    category: model-editing
+    risk: critical
+    licence: MIT
+    notes: >
+      PicoGPT — minimal GPT-2 implementation in NumPy. Single author.
+      The canonical "understand transformers from scratch" reference. Fragile.
+
+  - id: karpathy/nanoGPT
+    github: karpathy/nanoGPT
+    category: model-editing
+    risk: high
+    licence: MIT
+    notes: >
+      nanoGPT — Karpathy's minimal GPT training codebase (~40k stars).
+      The most-read transformer training reference. Personal repo — could vanish.
+
+  - id: karpathy/llm.c
+    github: karpathy/llm.c
+    category: model-editing
+    risk: high
+    licence: MIT
+    notes: >
+      llm.c — GPT-2/GPT-4 training in raw C/CUDA (~30k stars, 2024).
+      Karpathy personal repo. Extremely readable; reference for from-scratch
+      understanding of transformer training without frameworks.
+
+  - id: EleutherAI/lm_perplexity
+    github: EleutherAI/lm_perplexity
+    category: model-editing
+    risk: medium
+    licence: MIT
+    notes: >
+      Perplexity evaluation library. Used to assess merge quality and layer
+      importance before pruning. Institutional (EleutherAI) but small project.
+
+  # ===========================================================================
+  # INTERPRETABILITY — mechanistic interpretability and probing tools
+  # (small academic teams; high risk of abandonment; foundational for alignment)
+  # ===========================================================================
+
+  - id: TransformerLensOrg/TransformerLens
+    github: TransformerLensOrg/TransformerLens
+    category: interpretability
+    risk: high
+    licence: MIT
+    notes: >
+      TransformerLens — the canonical mechanistic interpretability toolkit
+      (~3.5k stars). Created by Neel Nanda, now org-maintained. Foundation
+      for nearly all published mech-interp research. Small org — fragile.
+
+  - id: jbloomAUS/SAELens
+    github: jbloomAUS/SAELens
+    category: interpretability
+    risk: critical
+    licence: MIT
+    notes: >
+      SAELens — Sparse Autoencoder training library for LLM interpretability.
+      Single maintainer (Joseph Bloom). The primary tool for SAE research
+      which underpins 2024–2026 alignment work. Very high abandonment risk.
+
+  - id: EleutherAI/elk
+    github: EleutherAI/elk
+    category: interpretability
+    risk: high
+    licence: MIT
+    notes: >
+      ELK (Eliciting Latent Knowledge) — research codebase for probing
+      model beliefs. Academic / EleutherAI. Potentially abandoned.
+      Important historical reference for AI alignment research.
+
+  - id: neelnanda-io/CircuitsVis
+    github: neelnanda-io/CircuitsVis
+    category: interpretability
+    risk: critical
+    licence: MIT
+    notes: >
+      CircuitsVis — attention head and residual stream visualisation for
+      TransformerLens. Single author (Neel Nanda). Used in almost every
+      published mech-interp paper. Personal repo — very fragile.
+
+  - id: saprmarks/geometry-of-truth
+    github: saprmarks/geometry-of-truth
+    category: interpretability
+    risk: critical
+    licence: MIT
+    notes: >
+      Geometry of Truth — probing linear representations of factual claims
+      in LLMs. Influential academic paper repo. Single author — will be
+      abandoned. Archive as a reference implementation.
+
+  # ===========================================================================
+  # OBSERVABILITY — LLM tracing, monitoring, and debugging in production
+  # (needed to run the local AI stack; VC-backed orgs with pivot risk)
+  # ===========================================================================
+
+  - id: langfuse/langfuse
+    github: langfuse/langfuse
+    category: observability
+    risk: high
+    licence: MIT
+    notes: >
+      Langfuse — best self-hostable LLM observability platform (~23k stars).
+      Traces calls, manages prompts, evaluates outputs. Small startup — could
+      pivot to closed SaaS. Critical for debugging local agent pipelines.
+
+  - id: Arize-ai/phoenix
+    github: Arize-ai/phoenix
+    category: observability
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Phoenix — OpenTelemetry-native AI observability and evaluation (~9k stars).
+      Self-hostable. Works with LangChain, LlamaIndex, and custom pipelines.
+      Arize AI is VC-backed — cloud pivot risk.
+
+  - id: openlit/openlit
+    github: openlit/openlit
+    category: observability
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      OpenLIT — OpenTelemetry-based LLM observability with GPU monitoring.
+      Small org. Covers cost tracking, prompt management, and evaluation.
+
+  # ===========================================================================
+  # SYNTHETIC DATA — dataset generation pipelines for training
+  # (critical for reproducing model training offline without internet)
+  # ===========================================================================
+
+  - id: argilla-io/distilabel
+    github: argilla-io/distilabel
+    category: synthetic-data
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Distilabel — HuggingFace-backed synthetic data and AI feedback pipeline.
+      Used to generate Open-R1 training data and many leaderboard-topping
+      datasets. Small org (Argilla) — pivot or acquisition risk.
+
+  - id: argilla-io/argilla
+    github: argilla-io/argilla
+    category: synthetic-data
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Argilla — self-hostable data labelling and annotation platform for LLMs.
+      Used to build high-quality RLHF datasets. Small org — pivot risk.
+
+  - id: NVIDIA/NeMo-Curator
+    github: NVIDIA/NeMo-Curator
+    category: synthetic-data
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      NeMo Curator — NVIDIA's large-scale data curation framework. Used to
+      build Nemotron training corpora. Corporate — could be gated or closed.
+
+  - id: tencent-ailab/persona-hub
+    github: tencent-ailab/persona-hub
+    category: synthetic-data
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Persona Hub — 1 billion diverse persona synthetic data generation.
+      Chinese org (Tencent). Framework for diverse instruction data synthesis.
+      Export risk + corporate pivot risk.
+
+  - id: huggingface/chat-ui
+    github: huggingface/chat-ui
+    category: synthetic-data
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      HuggingFace Chat UI — open-source frontend behind HuggingChat. Also
+      used to collect human preference data (implicit RLHF signal). Archive
+      as reference for building self-hosted preference collection tools.
+
+  # ===========================================================================
+  # MULTIMODAL TRAINING — vision-language model training codebases
+  # (scattered academic repos; highest abandonment risk of any category)
+  # ===========================================================================
+
+  - id: haotian-liu/LLaVA
+    github: haotian-liu/LLaVA
+    category: multimodal-training
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      LLaVA — the original visual instruction tuning codebase (~40k stars).
+      Single academic author (Haotian Liu, now at Apple). Most-cited open
+      VLM training code. Already seeing reduced maintenance. Archive urgently.
+
+  - id: EvolvingLMMs-Lab/lmms-eval
+    github: EvolvingLMMs-Lab/lmms-eval
+    category: multimodal-training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      LMMs-Eval — unified multimodal evaluation harness (~4k stars), equivalent
+      to lm-evaluation-harness for vision-language models. Academic lab — high
+      abandonment risk.
+
+  - id: QwenLM/Qwen-VL
+    github: QwenLM/Qwen-VL
+    category: multimodal-training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Qwen-VL training and inference code. We're archiving Qwen VLM weights —
+      this is the companion training codebase. Chinese org — export risk.
+
+  - id: microsoft/Florence-2
+    github: microsoft/Florence-2
+    category: multimodal-training
+    risk: medium
+    licence: MIT
+    notes: >
+      Florence-2 — Microsoft's compact but capable vision foundation model.
+      Reference implementation for unified image understanding tasks.
+      Corporate — could be gated.
+
+  - id: TRI-ML/prismatic-vlms
+    github: TRI-ML/prismatic-vlms
+    category: multimodal-training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Prismatic VLMs — flexible VLM training codebase supporting CLIP, SigLIP,
+      DINOv2 backbones with any HF language model. Toyota Research — small
+      academic team, high abandonment risk.
+
+  # ===========================================================================
+  # VOICE PIPELINE — end-to-end spoken AI
+  # (STT → VAD → LLM → TTS; fragile individual-author ecosystem)
+  # ===========================================================================
+
+  - id: SYSTRAN/faster-whisper
+    github: SYSTRAN/faster-whisper
+    category: voice-pipeline
+    risk: high
+    licence: MIT
+    notes: >
+      faster-whisper — CTranslate2-optimised Whisper inference (~14k stars).
+      4x faster than OpenAI's original on CPU/GPU. SYSTRAN is a small company —
+      critical path for real-time STT in local voice assistants.
+
+  - id: rhasspy/piper
+    github: rhasspy/piper
+    category: voice-pipeline
+    risk: critical
+    licence: MIT
+    notes: >
+      Piper — fast local neural TTS adopted by Home Assistant and many offline
+      voice assistant projects. Single maintainer (rhasspy). The primary
+      open TTS for embedded/offline deployments. Very fragile.
+
+  - id: myshell-ai/OpenVoice
+    github: myshell-ai/OpenVoice
+    category: voice-pipeline
+    risk: high
+    licence: MIT
+    notes: >
+      OpenVoice — instant voice cloning toolkit (~30k stars). MyShell AI is
+      a small startup. Key for personalised offline voice synthesis.
+
+  - id: snakers4/silero-models
+    github: snakers4/silero-models
+    category: voice-pipeline
+    risk: critical
+    licence: MIT
+    notes: >
+      Silero Models — lightweight VAD, STT, and TTS models (~9k stars).
+      Russian individual (snakers4). VAD (voice activity detection) component
+      is used by almost every real-time STT pipeline. Single author — fragile.
+
+  - id: collabora/WhisperSpeech
+    github: collabora/WhisperSpeech
+    category: voice-pipeline
+    risk: high
+    licence: MIT
+    notes: >
+      WhisperSpeech — open, fully permissive TTS built by inverting Whisper.
+      Collabora is a small OSS company. One of the only fully open TTS models
+      (weights + training code) without restrictive licences.
+
+  - id: fishaudio/fish-speech
+    github: fishaudio/fish-speech
+    category: voice-pipeline
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Fish Speech — state-of-the-art multilingual TTS with voice cloning
+      (~17k stars, 2024). Small Chinese team — export risk + startup risk.
+
+  # ===========================================================================
+  # MODEL CONVERSION — cross-format export and runtime portability
+  # (needed for running archived weights on diverse hardware offline)
+  # ===========================================================================
+
+  - id: huggingface/optimum
+    github: huggingface/optimum
+    category: model-conversion
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Optimum — HuggingFace's unified export toolkit for ONNX, OpenVINO,
+      TFLite, and TensorRT. Essential for deploying archived weights on
+      non-NVIDIA hardware (Intel NPU, ARM, etc.).
+
+  - id: microsoft/onnxruntime
+    github: microsoft/onnxruntime
+    category: model-conversion
+    risk: low
+    licence: MIT
+    notes: >
+      ONNX Runtime — cross-platform inference engine for exported models.
+      Microsoft — stable, widely mirrored. Archiving as dependency anchor
+      for running ONNX-exported models offline on any hardware.
+
+  - id: openai/triton
+    github: openai/triton
+    category: model-conversion
+    risk: medium
+    licence: MIT
+    notes: >
+      Triton — GPU kernel language underlying vLLM, xFormers, FlashAttention.
+      OpenAI repo — could be deprioritised as OpenAI focuses on proprietary
+      stack. Critical for custom CUDA kernel development.
+
+  - id: Dao-AILab/flash-attention
+    github: Dao-AILab/flash-attention
+    category: model-conversion
+    risk: high
+    licence: BSD-3-Clause
+    notes: >
+      FlashAttention (v1/v2/v3) — the memory-efficient attention kernel used
+      by every modern LLM inference stack. Tri Dao's lab — small academic team.
+      Without this, long-context inference is 5–10x slower.
+
+  - id: facebookresearch/xformers
+    github: facebookresearch/xformers
+    category: model-conversion
+    risk: medium
+    licence: BSD-3-Clause
+    notes: >
+      xFormers — Meta's efficient transformer building blocks including memory-
+      efficient attention. Used by Stable Diffusion and many inference backends.
+
+  # ===========================================================================
+  # PROMPT ENGINEERING — prompt libraries, frameworks, and reference collections
+  # (high community value; individual/small-org authors; link rot risk)
+  # ===========================================================================
+
+  - id: f/prompts.chat
+    github: f/prompts.chat
+    category: prompt-engineering
+    risk: critical
+    licence: CC0-1.0
+    notes: >
+      prompts.chat (fka Awesome ChatGPT Prompts) — 150k+ stars, #1 trending
+      GitHub repo March 2026. The canonical community prompt collection.
+      Single maintainer (f). Extremely high link rot / censorship risk.
+
+  - id: danielmiessler/fabric
+    github: danielmiessler/fabric
+    category: prompt-engineering
+    risk: critical
+    licence: MIT
+    notes: >
+      Fabric — structured prompt framework for AI augmentation of human tasks
+      (~40k stars). Single author (Daniel Miessler). Rich pattern library.
+      Personal repo — high vanishing risk.
+
+  - id: openai/model_spec
+    github: openai/model_spec
+    category: prompt-engineering
+    risk: medium
+    licence: CC0-1.0
+    notes: >
+      OpenAI Model Spec — OpenAI's official model behaviour specification.
+      Public reference document for how GPT models are trained to behave.
+      Could be silently revised or removed if policy changes.
+
+  - id: brexhq/prompt-engineering
+    github: brexhq/prompt-engineering
+    category: prompt-engineering
+    risk: high
+    licence: MIT
+    notes: >
+      Brex Prompt Engineering Guide — comprehensive production prompt
+      engineering guide from a real company deployment. High quality;
+      corporate repo that may be deleted or made private.
+
+  - id: dair-ai/Prompt-Engineering-Guide
+    github: dair-ai/Prompt-Engineering-Guide
+    category: prompt-engineering
+    risk: medium
+    licence: MIT
+    notes: >
+      DAIR.AI Prompt Engineering Guide — most comprehensive academic-style
+      prompt engineering reference (~50k stars). Small org — could be
+      abandoned or taken down.

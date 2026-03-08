@@ -1,0 +1,69 @@
+---
+description: VM layout, disk config, VPN, and safe operations for model-archival
+alwaysApply: true
+---
+
+# VM Operations
+
+## Environment
+
+- **VM IP**: 192.168.8.65, user: `x`
+- **OS**: Artix Linux, init: dinit (not systemd — use `dinitctl`, not `systemctl`)
+- **Project path**: `/home/x/dev/model-archival/local/`
+- **Screen session**: `archiver` (`screen -S archiver bash run.sh --all`)
+
+## Disk layout
+
+| Label | Device | Mount | Size | Role |
+|-------|--------|-------|------|------|
+| D1 | /dev/sdc | /mnt/models/d1 | 5.5 TB | Large models + `.tmp/` scratch |
+| D2 | /dev/sdd | /mnt/models/d2 | 2.7 TB | Mid-size models + Tier D |
+| D3 | /dev/sde | /mnt/models/d3 | 2.7 TB | GGUF quants |
+| D5 | /dev/sdb | /mnt/models/d5 | 916 GB | Metadata, logs, state |
+
+In-progress downloads land in `D1/.tmp/` — never on D5 or root SSD.
+
+## Before rebooting — always stop gracefully
+
+```bash
+bash /home/x/dev/model-archival/local/stop.sh   # wait for "stopped cleanly"
+# then reboot — skipping this can corrupt D1/D2 (requires fsck to fix)
+```
+
+## If drives not mounted after reboot
+
+```bash
+sudo bash /home/x/dev/model-archival/local/deploy/vm-mount-disks.sh
+```
+
+## If a drive shows "Structure needs cleaning"
+
+```bash
+sudo fsck.ext4 -y /dev/sdXN   # fix filesystem
+sudo mount /mnt/models/dN     # then remount
+```
+
+## VPN (Surfshark via OpenVPN)
+
+```bash
+# Status check
+surfshark-vpn status 2>/dev/null; curl -s https://ipinfo.io | grep -E '"ip"|"org"'
+# Should show: "AS9009 M247 Europe SRL" — not your ISP
+
+# Connect (if not auto-started by dinit)
+sudo openvpn --config /etc/openvpn/client/surfshark/us-nyc.prod.surfshark.com_udp.ovpn \
+             --auth-user-pass /etc/openvpn/client/surfshark.auth \
+             --daemon --log /var/log/surfshark-openvpn.log
+
+# Auto-starts via dinit: /etc/dinit.d/boot.d/surfshark-vpn
+```
+
+Note: Surfshark AUR CLI (`surfshark-vpn` binary v1.1.0) is broken — use OpenVPN directly.
+Note: Surfshark flatpak GUI fails with "No internet connection" on connman systems — use OpenVPN.
+
+## Monitor downloads
+
+```bash
+screen -S archiver -X hardcopy /tmp/s.txt && cat /tmp/s.txt   # snapshot screen
+watch -n 30 cat /mnt/models/d5/STATUS.md                       # live status file
+```

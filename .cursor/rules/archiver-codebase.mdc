@@ -1,0 +1,66 @@
+---
+description: Archiver codebase conventions, known fixes, and design decisions
+alwaysApply: true
+---
+
+# Archiver Codebase
+
+## Project structure
+
+```
+local/
+  run.sh              orchestrator — always use this to start downloads
+  stop.sh             graceful shutdown — always use before rebooting
+  config/
+    registry.yaml     master model list (source of truth)
+    drives.yaml       drive mount points and roles
+  src/archiver/
+    cli.py            click commands: download, verify, status, list, drives, tokens, pin
+    downloader.py     per-model download logic (LFS via aria2, XET via hf_hub_download)
+    scheduler.py      per-drive worker threads + signal handling
+    aria2_manager.py  aria2c daemon lifecycle
+    state.py          run_state.json persistence (thread-safe)
+    status.py         rich live UI + STATUS.md + RunReport
+    models.py         ModelEntry / DriveConfig dataclasses + registry I/O
+    verifier.py       SHA-256, manifest.json, global_index.jsonl
+    preflight.py      pre-flight checks
+```
+
+## Key bugs fixed in this session
+
+- **`models.py` `model_dir`**: falls back to `"main"` when `commit_sha` is None — never returns None if `drive_path` is set
+- **`state.py`**: `threading.Lock` protects `run_state.json`; writes via `.json.tmp` → rename
+- **`aria2_manager.py`**: `--allow-overwrite=true`; removes orphaned partials (file exists but no `.aria2` control file) before submitting to aria2
+- **`downloader.py`**: `GatedRepoError` + HTTP 401/403 raise `AuthError` immediately — no retry
+- **`scheduler.py`**: SIGTERM/SIGINT sets `_stop_event`; workers stop cleanly between models
+- **`run.sh`**: traps SIGTERM/SIGINT → forwards to Python child; writes `.archiver.pid`
+
+## Design rules
+
+- Downloads are always resumable — never delete `.tmp` partial files or `.aria2` control files
+- run_state.json lives on D5; `.tmp` scratch lives on D1 (not D5)
+- `commit_sha` in registry.yaml is auto-pinned after first download
+- LFS CDN URLs expire ~1 hour — always re-fetch with `hf_hub_url()` before each attempt
+- On SHA-256 mismatch: remove both the corrupt file AND its `.aria2` control file (force clean restart)
+- `sync_archive()` replicates `archive/` to all drives after each model completes
+
+## Adding a model to registry.yaml
+
+```yaml
+org/ModelName:
+  hf_repo: org/ModelName
+  commit_sha: null        # auto-pinned on first download
+  tier: A                 # A/B/C/D
+  priority: 1             # 1 = no token, 2 = gated (HF_TOKEN + licence acceptance)
+  drive: d1
+  requires_auth: false
+  licence: Apache-2.0
+  notes: "description"
+```
+
+## HF token
+
+```bash
+bash deploy/sethfToken.sh hf_YOURTOKEN   # stores in ~/.hf_token (chmod 600)
+uv run archiver tokens check             # verify gated model access
+```
