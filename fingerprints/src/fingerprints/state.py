@@ -40,13 +40,20 @@ class RunState:
     def get_status(self, hf_repo: str) -> str:
         return self._data.get(hf_repo, {}).get("status", STATUS_PENDING)
 
-    def set_complete(self, hf_repo: str, crawled_at: str, file_count: int) -> None:
+    def set_complete(
+        self,
+        hf_repo: str,
+        crawled_at: str,
+        file_count: int,
+        release_tag: str = "",
+    ) -> None:
         with self._lock:
             self._data[hf_repo] = {
-                "status": STATUS_COMPLETE,
-                "crawled_at": crawled_at,
-                "file_count": file_count,
-                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "status":      STATUS_COMPLETE,
+                "release_tag": release_tag,
+                "crawled_at":  crawled_at,
+                "file_count":  file_count,
+                "updated_at":  datetime.now(timezone.utc).isoformat(),
             }
             self._save()
 

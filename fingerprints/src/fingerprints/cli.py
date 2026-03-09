@@ -22,7 +22,7 @@ import click
 from rich.console import Console
 from rich.table import Table
 
-from .crawler import Crawler
+from .crawler import Crawler, ReleaseFingerprint
 from .models import Registry, ModelEntry
 from .state import RunState, STATUS_COMPLETE, STATUS_FAILED, STATUS_SKIPPED, STATUS_PENDING
 from .storage import append_global_index, load_fingerprint, write_fingerprint
@@ -150,12 +150,18 @@ def run(
             return model, "skipped", "no HF token"
         try:
             crawler = Crawler(hf_token=token)
-            repo_fp = crawler.crawl(model.hf_repo)
-            write_fingerprint(repo_fp, model, output_root)
-            append_global_index(index_path, repo_fp, model)
-            state.set_complete(model.hf_repo, repo_fp.crawled_at, len(repo_fp.files))
-            size = f"{repo_fp.total_size_bytes / 1024**3:.1f} GB"
-            return model, "done", f"{len(repo_fp.files)} files  {size}"
+            rel_fp: ReleaseFingerprint = crawler.crawl(model.hf_repo)
+            write_fingerprint(rel_fp, model, output_root)
+            append_global_index(index_path, rel_fp, model)
+            state.set_complete(
+                model.hf_repo,
+                rel_fp.crawled_at,
+                len(rel_fp.files),
+                rel_fp.release_tag,
+            )
+            tag_note = " (HEAD)" if rel_fp.is_head_fallback else f" tag={rel_fp.release_tag}"
+            size = f"{rel_fp.total_size_bytes / 1024**3:.1f} GB"
+            return model, "done", f"{len(rel_fp.files)} files  {size}{tag_note}"
         except PermissionError as e:
             state.set_skipped(model.hf_repo, str(e))
             return model, "skipped", str(e)
@@ -209,6 +215,7 @@ def status(ctx: click.Context) -> None:
     t.add_column("Tier", width=5)
     t.add_column("Importance", width=10)
     t.add_column("Status", width=9)
+    t.add_column("Tag", width=20)
     t.add_column("Files", width=6)
     t.add_column("Crawled at", width=17)
 
@@ -216,10 +223,11 @@ def status(ctx: click.Context) -> None:
     for model in reg.models:
         s = state.get_status(model.hf_repo)
         entry = state.all_entries().get(model.hf_repo, {})
-        files = str(entry.get("file_count", "—"))
+        files   = str(entry.get("file_count", "—"))
+        tag     = entry.get("release_tag", "—")
         crawled = (entry.get("crawled_at") or "")[:16]
         color = {"complete": "green", "failed": "red", "skipped": "yellow"}.get(s, "dim")
-        t.add_row(model.hf_repo, model.tier, model.importance, f"[{color}]{s}[/]", files, crawled)
+        t.add_row(model.hf_repo, model.tier, model.importance, f"[{color}]{s}[/]", tag, files, crawled)
         counts[s] = counts.get(s, 0) + 1
 
     console.print(t)

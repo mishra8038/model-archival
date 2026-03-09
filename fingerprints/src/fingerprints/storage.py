@@ -4,37 +4,56 @@ Fingerprint storage.
 On-disk layout under the output root (e.g. /mnt/models/d1/model-checksums/):
 
   model-checksums/
-  ├── index.jsonl                         # append-only global index, one line per repo
+  ├── index.jsonl                              # one line per repo (upserted on each run)
   ├── deepseek-ai__DeepSeek-V3/
-  │   ├── fingerprint.json                # structured data
-  │   └── fingerprint.md                  # human-readable
-  ├── meta-llama__Llama-3.3-70B-Instruct/
-  │   └── ...
+  │   ├── fingerprint.json                     # full structured data
+  │   ├── fingerprint.md                       # human-readable reference card
+  │   └── sha256sums.txt                       # plain  sha256  filename  lines
   └── ...
 
-fingerprint.json schema:
+fingerprint.json schema  (schema_version 2.0):
   {
-    "schema_version": "1.1",
-    "hf_repo":        "deepseek-ai/DeepSeek-V3",
-    "hf_url":         "https://huggingface.co/deepseek-ai/DeepSeek-V3",
-    "family":         "deepseek",
-    "tier":           "A",
-    "importance":     "critical",
-    "licence":        "MIT",
-    "requires_auth":  false,
-    "notes":          "",
-    "parent_model":   null,
-    "method":         null,
-    "commit_sha":     "e815299b...",
-    "crawled_at":     "2026-03-08T...",
-    "file_count":     163,
+    "schema_version":   "2.0",
+    "hf_repo":          "deepseek-ai/DeepSeek-V3",
+    "hf_url":           "https://huggingface.co/deepseek-ai/DeepSeek-V3",
+
+    // Release identification — the primary key for mirror verification
+    "release_tag":      "main",          // git tag or "main" if no formal release
+    "is_head_fallback": true,            // true when no formal tag exists
+    "commit_sha":       "e815299b...",   // commit at crawl time (informational)
+
+    // Crawl metadata
+    "crawled_at":       "2026-03-09T...",
+    "file_count":       163,
     "total_size_bytes": 685123456789,
     "total_size_human": "638.1 GB",
+
+    // Classification
+    "family":           "deepseek",
+    "tier":             "A",
+    "importance":       "critical",
+    "licence":          "MIT",
+    "requires_auth":    false,
+
+    // Per-file integrity records — the core verification payload
     "files": [
-      {"filename": "model-00001-of-00163.safetensors", "sha256": "abc...", "size_bytes": 9876543210, "size_human": "9.2 GB"},
+      {
+        "filename":   "model-00001-of-00163.safetensors",
+        "sha256":     "abc123...",           // SHA-256 of raw file bytes
+        "size_bytes": 9876543210,
+        "size_human": "9.2 GB",
+        "source_url": "https://huggingface.co/deepseek-ai/DeepSeek-V3/resolve/<commit>/model-00001..."
+      },
       ...
     ]
   }
+
+sha256sums.txt format (standard sha256sum-compatible):
+  abc123...  model-00001-of-00163.safetensors
+  def456...  model-00002-of-00163.safetensors
+  ...
+
+  Verify with:  sha256sum --check sha256sums.txt
 """
 
 from __future__ import annotations
@@ -44,12 +63,12 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from .crawler import RepoFingerprint
+from .crawler import ReleaseFingerprint
 from .models import ModelEntry
 
 log = logging.getLogger(__name__)
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "2.0"
 
 
 def _human_bytes(n: int) -> str:
@@ -61,48 +80,64 @@ def _human_bytes(n: int) -> str:
 
 
 def write_fingerprint(
-    repo_fp: RepoFingerprint,
+    rel_fp: ReleaseFingerprint,
     model: ModelEntry,
     output_root: Path,
 ) -> Path:
-    """Write fingerprint.json and fingerprint.md for one repo. Returns the json path."""
+    """
+    Write fingerprint.json, fingerprint.md, and sha256sums.txt for one release.
+    All writes are atomic (tmp → rename).  Returns the fingerprint.json path.
+    """
     repo_dir = output_root / model.output_dir_name
     repo_dir.mkdir(parents=True, exist_ok=True)
 
     file_list = [
         {
-            "filename": f.filename,
-            "sha256": f.sha256,
+            "filename":   f.filename,
+            "sha256":     f.sha256,
             "size_bytes": f.size_bytes,
             "size_human": _human_bytes(f.size_bytes),
+            "source_url": f.source_url,
         }
-        for f in sorted(repo_fp.files, key=lambda x: x.filename)
+        for f in sorted(rel_fp.files, key=lambda x: x.filename)
     ]
 
-    fp_data = {
-        "schema_version": SCHEMA_VERSION,
+    fp_data: dict = {
+        "schema_version":   SCHEMA_VERSION,
+
         # Identity
-        "hf_repo": repo_fp.hf_repo,
-        "hf_url": f"https://huggingface.co/{repo_fp.hf_repo}",
-        "hf_commit_url": f"https://huggingface.co/{repo_fp.hf_repo}/tree/{repo_fp.commit_sha}",
+        "hf_repo":          rel_fp.hf_repo,
+        "hf_url":           f"https://huggingface.co/{rel_fp.hf_repo}",
+
+        # Release — primary key for mirror verification
+        "release_tag":      rel_fp.release_tag,
+        "is_head_fallback": rel_fp.is_head_fallback,
+        "commit_sha":       rel_fp.commit_sha,  # informational, not the primary key
+
+        # Crawl metadata
+        "crawled_at":       rel_fp.crawled_at,
+        "file_count":       len(file_list),
+        "total_size_bytes": rel_fp.total_size_bytes,
+        "total_size_human": _human_bytes(rel_fp.total_size_bytes),
+
         # Classification
-        "family": model.family,
-        "tier": model.tier,
-        "importance": model.importance,
-        "licence": model.licence,
-        "requires_auth": model.requires_auth,
-        "notes": model.notes,
-        "parent_model": model.parent_model,
-        "method": model.method,
-        # Model metadata (for selection / comparison)
-        "params_b": model.params_b,
-        "arch": model.arch,
-        "merged": model.merged,
-        "hf_downloads": model.hf_downloads,
-        "hf_likes": model.hf_likes,
-        "registry_date": model.registry_date,
-        # Benchmark scores (Open LLM Leaderboard 2)
-        "benchmarks": {
+        "family":           model.family,
+        "tier":             model.tier,
+        "importance":       model.importance,
+        "licence":          model.licence,
+        "requires_auth":    model.requires_auth,
+        "notes":            model.notes,
+        "parent_model":     model.parent_model,
+        "method":           model.method,
+
+        # Model metadata
+        "params_b":         model.params_b,
+        "arch":             model.arch,
+        "hf_downloads":     model.hf_downloads,
+        "hf_likes":         model.hf_likes,
+
+        # Benchmark scores (Open LLM Leaderboard 2) — omit block if no data
+        **({"benchmarks": {
             "lb_score":    model.lb_score,
             "lb_ifeval":   model.lb_ifeval,
             "lb_bbh":      model.lb_bbh,
@@ -110,44 +145,46 @@ def write_fingerprint(
             "lb_gpqa":     model.lb_gpqa,
             "lb_musr":     model.lb_musr,
             "lb_mmlu_pro": model.lb_mmlu_pro,
-        } if model.lb_score > 0 else {},
-        # Fingerprint snapshot
-        "commit_sha": repo_fp.commit_sha,
-        "crawled_at": repo_fp.crawled_at,
-        "file_count": len(file_list),
-        "total_size_bytes": repo_fp.total_size_bytes,
-        "total_size_human": _human_bytes(repo_fp.total_size_bytes),
+        }} if model.lb_score > 0 else {}),
+
+        # Core verification payload
         "files": file_list,
     }
 
     fp_path = repo_dir / "fingerprint.json"
     _atomic_write(fp_path, json.dumps(fp_data, indent=2))
-    _atomic_write(repo_dir / "fingerprint.md", _render_markdown(fp_data, model))
+
+    _atomic_write(repo_dir / "fingerprint.md", _render_markdown(fp_data))
+    _atomic_write(repo_dir / "sha256sums.txt", _render_sha256sums(file_list))
 
     return fp_path
 
 
-def append_global_index(index_path: Path, repo_fp: RepoFingerprint, model: ModelEntry) -> None:
-    """Upsert a compact one-line record into the global index.jsonl.
+def append_global_index(
+    index_path: Path,
+    rel_fp: ReleaseFingerprint,
+    model: ModelEntry,
+) -> None:
+    """
+    Upsert a compact one-line record into the global index.jsonl.
 
-    Idempotent: if an entry for this hf_repo already exists it is replaced
-    in-place (via a full rewrite of the file) so re-runs don't produce
-    duplicate lines.
+    Idempotent: existing entry for this hf_repo is replaced, not duplicated.
     """
     index_path.parent.mkdir(parents=True, exist_ok=True)
+
     record = {
-        "hf_repo": repo_fp.hf_repo,
-        "family": model.family,
-        "tier": model.tier,
-        "importance": model.importance,
-        "commit_sha": repo_fp.commit_sha,
-        "crawled_at": repo_fp.crawled_at,
-        "file_count": len(repo_fp.files),
-        "total_size_bytes": repo_fp.total_size_bytes,
-        "total_size_human": _human_bytes(repo_fp.total_size_bytes),
+        "hf_repo":          rel_fp.hf_repo,
+        "release_tag":      rel_fp.release_tag,
+        "is_head_fallback": rel_fp.is_head_fallback,
+        "family":           model.family,
+        "tier":             model.tier,
+        "importance":       model.importance,
+        "crawled_at":       rel_fp.crawled_at,
+        "file_count":       len(rel_fp.files),
+        "total_size_bytes": rel_fp.total_size_bytes,
+        "total_size_human": _human_bytes(rel_fp.total_size_bytes),
     }
 
-    # Load existing lines, replace matching repo, append if new
     existing: list[dict] = []
     if index_path.exists():
         for line in index_path.read_text(encoding="utf-8").splitlines():
@@ -156,13 +193,12 @@ def append_global_index(index_path: Path, repo_fp: RepoFingerprint, model: Model
                 continue
             try:
                 entry = json.loads(line)
-                if entry.get("hf_repo") != repo_fp.hf_repo:
+                if entry.get("hf_repo") != rel_fp.hf_repo:
                     existing.append(entry)
             except json.JSONDecodeError:
-                pass  # skip malformed lines silently
+                pass
     existing.append(record)
 
-    # Write atomically so a concurrent read never sees a truncated file
     tmp = index_path.with_suffix(".jsonl.tmp")
     with open(tmp, "w", encoding="utf-8") as f:
         for entry in existing:
@@ -177,66 +213,92 @@ def load_fingerprint(repo_dir: Path) -> Optional[dict]:
     return json.loads(fp_path.read_text())
 
 
+# ── Internal ──────────────────────────────────────────────────────────────────
+
 def _atomic_write(path: Path, content: str) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(content, encoding="utf-8")
     tmp.replace(path)
 
 
-def _render_markdown(fp: dict, model: ModelEntry) -> str:
-    tier_labels = {
-        "A": "Tier A — Major flagship model",
-        "B": "Tier B — Code-specialist model",
-        "C": "Tier C — Quantized GGUF",
-        "D": "Tier D — Uncensored / abliterated variant",
-    }
+def _render_sha256sums(file_list: list[dict]) -> str:
+    """Standard sha256sum-compatible format:  <hash>  <filename>"""
+    lines = [f"{f['sha256']}  {f['filename']}" for f in file_list]
+    return "\n".join(lines) + "\n"
+
+
+def _render_markdown(fp: dict) -> str:
+    tag        = fp["release_tag"]
+    is_fallback = fp.get("is_head_fallback", False)
+    tag_note   = " *(no formal release — HEAD snapshot)*" if is_fallback else ""
+    hf_url     = fp["hf_url"]
+    commit     = fp["commit_sha"]
+
     file_rows = "\n".join(
-        f"| `{f['filename']}` | `{f['sha256']}` | {f['size_human']} |"
+        f"| `{f['filename']}` | `{f['sha256']}` | {f['size_human']} | [↓]({f['source_url']}) |"
         for f in fp.get("files", [])
     )
-    parent_line = (
-        f"| Parent model | [{model.parent_model}](https://huggingface.co/{model.parent_model}) |\n"
-        if model.parent_model else ""
-    )
-    method_line = f"| Method | {model.method} |\n" if model.method else ""
+
+    benchmarks = fp.get("benchmarks", {})
+    bench_section = ""
+    if benchmarks:
+        bench_section = f"""
+## Benchmark Scores (Open LLM Leaderboard 2)
+
+| Metric | Score |
+|--------|-------|
+| Average | {benchmarks.get('lb_score', '—')} |
+| IFEval | {benchmarks.get('lb_ifeval', '—')} |
+| BBH | {benchmarks.get('lb_bbh', '—')} |
+| MATH | {benchmarks.get('lb_math', '—')} |
+| GPQA | {benchmarks.get('lb_gpqa', '—')} |
+| MuSR | {benchmarks.get('lb_musr', '—')} |
+| MMLU-Pro | {benchmarks.get('lb_mmlu_pro', '—')} |
+"""
+
+    parent_line = ""
+    if fp.get("parent_model"):
+        parent_line = f"| Parent model | [{fp['parent_model']}](https://huggingface.co/{fp['parent_model']}) |\n"
+    method_line = f"| Method | {fp['method']} |\n" if fp.get("method") else ""
     notes_section = f"\n## Notes\n\n{fp['notes']}\n" if fp.get("notes") else ""
 
-    return f"""# {fp['hf_repo']} — Fingerprint
+    return f"""# {fp['hf_repo']} — Integrity Fingerprint
 
-## Identity
+> **Purpose:** Verify a copy of this model obtained from any source (mirror,
+> archive, torrent) against the hashes recorded here at crawl time.
+
+## Release
 
 | Field | Value |
 |-------|-------|
-| HuggingFace repo | [{fp['hf_repo']}]({fp['hf_url']}) |
-| Pinned commit | [`{fp['commit_sha'][:12]}…`]({fp['hf_commit_url']}) |
+| HuggingFace repo | [{fp['hf_repo']}]({hf_url}) |
+| Release tag | `{tag}`{tag_note} |
+| Commit at crawl | `{commit[:16]}…` |
+| Crawled at | {fp['crawled_at']} |
+| File count | {fp['file_count']} |
+| Total size | {fp['total_size_human']} |
 | Family | {fp['family']} |
-| Tier | {tier_labels.get(fp['tier'], fp['tier'])} |
-| Importance | {fp['importance']} |
+| Tier | {fp['tier']} |
 | Licence | {fp['licence']} |
 | Token-gated | {'Yes' if fp['requires_auth'] else 'No'} |
 {parent_line}{method_line}
-## Snapshot
-
-| Field | Value |
-|-------|-------|
-| Crawled at | {fp['crawled_at']} |
-| Commit | `{fp['commit_sha'][:16]}…` |
-| File count | {fp['file_count']} |
-| Total size | {fp['total_size_human']} |
-{notes_section}
+{bench_section}{notes_section}
 ## File Hashes
 
-| Filename | SHA-256 | Size |
-|----------|---------|------|
+| Filename | SHA-256 | Size | URL |
+|----------|---------|------|-----|
 {file_rows}
 
-## How to verify
+## How to Verify
 
 ```bash
-# Verify a single file:
+# Verify a single downloaded file:
 echo "<sha256>  <filename>" | sha256sum --check
 
-# Verify all files in a directory:
+# Verify all files at once using the companion sha256sums.txt:
+sha256sum --check sha256sums.txt
+
+# Or using jq directly from fingerprint.json:
 jq -r '.files[] | .sha256 + "  " + .filename' fingerprint.json | sha256sum --check
 ```
 """
