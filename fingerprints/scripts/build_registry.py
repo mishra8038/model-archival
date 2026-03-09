@@ -149,6 +149,9 @@ def classify_importance(score: float, downloads: int, params: float) -> str:
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 
+CURATED_PATH = ROOT / "config" / "curated.yaml"
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--min-relevance', type=float, default=6.0,
@@ -363,14 +366,31 @@ models:
             entry['lb_mmlu_pro'] = c['lb_mmlu_pro']
         model_dicts.append(entry)
 
+    # ── Merge curated additions (GGUF quants, vision, new releases) ───────────
+    curated_extra = []
+    if CURATED_PATH.exists():
+        curated = yaml.safe_load(CURATED_PATH.read_text()) or {}
+        existing_repos = {m['hf_repo'] for m in model_dicts}
+        for m in curated.get('models', []):
+            if m['hf_repo'] not in existing_repos:
+                curated_extra.append(m)
+        if curated_extra:
+            print(f"  + {len(curated_extra)} curated additions merged from {CURATED_PATH.name}")
+
+    all_models = model_dicts + curated_extra
+    header_updated = header.replace(
+        f"# Models:    {len(candidates)}",
+        f"# Models:    {len(all_models)} ({len(candidates)} leaderboard + {len(curated_extra)} curated)",
+    )
+
     body = yaml.dump(
-        {'models': model_dicts},
+        {'models': all_models},
         allow_unicode=True,
         default_flow_style=False,
         sort_keys=False,
         width=120,
     )
-    _atomic_write_text(OUT, header + body)
+    _atomic_write_text(OUT, header_updated + body)
     print(f"\nWrote {OUT}  ({OUT.stat().st_size // 1024} KB)")
 
 
