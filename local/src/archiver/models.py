@@ -12,7 +12,7 @@ import yaml
 class ModelEntry:
     id: str
     hf_repo: str
-    tier: str                        # A | B | C | D
+    tier: str                        # A | B | C | D | E | F | G
     drive: str                       # d1 .. d5
     priority: int                    # 1 = token-free, 2 = gated
     licence: str

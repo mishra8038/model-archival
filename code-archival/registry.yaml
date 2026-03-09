@@ -276,7 +276,7 @@ repos:
     notes: ZeRO optimizer — essential for training large models on limited GPU memory.
 
   - id: pytorch/torchtune
-    github: pytorch/torchtune
+    github: meta-pytorch/torchtune
     category: training
     risk: low
     licence: BSD-3-Clause
@@ -297,7 +297,7 @@ repos:
     notes: Best open RLHF framework supporting PPO/GRPO at scale. Chinese team.
 
   - id: volcengine/verl
-    github: volcengine/verl
+    github: verl-project/verl
     category: training
     risk: high
     licence: Apache-2.0
@@ -324,7 +324,7 @@ repos:
     notes: Original GPTQ quantization tool. Original maintainer stepped away.
 
   - id: huggingface/quanto
-    github: huggingface/quanto
+    github: huggingface/optimum-quanto
     category: quantization
     risk: medium
     licence: Apache-2.0
@@ -338,7 +338,7 @@ repos:
     notes: llama-quantize binary — primary GGUF quantization tool.
 
   - id: chu-tianxiang/llmc
-    github: ModelTC/llmc
+    github: ModelTC/LightCompress
     category: quantization
     risk: high
     licence: Apache-2.0
@@ -423,7 +423,7 @@ repos:
     notes: Red-teaming benchmark. Academic — may be abandoned or pulled under pressure.
 
   - id: paul-gauthier/aider
-    github: paul-gauthier/aider
+    github: Aider-AI/aider
     category: coding-agents
     risk: critical
     licence: Apache-2.0
@@ -455,7 +455,7 @@ repos:
       Supports local models via Ollama/llama.cpp. VC-backed but strong OSS commitment.
 
   - id: All-Hands-AI/OpenHands
-    github: All-Hands-AI/OpenHands
+    github: OpenHands/OpenHands
     category: coding-agents
     risk: medium
     licence: MIT
@@ -465,7 +465,7 @@ repos:
       well-funded but trajectory uncertain.
 
   - id: princeton-nlp/SWE-agent
-    github: princeton-nlp/SWE-agent
+    github: SWE-agent/SWE-agent
     category: coding-agents
     risk: critical
     licence: MIT
@@ -491,6 +491,16 @@ repos:
     notes: >
       GPTScript — scripting language for building LLM tool-use workflows.
       Small org (Acorn Labs). Useful for composing local model pipelines.
+
+  - id: RooCodeInc/Roo-Code
+    github: RooCodeInc/Roo-Code
+    category: coding-agents
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Roo Code — open-source VS Code coding agent (~22k stars). Multi-mode
+      (Orchestrate, Architect, Code, Debug, Ask), operates directly on the local
+      filesystem with high autonomy. Individual-started, no institutional backup.
 
   - id: smol-ai/developer
     github: smol-ai/developer
@@ -575,6 +585,46 @@ repos:
     risk: medium
     licence: MIT
     notes: OpenAI's lightweight multi-agent coordination framework.
+
+  - id: huggingface/smolagents
+    github: huggingface/smolagents
+    category: agents
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      smolagents — HuggingFace's minimalist code-first agent library (~26k stars).
+      CodeAgent architecture writes Python instead of JSON actions. Model-agnostic,
+      sandboxed execution. Backed by HF but still an early-stage project.
+
+  - id: google/adk-python
+    github: google/adk-python
+    category: agents
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Google Agent Development Kit (ADK) — modular Python framework for building
+      agents with Gemini and Vertex AI (~18k stars). Hierarchical agent composition,
+      under 100 lines to deploy. Google-backed but could be deprioritized.
+
+  - id: langgenius/dify
+    github: langgenius/dify
+    category: agents
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Dify — low-code LLM app and agent platform (~131k stars). Visual workflow
+      builder, built-in RAG, ReAct, Function Calling. Massive community. Small
+      startup origin — high risk of commercialisation lock-in or shutdown.
+
+  - id: RasaHQ/rasa
+    github: RasaHQ/rasa
+    category: agents
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Rasa — open-source conversational AI framework (~21k stars). CALM architecture
+      separates language understanding from business logic. Trusted by American Express,
+      others. Company pivoting toward enterprise — OSS version may stagnate.
 
   # ===========================================================================
   # RAG — retrieval-augmented generation
@@ -675,7 +725,7 @@ repos:
       for querying local or remote models. Widely used by power users.
 
   - id: Mozilla-Ocho/llamafile
-    github: Mozilla-Ocho/llamafile
+    github: mozilla-ai/llamafile
     category: tooling
     risk: medium
     licence: Apache-2.0
@@ -700,7 +750,7 @@ repos:
       high risk of shutdown or acquisition. Relevant for multimodal archival.
 
   - id: comfyanonymous/ComfyUI
-    github: comfyanonymous/ComfyUI
+    github: Comfy-Org/ComfyUI
     category: tooling
     risk: critical
     licence: GPL-3.0
@@ -730,14 +780,14 @@ repos:
       ControlNet — spatial conditioning for diffusion models. Single academic
       author. Foundational technique used in all image generation pipelines.
 
-  - id: Stability-AI/stablediffusion
-    github: Stability-AI/stablediffusion
+  - id: CompVis/stable-diffusion
+    github: CompVis/stable-diffusion
     category: multimodal
     risk: high
     licence: MIT
     notes: >
-      Original Stable Diffusion v1/v2 reference implementation. Stability AI
-      is financially troubled — high shutdown risk.
+      Original Stable Diffusion v1 reference implementation by CompVis (LMU Munich).
+      The Stability-AI/stablediffusion repo was deleted; this is the canonical historical source.
 
   - id: black-forest-labs/flux
     github: black-forest-labs/flux
@@ -858,6 +908,26 @@ repos:
       primary LangChain substrate for complex multi-step and cyclical agent flows.
       Separate repo from langchain but same org — archive both.
 
+  - id: n8n-io/n8n
+    github: n8n-io/n8n
+    category: agents
+    risk: medium
+    licence: fair-code (Sustainable Use License)
+    notes: >
+      n8n — self-hosted workflow automation with native AI/LLM steps (~178k stars).
+      Widely used for local DevOps, API orchestration, and agentic pipelines.
+      Fair-code licence limits commercial SaaS hosting but source is public.
+
+  - id: reworkd/AgentGPT
+    github: reworkd/AgentGPT
+    category: agents
+    risk: high
+    licence: GPL-3.0
+    notes: >
+      AgentGPT — browser-deployable autonomous agent framework (~35k stars).
+      Single maintainer, high shutdown risk. Deploy goal-directed agents locally
+      with tool use, web search, and task decomposition.
+
   # ===========================================================================
   # MEMORY & CONTEXT — long-context and memory systems
   # ===========================================================================
@@ -904,7 +974,7 @@ repos:
   # ===========================================================================
 
   - id: instructor-ai/instructor
-    github: instructor-ai/instructor
+    github: 567-labs/instructor
     category: structured-llm
     risk: high
     licence: MIT
@@ -924,7 +994,7 @@ repos:
       Academic but widely adopted — potential abandonment risk.
 
   - id: outlines-dev/outlines
-    github: outlines-dev/outlines
+    github: dottxt-ai/outlines
     category: structured-llm
     risk: high
     licence: Apache-2.0
@@ -1033,7 +1103,7 @@ repos:
     notes: HF's large-scale data processing library. Used to build web-crawl datasets.
 
   - id: mlfoundations/open-clip
-    github: mlfoundations/open-clip
+    github: mlfoundations/open_clip
     category: dataset
     risk: medium
     licence: MIT
@@ -1119,7 +1189,7 @@ repos:
       for nearly all published mech-interp research. Small org — fragile.
 
   - id: jbloomAUS/SAELens
-    github: jbloomAUS/SAELens
+    github: decoderesearch/SAELens
     category: interpretability
     risk: critical
     licence: MIT
@@ -1217,7 +1287,7 @@ repos:
       Used to build high-quality RLHF datasets. Small org — pivot risk.
 
   - id: NVIDIA/NeMo-Curator
-    github: NVIDIA/NeMo-Curator
+    github: NVIDIA-NeMo/Curator
     category: synthetic-data
     risk: medium
     licence: Apache-2.0
@@ -1279,16 +1349,6 @@ repos:
       Qwen-VL training and inference code. We're archiving Qwen VLM weights —
       this is the companion training codebase. Chinese org — export risk.
 
-  - id: microsoft/Florence-2
-    github: microsoft/Florence-2
-    category: multimodal-training
-    risk: medium
-    licence: MIT
-    notes: >
-      Florence-2 — Microsoft's compact but capable vision foundation model.
-      Reference implementation for unified image understanding tasks.
-      Corporate — could be gated.
-
   - id: TRI-ML/prismatic-vlms
     github: TRI-ML/prismatic-vlms
     category: multimodal-training
@@ -1344,7 +1404,7 @@ repos:
       is used by almost every real-time STT pipeline. Single author — fragile.
 
   - id: collabora/WhisperSpeech
-    github: collabora/WhisperSpeech
+    github: WhisperSpeech/WhisperSpeech
     category: voice-pipeline
     risk: high
     licence: MIT
@@ -1388,7 +1448,7 @@ repos:
       for running ONNX-exported models offline on any hardware.
 
   - id: openai/triton
-    github: openai/triton
+    github: triton-lang/triton
     category: model-conversion
     risk: medium
     licence: MIT

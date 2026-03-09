@@ -56,7 +56,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 1df8507178afcc1bef68cd8c393f61a886323761
   notes: Smaller distill — fits single consumer GPU
 - id: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
   hf_repo: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
@@ -89,7 +89,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8
   notes: 2M downloads — glaring gap between 7B and 32B, lb=41.3
 - id: Qwen/Qwen2.5-7B-Instruct
   hf_repo: Qwen/Qwen2.5-7B-Instruct
@@ -115,7 +115,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 9216db5781bf21249d130ec9da846c4624c16137
   notes: Qwen3 flagship dense model
 - id: Qwen/Qwen3-14B
   hf_repo: Qwen/Qwen3-14B
@@ -124,7 +124,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 40c069824f4251a91eefaf281ebe4c544efd3e18
 - id: Qwen/Qwen3-8B
   hf_repo: Qwen/Qwen3-8B
   tier: A
@@ -132,7 +132,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: b968826d9c46dd6066d109eabc6255188de91218
 - id: Qwen/Qwen3-235B-A22B
   hf_repo: Qwen/Qwen3-235B-A22B
   tier: A
@@ -287,7 +287,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: b2cff646eb4bb1d68355c01b18ae02e7cf42d120
   notes: Qwen3 MoE code model — 1M downloads
 - id: deepseek-ai/DeepSeek-Coder-V2-Instruct
   hf_repo: deepseek-ai/DeepSeek-Coder-V2-Instruct

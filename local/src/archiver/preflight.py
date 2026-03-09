@@ -137,7 +137,7 @@ def check_registry(registry: Registry) -> None:
     for m in registry.models:
         if not m.hf_repo or "/" not in m.hf_repo:
             errors.append(f"{m.id}: invalid hf_repo '{m.hf_repo}'")
-        if m.tier not in ("A", "B", "C", "D"):
+        if m.tier not in ("A", "B", "C", "D", "E", "F", "G"):
             errors.append(f"{m.id}: invalid tier '{m.tier}'")
         if m.priority not in (1, 2):
             errors.append(f"{m.id}: invalid priority {m.priority}")

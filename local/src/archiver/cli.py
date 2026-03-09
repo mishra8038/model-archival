@@ -127,7 +127,7 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 
 @cli.command("download")
 @click.argument("target", default="--all")
-@click.option("--tier", type=click.Choice(["A", "B", "C", "D"]), help="Download a specific tier")
+@click.option("--tier", type=click.Choice(["A", "B", "C", "D", "E", "F", "G"]), help="Download a specific tier")
 @click.option("--all", "download_all", is_flag=True, default=False, help="Download everything")
 @click.option("--priority-only", type=int, help="Download only models with this priority (1 or 2)")
 @click.option("--dry-run", is_flag=True, help="Print what would be downloaded without fetching")
@@ -325,7 +325,7 @@ def cmd_download(
 @cli.command("verify")
 @click.argument("model_id", default="")
 @click.option("--all", "verify_all", is_flag=True)
-@click.option("--tier", type=click.Choice(["A", "B", "C", "D"]))
+@click.option("--tier", type=click.Choice(["A", "B", "C", "D", "E", "F", "G"]))
 @click.option("--drive", "drive_filter")
 @click.option("--manifest", type=click.Path(), help="Verify against a specific manifest.json")
 @click.pass_context
@@ -431,7 +431,7 @@ def cmd_status(ctx: click.Context, drive_filter: Optional[str]) -> None:
 # ------------------------------------------------------------------
 
 @cli.command("list")
-@click.option("--tier", type=click.Choice(["A", "B", "C", "D"]))
+@click.option("--tier", type=click.Choice(["A", "B", "C", "D", "E", "F", "G"]))
 @click.option("--json", "as_json", is_flag=True)
 @click.pass_context
 def cmd_list(ctx: click.Context, tier: Optional[str], as_json: bool) -> None:
