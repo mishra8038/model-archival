@@ -564,6 +564,28 @@ repos:
       the public feature backlog and community context. 68% developer adoption
       in 2025 AI-assisted coding surveys.
 
+  - id: voideditor/void
+    github: voideditor/void
+    category: coding-agents
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      Void — open-source Cursor alternative (~28k stars). VS Code fork with
+      native AI agents, checkpoint/diff visualization, and support for any
+      local or cloud model with no data retention. Development currently
+      paused while team explores new direction — very high abandonment risk.
+
+  - id: VSCodium/vscodium
+    github: VSCodium/vscodium
+    category: coding-agents
+    risk: low
+    licence: MIT
+    notes: >
+      VSCodium — MIT-licensed binary builds of VS Code without Microsoft
+      telemetry, branding, or proprietary licensing (~30k stars). The open
+      base used by privacy-conscious developers to run Cline, Continue,
+      Tabby and other open-source AI extensions locally.
+
   # ===========================================================================
   # AGENTS — orchestration, tool-use, autonomous agents
   # ===========================================================================
