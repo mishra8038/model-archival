@@ -533,6 +533,37 @@ repos:
       has 120k+ stars. Archiving original for historical reference.
       Single-author origin — very high risk of link rot.
 
+  - id: nomic-ai/gpt4all
+    github: nomic-ai/gpt4all
+    category: coding-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      GPT4All — open-source local LLM desktop app and API server (~77k stars).
+      Runs any GGUF model offline on CPU/GPU. Cross-platform. Backed by Nomic AI.
+      Widely used as a privacy-first GitHub Copilot alternative.
+
+  - id: TabbyML/tabby
+    github: TabbyML/tabby
+    category: coding-agents
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      Tabby — self-hosted AI coding server (~33k stars). OpenAPI interface,
+      supports consumer GPUs, integrates with VS Code/Vim/IntelliJ. Small
+      team origin — high abandonment risk. Open-core model (server is OSS).
+
+  - id: cursor/cursor
+    github: cursor/cursor
+    category: coding-agents
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Cursor — issue tracker and public community repo for the Cursor AI IDE
+      (~32k stars). The editor itself is proprietary, but this repo captures
+      the public feature backlog and community context. 68% developer adoption
+      in 2025 AI-assisted coding surveys.
+
   # ===========================================================================
   # AGENTS — orchestration, tool-use, autonomous agents
   # ===========================================================================
