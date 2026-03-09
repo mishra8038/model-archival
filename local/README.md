@@ -122,6 +122,39 @@ The live screen GUI shows bandwidth (MB/s and Mbps) in the Active Downloads pane
 
 All in-progress downloads use `D1/.tmp/`. No data ever touches the root SSD.
 
+In addition, `config/drives.yaml` should record the **physical disk identifiers**
+for each logical drive (D1, D2, D3, D5) using `by_id` and/or `serial` fields.
+Fill these from `ls -l /dev/disk/by-id` and `lsblk -o NAME,SERIAL` on the VM.
+This lets you re-establish which disk is which if Proxmox/VM mappings change.
+
+---
+
+## Registry evolution, topology, and future GC
+
+Over time the **model list will change** as the leaderboard evolves and new releases appear. The archiver is designed so that future runs can:
+
+- **Snapshot registries:** when you materially change `config/registry.yaml`, copy it to a dated snapshot such as `config/registry-2026-03-09.yaml` and commit it. This gives you a full history of what was “in scope” for each archival run.
+- **Describe disk topology explicitly:** keep a small `config/topology.yaml` (planned) that records drives, capacities, and which tiers are allowed on each drive. Example:
+
+  ```yaml
+  drives:
+    d1: { mount: /mnt/models/d1, capacity_tb: 5543.9, tiers: [A, B] }
+    d2: { mount: /mnt/models/d2, capacity_tb: 2749.6, tiers: [A, B, D] }
+    d3: { mount: /mnt/models/d3, capacity_tb: 2749.6, tiers: [C, D, G] }
+  ```
+
+- **Reconcile old vs new registries (future `archiver reconcile` mode):**
+  - Compare an old snapshot (`registry-YYYYMMDD.yaml`) to the current `registry.yaml`.
+  - Classify models as **kept** (in both), **dropped** (only in old), or **new** (only in current).
+  - For kept models, verify that weights still exist on disk and optionally cross-check against fingerprints.
+  - For dropped models, generate a **GC plan** listing which model directories could be safely deleted to reclaim space.
+  - For new models, use live drive usage + `topology.yaml` to propose **drive assignments** and update `registry.yaml` accordingly.
+
+- **Garbage collection as an explicit step (future `archiver gc` mode):**
+  - GC will never delete automatically. Instead it will read a GC plan (for example from `/mnt/models/d5/GC_PLAN.md`), delete only those listed model directories, and mark their entries in `run_state.json` as `deleted`.
+
+Until those commands are implemented, you can still follow the same pattern manually: snapshot the registry before changes, use `MANIFEST.md` + `run_state.json` to see what is on disk, and delete old models by hand if you want to free space for newly added ones.
+
 ---
 
 ## Documentation

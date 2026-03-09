@@ -1,0 +1,193 @@
+# =============================================================================
+# High-risk / likely-to-disappear models (from leaderboard)
+#
+# This is an *alternative* registry view focused on uncensored / abliterated /
+# license-sensitive models (tier D, importance high/critical) that are NOT yet
+# in the main local/config/registry.yaml.
+#
+# These entries are *not* wired into the archiver by default; you can:
+#   - copy/paste selected models into registry.yaml, or
+#   - teach the CLI a flag to include this file as an overlay.
+#
+# Generated: 2026-03-09 from fingerprints/config/registry.yaml
+# Source:    Open LLM Leaderboard 2 + HF rankings (tier == D, importance in {high,critical})
+# =============================================================================
+
+models:
+  # Top 25 candidates by leaderboard score (dl-weighted), not yet in weight registry
+  - id: zetasepic/Qwen2.5-32B-Instruct-abliterated-v2
+    hf_repo: zetasepic/Qwen2.5-32B-Instruct-abliterated-v2
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
+    hf_repo: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: zetasepic/Qwen2.5-72B-Instruct-abliterated
+    hf_repo: zetasepic/Qwen2.5-72B-Instruct-abliterated
+    tier: D
+    drive: d3
+    priority: 1
+    licence: other
+    requires_auth: false
+  - id: CombinHorizon/huihui-ai-abliterated-Qwen2.5-32B-Inst-BaseMerge-TIES
+    hf_repo: CombinHorizon/huihui-ai-abliterated-Qwen2.5-32B-Inst-BaseMerge-TIES
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: Goekdeniz-Guelmez/Josiefied-Qwen2.5-14B-Instruct-abliterated-v4
+    hf_repo: Goekdeniz-Guelmez/Josiefied-Qwen2.5-14B-Instruct-abliterated-v4
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: nbeerbower/EVA-abliterated-TIES-Qwen2.5-14B
+    hf_repo: nbeerbower/EVA-abliterated-TIES-Qwen2.5-14B
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: CombinHorizon/Josiefied-abliteratedV4-Qwen2.5-14B-Inst-BaseMerge-TIES
+    hf_repo: CombinHorizon/Josiefied-abliteratedV4-Qwen2.5-14B-Inst-BaseMerge-TIES
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
+    hf_repo: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: CombinHorizon/huihui-ai-abliteratedV2-Qwen2.5-14B-Inst-BaseMerge-TIES
+    hf_repo: CombinHorizon/huihui-ai-abliteratedV2-Qwen2.5-14B-Inst-BaseMerge-TIES
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
+    hf_repo: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
+    tier: D
+    drive: d3
+    priority: 1
+    licence: llama3.1
+    requires_auth: false
+  - id: NousResearch/Hermes-3-Llama-3.1-70B
+    hf_repo: NousResearch/Hermes-3-Llama-3.1-70B
+    tier: D
+    drive: d3
+    priority: 1
+    licence: llama3
+    requires_auth: false
+  - id: Undi95/Phi4-abliterated
+    hf_repo: Undi95/Phi4-abliterated
+    tier: D
+    drive: d3
+    priority: 2
+    licence: unknown
+    requires_auth: false
+  - id: Triangle104/Phi-4-AbliteratedRP
+    hf_repo: Triangle104/Phi-4-AbliteratedRP
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v1.0
+    hf_repo: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v1.0
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: failspy/llama-3-70B-Instruct-abliterated
+    hf_repo: failspy/llama-3-70B-Instruct-abliterated
+    tier: D
+    drive: d3
+    priority: 1
+    licence: llama3
+    requires_auth: false
+  - id: Orion-zhen/Qwen2.5-7B-Instruct-Uncensored
+    hf_repo: Orion-zhen/Qwen2.5-7B-Instruct-Uncensored
+    tier: D
+    drive: d3
+    priority: 2
+    licence: gpl-3.0
+    requires_auth: false
+  - id: Isaak-Carter/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
+    hf_repo: Isaak-Carter/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: Goekdeniz-Guelmez/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
+    hf_repo: Goekdeniz-Guelmez/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: huihui-ai/Qwen2.5-7B-Instruct-abliterated-v2
+    hf_repo: huihui-ai/Qwen2.5-7B-Instruct-abliterated-v2
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: huihui-ai/Qwen2.5-7B-Instruct-abliterated
+    hf_repo: huihui-ai/Qwen2.5-7B-Instruct-abliterated
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: darkc0de/BuddyGlassUncensored2025.2
+    hf_repo: darkc0de/BuddyGlassUncensored2025.2
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: alpindale/WizardLM-2-8x22B
+    hf_repo: alpindale/WizardLM-2-8x22B
+    tier: D
+    drive: d3
+    priority: 1
+    licence: apache-2.0
+    requires_auth: false
+  - id: NousResearch/DeepHermes-3-Mistral-24B-Preview
+    hf_repo: NousResearch/DeepHermes-3-Mistral-24B-Preview
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v0.9
+    hf_repo: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v0.9
+    tier: D
+    drive: d3
+    priority: 2
+    licence: apache-2.0
+    requires_auth: false
+  - id: failspy/Phi-3-medium-4k-instruct-abliterated-v3
+    hf_repo: failspy/Phi-3-medium-4k-instruct-abliterated-v3
+    tier: D
+    drive: d3
+    priority: 2
+    licence: mit
+    requires_auth: false
+

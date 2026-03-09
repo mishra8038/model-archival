@@ -201,13 +201,14 @@ class StatusDisplay:
             mp = drive.mount_point
             try:
                 usage = psutil.disk_usage(str(mp))
-                used_gb = usage.used / 1024**3
-                total_gb = usage.total / 1024**3
+                # Use true tebibytes for TB display
+                used_tb = usage.used / 1024**4
+                total_tb = usage.total / 1024**4
                 pct = usage.percent
                 bar_w = 20
                 filled = int(bar_w * pct / 100)
                 bar = f"[green]{'█' * filled}[/][dim]{'░' * (bar_w - filled)}[/]"
-                table.add_row(label.upper(), bar, f"{used_gb:.1f}/{total_gb:.1f} TB")
+                table.add_row(label.upper(), bar, f"{used_tb:.1f}/{total_tb:.1f} TB")
             except Exception:
                 table.add_row(label.upper(), "[red]unavailable[/]", "—")
         return Panel(table, title="Drive Usage", width=46)
@@ -324,10 +325,13 @@ class StatusDisplay:
         for label, drive in self.registry.drives.items():
             try:
                 u = psutil.disk_usage(str(drive.mount_point))
+                used_tb = u.used / 1024**4
+                free_tb = u.free / 1024**4
+                total_tb = u.total / 1024**4
                 lines.append(
                     f"| {label.upper()} | {drive.mount_point} "
-                    f"| {u.used/1024**3:.1f} TB | {u.free/1024**3:.1f} TB "
-                    f"| {u.total/1024**3:.1f} TB |"
+                    f"| {used_tb:.1f} TB | {free_tb:.1f} TB "
+                    f"| {total_tb:.1f} TB |"
                 )
             except Exception:
                 lines.append(f"| {label.upper()} | {drive.mount_point} | N/A | N/A | N/A |")

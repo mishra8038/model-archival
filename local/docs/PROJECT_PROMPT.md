@@ -37,6 +37,12 @@ D4 (2TB Seagate) was removed — hardware attachment issue with Proxmox passthro
 
 All disks formatted ext4. Mounted via `/etc/fstab` by UUID. In-progress downloads go to `D1/.tmp/` (largest headroom). No model data ever touches the root SSD.
 
+For long-term maintainability, **record the physical disk IDs for each D1/D2/D3/D5
+mapping** in `config/drives.yaml` using `by_id` and/or `serial` fields, taken
+from `ls -l /dev/disk/by-id` and `lsblk -o NAME,SERIAL`. This makes it possible
+to reconstruct which physical disk was D1 vs D2 after VM reconfiguration or
+host changes.
+
 ---
 
 ## 3. Model Tiers
@@ -370,3 +376,32 @@ When extending this project, an AI agent should:
 6. **Update model allocation** — edit `drive:` field in `registry.yaml` entries; no code changes needed
 
 Always run `bash run.sh --dry-run` after any configuration change to validate before a real run.
+
+---
+
+## 15. Registry evolution, topology, and garbage collection (future work)
+
+As the leaderboard and ecosystem change, the set of archived models will evolve. Future agents should support **controlled change** instead of only appending new models:
+
+- **Versioned registries**
+  - When `config/registry.yaml` changes materially, copy it to a dated snapshot (for example `config/registry-2026-03-09.yaml`) and commit it.
+  - This preserves a full history of “what we were archiving” at each epoch and makes it easy to diff runs.
+
+- **Explicit disk topology**
+  - Maintain a small `config/topology.yaml` describing drives, capacities, and which tiers are allowed on which drives (D1 vs D2 vs D3), instead of hardcoding this in Python.
+  - New models should be assigned to drives based on `topology.yaml` + live free-space, not static assumptions.
+
+- **Reconcile mode (planned)**
+  - Add `archiver reconcile --from registry-OLD.yaml --to registry.yaml` that:
+    - Computes **kept** (old ∩ new), **dropped** (old \\ new), and **new** (new \\ old) model sets.
+    - For kept models: verifies that model directories exist and that `manifest.json` / `DESCRIPTOR.json` are intact; optionally cross-checks against fingerprints.
+    - For dropped models: generates a GC plan (e.g. `/mnt/models/d5/GC_PLAN.md`) listing which model directories can be deleted and how much space will be reclaimed.
+    - For new models: proposes drive assignments using `topology.yaml` and current per-drive usage, and either emits a placement plan or auto-updates `registry.yaml`.
+
+- **GC mode (planned)**
+  - Add `archiver gc --plan /mnt/models/d5/GC_PLAN.md` that:
+    - Deletes only the model directories explicitly listed in the plan (no implicit deletion).
+    - Updates `run_state.json` to mark those entries as `deleted` so future runs know the weights were intentionally removed.
+
+Principle: **no silent deletion**. All destructive actions should be driven by explicit, reviewable plans with archived registries and manifests for later audit.
+

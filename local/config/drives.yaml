@@ -5,15 +5,29 @@ d1:
   mount_point: /mnt/models/d1
   role: "Raw giants (Tier A large + Tier B large)"
   tmp_dir: /mnt/models/d1/.tmp   # in-progress downloads live here (2.3 TB headroom)
+  # Optional but strongly recommended:
+  # Record the physical disk identifier so we can remap D1 after VM / host changes.
+  # Example values (fill with your real IDs):
+  #   by_id: /dev/disk/by-id/wwn-0x5000c500a1b2c3d4
+  #   serial: ST6000VN001-2BB186_ZA123ABC
+  #   notes: "6 TB Seagate IronWolf in bay 1"
+  by_id: ""
+  serial: ""
 
 d2:
   mount_point: /mnt/models/d2
   role: "Raw mid-size (Tier A remainder + Tier B small + Tier D uncensored raw)"
+  by_id: ""
+  serial: ""
 
 d3:
   mount_point: /mnt/models/d3
   role: "Quantized GGUF (Tier C + Tier D quants)"
+  by_id: ""
+  serial: ""
 
 d5:
   mount_point: /mnt/models/d5
   role: "Metadata: archive/, logs, run_state.json, STATUS.md"
+  by_id: ""
+  serial: ""
