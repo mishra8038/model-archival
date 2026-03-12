@@ -6,7 +6,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: e815299b0bcbac849fa540c768ef21845365c9eb
 - id: deepseek-ai/DeepSeek-V3-0324
   hf_repo: deepseek-ai/DeepSeek-V3-0324
   tier: A
@@ -65,7 +65,7 @@ models:
   priority: 2
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 6a6f4aa4197940add57724a7707d069478df56b1
 - id: Qwen/Qwen2.5-72B-Instruct
   hf_repo: Qwen/Qwen2.5-72B-Instruct
   tier: A
@@ -106,7 +106,7 @@ models:
   priority: 2
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 620fad32de7bdd2293b3d99b39eba2fe63e97438
   notes: Long-context (1M token) variant — 55k downloads
 - id: Qwen/Qwen3-32B
   hf_repo: Qwen/Qwen3-32B
@@ -149,7 +149,7 @@ models:
   priority: 2
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: ad44e777bcd18fa416d9da3bd8f70d33ebb85d39
   notes: Smaller Qwen3 MoE — 1.2M downloads
 - id: meta-llama/Llama-3.1-405B-Instruct
   hf_repo: meta-llama/Llama-3.1-405B-Instruct
@@ -175,7 +175,7 @@ models:
   priority: 2
   licence: llama3.1
   requires_auth: true
-  commit_sha: null
+  commit_sha: 1605565b47bb9346c5515c34102e054115b4f98b
 - id: meta-llama/Llama-3.1-8B-Instruct
   hf_repo: meta-llama/Llama-3.1-8B-Instruct
   tier: A
@@ -183,7 +183,7 @@ models:
   priority: 2
   licence: llama3.1
   requires_auth: true
-  commit_sha: null
+  commit_sha: 0e9e39f249a16976918f6564b8830bc894c89659
 - id: google/gemma-3-27b-it
   hf_repo: google/gemma-3-27b-it
   tier: A
@@ -251,8 +251,26 @@ models:
   priority: 2
   licence: CC-BY-NC
   requires_auth: true
-  commit_sha: null
+  commit_sha: e808c1a2249354ca211c9f08d1338e5039f633f8
   notes: August 2024 update to Command R+. Accept at huggingface.co/CohereLabs/c4ai-command-r-plus-08-2024
+- id: mistralai/Mixtral-8x7B-Instruct-v0.1
+  hf_repo: mistralai/Mixtral-8x7B-Instruct-v0.1
+  tier: A
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Classic open MoE — strong general + coding; famous 8x7B Mixtral
+- id: mistralai/Mixtral-8x22B-Instruct-v0.1
+  hf_repo: mistralai/Mixtral-8x22B-Instruct-v0.1
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Larger Mixtral MoE — heavy but historically important
 - id: nvidia/Llama-3.1-Nemotron-70B-Instruct
   hf_repo: nvidia/Llama-3.1-Nemotron-70B-Instruct
   tier: A
@@ -260,7 +278,7 @@ models:
   priority: 2
   licence: llama3.1
   requires_auth: true
-  commit_sha: null
+  commit_sha: a83af1f4968437064635f6726fb745e5b615e863
   notes: NVIDIA's best-in-class fine-tune; dominated HF open leaderboard on release
 - id: allenai/Llama-3.1-Tulu-3-70B
   hf_repo: allenai/Llama-3.1-Tulu-3-70B
@@ -269,7 +287,7 @@ models:
   priority: 2
   licence: llama3.1
   requires_auth: true
-  commit_sha: null
+  commit_sha: cfc1d855e534a0b9b82a9cea6bf9e8dda30b10d7
   notes: lb=42.3 — AllenAI RLVR alignment research flagship; scientifically significant
 - id: Qwen/Qwen2.5-Coder-32B-Instruct
   hf_repo: Qwen/Qwen2.5-Coder-32B-Instruct
@@ -320,7 +338,7 @@ models:
   priority: 2
   licence: Mistral-MNPL
   requires_auth: true
-  commit_sha: null
+  commit_sha: 28b1c1a51dabe9d86ca8c41420ada1984632498f
   notes: Non-production licence. Accept at huggingface.co/mistralai/Codestral-22B-v0.1
 - id: open-r1/OlympicCoder-32B
   hf_repo: open-r1/OlympicCoder-32B
@@ -329,7 +347,7 @@ models:
   priority: 2
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 34113aee9d255591a1fa75b60d1e3422e82c3b1f
   notes: Coding reasoning model from the open-r1 initiative
 - id: bigcode/starcoder2-15b
   hf_repo: bigcode/starcoder2-15b
@@ -338,7 +356,7 @@ models:
   priority: 2
   licence: BigCode-OpenRAIL-M
   requires_auth: false
-  commit_sha: null
+  commit_sha: 46d44742909c03ac8cee08eb03fdebce02e193ec
   notes: Best pure code-completion model; historically significant
 - id: unsloth/DeepSeek-R1-GGUF
   hf_repo: unsloth/DeepSeek-R1-GGUF
@@ -369,7 +387,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 1dc8cf9ffa5dd333057ea1b09ccf4772d8726dec
   quant_levels:
   - Q8_0
 - id: bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF
@@ -379,7 +397,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 1842c5f7280f933ead58adf8afd078672c9f6cd0
   quant_levels:
   - Q8_0
 - id: bartowski/Llama-3.3-70B-Instruct-GGUF
@@ -389,7 +407,7 @@ models:
   priority: 1
   licence: llama3.3
   requires_auth: false
-  commit_sha: null
+  commit_sha: b6c5c9f176f3279204034e1d16d393105e95cb88
   quant_levels:
   - Q8_0
 - id: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
@@ -399,7 +417,7 @@ models:
   priority: 1
   licence: llama3.1
   requires_auth: false
-  commit_sha: null
+  commit_sha: bf5b95e96dac0462e2a09145ec66cae9a3f12067
   quant_levels:
   - Q8_0
 - id: bartowski/Qwen2.5-72B-Instruct-GGUF
@@ -409,7 +427,7 @@ models:
   priority: 1
   licence: Qwen
   requires_auth: false
-  commit_sha: null
+  commit_sha: d43fd973131bce821f41e2df3c78c6fe15c5627a
   quant_levels:
   - Q8_0
 - id: bartowski/Qwen2.5-32B-Instruct-GGUF
@@ -419,7 +437,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 2116cbb385b8ce3a4d28cf3bf1cd2039a55821a6
   quant_levels:
   - Q8_0
 - id: bartowski/Qwen2.5-14B-Instruct-GGUF
@@ -429,7 +447,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 05244aa5d871c661c80082a15d3bce44714d068d
   quant_levels:
   - Q8_0
 - id: bartowski/Qwen2.5-7B-Instruct-GGUF
@@ -439,7 +457,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 8911e8a47f92bac19d6f5c64a2e2095bd2f7d031
   quant_levels:
   - Q8_0
 - id: Qwen/Qwen3-32B-GGUF
@@ -449,7 +467,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 938a7432affaec9157f883a87164e2646ae17555
   quant_levels:
   - Q8_0
   notes: Official Qwen3-32B GGUF from Qwen team
@@ -460,7 +478,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 8728e66249190b78dee8404869827328527f6b3b
   quant_levels:
   - Q8_0
   notes: Qwen reasoning model GGUF
@@ -471,7 +489,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 62a613c92d5a5f73bba6d348b51433b232c4640c
   quant_levels:
   - Q8_0
 - id: bartowski/phi-4-GGUF
@@ -481,7 +499,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 19cd65f97c2f1712a81c506611d3f9c94b16a1e1
   quant_levels:
   - Q8_0
 - id: bartowski/gemma-3-27b-it-GGUF
@@ -494,6 +512,26 @@ models:
   commit_sha: null
   quant_levels:
   - Q8_0
+- id: TheBloke/Mixtral-8x7B-v0.1-GGUF
+  hf_repo: TheBloke/Mixtral-8x7B-v0.1-GGUF
+  tier: C
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
+- id: bartowski/Mixtral-8x22B-v0.1-GGUF
+  hf_repo: bartowski/Mixtral-8x22B-v0.1-GGUF
+  tier: C
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  quant_levels:
+  - Q8_0
 - id: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
   hf_repo: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
   tier: C
@@ -501,7 +539,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 40b525506a4f98ed425882fa6dfc90cc8139065e
   quant_levels:
   - Q8_0
 - id: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
@@ -511,7 +549,7 @@ models:
   priority: 1
   licence: DeepSeek
   requires_auth: false
-  commit_sha: null
+  commit_sha: 8f248fa2072348f77a8bc37754e470de1f61866e
   quant_levels:
   - Q8_0
 - id: bartowski/Codestral-22B-v0.1-GGUF
@@ -521,7 +559,7 @@ models:
   priority: 1
   licence: Mistral-MNPL
   requires_auth: false
-  commit_sha: null
+  commit_sha: 0e6abe14d6aeaf2c99d5dc9973205e8e38692d90
   quant_levels:
   - Q8_0
 - id: mistralai/Devstral-Small-2507_gguf
@@ -705,7 +743,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 976055f8c83f394f35dbd3ab09a285a984907bd0
   notes: Qwen reasoning model — 61k downloads, strong math/coding CoT
 - id: open-r1/OlympicCoder-32B
   hf_repo: open-r1/OlympicCoder-32B
@@ -795,203 +833,3 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Smallest reasoning distill — fits in 8 GB VRAM
-- id: zetasepic/Qwen2.5-32B-Instruct-abliterated-v2
-  hf_repo: zetasepic/Qwen2.5-32B-Instruct-abliterated-v2
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
-  hf_repo: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: zetasepic/Qwen2.5-72B-Instruct-abliterated
-  hf_repo: zetasepic/Qwen2.5-72B-Instruct-abliterated
-  tier: D
-  drive: d3
-  priority: 1
-  licence: other
-  requires_auth: false
-  commit_sha: null
-- id: CombinHorizon/huihui-ai-abliterated-Qwen2.5-32B-Inst-BaseMerge-TIES
-  hf_repo: CombinHorizon/huihui-ai-abliterated-Qwen2.5-32B-Inst-BaseMerge-TIES
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: Goekdeniz-Guelmez/Josiefied-Qwen2.5-14B-Instruct-abliterated-v4
-  hf_repo: Goekdeniz-Guelmez/Josiefied-Qwen2.5-14B-Instruct-abliterated-v4
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: nbeerbower/EVA-abliterated-TIES-Qwen2.5-14B
-  hf_repo: nbeerbower/EVA-abliterated-TIES-Qwen2.5-14B
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: CombinHorizon/Josiefied-abliteratedV4-Qwen2.5-14B-Inst-BaseMerge-TIES
-  hf_repo: CombinHorizon/Josiefied-abliteratedV4-Qwen2.5-14B-Inst-BaseMerge-TIES
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
-  hf_repo: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: CombinHorizon/huihui-ai-abliteratedV2-Qwen2.5-14B-Inst-BaseMerge-TIES
-  hf_repo: CombinHorizon/huihui-ai-abliteratedV2-Qwen2.5-14B-Inst-BaseMerge-TIES
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
-  hf_repo: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
-  tier: D
-  drive: d3
-  priority: 1
-  licence: llama3.1
-  requires_auth: false
-  commit_sha: null
-- id: NousResearch/Hermes-3-Llama-3.1-70B
-  hf_repo: NousResearch/Hermes-3-Llama-3.1-70B
-  tier: D
-  drive: d3
-  priority: 1
-  licence: llama3
-  requires_auth: false
-  commit_sha: null
-- id: Undi95/Phi4-abliterated
-  hf_repo: Undi95/Phi4-abliterated
-  tier: D
-  drive: d3
-  priority: 2
-  licence: unknown
-  requires_auth: false
-  commit_sha: null
-- id: Triangle104/Phi-4-AbliteratedRP
-  hf_repo: Triangle104/Phi-4-AbliteratedRP
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v1.0
-  hf_repo: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v1.0
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: failspy/llama-3-70B-Instruct-abliterated
-  hf_repo: failspy/llama-3-70B-Instruct-abliterated
-  tier: D
-  drive: d3
-  priority: 1
-  licence: llama3
-  requires_auth: false
-  commit_sha: null
-- id: Orion-zhen/Qwen2.5-7B-Instruct-Uncensored
-  hf_repo: Orion-zhen/Qwen2.5-7B-Instruct-Uncensored
-  tier: D
-  drive: d3
-  priority: 2
-  licence: gpl-3.0
-  requires_auth: false
-  commit_sha: null
-- id: Isaak-Carter/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
-  hf_repo: Isaak-Carter/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: Goekdeniz-Guelmez/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
-  hf_repo: Goekdeniz-Guelmez/Josiefied-Qwen2.5-7B-Instruct-abliterated-v2
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: huihui-ai/Qwen2.5-7B-Instruct-abliterated-v2
-  hf_repo: huihui-ai/Qwen2.5-7B-Instruct-abliterated-v2
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: huihui-ai/Qwen2.5-7B-Instruct-abliterated
-  hf_repo: huihui-ai/Qwen2.5-7B-Instruct-abliterated
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: darkc0de/BuddyGlassUncensored2025.2
-  hf_repo: darkc0de/BuddyGlassUncensored2025.2
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: alpindale/WizardLM-2-8x22B
-  hf_repo: alpindale/WizardLM-2-8x22B
-  tier: D
-  drive: d3
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: NousResearch/DeepHermes-3-Mistral-24B-Preview
-  hf_repo: NousResearch/DeepHermes-3-Mistral-24B-Preview
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v0.9
-  hf_repo: jeffmeloy/Qwen2.5-7B-nerd-uncensored-v0.9
-  tier: D
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-- id: failspy/Phi-3-medium-4k-instruct-abliterated-v3
-  hf_repo: failspy/Phi-3-medium-4k-instruct-abliterated-v3
-  tier: D
-  drive: d3
-  priority: 2
-  licence: MIT
-  requires_auth: false
-  commit_sha: null

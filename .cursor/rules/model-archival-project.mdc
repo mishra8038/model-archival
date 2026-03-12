@@ -1,0 +1,101 @@
+---
+description: Model Archival project concerns, features, and operational decisions
+alwaysApply: true
+---
+
+# Model Archival Project — Concerns, Features, Decisions
+
+## Purpose
+
+- Provide unattended, resumable, cryptographically verified archival of open-source LLM/LRM weights from Hugging Face onto a fleet of local drives.
+- Capture not just raw weights but also manifests, provenance, and structured status/operations reports in Markdown.
+
+## Storage & Safety
+
+- Root SSD must **never** receive model data; only the Python env and logs symlink live there.
+- Drive roles:
+  - **D1**: large Tier A/B models and `.tmp/` scratch for in-progress downloads.
+  - **D2**: Tier A/B mid-size models and Tier D uncensored variants.
+  - **D3**: Tier C/D/G quantized GGUF and research/experimental models.
+  - **D5**: metadata, logs, state, `STATUS.md`, and archive index.
+- All important writes (run state, STATUS/REPORT MD, logs) must use **atomic write semantics**: write to `.tmp` then `rename`.
+- Before any reboot, always run `local/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
+
+## Downloads, State, and Resumability
+
+- All downloads are **resumable** — never delete `.tmp` partial files or `.aria2` control files just to "clean up".
+- `run_state.json` on D5 is the source of truth for per-model status (`pending`, `in_progress`, `complete`, `failed`, `skipped`).
+- The scheduler:
+  - Schedules work **per drive**, enforcing a max parallel drive count and bandwidth headroom.
+  - Skips or defers gated models when the HF token is absent or lacks access, marking them as `skipped` with a clear error.
+- Completed models:
+  - Are cryptographically verified (SHA-256) and recorded in `manifest.json`.
+  - Trigger `sync_archive()` to replicate the metadata archive across drives (weight files are not eagerly duplicated).
+
+## Registry & Model Selection
+
+- `config/registry.yaml` is the **master model list** and is treated as the configuration source of truth.
+- Each entry captures: Hugging Face repo, tier, drive, priority, licence, `requires_auth`, and optional `notes`/`quant_levels`.
+- Tiers encode importance and usage:
+  - **A/B**: flagship and code models (BF16/FP16).
+  - **C/D**: GGUF and uncensored / abliterated variants.
+  - **E/F/G**: reasoning, vision, math, and research/experimental models.
+- Priority:
+  - **1**: core, token-free models; should be safe to run with `--priority-only 1`.
+  - **2**: gated or nice-to-have models that may require explicit HF token access.
+- New research models should be added **space-aware**:
+  - Large BF16 models live on D1/D2 depending on role.
+  - Research and experimental models (e.g. `rl-research/DR-Tulu-8B`, `adamo1139/Apertus-8B-Instruct-2509-ungated`) are placed on D3 as Tier G to avoid crowding D2.
+
+## Reporting, Status, and ETA
+
+- `STATUS.md` on D5 is auto-refreshed ~60s and must remain a **single authoritative dashboard** for:
+  - Overall progress (bytes / models, speed, ETA when available).
+  - Active downloads per drive.
+  - Completed / failed / skipped models.
+  - Drive usage.
+- The rich TTY UI and `STATUS.md` are both driven off a shared `SchedulerStats` structure:
+  - Tracks active models, completed/failed/pending lists.
+  - Maintains an EWMA throughput estimate and a coarse **overall ETA** based on completed model sizes and current speed.
+- `RunReport` writes an incremental, timestamped Markdown report per run, capturing:
+  - Startup environment and CLI arguments.
+  - Pre-flight checks and token access.
+  - Per-model events (start/complete/fail/skip) and verification summaries.
+  - Final summary and drive usage snapshots.
+- The `archiver report` CLI subcommand is extended:
+  - Default: regenerate `STATUS.md` from `run_state.json` without starting downloads.
+  - `--full`: write `ARCHIVE-REPORT.md`, a richer snapshot documenting:
+    - Chosen models (registry).
+    - Completed models and failures.
+    - Current queue (pending + in-progress) and their last-updated times.
+    - Latest ETA string scraped from `STATUS.md`, when present.
+
+## HF Token and Gated Models
+
+- HF token is expected via `~/.hf_token` (set by `bash deploy/sethfToken.sh hf_TOKEN` and sourced into the env).
+- Pre-flight checks:
+  - Validate that the HF token has access to required gated models.
+  - Warn (but do not crash) when optional gated models are inaccessible.
+- When a gated model fails mid-run due to missing licence (e.g. initial failures for `meta-llama/Llama-3.3-70B-Instruct`):
+  - The failure is recorded in `run_state.json` and in reports with the full HF error text.
+  - Subsequent runs after licence acceptance should be allowed to retry and clear the failure.
+
+## Operational Concerns from Past Chats
+
+- Always be explicit about:
+  - What is downloaded, what is in the queue, and what is skipped/failed (with reasons).
+  - How much space is left per drive, and whether adding more models is safe.
+- When adding new features (e.g. ETA calculation, full Markdown reporting, research models), prefer:
+  - Non-disruptive changes to existing workflows (keep `run.sh` semantics stable).
+  - Conservative error handling (status/report writing must never crash the downloader).
+  - Backwards compatibility with existing `run_state.json` and registry layouts.
+
+## "Salient features" prompt pattern
+
+- When the user asks to **“document the salient concerns and features, decisions”** or uses the phrase **“salient features”**, treat it as a request for:
+  - A concise Markdown summary of the most important behaviors, constraints, and design choices for this project.
+  - Bulleted lists grouped under clear headings (Purpose, Storage/Safety, Downloads/State, Reporting, HF Token/Gated Models, etc.).
+- When this pattern appears, prefer to:
+  - Summarise first in the chat response.
+  - Then, when useful, update this rule file or related docs so those salient features are preserved for future sessions.
+

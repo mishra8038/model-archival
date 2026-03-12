@@ -119,6 +119,16 @@ repos:
       Foundation of all local LLM inference. Archiving pinned version as
       dependency anchor — not at risk of disappearing but useful for offline setup.
 
+  - id: google/jax
+    github: google/jax
+    category: inference
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      JAX — high-performance NumPy-on-accelerators library used for very
+      large-scale LLM training and research. Critical alternative to PyTorch
+      for XLA/TPU-heavy codebases.
+
   - id: NVIDIA/TensorRT-LLM
     github: NVIDIA/TensorRT-LLM
     category: inference
@@ -143,6 +153,15 @@ repos:
     risk: medium
     licence: MIT
     notes: Most popular one-command local LLM runner. VC-backed — trajectory uncertain.
+
+  - id: lmstudio-ai/lms
+    github: lmstudio-ai/lms
+    category: inference-ui
+    risk: medium
+    licence: MIT
+    notes: >
+      LM Studio CLI and backend tooling. Cross-platform local LLM desktop stack
+      for discovering, downloading, and running models with a GUI and OpenAI-compatible API.
 
   - id: oobabooga/text-generation-webui
     github: oobabooga/text-generation-webui
@@ -305,6 +324,186 @@ repos:
       ByteDance's RL training framework (DeepSeek-R1 style GRPO).
       Chinese corp — export control risk. Critical for reproducing reasoning models.
 
+  - id: oumi-ai/oumi
+    github: oumi-ai/oumi
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Oumi — end-to-end open-source framework for training and fine-tuning
+      foundation models (SFT, DPO, GRPO, VLM) across local and cloud setups.
+      Emerging project; critical for reproducible fine-tuning workflows.
+
+  - id: finetunedb/finetunedb
+    github: finetunedb/finetunedb
+    category: training
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      FinetuneDB — dataset curation and fine-tuning orchestration platform.
+      Helps manage prompt/response logs and evaluation data for custom models.
+
+  - id: lamini-ai/lamini-sdk
+    github: lamini-ai/lamini-sdk
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Lamini SDK — client library and examples for Lamini fine-tuning platform.
+      Used in DeepLearning.AI "Finetuning Large Language Models" course.
+
+  - id: OpenPipe/openpipe
+    github: OpenPipe/openpipe
+    category: training
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      OpenPipe — open-source platform that turns production prompts/responses
+      into fine-tuned models. Small startup; critical for "distill your API usage"
+      workflows.
+
+  - id: hpcaitech/ColossalAI
+    github: hpcaitech/ColossalAI
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Colossal-AI — distributed training system for very large models. Provides
+      tensor/pipeline parallelism and memory-optimised training primitives.
+
+  - id: NVIDIA/Megatron-LM
+    github: NVIDIA/Megatron-LM
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Megatron-LM — NVIDIA's reference framework for trillion-parameter
+      transformer training with tensor and pipeline parallelism. Canonical
+      implementation of many large-scale LLM training recipes.
+
+  - id: mosaicml/composer
+    github: mosaicml/composer
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Composer — PyTorch training library for LLMs, diffusion, embeddings.
+      MosaicML (now Databricks) reference for MPT and distributed training;
+      post-acquisition OSS trajectory uncertain.
+
+  - id: google-research/t5x
+    github: google-research/t5x
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      T5X — JAX/Flax framework for training and evaluating sequence models
+      at scale. Reference implementation for T5-style models; TPU/GPU support.
+
+  - id: google/flaxformer
+    github: google/flaxformer
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Flaxformer — JAX/Flax transformer library for NLP and multimodal
+      research. Building blocks for BERT/T5 and custom architectures.
+
+  - id: karpathy/minGPT
+    github: karpathy/minGPT
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      minGPT — minimal PyTorch implementation of GPT-style transformers.
+      Ideal baseline for architectural experiments at small scale.
+
+  - id: automl/auto-sklearn
+    github: automl/auto-sklearn
+    category: training
+    risk: medium
+    licence: BSD-3-Clause
+    notes: >
+      auto-sklearn — classic AutoML system for tabular and small ML tasks.
+      Useful reference for search/ensemble strategies and evaluation loops.
+
+  - id: keras-team/autokeras
+    github: keras-team/autokeras
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      AutoKeras — AutoML framework built on Keras, supporting neural
+      architecture search and automated model selection.
+
+  - id: optuna/optuna
+    github: optuna/optuna
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      Optuna — hyperparameter and architecture optimization framework with
+      Bayesian and bandit-style samplers. Well-suited for large-scale LLM
+      and architecture search experiments.
+
+  - id: jupyterlab/jupyter-ai
+    github: jupyterlab/jupyter-ai
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Jupyter AI — generative AI extension for JupyterLab/Notebook. Provides
+      chat UI and %%ai magic for LLM-assisted notebooks, using local or
+      remote models.
+
+  - id: ydataai/ydata-profiling
+    github: ydataai/ydata-profiling
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      YData Profiling — automated EDA and data quality profiling for
+      Pandas/Spark DataFrames. Natural substrate for LLM-assisted data
+      exploration.
+
+  - id: evidentlyai/evidently
+    github: evidentlyai/evidently
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Evidently — open-source ML/LLM observability: data drift, data quality,
+      and model performance monitoring with rich dashboards and test suites.
+
+  - id: mindsdb/mindsdb
+    github: mindsdb/mindsdb
+    category: serving
+    risk: medium
+    licence: GPL-3.0
+    notes: >
+      MindsDB — "AI inside your database" platform. Lets you expose and
+      customize models (including LLMs) via SQL over enterprise data.
+
+  - id: Netflix/metaflow
+    github: Netflix/metaflow
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Metaflow — human-centric DS/ML workflow framework from Netflix.
+      Great for orchestrating experiments and pipelines with strong
+      local-first ergonomics.
+
+  - id: PrefectHQ/prefect
+    github: PrefectHQ/prefect
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Prefect — modern Python workflow orchestrator used for data/ML
+      pipelines. Complements Kubeflow/Nomad with DS-friendly APIs and
+      rich scheduling/monitoring.
+
   # ===========================================================================
   # QUANTIZATION
   # ===========================================================================
@@ -387,6 +586,33 @@ repos:
       Universal LLM API client. Used for eval pipelines calling local or cloud models.
       Small startup — could pivot or close.
 
+  - id: confident-ai/deepeval
+    github: confident-ai/deepeval
+    category: evaluation
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      DeepEval — "pytest for LLMs" (~14k stars). Unified framework for unit testing
+      LLM apps, RAG pipelines, and agents with 50+ built-in metrics.
+
+  - id: explodinggradients/ragas
+    github: explodinggradients/ragas
+    category: evaluation
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      RAGAS — retrieval-augmented generation evaluation library. Provides faithfulness,
+      context precision/recall, and end-to-end RAG quality metrics, widely used in RAG tooling.
+
+  - id: cipher982/llm-benchmarks
+    github: cipher982/llm-benchmarks
+    category: evaluation
+    risk: high
+    licence: MIT
+    notes: >
+      CLI toolbox for benchmarking LLM inference speed (tokens-per-second) across models
+      and backends. Lightweight project with limited maintainers — high risk of abandonment.
+
   # ===========================================================================
   # ALIGNMENT, ABLITERATION & SAFETY RESEARCH
   # (highest regulatory risk — could be pulled with zero notice)
@@ -421,6 +647,37 @@ repos:
     risk: high
     licence: MIT
     notes: Red-teaming benchmark. Academic — may be abandoned or pulled under pressure.
+
+  - id: p-e-w/heretic
+    github: p-e-w/heretic
+    category: alignment
+    risk: critical
+    licence: MIT
+    notes: >
+      Heretic — fully automatic censorship removal for language models (~11k stars).
+      Implements optimisation-based directional ablation ("abliteration") that preserves
+      model capabilities. Single maintainer, high regulatory takedown risk.
+
+  - id: Tsadoq/ErisForge
+    github: Tsadoq/ErisForge
+    category: alignment
+    risk: high
+    licence: MIT
+    notes: >
+      ErisForge — high-performance Python library for abliteration and behaviour
+      modification of LLMs. Small project intended for research; fragile but
+      important reference implementation of modern abliteration techniques.
+
+  - id: elder-plinius/OBLITERATUS
+    github: elder-plinius/OBLITERATUS
+    category: alignment
+    risk: critical
+    licence: Apache-2.0
+    notes: >
+      OBLITERATUS — advanced abliteration toolkit with Gradio UI and rich
+      analysis of refusal directions. Multiple extraction strategies (PCA,
+      mean-difference, SAE, SVD). High regulatory/host risk; critical lab
+      environment for studying and reproducing abliteration techniques.
 
   - id: paul-gauthier/aider
     github: Aider-AI/aider
@@ -720,6 +977,24 @@ repos:
     licence: Apache-2.0
     notes: nomic-embed-text — best local embedding model tooling. Small org.
 
+  - id: weaviate/weaviate
+    github: weaviate/weaviate
+    category: rag
+    risk: medium
+    licence: BSD-3-Clause
+    notes: >
+      Weaviate — cloud-native vector database with semantic search and
+      hybrid keyword+vector retrieval. VC-backed; key RAG backend.
+
+  - id: milvus-io/milvus
+    github: milvus-io/milvus
+    category: rag
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Milvus — scalable vector database for AI applications. Widely used
+      for production RAG and retrieval; Zilliz-backed.
+
   # ===========================================================================
   # TOOLING — model management, conversion, tokenization
   # ===========================================================================
@@ -811,6 +1086,78 @@ repos:
       Node-based diffusion / multimodal UI. Single maintainer. Huge ecosystem.
       Now also supports LLM nodes — bridging image+text generation locally.
 
+  - id: iterative/dvc
+    github: iterative/dvc
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      DVC — data versioning and ML experiment tracking. Git-like workflows
+      for datasets and pipelines; critical for reproducible training.
+
+  - id: iterative/cml
+    github: iterative/cml
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      CML — CI/CD for ML (GitHub Actions, etc.). Run training, report
+      metrics in PRs; pairs with DVC for full experiment provenance.
+
+  - id: treeverse/lakeFS
+    github: treeverse/lakeFS
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      lakeFS — Git-like version control for data lakes (S3, GCS, Azure).
+      Branch/merge for ETL and training data; audit and reproducibility.
+
+  - id: jupyterlab/jupyterlab
+    github: jupyterlab/jupyterlab
+    category: tooling
+    risk: low
+    licence: BSD-3-Clause
+    notes: >
+      JupyterLab — standard computational environment for research and
+      notebooks. Dependency anchor for reproducible LLM workflows.
+
+  - id: coder/code-server
+    github: coder/code-server
+    category: tooling
+    risk: medium
+    licence: MIT
+    notes: >
+      code-server — VS Code in the browser. Key for remote dev and
+      agent-in-the-loop coding environments.
+
+  - id: sourcegraph/sourcegraph
+    github: sourcegraph/sourcegraph
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Sourcegraph — code search and navigation platform with AI integration.
+      Critical for exploring and understanding large archived codebases.
+
+  - id: warp-dev/warp
+    github: warp-dev/warp
+    category: tooling
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Warp — modern Rust-based terminal with AI features and command palette.
+      Historically relevant as an AI-native terminal environment for local dev.
+
+  - id: zed-industries/zed
+    github: zed-industries/zed
+    category: tooling
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Zed — high-performance collaborative code editor written in Rust.
+      An emerging alternative to VS Code with strong AI integration.
+
   # ===========================================================================
   # MULTIMODAL & DIFFUSION — image/audio/video generation
   # ===========================================================================
@@ -899,6 +1246,16 @@ repos:
     notes: >
       NVIDIA Triton Inference Server — production model serving at scale.
       Corporate (NVIDIA) — could be closed or gated.
+
+  - id: hashicorp/nomad
+    github: hashicorp/nomad
+    category: serving
+    risk: medium
+    licence: BSL-1.1
+    notes: >
+      Nomad — general-purpose workload orchestrator (containers, batch, services).
+      Business Source License; important as a lighter-weight alternative to
+      Kubernetes for running training, eval, and serving jobs.
 
   - id: bentoml/BentoML
     github: bentoml/BentoML
@@ -1164,6 +1521,25 @@ repos:
       OpenCLIP — open reproduction of CLIP for vision-language models.
       Required for multimodal models we're archiving (Qwen2.5-VL etc.).
 
+  - id: togethercomputer/RedPajama-Data
+    github: togethercomputer/RedPajama-Data
+    category: dataset
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      RedPajama-Data — pipelines and scripts for building large pretraining
+      corpora (RedPajama 1T/2). Together AI; critical reference for
+      reproducing open pretraining data.
+
+  - id: bigcode-project/bigcode-dataset
+    github: bigcode-project/bigcode-dataset
+    category: dataset
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      BigCode dataset tools — dedup, PII, language selection for code
+      pretraining. Underpins StarCoder and many code models.
+
   # ===========================================================================
   # MODEL EDITING — merge, splice, prune, and reshape model weights
   # (community-created techniques; individual authors; high vanishing risk)
@@ -1314,6 +1690,64 @@ repos:
     notes: >
       OpenLIT — OpenTelemetry-based LLM observability with GPU monitoring.
       Small org. Covers cost tracking, prompt management, and evaluation.
+
+  - id: prometheus/prometheus
+    github: prometheus/prometheus
+    category: observability
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      Prometheus — de facto standard time-series metrics store and alerting engine.
+      Foundation for long-term hardware and LLM service monitoring.
+
+  - id: grafana/grafana
+    github: grafana/grafana
+    category: observability
+    risk: low
+    licence: AGPL-3.0
+    notes: >
+      Grafana — open-source observability and dashboarding platform. Paired with
+      Prometheus to visualise GPU, CPU, and LLM service health for the archive cluster.
+
+  - id: Pavelevich/llm-checker
+    github: Pavelevich/llm-checker
+    category: observability
+    risk: high
+    licence: MIT
+    notes: >
+      llm-checker — CLI that inspects local hardware and recommends compatible LLMs,
+      with Ollama integration. Single-maintainer utility; high abandonment risk but
+      uniquely useful for mapping models to your GPUs/CPUs.
+
+  - id: wandb/wandb
+    github: wandb/wandb
+    category: observability
+    risk: medium
+    licence: MIT
+    notes: >
+      Weights & Biases — experiment tracking and model monitoring toolkit.
+      De facto standard for logging loss curves, hyperparameters, and hardware
+      utilisation during large-scale training runs.
+
+  - id: mlflow/mlflow
+    github: mlflow/mlflow
+    category: observability
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      MLflow — open-source platform for the ML lifecycle: experiment tracking,
+      model registry, and deployment. Critical for versioning and auditing
+      training runs that produced archived models.
+
+  - id: kubeflow/kubeflow
+    github: kubeflow/kubeflow
+    category: observability
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Kubeflow — Kubernetes-native ML platform used to orchestrate training,
+      evaluation, and deployment pipelines. Important reference for reproducing
+      complex, cluster-scale workflows around archived models.
 
   # ===========================================================================
   # SYNTHETIC DATA — dataset generation pipelines for training
@@ -1583,3 +2017,69 @@ repos:
       DAIR.AI Prompt Engineering Guide — most comprehensive academic-style
       prompt engineering reference (~50k stars). Small org — could be
       abandoned or taken down.
+
+  - id: eugeneyan/applied-ml
+    github: eugeneyan/applied-ml
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Applied ML — curated collection of applied machine learning articles,
+      production anecdotes, and system design notes. High-signal map of
+      real-world ML practice to pair with archived code.
+
+  - id: louisfb01/best_AI_papers_2024
+    github: louisfb01/best_AI_papers_2024
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Best AI Papers — curated lists of influential AI papers by year.
+      Provides a human-written index of the research landscape that the
+      archived models and tools emerged from.
+
+  - id: MLNLP-World/Awesome-LLM
+    github: MLNLP-World/Awesome-LLM
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Awesome-LLM — curated list of papers, models, and resources for
+      large language models. Serves as a high-level map of the LLM field.
+
+  - id: amusi/awesome-ai-awesomeness
+    github: amusi/awesome-ai-awesomeness
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Awesome AI Awesomeness — broad curated list of AI resources across
+      ML, DL, CV, NLP, and speech. Historical index of the AI ecosystem.
+
+  - id: akullpp/awesome-java
+    github: akullpp/awesome-java
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Awesome Java — canonical list of Java frameworks, libraries,
+      and tools. Important reference for JVM-based backend ecosystems.
+
+  - id: sorrycc/awesome-javascript
+    github: sorrycc/awesome-javascript
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Awesome JavaScript — popular curated list of JS libraries and tools
+      for frontend and Node.js development.
+
+  - id: markodenic/web-development-resources
+    github: markodenic/web-development-resources
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Web Development Resources — curated collection of links for modern
+      web development (HTML/CSS/JS, frameworks, tooling). Useful map for
+      building and maintaining web UIs around local models.

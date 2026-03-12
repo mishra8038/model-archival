@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 from datetime import datetime, timezone
+from collections import deque
 from pathlib import Path
 from typing import Optional
 
@@ -19,7 +20,15 @@ from rich.table import Table
 from rich.text import Text
 
 from archiver.models import load_registry, save_registry, Registry
-from archiver.state import RunState, STATUS_COMPLETE, STATUS_FAILED, sync_archive
+from archiver.state import (
+    RunState,
+    STATUS_COMPLETE,
+    STATUS_FAILED,
+    STATUS_IN_PROGRESS,
+    STATUS_PENDING,
+    STATUS_SKIPPED,
+    sync_archive,
+)
 
 console = Console()
 
@@ -171,6 +180,7 @@ def cmd_download(
     archive_dir = d5 / "archive"
     index_path  = archive_dir / "checksums" / "global_index.jsonl"
     status_path = Path(status_out) if status_out else (d5 / "STATUS.md")
+    activity_log_path = d5 / "archiver-activity.log"
 
     _setup_logging(verbose, log_dir=logs_dir if not dry_run else None)
 
@@ -294,6 +304,7 @@ def cmd_download(
             token_accessible=token_results,
             max_parallel_drives=max_parallel_drives,
             bandwidth_cap_mbps=bandwidth_cap,
+            activity_log_path=activity_log_path,
         )
         scheduler.build_queue(models)
 
@@ -586,20 +597,223 @@ def cmd_drives(ctx: click.Context, action: str) -> None:
 
 @cli.command("report")
 @click.option("--output", type=click.Path(), default=None,
-              help="Output path [default: <d5>/STATUS.md]")
+              help="Output path [default: <d5>/STATUS.md or <d5>/ARCHIVE-REPORT.md]")
+@click.option(
+    "--full",
+    "full_report",
+    is_flag=True,
+    default=False,
+    help="Generate a full Markdown report (chosen models, queue, status, ETA)",
+)
 @click.pass_context
-def cmd_report(ctx: click.Context, output: Optional[str]) -> None:
-    """Regenerate STATUS.md from run_state.json without downloading."""
-    from archiver.status import StatusDisplay
+def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> None:
+    """
+    Generate Markdown status reports without starting any downloads.
+
+    By default this regenerates STATUS.md from run_state.json. With --full it
+    writes a richer ARCHIVE-REPORT.md that documents the registry, what was
+    selected, current queue, completed models, and (if available) an ETA.
+    """
+    from archiver.status import StatusDisplay, STATUS_MD_REFRESH_SECS
 
     registry_path: Path = ctx.obj["registry_path"]
     drives_path: Path = ctx.obj["drives_path"]
     reg, state = _load(registry_path, drives_path)
 
-    out_path = Path(output) if output else (_d5_path(reg) / "STATUS.md")
-    display = StatusDisplay(registry=reg, state=state, status_md_path=out_path)
-    display._write_status_md()
-    console.print(f"[green]STATUS.md written → {out_path}[/]")
+    d5 = _d5_path(reg)
+
+    if not full_report:
+        # Lightweight mode: just regenerate STATUS.md, similar to the live run.
+        out_path = Path(output) if output else (d5 / "STATUS.md")
+        display = StatusDisplay(registry=reg, state=state, status_md_path=out_path)
+        display._write_status_md()
+        console.print(f"[green]STATUS.md written → {out_path}[/]")
+        return
+
+    # Full report mode: richer snapshot that documents the entire archive state.
+    out_path = Path(output) if output else (d5 / "ARCHIVE-REPORT.md")
+
+    # Basic counts from persistent state.
+    summary = state.summary()
+    total_models = len(reg.models)
+    n_complete = summary.get(STATUS_COMPLETE, 0)
+    n_failed = summary.get(STATUS_FAILED, 0)
+    n_in_progress = summary.get(STATUS_IN_PROGRESS, 0)
+    n_pending = summary.get(STATUS_PENDING, 0)
+    n_skipped = summary.get(STATUS_SKIPPED, 0)
+
+    # Derive queue (pending + in_progress) from registry ordering.
+    queue = []
+    completed = []
+    failed = []
+    skipped = []
+    for m in sorted(reg.models, key=lambda m: (m.tier, m.priority, m.drive, m.id)):
+        data = state.get_model_data(m.id)
+        status = data.get("status", STATUS_PENDING)
+        row = (m, data, status)
+        if status in (STATUS_PENDING, STATUS_IN_PROGRESS):
+            queue.append(row)
+        elif status == STATUS_COMPLETE:
+            completed.append(row)
+        elif status == STATUS_FAILED:
+            failed.append(row)
+        elif status == STATUS_SKIPPED:
+            skipped.append(row)
+
+    # Recent activity from append-only log (for summaries and thread count).
+    recent_activity_lines: list[str] = []
+    activity_log_path = d5 / "archiver-activity.log"
+    if activity_log_path.exists():
+        try:
+            with open(activity_log_path, "r", encoding="utf-8") as f:
+                tail = deque(f, maxlen=80)
+            recent_activity_lines = list(tail)
+        except Exception:
+            pass
+
+    # Try to pick up the latest ETA from the live STATUS.md if it exists.
+    eta_str = "—"
+    status_md_path = d5 / "STATUS.md"
+    if status_md_path.exists():
+        try:
+            for line in status_md_path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line.startswith("- **ETA:**"):
+                    # Line format from StatusDisplay: "- **ETA:** 1h 23m"
+                    eta_str = line.split("**ETA:**", 1)[-1].strip()
+                    break
+        except Exception:
+            pass
+
+    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+    lines: list[str] = []
+    lines += [
+        "# Archive Snapshot Report",
+        "",
+        f"_Generated: {now_str}_",
+        "",
+        "## Summary",
+        "",
+        "| Metric | Value |",
+        "|--------|-------|",
+        f"| Total models in registry | {total_models} |",
+        f"| Complete | {n_complete} |",
+        f"| In progress | {n_in_progress} |",
+        f"| Pending | {n_pending} |",
+        f"| Failed | {n_failed} |",
+        f"| Skipped (no token / gated) | {n_skipped} |",
+        f"| ETA (from live STATUS.md) | {eta_str} |",
+        "",
+        "## Recent Activity",
+        "",
+        "Last entries from `archiver-activity.log` (RUN_START/WORKER_START/MODEL_* / SPEED / RUN_END):",
+        "",
+    ]
+    if recent_activity_lines:
+        for ln in recent_activity_lines:
+            lines.append(f"    {ln}")
+    else:
+        lines.append("    (no activity log yet)")
+    lines += [
+        "",
+        "## Selected Models (Registry)",
+        "",
+        "| Model | Tier | Drive | Priority | Auth |",
+        "|-------|------|-------|----------|------|",
+    ]
+
+    for m in reg.models:
+        lines.append(
+            f"| `{m.id}` | {m.tier} | {m.drive.upper()} | {m.priority} | "
+            f"{'yes' if m.requires_auth else 'no'} |"
+        )
+
+    # Queue section: what is still to do this run.
+    lines += [
+        "",
+        "## Queue (Pending + In Progress)",
+        "",
+        "| Model | Tier | Drive | Priority | Status | Size | Last Updated |",
+        "|-------|------|-------|----------|--------|------|--------------|",
+    ]
+
+    if queue:
+        for m, data, status in queue:
+            size = _fmt_bytes_cli(data.get("total_bytes", 0))
+            updated = (data.get("updated_at") or "—")[:16]
+            lines.append(
+                f"| `{m.id}` | {m.tier} | {m.drive.upper()} | {m.priority} | "
+                f"{status} | {size} | {updated} |"
+            )
+    else:
+        lines.append("| — | — | — | — | — | — | — |")
+
+    # Completed section.
+    lines += [
+        "",
+        "## Completed Models",
+        "",
+        "| Model | Tier | Drive | Size | Completed At |",
+        "|-------|------|-------|------|--------------|",
+    ]
+
+    if completed:
+        for m, data, _ in completed:
+            size = _fmt_bytes_cli(data.get("total_bytes", 0))
+            completed_at = (data.get("completed_at") or "—")[:16]
+            lines.append(
+                f"| `{m.id}` | {m.tier} | {m.drive.upper()} | {size} | {completed_at} |"
+            )
+    else:
+        lines.append("| — | — | — | — | — |")
+
+    # Failed / skipped section.
+    lines += [
+        "",
+        "## Failed / Skipped Models",
+        "",
+        "| Model | Status | Reason |",
+        "|-------|--------|--------|",
+    ]
+
+    if failed or skipped:
+        for m, data, status in failed + skipped:
+            reason = data.get("error", "—")
+            lines.append(f"| `{m.id}` | {status} | {reason} |")
+    else:
+        lines.append("| — | — | — |")
+
+    # Drive usage snapshot.
+    lines += [
+        "",
+        "## Drive Usage",
+        "",
+        "| Drive | Mount | Used | Free | Total |",
+        "|-------|-------|------|------|-------|",
+    ]
+    for label, drive in reg.drives.items():
+        try:
+            u = psutil.disk_usage(str(drive.mount_point))
+            used_tb = u.used / 1024**4
+            free_tb = u.free / 1024**4
+            total_tb = u.total / 1024**4
+            lines.append(
+                f"| {label.upper()} | {drive.mount_point} "
+                f"| {used_tb:.1f} TB | {free_tb:.1f} TB | {total_tb:.1f} TB |"
+            )
+        except Exception:
+            lines.append(
+                f"| {label.upper()} | {drive.mount_point} | N/A | N/A | N/A |"
+            )
+
+    content = "\n".join(lines) + "\n"
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = out_path.with_suffix(out_path.suffix + ".tmp")
+    tmp.write_text(content, encoding="utf-8")
+    tmp.replace(out_path)
+
+    console.print(f"[green]Archive snapshot report written → {out_path}[/]")
 
 
 # ------------------------------------------------------------------

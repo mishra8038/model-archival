@@ -14,6 +14,7 @@ import threading
 import time
 from collections import defaultdict, deque
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Callable, Optional
 
 from archiver.models import ModelEntry, Registry
@@ -24,6 +25,7 @@ log = logging.getLogger(__name__)
 BANDWIDTH_SAMPLE_INTERVAL = 10   # seconds
 BANDWIDTH_HEADROOM_PCT = 0.85    # open new slot only if utilisation < 85% of peak
 EWMA_ALPHA = 0.1                 # smoothing factor for throughput EWMA
+ACTIVITY_LOG_SPEED_INTERVAL = 6  # log speed every N sampler ticks (~60s)
 
 
 @dataclass
@@ -33,7 +35,7 @@ class SchedulerStats:
     failed: list[str] = field(default_factory=list)
     pending: list[str] = field(default_factory=list)
     speeds_mbps: dict[str, float] = field(default_factory=dict)  # drive → MB/s
-    total_bytes: int = 0
+    total_bytes: int = 0  # approximate total bytes for this run (for ETA/progress)
     done_bytes: int = 0
     ewma_speed_mbps: float = 0.0
     eta_seconds: Optional[float] = None
@@ -56,6 +58,7 @@ class DriveScheduler:
         token_accessible: Optional[dict[str, bool]] = None,
         max_parallel_drives: int = 4,
         bandwidth_cap_mbps: Optional[float] = None,
+        activity_log_path: Optional[Path] = None,
     ) -> None:
         self.registry = registry
         self.state = state
@@ -67,6 +70,9 @@ class DriveScheduler:
         self.token_accessible = token_accessible or {}
         self.max_parallel_drives = max_parallel_drives
         self.bandwidth_cap_mbps = bandwidth_cap_mbps
+        self._activity_log_path = activity_log_path
+        self._activity_lock = threading.Lock()
+        self._sampler_tick = 0
 
         # Per-drive queues: drive_label → deque[ModelEntry]
         self._queues: dict[str, deque[ModelEntry]] = defaultdict(deque)
@@ -113,12 +119,28 @@ class DriveScheduler:
         )
         self._stats.pending = [m.id for q in self._queues.values() for m in q]
 
+    def _log_activity(self, line: str) -> None:
+        """Append one line to the activity log (thread-safe)."""
+        if not self._activity_log_path:
+            return
+        with self._activity_lock:
+            try:
+                with open(self._activity_log_path, "a", encoding="utf-8") as f:
+                    f.write(line + "\n")
+                    f.flush()
+            except Exception as e:
+                log.debug("Activity log write failed: %s", e)
+
     def run(self) -> SchedulerStats:
         """Start workers and block until all queues are drained or shutdown requested."""
-        active_drives = [d for d in self._queues if self._queues[d]]
+        active_drives = sorted([d for d in self._queues if self._queues[d]])
         if not active_drives:
             log.info("Nothing to download.")
             return self._stats
+
+        self._log_activity(
+            f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} RUN_START drives={','.join(active_drives)} workers={min(len(active_drives), self.max_parallel_drives)}"
+        )
 
         # Install signal handlers so Ctrl+C / SIGTERM trigger a clean stop.
         # Only install on the main thread (workers are daemon threads).
@@ -134,12 +156,15 @@ class DriveScheduler:
             signal.signal(signal.SIGTERM, _handle_signal)
             signal.signal(signal.SIGINT,  _handle_signal)
 
-        # Limit parallel drives
+        # Limit parallel drives (sorted so d1,d2,d3 get workers first)
         active_drives = active_drives[:self.max_parallel_drives]
 
         for drive in active_drives:
             with self._active_lock:
                 self._active_drives[drive] = None
+            self._log_activity(
+                f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} WORKER_START {drive}"
+            )
             t = threading.Thread(
                 target=self._worker,
                 args=(drive,),
@@ -160,6 +185,9 @@ class DriveScheduler:
 
         self._stop_event.set()
         sampler.join(timeout=5)
+        self._log_activity(
+            f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} RUN_END completed={len(self._stats.completed)} failed={len(self._stats.failed)}"
+        )
         return self._stats
 
     # ------------------------------------------------------------------
@@ -187,17 +215,23 @@ class DriveScheduler:
         return None
 
     def _run_model(self, model: ModelEntry, drive: str) -> None:
+        start_time = time.time()
         with self._active_lock:
             self._active_drives[drive] = model.id
         self.state.set_model_status(model.id, STATUS_IN_PROGRESS, drive=drive)
         if model.id in self._stats.pending:
             self._stats.pending.remove(model.id)
         self._stats.active[drive] = model.id
+        self._log_activity(
+            f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} MODEL_START {drive} {model.id}"
+        )
         self._emit_status()
 
         try:
             manifest = self.download_fn(model)
             total_bytes = manifest.get("total_size_bytes", 0) if manifest else 0
+            duration_s = int(time.time() - start_time)
+            size_gb = round(total_bytes / (1024**3), 2) if total_bytes else 0
             self.state.set_model_status(
                 model.id, STATUS_COMPLETE,
                 commit_sha=model.commit_sha,
@@ -206,16 +240,23 @@ class DriveScheduler:
             )
             self._stats.completed.append(model.id)
             self._stats.done_bytes += total_bytes
+            self._log_activity(
+                f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} MODEL_DONE {drive} {model.id} size_gb={size_gb} duration_s={duration_s}"
+            )
             if self.on_model_complete:
                 self.on_model_complete(model, manifest or {})
             log.info("✓ %s complete", model.id)
 
         except Exception as e:
-            log.error("✗ %s failed: %s", model.id, e)
+            err_msg = str(e).replace("\n", " ")[:200]
             self.state.set_model_status(model.id, STATUS_FAILED, error=str(e))
             self._stats.failed.append(model.id)
+            self._log_activity(
+                f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} MODEL_FAIL {drive} {model.id} error={err_msg}"
+            )
             if self.on_model_failed:
                 self.on_model_failed(model, str(e))
+            log.error("✗ %s failed: %s", model.id, e)
 
         finally:
             self._stats.active.pop(drive, None)
@@ -238,9 +279,26 @@ class DriveScheduler:
                 else:
                     self._ewma_speed = EWMA_ALPHA * speed + (1 - EWMA_ALPHA) * self._ewma_speed
                 self._stats.ewma_speed_mbps = self._ewma_speed
+                # Estimate remaining bytes and ETA based on average size of completed models.
+                # This gives a coarse ETA for the whole queue without needing registry sizes.
+                if self._stats.completed and self._ewma_speed > 0:
+                    avg_size = self._stats.done_bytes / max(len(self._stats.completed), 1)
+                    remaining_models = len(self._stats.pending) + len(self._stats.active)
+                    est_remaining = avg_size * remaining_models
+                    self._stats.total_bytes = self._stats.done_bytes + int(est_remaining)
+                else:
+                    self._stats.total_bytes = 0
+                    self._stats.eta_seconds = None
                 if self._stats.total_bytes > self._stats.done_bytes and self._ewma_speed > 0:
                     remaining = self._stats.total_bytes - self._stats.done_bytes
                     self._stats.eta_seconds = remaining / (self._ewma_speed * 1024 * 1024)
+                self._sampler_tick += 1
+                if self._sampler_tick >= ACTIVITY_LOG_SPEED_INTERVAL:
+                    self._sampler_tick = 0
+                    n_active = len(self._stats.active)
+                    self._log_activity(
+                        f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} SPEED mbps={self._ewma_speed:.1f} active_drives={n_active} eta_s={self._stats.eta_seconds or 0:.0f}"
+                    )
                 self._emit_status()
             except Exception:
                 pass
