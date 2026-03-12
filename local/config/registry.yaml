@@ -253,24 +253,6 @@ models:
   requires_auth: true
   commit_sha: e808c1a2249354ca211c9f08d1338e5039f633f8
   notes: August 2024 update to Command R+. Accept at huggingface.co/CohereLabs/c4ai-command-r-plus-08-2024
-- id: mistralai/Mixtral-8x7B-Instruct-v0.1
-  hf_repo: mistralai/Mixtral-8x7B-Instruct-v0.1
-  tier: A
-  drive: d2
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Classic open MoE — strong general + coding; famous 8x7B Mixtral
-- id: mistralai/Mixtral-8x22B-Instruct-v0.1
-  hf_repo: mistralai/Mixtral-8x22B-Instruct-v0.1
-  tier: A
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Larger Mixtral MoE — heavy but historically important
 - id: nvidia/Llama-3.1-Nemotron-70B-Instruct
   hf_repo: nvidia/Llama-3.1-Nemotron-70B-Instruct
   tier: A
@@ -512,26 +494,6 @@ models:
   commit_sha: null
   quant_levels:
   - Q8_0
-- id: TheBloke/Mixtral-8x7B-v0.1-GGUF
-  hf_repo: TheBloke/Mixtral-8x7B-v0.1-GGUF
-  tier: C
-  drive: d3
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  quant_levels:
-  - Q8_0
-- id: bartowski/Mixtral-8x22B-v0.1-GGUF
-  hf_repo: bartowski/Mixtral-8x22B-v0.1-GGUF
-  tier: C
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  quant_levels:
-  - Q8_0
 - id: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
   hf_repo: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
   tier: C
@@ -569,7 +531,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: ee2f0c00c5c86862f471fbf533268cf01b80d4a6
   quant_levels:
   - Q8_0
 - id: huihui-ai/Llama-3.3-70B-Instruct-abliterated
@@ -609,7 +571,7 @@ models:
   priority: 1
   licence: Qwen
   requires_auth: false
-  commit_sha: null
+  commit_sha: ff4f9fe269d95bad2bd741af23b805cd9f449a8b
   parent_model: Qwen/Qwen2.5-72B-Instruct
   method: abliteration
   notes: lb=48.1 — actually scores *above* base model on leaderboard

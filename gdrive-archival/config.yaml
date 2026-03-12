@@ -71,4 +71,10 @@ model_ids_full:
   - failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
   - cognitivecomputations/Dolphin3.0-Llama3.1-8B
   - cognitivecomputations/dolphin-2.9.2-qwen2-72b
+  - ricdomolm/lawma-8b
+  - ricdomolm/lawma-70b
+  - USTC-KnowledgeComputingLab/Llama3-KALE-LM-Chem-1.5-8B
+  - OpenDFM/ChemDFM-v1.0-13B
+  - ContactDoctor/Bio-Medical-Llama-3-8B-CoT-012025
+  - internistai/base-7b-v0.2
 
