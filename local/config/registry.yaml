@@ -163,7 +163,7 @@ models:
 - id: meta-llama/Llama-3.3-70B-Instruct
   hf_repo: meta-llama/Llama-3.3-70B-Instruct
   tier: A
-  drive: d2
+  drive: d1
   priority: 1
   licence: llama3.3
   requires_auth: true
@@ -238,7 +238,7 @@ models:
 - id: CohereForAI/c4ai-command-r-plus
   hf_repo: CohereForAI/c4ai-command-r-plus
   tier: A
-  drive: d2
+  drive: d1
   priority: 2
   licence: CC-BY-NC
   requires_auth: true
@@ -484,8 +484,8 @@ models:
   commit_sha: 19cd65f97c2f1712a81c506611d3f9c94b16a1e1
   quant_levels:
   - Q8_0
-- id: bartowski/gemma-3-27b-it-GGUF
-  hf_repo: bartowski/gemma-3-27b-it-GGUF
+- id: bartowski/google_gemma-3-27b-it-GGUF
+  hf_repo: bartowski/google_gemma-3-27b-it-GGUF
   tier: C
   drive: d3
   priority: 1
@@ -494,6 +494,7 @@ models:
   commit_sha: null
   quant_levels:
   - Q8_0
+  notes: "Replacement for 404 bartowski/gemma-3-27b-it-GGUF (same publisher, renamed repo)"
 - id: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
   hf_repo: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
   tier: C
@@ -638,8 +639,8 @@ models:
   parent_model: meta-llama/Meta-Llama-3-70B-Instruct
   method: abliteration
   notes: failspy v3 series — the original widely-used abliteration method
-- id: huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
-  hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
+- id: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
+  hf_repo: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   tier: D
   drive: d3
   priority: 1
@@ -650,8 +651,9 @@ models:
   - Q8_0
   parent_model: meta-llama/Llama-3.3-70B-Instruct
   method: abliteration
-- id: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
-  hf_repo: huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
+  notes: "Replacement for 404 huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF"
+- id: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
+  hf_repo: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   tier: D
   drive: d3
   priority: 1
@@ -662,8 +664,9 @@ models:
   - Q8_0
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
   method: abliteration
-- id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
-  hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
+  notes: "Replacement for 404 huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF"
+- id: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
+  hf_repo: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   tier: D
   drive: d3
   priority: 1
@@ -674,6 +677,7 @@ models:
   - Q8_0
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
   method: abliteration
+  notes: "Replacement for 404 huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF"
 - id: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
   hf_repo: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
   tier: D
@@ -686,8 +690,8 @@ models:
   - Q8_0
   parent_model: meta-llama/Llama-3.1-8B
   method: DPO+abliteration
-- id: huihui-ai/Mistral-Small-24B-abliterated-GGUF
-  hf_repo: huihui-ai/Mistral-Small-24B-abliterated-GGUF
+- id: tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF
+  hf_repo: tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF
   tier: D
   drive: d3
   priority: 1
@@ -696,8 +700,9 @@ models:
   commit_sha: null
   quant_levels:
   - Q8_0
-  parent_model: mistralai/Mistral-Small-24B
+  parent_model: mistralai/Mistral-Small-24B-Instruct-2501
   method: abliteration
+  notes: "Replacement for 404 huihui-ai/Mistral-Small-24B-abliterated-GGUF"
 - id: Qwen/QwQ-32B
   hf_repo: Qwen/QwQ-32B
   tier: E
@@ -795,3 +800,74 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Smallest reasoning distill — fits in 8 GB VRAM
+
+# =============================================================================
+# Tooling projects — non-model code that enables Cursor-like assistants
+# Mirrored to D5 via scripts/archive-tooling.sh (bare git at D5/tooling-archive/<id>.git).
+# Fields: id, category, repo, description, notes
+# =============================================================================
+tooling:
+  - id: continue
+    category: ide_assistant
+    repo: "https://github.com/continuedev/continue"
+    description: "Open-source AI code assistant for VS Code / JetBrains / Neovim."
+  - id: aider
+    category: ide_assistant
+    repo: "https://github.com/paul-gauthier/aider"
+    description: "Git-aware CLI coding assistant that edits repos via patches."
+  - id: tabby
+    category: ide_assistant
+    repo: "https://github.com/TabbyML/tabby"
+    description: "Self-hosted code completion server with editor plugins."
+  - id: openhands
+    category: agent_platform
+    repo: "https://github.com/All-Hands-AI/OpenHands"
+    description: "Full-stack software-engineer agent (successor to OpenDevin)."
+  - id: opendevin
+    category: agent_platform
+    repo: "https://github.com/OpenDevin/OpenDevin"
+    description: "Earlier open-source auto-dev platform."
+  - id: langchain
+    category: agent_framework
+    repo: "https://github.com/langchain-ai/langchain"
+    description: "LLM orchestration and agent framework with tools and retrieval."
+  - id: langgraph
+    category: agent_framework
+    repo: "https://github.com/langchain-ai/langgraph"
+    description: "Graph-based stateful agent runtime for multi-step workflows."
+  - id: llamaindex
+    category: agent_framework
+    repo: "https://github.com/run-llama/llama_index"
+    description: "RAG and agent framework for indexing docs and code."
+  - id: semantic-kernel
+    category: agent_framework
+    repo: "https://github.com/microsoft/semantic-kernel"
+    description: "Plugin- and planner-based framework for LLM skills."
+  - id: autogen
+    category: agent_framework
+    repo: "https://github.com/microsoft/autogen"
+    description: "Multi-agent orchestration for LLMs and tool-use."
+  - id: vllm
+    category: serving_backend
+    repo: "https://github.com/vllm-project/vllm"
+    description: "High-throughput OpenAI-compatible model serving."
+  - id: llama.cpp
+    category: serving_backend
+    repo: "https://github.com/ggerganov/llama.cpp"
+    description: "CPU/GPU inference for quantized LLMs."
+  - id: ollama
+    category: serving_backend
+    repo: "https://github.com/ollama/ollama"
+    description: "Local model runner with simple HTTP API."
+  - id: sourcegraph-cody
+    category: code_intel
+    repo: "https://github.com/sourcegraph/sourcegraph"
+    description: "Semantic code search and LSP-style code intelligence."
+  - id: swe-bench
+    category: eval_harness
+    repo: "https://github.com/princeton-nlp/SWE-bench"
+    description: "Benchmark for software-engineering agents on real issues."
+  - id: human-eval
+    category: eval_harness
+    repo: "https://github.com/openai/human-eval"
+    description: "Classic Python coding benchmark and evaluation harness."

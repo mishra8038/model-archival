@@ -79,6 +79,18 @@ Output lands on `/mnt/models/d1/code-archival/`.
 
 ---
 
+## Documentation
+
+A central **docs/** folder describes the project, its mission and objectives, each sub-project, the configuration we use, the artifacts we archive, and disk distribution:
+
+- [docs/README.md](docs/README.md) — Overview, mission, objectives, doc index
+- [docs/PROJECTS.md](docs/PROJECTS.md) — Summary of each project (local, fingerprints, code-archival, gdrive-archival)
+- [docs/CONFIGURATION.md](docs/CONFIGURATION.md) — Registry, drives, tiers, priorities
+- [docs/ARTIFACTS.md](docs/ARTIFACTS.md) — What we archive (weights, checksums, code, tooling)
+- [docs/DISKS-AND-DISTRIBUTION.md](docs/DISKS-AND-DISTRIBUTION.md) — Disk layout and artifact distribution per drive
+
+---
+
 ## Quick status
 
 ```bash
