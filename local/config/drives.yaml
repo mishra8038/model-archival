@@ -1,5 +1,6 @@
 # Physical drive configuration.
 # Update mount_point values to match your actual fstab/UUID mounts.
+# Capacity and what is stored where: see docs/STORAGE-AND-CAPACITY.md
 
 d1:
   mount_point: /mnt/models/d1
@@ -16,18 +17,27 @@ d1:
 
 d2:
   mount_point: /mnt/models/d2
-  role: "Raw mid-size (Tier A remainder + Tier B small + Tier D uncensored raw) — FULL; no new writes"
+  # D2 is effectively FROZEN for new models: do not assign any additional entries in registry.yaml to drive: d2.
+  # Existing models on D2 stay put, but all new raw mid-size models should go to d1 (or d3 for GGUF) instead.
+  role: "Raw mid-size (Tier A remainder + Tier B + Tier D uncensored raw); 2.7 TB — no NEW models"
   by_id: ""
   serial: ""
 
 d3:
   mount_point: /mnt/models/d3
   role: "Quantized GGUF (Tier C + Tier D quants)"
+  # Local scratch area for D3 worker — GGUF downloads assemble here before being moved
+  # into the final quantized/ tree.
+  tmp_dir: /mnt/models/d3/.tmp
   by_id: ""
   serial: ""
 
 d5:
   mount_point: /mnt/models/d5
-  role: "Metadata: archive/, logs, run_state.json, STATUS.md"
+  # Primary role is still metadata and infra, but when d1 and d3 are near full you MAY place a small number
+  # of overflow models here (set drive: d5 in registry.yaml) to use the extra headroom safely.
+  role: "Metadata: archive/, logs, run_state.json, STATUS.md; limited overflow for d1/d3 when needed"
+  # Optional scratch area for any overflow models that explicitly target d5.
+  tmp_dir: /mnt/models/d5/.tmp
   by_id: ""
   serial: ""

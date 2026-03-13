@@ -140,7 +140,7 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option("--all", "download_all", is_flag=True, default=False, help="Download everything")
 @click.option("--priority-only", type=int, help="Download only models with this priority (1 or 2)")
 @click.option("--dry-run", is_flag=True, help="Print what would be downloaded without fetching")
-@click.option("--max-parallel-drives", type=int, default=4, show_default=True)
+@click.option("--max-parallel-drives", type=int, default=3, show_default=True)
 @click.option("--bandwidth-cap", type=float, default=None, help="Total bandwidth cap in MB/s")
 @click.option("--fast", is_flag=True, help="Use hf_transfer fast-path (no resume)")
 @click.option(

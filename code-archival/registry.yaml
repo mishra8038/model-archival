@@ -2083,3 +2083,45 @@ repos:
       Web Development Resources — curated collection of links for modern
       web development (HTML/CSS/JS, frameworks, tooling). Useful map for
       building and maintaining web UIs around local models.
+
+  # Repo→prompt tools — turn codebases into LLM context
+
+  - id: andrewgcodes/repo2prompt
+    github: andrewgcodes/repo2prompt
+    category: prompt-engineering
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      repo2prompt — turns a GitHub repository into a single long prompt for
+      long-context models (e.g. Claude 3). Single maintainer; highly likely
+      to disappear or bit-rot without archival.
+
+  - id: taowen/repo-to-prompt
+    github: taowen/repo-to-prompt
+    category: prompt-engineering
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      repo-to-prompt — VS Code-centric tool that concatenates repository
+      source files into a single prompt for LLM interaction. Low star count,
+      but conceptually important; small personal repo with link-rot risk.
+
+  - id: dav-ell/repoprompt
+    github: dav-ell/repoprompt
+    category: prompt-engineering
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      RepoPrompt — unofficial pure-JS clone of the proprietary Repo Prompt
+      service. Captures a client-side implementation of repo-to-XML prompts;
+      small project with high risk of vanishing.
+
+  - id: atveit/repo2prompt
+    github: atveit/repo2prompt
+    category: prompt-engineering
+    risk: medium
+    licence: MIT
+    notes: >
+      repo2prompt (Rust) — library and CLI that exports repository contents
+      into structured prompts (XML/JSON/text). Useful reference for static
+      repo-to-prompt transforms in strongly-typed systems.

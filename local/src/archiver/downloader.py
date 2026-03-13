@@ -315,7 +315,10 @@ class Downloader:
                 }
 
         # Deterministic tmp path — same across restarts so aria2 finds its .aria2 control file.
-        tmp_subdir = self.tmp_dir / model.id.replace("/", "_")
+        # Use a .tmp scratch area on the *target drive* when possible to keep writes linear
+        # per drive and avoid cross-disk tmp usage.
+        scratch_root = getattr(model, "drive_path", None) or self.tmp_dir
+        tmp_subdir = scratch_root / ".tmp" / model.id.replace("/", "_")
         tmp_subdir.mkdir(parents=True, exist_ok=True)
 
         last_error: Optional[Exception] = None
