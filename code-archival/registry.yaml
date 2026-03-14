@@ -1159,6 +1159,78 @@ repos:
       An emerging alternative to VS Code with strong AI integration.
 
   # ===========================================================================
+  # LOW-LEVEL / SYSTEM TOOLS — GPU monitoring, profiling, resource observation
+  # for self-hosted LLM execution and analysis
+  # ===========================================================================
+
+  - id: Syllo/nvtop
+    github: Syllo/nvtop
+    category: tooling
+    risk: medium
+    licence: GPL-3.0
+    notes: >
+      nvtop — htop-like GPU and accelerator process monitor. Supports NVIDIA,
+      AMD, Intel, Apple, Huawei, Qualcomm. Essential for multi-GPU LLM servers
+      and debugging OOM or utilization. Actively maintained.
+
+  - id: XuehaiPan/nvitop
+    github: XuehaiPan/nvitop
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      nvitop — interactive NVIDIA GPU process viewer and manager. Python-based,
+      Prometheus exporter for Grafana; one-stop for GPU process management on
+      self-hosted inference nodes.
+
+  - id: clbr/radeontop
+    github: clbr/radeontop
+    category: tooling
+    risk: high
+    licence: GPL-3.0
+    notes: >
+      radeontop — real-time AMD Radeon GPU usage (VRAM, clocks, utilization).
+      R600+ and AMDGPU kernel driver. Important for AMD-based LLM inference boxes.
+
+  - id: Umio-Yasuno/amdgpu_top
+    github: Umio-Yasuno/amdgpu_top
+    category: tooling
+    risk: high
+    licence: MIT
+    notes: >
+      amdgpu_top — Rust tool to display AMDGPU usage (VRAM, engines, processes).
+      Alternative to radeontop; useful when building or scripting GPU monitoring.
+
+  - id: plasma-umass/scalene
+    github: plasma-umass/scalene
+    category: tooling
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Scalene — high-precision CPU, GPU, and memory profiler for Python. Critical
+      for profiling inference servers, training scripts, and data loaders;
+      supports GPU profiling and AI-powered optimization suggestions.
+
+  - id: benfred/py-spy
+    github: benfred/py-spy
+    category: tooling
+    risk: medium
+    licence: MIT
+    notes: >
+      py-spy — sampling profiler for Python (Rust core). No instrumentation
+      needed; flame graphs and live top view. Essential for debugging stuck or
+      slow LLM-serving processes in production.
+
+  - id: aristocratos/btop
+    github: aristocratos/btop
+    category: tooling
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      btop — resource monitor (CPU, memory, disk, network, processes). Modern
+      replacement for htop; standard companion to nvtop on LLM host servers.
+
+  # ===========================================================================
   # MULTIMODAL & DIFFUSION — image/audio/video generation
   # ===========================================================================
 

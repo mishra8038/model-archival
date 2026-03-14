@@ -39,6 +39,7 @@ from __future__ import annotations
 import logging
 import shutil
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Optional
 
@@ -60,7 +61,10 @@ from archiver.verifier import (
 log = logging.getLogger(__name__)
 
 MAX_RETRIES = 5
-RETRY_BACKOFF = [30, 60, 120, 300, 600]   # seconds between retries: 30s, 1m, 2m, 5m, 10m
+# Parallel file downloads per model. Keeps disk write streams bounded and stays under HF resolver
+# limits (3k–12k / 5 min). aria2 max_concurrent is 16 so 2 drives × 8 files fits.
+MAX_FILES_IN_FLIGHT = 8
+RETRY_BACKOFF = [30, 60, 120, 300, 600]
 
 
 class DownloadError(RuntimeError):
@@ -173,17 +177,31 @@ class Downloader:
             )
             return {}
 
-        completed_files = []
-        for file_info in repo_files:
+        # Download files in parallel (up to MAX_FILES_IN_FLIGHT at a time) to utilise
+        # aria2's multiple concurrent slots and saturate bandwidth.
+        completed_by_index: dict[int, dict] = {}
+
+        def download_one(idx: int, file_info: dict):
             result = self._download_file_with_retry(
                 model=model,
                 file_info=file_info,
                 dest_dir=dest_dir,
                 on_progress=on_file_progress,
             )
-            completed_files.append(result)
             if on_file_complete:
                 on_file_complete(model, file_info["filename"], result)
+            return (idx, result)
+
+        with ThreadPoolExecutor(max_workers=MAX_FILES_IN_FLIGHT) as executor:
+            futures = {
+                executor.submit(download_one, i, fi): i
+                for i, fi in enumerate(repo_files)
+            }
+            for fut in as_completed(futures):
+                idx, result = fut.result()
+                completed_by_index[idx] = result
+
+        completed_files = [completed_by_index[i] for i in range(len(repo_files))]
 
         manifest = write_manifest(
             model_id=model.id,

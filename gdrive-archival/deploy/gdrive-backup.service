@@ -1,0 +1,11 @@
+# dinit oneshot: run GDrive backup once (scripted = run command then consider started).
+# Install: sudo ln -sf /home/x/dev/model-archival/gdrive-archival/deploy/gdrive-backup.service /etc/dinit.d/boot.d/
+# Optional: set RCLONE_CONFIG in deploy/gdrive-backup.env or ensure run.sh finds rclone.conf (e.g. ~/Downloads/rclone.conf).
+type            = scripted
+command         = /usr/bin/bash /home/x/dev/model-archival/gdrive-archival/run.sh
+working-dir     = /home/x/dev/model-archival/gdrive-archival
+run-as          = x
+start-timeout   = 0
+restart         = false
+waits-for       = network
+logfile         = /home/x/dev/model-archival/gdrive-archival/logs/gdrive-backup.log

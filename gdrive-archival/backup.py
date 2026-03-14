@@ -4,13 +4,14 @@ import json
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import yaml
 
 
 CONFIG_PATH = Path(__file__).with_name("config.yaml")
 STATE_PATH = Path(__file__).with_name("state.json")
+TIER_ORDER = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6}
 
 
 @dataclass
@@ -24,6 +25,8 @@ class ModelEntry:
   model_id: str
   hf_repo: str
   drive: str
+  tier: str = "A"
+  commit_sha: Optional[str] = None
 
 
 def load_yaml(path: Path):
@@ -67,18 +70,130 @@ def load_registry(archiver_root: Path) -> Dict[str, ModelEntry]:
       model_id=mid,
       hf_repo=m.get("hf_repo", mid),
       drive=m.get("drive"),
+      tier=m.get("tier", "A"),
+      commit_sha=m.get("commit_sha"),
     )
   return out
+
+
+def _content_subdir(tier: str) -> str:
+  if tier == "C":
+    return "quantized"
+  if tier == "D":
+    return "uncensored"
+  return "raw"
 
 
 def resolve_model_path(entry: ModelEntry, drives: Dict[str, DriveConfig]) -> Optional[Path]:
   d = drives.get(entry.drive)
   if not d:
     return None
-  return Path(d.mount_point) / "hf" / entry.hf_repo
+  subdir = _content_subdir(entry.tier)
+  rev = entry.commit_sha or "main"
+  org, name = entry.hf_repo.split("/", 1)
+  return Path(d.mount_point) / subdir / org / name / rev
 
 
-def run_rclone_copy(src: Path, remote_base: str, rel_dest: str) -> bool:
+def load_archiver_run_state(path: Path) -> Dict:
+  """Load archiver run_state.json (has status, total_bytes per model)."""
+  if not path.exists():
+    return {"models": {}}
+  with path.open("r") as f:
+    return json.load(f)
+
+
+def is_gguf(entry: ModelEntry) -> bool:
+  """True if this registry entry is a GGUF/quantized model."""
+  if entry.tier == "C":
+    return True
+  if "GGUF" in entry.model_id or "gguf" in entry.hf_repo.lower():
+    return True
+  return False
+
+
+def compute_upload_lists(
+  cfg: Dict,
+  archiver_root: Path,
+  run_state_path: Path,
+  drives_allow: List[str],
+  max_total_gb: float,
+  max_per_model_gb: float,
+) -> Tuple[List[str], List[str]]:
+  """
+  Build gguf_ids and full_ids from registry + run_state that fit within budget.
+  Only includes models on allowed drives, status complete, with known size <= max_per_model_gb.
+  """
+  registry = load_registry(archiver_root)
+  run_state = load_archiver_run_state(run_state_path)
+  models_state = run_state.get("models", {})
+
+  max_total_bytes = int(max_total_gb * 1024**3)
+  max_per_bytes = int(max_per_model_gb * 1024**3)
+
+  # (model_id, size_bytes, is_gguf)
+  candidates: List[Tuple[str, int, bool]] = []
+  for mid, entry in registry.items():
+    if entry.drive not in drives_allow:
+      continue
+    ms = models_state.get(mid, {})
+    if ms.get("status") != "complete":
+      continue
+    total = ms.get("total_bytes") or 0
+    if total <= 0 or total > max_per_bytes:
+      continue
+    candidates.append((mid, total, is_gguf(entry)))
+
+  # Sort: tier (A first), then priority (1 first), then size ascending (smaller first)
+  reg_raw = load_yaml(archiver_root / "config" / "registry.yaml")
+  reg_models = reg_raw.get("models", [])
+
+  def sort_key(item: Tuple[str, int, bool]) -> Tuple[int, int, int]:
+    mid, size, _ = item
+    entry = registry[mid]
+    tier_rank = TIER_ORDER.get(entry.tier, 99)
+    raw = next((m for m in reg_models if m.get("id") == mid), {})
+    priority = raw.get("priority", 1)
+    return (tier_rank, priority, size)
+
+  candidates.sort(key=sort_key)
+
+  gguf_ids: List[str] = []
+  full_ids: List[str] = []
+  total_bytes = 0
+  for mid, size, is_g in candidates:
+    if total_bytes + size > max_total_bytes:
+      break
+    total_bytes += size
+    if is_g:
+      gguf_ids.append(mid)
+    else:
+      full_ids.append(mid)
+
+  return (gguf_ids, full_ids)
+
+
+def get_model_ids_for_backup(cfg: Dict, archiver_root: Path, kind: str) -> List[str]:
+  """Return list of model IDs to backup: from upload_selection or explicit model_ids_*."""
+  sel = cfg.get("upload_selection")
+  if sel:
+    run_state_path = Path(sel.get("run_state_path", "/mnt/models/d5/run_state.json"))
+    drives = sel.get("drives", ["d2", "d3"])
+    max_total_gb = float(sel.get("max_total_gb", 3000))
+    max_per_gb = float(sel.get("max_per_model_gb", 200))
+    gguf_ids, full_ids = compute_upload_lists(
+      cfg, archiver_root, run_state_path, drives, max_total_gb, max_per_gb
+    )
+    return gguf_ids if kind == "gguf" else full_ids
+  key = "model_ids_gguf" if kind == "gguf" else "model_ids_full"
+  return cfg.get(key, []) or []
+
+
+def run_rclone_copy(
+  src: Path,
+  remote_base: str,
+  rel_dest: str,
+  bwlimit: Optional[str] = None,
+) -> bool:
   dst = f"{remote_base.rstrip('/')}/{rel_dest}"
   cmd = [
     "rclone",
@@ -95,6 +210,8 @@ def run_rclone_copy(src: Path, remote_base: str, rel_dest: str) -> bool:
     "--low-level-retries",
     "20",
   ]
+  if bwlimit:
+    cmd.extend(["--bwlimit", bwlimit])
   print(f"[rclone] {' '.join(cmd)}")
   result = subprocess.run(cmd)
   return result.returncode == 0
@@ -109,8 +226,7 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
   base_path = cfg["gdrive"].get("base_path", "").strip()
   remote_base = f"{remote}/{base_path}" if base_path else remote
 
-  key = "model_ids_gguf" if kind == "gguf" else "model_ids_full"
-  ids: List[str] = cfg.get(key, []) or []
+  ids: List[str] = get_model_ids_for_backup(cfg, archiver_root, kind)
 
   for mid in ids:
     entry = registry.get(mid)
@@ -131,7 +247,8 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
       continue
 
     rel_dest = f"models/{mid.replace('/', '--')}"
-    ok = run_rclone_copy(src, remote_base, rel_dest)
+    bwlimit = cfg["gdrive"].get("bwlimit")
+    ok = run_rclone_copy(src, remote_base, rel_dest, bwlimit=bwlimit)
     if ok:
       st_models[mid] = {
         "source_path": str(src),
@@ -157,7 +274,8 @@ def backup_extra_paths(cfg: Dict):
     st_paths = state.setdefault("paths", {})
 
     rel_dest = f"extra/{src.name}"
-    ok = run_rclone_copy(src, remote_base, rel_dest)
+    bwlimit = cfg["gdrive"].get("bwlimit")
+    ok = run_rclone_copy(src, remote_base, rel_dest, bwlimit=bwlimit)
     if ok:
       st_paths[str(src)] = {
         "backed_up": True,
@@ -165,6 +283,47 @@ def backup_extra_paths(cfg: Dict):
       save_state(state)
     else:
       print(f"[err] extra {src}: backup failed")
+
+
+def list_candidates(cfg: Dict, archiver_root: Path) -> None:
+  """Print which models would be uploaded (dry-run). Uses upload_selection if set."""
+  sel = cfg.get("upload_selection")
+  if not sel:
+    gguf_ids = cfg.get("model_ids_gguf", []) or []
+    full_ids = cfg.get("model_ids_full", []) or []
+    print("Using explicit model_ids_gguf / model_ids_full (no upload_selection).")
+    print(f"  GGUF: {len(gguf_ids)} models")
+    print(f"  Full: {len(full_ids)} models")
+    for mid in gguf_ids:
+      print(f"    gguf  {mid}")
+    for mid in full_ids:
+      print(f"    full {mid}")
+    return
+
+  run_state_path = Path(sel.get("run_state_path", "/mnt/models/d5/run_state.json"))
+  drives = sel.get("drives", ["d2", "d3"])
+  max_total_gb = float(sel.get("max_total_gb", 3000))
+  max_per_gb = float(sel.get("max_per_model_gb", 200))
+  gguf_ids, full_ids = compute_upload_lists(
+    cfg, archiver_root, run_state_path, drives, max_total_gb, max_per_gb
+  )
+
+  run_state = load_archiver_run_state(run_state_path)
+  models_state = run_state.get("models", {})
+  total_gguf = sum(models_state.get(mid, {}).get("total_bytes", 0) for mid in gguf_ids)
+  total_full = sum(models_state.get(mid, {}).get("total_bytes", 0) for mid in full_ids)
+  total_gb = (total_gguf + total_full) / 1024**3
+
+  print(f"Upload selection: drives={drives}, max_total_gb={max_total_gb}, max_per_model_gb={max_per_gb}")
+  print(f"  GGUF: {len(gguf_ids)} models, {total_gguf / 1024**3:.1f} GB")
+  print(f"  Full: {len(full_ids)} models, {total_full / 1024**3:.1f} GB")
+  print(f"  Total: {total_gb:.1f} GB")
+  for mid in gguf_ids:
+    b = models_state.get(mid, {}).get("total_bytes", 0)
+    print(f"    gguf  {mid}  ({b / 1024**3:.1f} GB)")
+  for mid in full_ids:
+    b = models_state.get(mid, {}).get("total_bytes", 0)
+    print(f"    full {mid}  ({b / 1024**3:.1f} GB)")
 
 
 def main():
@@ -175,6 +334,7 @@ def main():
   sub.add_parser("backup-full")
   sub.add_parser("backup-extra")
   sub.add_parser("backup-all")
+  sub.add_parser("list-candidates")
 
   args = parser.parse_args()
 
@@ -191,6 +351,8 @@ def main():
     backup_models(cfg, archiver_root, kind="gguf")
     backup_models(cfg, archiver_root, kind="full")
     backup_extra_paths(cfg)
+  elif args.cmd == "list-candidates":
+    list_candidates(cfg, archiver_root)
 
 
 if __name__ == "__main__":

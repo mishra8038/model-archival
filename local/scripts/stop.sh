@@ -15,7 +15,8 @@
 # =============================================================================
 set -euo pipefail
 
-REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Parent of scripts/ so .archiver.pid lives in local/
+REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PID_FILE="$REPO_DIR/.archiver.pid"
 
 FORCE=false

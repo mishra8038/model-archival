@@ -17,8 +17,8 @@ local/
   src/archiver/
     cli.py            click commands: download, verify, status, list, drives, tokens, pin
     downloader.py     per-model download logic (LFS via aria2, XET via hf_hub_download)
-    scheduler.py      per-drive worker threads + signal handling
-    aria2_manager.py  aria2c daemon lifecycle
+    scheduler.py      worker pool; max parallel models + max per drive; add more when speed/(n+1) >= 6 MB/s
+    aria2_manager.py  aria2c daemon (16 concurrent files; optional --bandwidth-cap)
     state.py          run_state.json persistence (thread-safe)
     status.py         rich live UI + STATUS.md + RunReport
     models.py         ModelEntry / DriveConfig dataclasses + registry I/O
@@ -43,6 +43,7 @@ local/
 - LFS CDN URLs expire ~1 hour — always re-fetch with `hf_hub_url()` before each attempt
 - On SHA-256 mismatch: remove both the corrupt file AND its `.aria2` control file (force clean restart)
 - `sync_archive()` replicates `archive/` to all drives after each model completes
+- Concurrency: MAX_FILES_IN_FLIGHT=8 per model (downloader.py); ARIA2_MAX_CONCURRENT=16 (aria2_manager.py). Bandwidth cap (if set) is applied in aria2 only.
 
 ## Adding a model to registry.yaml
 

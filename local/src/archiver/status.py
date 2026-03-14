@@ -167,18 +167,18 @@ class StatusDisplay:
         table.add_column("Model", width=38)
         table.add_column("Status", width=16)
         table.add_column("Speed", width=12)
-        n_active = len(stats.active) if stats and stats.active else 0
+        n_active = sum(len(v) for v in stats.active.values()) if stats and stats.active else 0
         if stats and stats.active:
-            # Divide aggregate speed evenly across active drives as an estimate
-            per_drive_mbps = stats.ewma_speed_mbps / max(n_active, 1)
-            mbps_colour = "green" if per_drive_mbps >= 10 else ("yellow" if per_drive_mbps >= 2 else "red")
-            for drive, model_id in stats.active.items():
-                table.add_row(
-                    drive.upper(),
-                    model_id,
-                    "[yellow]downloading…[/]",
-                    f"[{mbps_colour}]{_fmt_speed(per_drive_mbps)}[/]",
-                )
+            per_model_mbps = stats.ewma_speed_mbps / max(n_active, 1)
+            mbps_colour = "green" if per_model_mbps >= 10 else ("yellow" if per_model_mbps >= 2 else "red")
+            for drive, model_ids in stats.active.items():
+                for model_id in model_ids:
+                    table.add_row(
+                        drive.upper(),
+                        model_id,
+                        "[yellow]downloading…[/]",
+                        f"[{mbps_colour}]{_fmt_speed(per_model_mbps)}[/]",
+                    )
         else:
             table.add_row("—", "—", "[dim]idle[/]", "—")
         # Footer line: aggregate speed + total active
@@ -273,7 +273,7 @@ class StatusDisplay:
         if stats and self.total_bytes > 0:
             pct = stats.done_bytes / self.total_bytes * 100
             n_complete = len(stats.completed)
-            n_active = len(stats.active)
+            n_active = sum(len(v) for v in stats.active.values())
             n_pending = len(stats.pending)
             n_failed = len(stats.failed)
             lines += [
@@ -291,8 +291,10 @@ class StatusDisplay:
                   "| Drive | Model | Speed |",
                   "|-------|-------|-------|"]
         if stats and stats.active:
-            for drive, model_id in stats.active.items():
-                lines.append(f"| {drive.upper()} | {model_id} | {_fmt_speed(stats.ewma_speed_mbps)} |")
+            per_model = stats.ewma_speed_mbps / max(sum(len(v) for v in stats.active.values()), 1)
+            for drive, model_ids in stats.active.items():
+                for model_id in model_ids:
+                    lines.append(f"| {drive.upper()} | {model_id} | {_fmt_speed(per_model)} |")
         else:
             lines.append("| — | — | — |")
 

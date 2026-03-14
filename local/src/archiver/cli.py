@@ -140,7 +140,12 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option("--all", "download_all", is_flag=True, default=False, help="Download everything")
 @click.option("--priority-only", type=int, help="Download only models with this priority (1 or 2)")
 @click.option("--dry-run", is_flag=True, help="Print what would be downloaded without fetching")
-@click.option("--max-parallel-drives", type=int, default=3, show_default=True)
+@click.option("--max-parallel-drives", "max_parallel_models", type=int, default=12, show_default=True,
+              help="Max simultaneous model downloads (worker pool size)")
+@click.option("--max-per-drive", type=int, default=4, show_default=True,
+              help="Max concurrent models per drive (limits disk thrash)")
+@click.option("--min-speed-mbps", type=float, default=6.0, show_default=True,
+              help="Only add another model if aggregate/(n+1) >= this (MB/s)")
 @click.option("--bandwidth-cap", type=float, default=None, help="Total bandwidth cap in MB/s")
 @click.option("--fast", is_flag=True, help="Use hf_transfer fast-path (no resume)")
 @click.option(
@@ -155,7 +160,9 @@ def cmd_download(
     download_all: bool,
     priority_only: Optional[int],
     dry_run: bool,
-    max_parallel_drives: int,
+    max_parallel_models: int,
+    max_per_drive: int,
+    min_speed_mbps: float,
     bandwidth_cap: Optional[float],
     fast: bool,
     status_out: Optional[str],
@@ -242,7 +249,9 @@ def cmd_download(
     cli_args = {
         "tier": tier or "all",
         "priority_only": priority_only or "all",
-        "max_parallel_drives": max_parallel_drives,
+        "max_parallel_models": max_parallel_models,
+        "max_per_drive": max_per_drive,
+        "min_speed_mbps": min_speed_mbps,
         "bandwidth_cap": bandwidth_cap or "unlimited",
         "hf_token": "set" if hf_token else "not set",
         "logs_dir": str(logs_dir),
@@ -267,7 +276,10 @@ def cmd_download(
 
     console.print(Rule("[bold cyan]Downloads[/bold cyan]"))
 
-    with Aria2Manager(tmp_dir=tmp_dir) as aria2:
+    with Aria2Manager(
+        tmp_dir=tmp_dir,
+        max_overall_download_limit_mbps=bandwidth_cap,
+    ) as aria2:
         downloader = Downloader(
             aria2=aria2,
             tmp_dir=tmp_dir,
@@ -302,8 +314,9 @@ def cmd_download(
             on_model_failed=on_failed,
             on_status_update=status_display.update,
             token_accessible=token_results,
-            max_parallel_drives=max_parallel_drives,
-            bandwidth_cap_mbps=bandwidth_cap,
+            max_parallel_models=max_parallel_models,
+            max_models_per_drive=max_per_drive,
+            min_speed_per_model_mbps=min_speed_mbps,
             activity_log_path=activity_log_path,
         )
         scheduler.build_queue(models)

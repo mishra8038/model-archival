@@ -26,8 +26,11 @@ alwaysApply: true
 - All downloads are **resumable** — never delete `.tmp` partial files or `.aria2` control files just to "clean up".
 - `run_state.json` on D5 is the source of truth for per-model status (`pending`, `in_progress`, `complete`, `failed`, `skipped`).
 - The scheduler:
-  - Schedules work **per drive**, enforcing a max parallel drive count and bandwidth headroom.
-  - Skips or defers gated models when the HF token is absent or lacks access, marking them as `skipped` with a clear error.
+  - **Worker pool**: up to `--max-parallel-drives` N concurrent models (default 12). Each worker picks the next model from any drive that has pending work and is under that drive’s cap (`--max-per-drive`, default 4).
+  - **6 MB/s rule**: add another model only when aggregate speed / (active + 1) >= `--min-speed-mbps` (default 6). So when per-model rate would drop below 6 MB/s, the scheduler waits before starting more (bandwidth permitting).
+  - Optional `--bandwidth-cap N` applies a global cap in aria2 (MB/s). Skips or defers gated models when the HF token is absent or lacks access.
+- Download concurrency:
+  - **Per model**: up to 8 files in flight; aria2 max 16 concurrent files. Per-drive cap (default 4) limits disk thrash while allowing multiple models per drive when bandwidth allows.
 - Completed models:
   - Are cryptographically verified (SHA-256) and recorded in `manifest.json`.
   - Trigger `sync_archive()` to replicate the metadata archive across drives (weight files are not eagerly duplicated).

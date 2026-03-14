@@ -30,6 +30,9 @@ fingerprints/.venv/
 fingerprints/data/
 fingerprints/output/
 
+# GDrive backup — contains OAuth token
+gdrive-archival/rclone.conf
+
 # code-archival sub-project
 code-archival/.secrets
 code-archival/*.token

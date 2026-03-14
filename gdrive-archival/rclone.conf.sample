@@ -1,0 +1,12 @@
+# Copy to rclone.conf and fill in your OAuth token (rclone config).
+# Remote name must be "gdrive". To use a specific Drive folder as root, set root_folder_id.
+# Folder for this project: 1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ
+
+[gdrive]
+type = drive
+scope = drive
+token = {"access_token":"...","token_type":"Bearer",...}
+root_folder_id = 1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ
+
+# Alternatively, omit root_folder_id and use remote as "gdrive:1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ"
+# in config.yaml (already set) so uploads go to that folder by path.

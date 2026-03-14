@@ -18,8 +18,8 @@ log = logging.getLogger(__name__)
 
 ARIA2_PORT = 6800
 ARIA2_SECRET = "archiver-local"
-ARIA2_CONNECTIONS_PER_FILE = 8
-ARIA2_MAX_CONCURRENT = 4
+ARIA2_CONNECTIONS_PER_FILE = 8   # HTTP connections per file (CDN parallelism)
+ARIA2_MAX_CONCURRENT = 16       # Max files in flight across all workers (disk + HF resolver friendly)
 
 
 @dataclass
@@ -39,12 +39,14 @@ class Aria2Manager:
         tmp_dir: Path,
         connections_per_file: int = ARIA2_CONNECTIONS_PER_FILE,
         max_concurrent: int = ARIA2_MAX_CONCURRENT,
+        max_overall_download_limit_mbps: Optional[float] = None,
         port: int = ARIA2_PORT,
         secret: str = ARIA2_SECRET,
     ) -> None:
         self.tmp_dir = tmp_dir
         self.connections_per_file = connections_per_file
         self.max_concurrent = max_concurrent
+        self.max_overall_download_limit_mbps = max_overall_download_limit_mbps
         self.port = port
         self.secret = secret
         self._proc: Optional[subprocess.Popen] = None
@@ -72,19 +74,24 @@ class Aria2Manager:
             f"--max-concurrent-downloads={self.max_concurrent}",
             f"--split={self.connections_per_file}",
             f"--max-connection-per-server={self.connections_per_file}",
-            "--continue=true",           # resume partial downloads
+            "--continue=true",
             "--auto-file-renaming=false",
             "--allow-overwrite=true",
             "--retry-wait=30",
             "--max-tries=5",
             "--timeout=300",
             "--connect-timeout=60",
-            "--piece-length=32M",        # large pieces suit multi-GB files
+            "--piece-length=32M",
             f"--dir={self.tmp_dir}",
-            "--daemon=false",            # we manage the process ourselves
+            "--daemon=false",
             "--quiet=true",
             "--log-level=warn",
         ]
+        if self.max_overall_download_limit_mbps is not None and self.max_overall_download_limit_mbps > 0:
+            # aria2 expects bytes per second
+            limit_bps = int(self.max_overall_download_limit_mbps * 1024 * 1024)
+            cmd.append(f"--max-overall-download-limit={limit_bps}")
+            log.info("Bandwidth cap: %.0f MB/s", self.max_overall_download_limit_mbps)
         log.info("Starting aria2c daemon on port %d", self.port)
         self._proc = subprocess.Popen(
             cmd,

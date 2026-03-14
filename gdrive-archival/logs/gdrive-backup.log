@@ -1,0 +1,29 @@
+rclone config not found. Set RCLONE_CONFIG to your rclone.conf path, or put rclone.conf in this dir or ~/Downloads.
+[rclone] rclone copy /mnt/models/d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031 gdrive:1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ/models/bartowski--Qwen2.5-7B-Instruct-GGUF --checksum --transfers 2 --checkers 4 --retries 10 --low-level-retries 20 --bwlimit 3M:off
+Traceback (most recent call last):
+  File "/home/x/dev/model-archival/gdrive-archival/backup.py", line 359, in <module>
+    main()
+    ~~~~^^
+  File "/home/x/dev/model-archival/gdrive-archival/backup.py", line 351, in main
+    backup_models(cfg, archiver_root, kind="gguf")
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/x/dev/model-archival/gdrive-archival/backup.py", line 251, in backup_models
+    ok = run_rclone_copy(src, remote_base, rel_dest, bwlimit=bwlimit)
+  File "/home/x/dev/model-archival/gdrive-archival/backup.py", line 216, in run_rclone_copy
+    result = subprocess.run(cmd)
+  File "/usr/lib/python3.14/subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1038, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1989, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'rclone'
