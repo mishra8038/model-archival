@@ -1,17 +1,16 @@
 # =============================================================================
 # Agent / LLM Skills archival registry
 #
-# Snapshots the main Agent Skills ecosystem:
-#   - agentskills.io spec (agentskills/agentskills)
-#   - Anthropic official skills (anthropics/skills)
-#   - Awesome LLM Skills curated list (Prat011/awesome-llm-skills)
-#   - All external GitHub repos referenced by awesome-llm-skills
+# Snapshots the Agent Skills ecosystem:
+#   - agentskills.io spec, Anthropic official skills, awesome lists (Prat011, travisvn, Composio, etc.)
+#   - Claude Skills Hub (alirezarezvani), Superpowers (obra), individual skill repos
+#   - GPT Actions / ChatGPT plugins compendia (OpenAI cookbook, agisota, HighwayofLife)
+#   - Self-hosted / universal: heilcheng/awesome-agent-skills
 #
-# Download: use code-archival/archive.sh with this registry (see README-skills.md).
-# Site snapshot: wget mirror agentskills.io (see README-skills.md).
+# Download: bash archive-skills.sh or archive.sh --registry registry-skills.yaml
+# Site snapshot: bash archive-skills.sh --site (agentskills.io)
 #
-# Schema matches code-archival/registry.yaml: id, github, category, risk, licence, notes.
-# category: agent-skills (filter with --category agent-skills if merged into main registry).
+# Schema: id, github, category, risk, licence, notes.
 # =============================================================================
 
 repos:
@@ -44,6 +43,71 @@ repos:
       Curated list of LLM Skills for Claude Code, Codex, Gemini CLI, OpenCode, Qwen Code.
       Contains in-repo skills (notion-*, changelog-generator, webapp-testing, etc.)
       and links to external repos below.
+
+  # --- Other awesome / curated lists (Claude & self-hosted) ---
+  - id: travisvn/awesome-claude-skills
+    github: travisvn/awesome-claude-skills
+    category: agent-skills
+    risk: low
+    licence: NOASSERTION
+    notes: >
+      Awesome Claude Skills — enterprise workflows, developer tools, Superpowers (20+ skills),
+      official doc skills, security best practices. Claude Code & Anthropic focused.
+
+  - id: alirezarezvani/claude-skills
+    github: alirezarezvani/claude-skills
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Claude Skills Hub — 180+ production-ready skills, 9 domains (engineering, marketing,
+      C-level, product, PM, regulatory, business, finance), 254 CLI tools, plugins.
+
+  - id: ComposioHQ/awesome-claude-skills
+    github: ComposioHQ/awesome-claude-skills
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Composio Awesome Claude Skills — app automation, connect-apps (GitHub, Slack, Jira,
+      Vercel, 500+ apps). Document processing, dev, data, business, security categories.
+
+  - id: heilcheng/awesome-agent-skills
+    github: heilcheng/awesome-agent-skills
+    category: agent-skills
+    risk: medium
+    licence: MIT
+    notes: >
+      Awesome Agent Skills — tools and actions for autonomous agents; multi-platform
+      (Claude, Copilot, VS Code, Codex, Gemini CLI). Self-hosted / universal LLM skills.
+
+  # --- GPT Actions / ChatGPT plugins (OpenAI ecosystem) ---
+  - id: openai/openai-cookbook
+    github: openai/openai-cookbook
+    category: agent-skills
+    risk: low
+    licence: MIT
+    notes: >
+      OpenAI Cookbook — includes GPT Actions library examples (e.g. GitHub PR reviewer),
+      cookbook for custom GPTs and actions.
+
+  - id: agisota/gpt-actions
+    github: agisota/gpt-actions
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      GPT Actions Compendium — plug-and-play OpenAPI schemas for custom GPT actions
+      (manage GitHub repos, real-time data, etc.). JSON/YAML schemas.
+
+  - id: highwayoflife/awesome-chatgpt-plugins
+    github: highwayoflife/awesome-chatgpt-plugins
+    category: agent-skills
+    risk: medium
+    licence: CC0-1.0
+    notes: >
+      Awesome ChatGPT Plugins — 1000+ legacy plugins catalog (productivity, coding, finance).
+      Historical reference; OpenAI replaced plugins with Custom GPTs.
 
   # --- Referenced external repos (unique roots from awesome-llm-skills README) ---
   - id: smerchek/claude-epub-skill

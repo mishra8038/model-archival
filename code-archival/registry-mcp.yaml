@@ -1,0 +1,181 @@
+# =============================================================================
+# MCP servers & tools — archival registry
+#
+# MCP servers (Model Context Protocol): master lists, official servers,
+# LLM dev/observability, vector DBs, orchestration adapters, self-hosted
+# tooling, and build/convert utilities.
+#
+# Download: bash archive-mcp.sh or archive.sh --registry registry-mcp.yaml
+#
+# Schema: id, github, category, risk, licence, notes.
+# =============================================================================
+
+repos:
+
+  # --- Master lists & reference ---
+  - id: punkpeye/awesome-mcp-servers
+    github: punkpeye/awesome-mcp-servers
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Largest community list of MCP servers. Categories: Developer Tools, art,
+      architecture, databases, etc. Multi-language docs. Glama directory at
+      glama.ai/mcp/servers indexes this list.
+
+  - id: modelcontextprotocol/servers
+    github: modelcontextprotocol/servers
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Official reference MCP servers from Anthropic/partners: Git, PostgreSQL,
+      Filesystem, Google Drive, Slack, GitHub, Puppeteer. Canonical implementations.
+
+  # --- Evaluation & observability ---
+  - id: promptfoo/promptfoo
+    github: promptfoo/promptfoo
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      LLM evaluation framework. MCP server exposes run_evaluation, list_evaluations,
+      redteam_*, generate_test_cases, validate_promptfoo_config. Use: npx promptfoo mcp.
+
+  - id: langwatch/langwatch
+    github: langwatch/langwatch
+    category: mcp
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      LLM observability platform. MCP server (@langwatch/mcp-server): search_traces,
+      get_trace, discover_schema, get_analytics. Connects Cursor/Claude to traces.
+
+  - id: Arize-ai/phoenix
+    github: Arize-ai/phoenix
+    category: mcp
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      AI observability & evaluation. Phoenix MCP (@arizeai/phoenix-mcp): prompts
+      management, datasets, experiments. Trace data and prompt versioning to agents.
+
+  # --- Vector DBs & RAG ---
+  - id: qdrant/mcp-server-qdrant
+    github: qdrant/mcp-server-qdrant
+    category: mcp
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      Official Qdrant MCP server. Collections, semantic search, configurable
+      embeddings (FastEmbed). Env: QDRANT_URL, QDRANT_API_KEY, COLLECTION_NAME.
+
+  - id: weaviate/mcp-server-weaviate
+    github: weaviate/mcp-server-weaviate
+    category: mcp
+    risk: low
+    licence: GPL-3.0
+    notes: >
+      Official Weaviate MCP server. Semantic search and cluster operations.
+      Weaviate also adding native MCP API in core (port 9000).
+
+  - id: run-llama/mcp-server-llamacloud
+    github: run-llama/mcp-server-llamacloud
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      LlamaCloud MCP server (TypeScript). Query managed indexes; tools per index.
+      Args: --index, --description, --topK. Claude Desktop, Cursor, Windsurf.
+
+  - id: run-llama/llamacloud-mcp
+    github: run-llama/llamacloud-mcp
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      LlamaCloud MCP (Python). Query indexes and extract agents. Transports:
+      stdio, SSE, streamable-http. uvx llamacloud-mcp or pip install.
+
+  # --- Orchestration & frameworks ---
+  - id: langchain-ai/langchain-mcp-adapters
+    github: langchain-ai/langchain-mcp-adapters
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Converts MCP tools into LangChain tools for LangGraph agents. load_mcp_tools(),
+      multiple servers, stdio/HTTP. Use any MCP server from LangChain stack.
+
+  - id: huggingface/hf-mcp-server
+    github: huggingface/hf-mcp-server
+    category: mcp
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      Official HF MCP server. Search models, datasets, Spaces; run Gradio tools
+      from Spaces. STDIO + Streamable HTTP. Configure at huggingface.co/settings/mcp.
+
+  # --- Self-hosted & local ---
+  - id: docker/mcp-gateway
+    github: docker/mcp-gateway
+    category: mcp
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      Docker MCP CLI (docker-mcp). Containerized MCP servers, secrets, OAuth.
+      Gateway for Claude/Cursor/VS Code. Part of Docker Desktop MCP Toolkit.
+
+  # --- Build & convert tools ---
+  - id: PrefectHQ/fastmcp
+    github: PrefectHQ/fastmcp
+    category: mcp
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      Python MCP server library (FastAPI-style). @mcp.tool decorator, auto schema.
+      Servers, clients, apps. pip install fastmcp. gofastmcp.com docs.
+
+  - id: zcaceres/easy-mcp
+    github: zcaceres/easy-mcp
+    category: mcp
+    risk: medium
+    licence: MIT
+    notes: >
+      TypeScript MCP server framework. Express-like API, decorators, context object.
+      Node/Bun. Beta: no MCP sampling, no SSE yet.
+
+  - id: jedisct1/openapi-mcp
+    github: jedisct1/openapi-mcp
+    category: mcp
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Converts OpenAPI 3.x specs into MCP tools. Validation, auth (API key, Bearer,
+      OAuth2), safety confirmations. Archived but functional.
+
+  - id: higress-group/openapi-to-mcpserver
+    github: higress-group/openapi-to-mcpserver
+    category: mcp
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Go tool: OpenAPI → Higress remote MCP server config (YAML/JSON). Useful for
+      API-to-MCP in gateway deployments.
+
+  # --- Official SDKs (for building servers) ---
+  - id: modelcontextprotocol/typescript-sdk
+    github: modelcontextprotocol/typescript-sdk
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Official MCP TypeScript/JavaScript SDK. Reference for MCP client/server impl.
+
+  - id: modelcontextprotocol/python-sdk
+    github: modelcontextprotocol/python-sdk
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Official MCP Python SDK. Reference for building Python MCP servers.

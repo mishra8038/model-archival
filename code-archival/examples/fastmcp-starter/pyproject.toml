@@ -1,0 +1,10 @@
+[project]
+name = "fastmcp-starter"
+version = "0.1.0"
+description = "Minimal FastMCP server example for MCP code archive"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["fastmcp>=3.0"]
+
+[tool.uv]
+dev-dependencies = []
