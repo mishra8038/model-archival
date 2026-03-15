@@ -126,6 +126,91 @@ repos:
       Docker MCP CLI (docker-mcp). Containerized MCP servers, secrets, OAuth.
       Gateway for Claude/Cursor/VS Code. Part of Docker Desktop MCP Toolkit.
 
+  # --- OS & Windows automation ---
+  - id: xkiranj/linux-command-mcp
+    github: xkiranj/linux-command-mcp
+    category: mcp
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Remote Linux command execution over MCP. Node.js client/server; exec, list dir,
+      system info, PM2 integration. No sudo/password; read-only/diagnostic focus.
+
+  - id: RedHatInsights/insights-mcp
+    github: RedHatInsights/insights-mcp
+    category: mcp
+    risk: low
+    licence: NOASSERTION
+    notes: >
+      Official RHEL MCP server (developer preview). Read-only: journalctl, systemctl,
+      process/CPU/memory; SSH key auth; multi-host. Optional --all-tools for write.
+      Runs on RHEL, Linux, macOS, Windows 11.
+
+  - id: rhel-lightspeed/linux-mcp-server
+    github: rhel-lightspeed/linux-mcp-server
+    category: mcp
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      RHEL-focused Linux MCP server (Python). Read-only diagnostics, multi-host SSH,
+      system info (services, processes, network, storage). LobeHub marketplace.
+
+  - id: CursorTouch/Windows-MCP
+    github: CursorTouch/Windows-MCP
+    category: mcp
+    risk: medium
+    licence: MIT
+    notes: >
+      Windows automation MCP: file nav, app control, UI interaction, PowerShell,
+      clipboard, keyboard. Accessibility tree (no screenshots). Windows 7–11.
+      uvx windows-mcp; 19 tools.
+
+  - id: microsoft/mcp
+    github: microsoft/mcp
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Microsoft MCP catalog: Azure MCP Server (40+ Azure services), Fabric MCP,
+      core libs, test frameworks. C#. Enterprise MCP (Entra/Graph) is separate
+      hosted service (preview).
+
+  - id: microsoft/clarity-mcp-server
+    github: microsoft/clarity-mcp-server
+    category: mcp
+    risk: low
+    licence: MIT
+    notes: >
+      Clarity analytics MCP. Natural language queries for traffic, session
+      recordings, filters (browser, device, country). npm/pip; needs Clarity API token.
+
+  - id: eat-pray-ai/yutu
+    github: eat-pray-ai/yutu
+    category: mcp
+    risk: medium
+    licence: MIT
+    notes: >
+      YouTube Data/Analytics/Reporting API MCP server (Go). Videos, playlists,
+      channels, comments, captions. Cross-platform; GCP OAuth required.
+
+  - id: cardinalhq/lakerunner
+    github: cardinalhq/lakerunner
+    category: mcp
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Observability data lake (S3-compatible). Feeds Cardinal Chip MCP (logs,
+      metrics, traces → IDE/Grafana). OpenTelemetry/CSV/JSON; deploy with Docker/Helm.
+
+  - id: hieuttmmo/entraid-mcp-server
+    github: hieuttmmo/entraid-mcp-server
+    category: mcp
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Community Entra ID MCP server via Microsoft Graph API. Alternative to
+      Microsoft Enterprise MCP (hosted preview) for self-hosted directory queries.
+
   # --- Build & convert tools ---
   - id: PrefectHQ/fastmcp
     github: PrefectHQ/fastmcp

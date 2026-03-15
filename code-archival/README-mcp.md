@@ -138,6 +138,12 @@ A fuller example lives in `code-archival/examples/fastmcp-starter/`.
 
 ---
 
+## See also
+
+- **OS skills & Windows/Linux MCP servers:** [README-mcp-os.md](README-mcp-os.md) — Linux command servers, RHEL, Windows-MCP, Clarity, Yutu, remote management, and how to use them.
+
+---
+
 ## References
 
 - [Model Context Protocol (modelcontextprotocol.io)](https://modelcontextprotocol.io)

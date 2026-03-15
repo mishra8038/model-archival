@@ -226,6 +226,24 @@ repos:
       git-pushing, review-implementing, test-fixing; computer-forensics-skills
       (computer-forensics, file-deletion, metadata-extraction).
 
+  - id: majiayu000/claude-skill-registry
+    github: majiayu000/claude-skill-registry
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Large registry: 162k+ SKILL.md files indexed, 82k+ deduplicated entries.
+      Web search, CLI, API; updated daily. Good for discovering OS/admin skills.
+
+  - id: hao-cyber/skill-evolution
+    github: hao-cyber/skill-evolution
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      Self-evolving skills: learn from execution, reflect on failures, improve.
+      Claude Code oriented; offline capable.
+
   # Repo may be private/renamed/deleted — API returns no data; leave in list for retry
   - id: jthack/threat-hunting-with-sigma-rules-skill
     github: jthack/threat-hunting-with-sigma-rules-skill
