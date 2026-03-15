@@ -38,7 +38,8 @@ alwaysApply: true
 ## Registry & Model Selection
 
 - `config/registry.yaml` is the **master model list** and is treated as the configuration source of truth.
-- Each entry captures: Hugging Face repo, tier, drive, priority, licence, `requires_auth`, and optional `notes`/`quant_levels`.
+- **Legacy models** live in `config/registry-legacy.yaml` and are excluded from default downloads; use `--registry config/registry-legacy.yaml --include-legacy` to fetch them.
+- Each entry captures: Hugging Face repo, tier, drive, priority, licence, `requires_auth`, and optional `notes`/`quant_levels`/`legacy`.
 - Tiers encode importance and usage:
   - **A/B**: flagship and code models (BF16/FP16).
   - **C/D**: GGUF and uncensored / abliterated variants.
@@ -46,9 +47,16 @@ alwaysApply: true
 - Priority:
   - **1**: core, token-free models; should be safe to run with `--priority-only 1`.
   - **2**: gated or nice-to-have models that may require explicit HF token access.
-- New research models should be added **space-aware**:
-  - Large BF16 models live on D1/D2 depending on role.
-  - Research and experimental models (e.g. `rl-research/DR-Tulu-8B`, `adamo1139/Apertus-8B-Instruct-2509-ungated`) are placed on D3 as Tier G to avoid crowding D2.
+
+### Model preference criteria (default behaviour)
+
+- **Default download** targets a **frontier snapshot**: current leaderboard models, base models, abliterated/uncensored variants, and niche-specification models. Older or purely historical models are not included by default.
+- **Keep in main registry** (`registry.yaml`):
+  - **Frontier / leaderboard**: Top open models (DeepSeek, Qwen, Llama, Gemma, Mistral, Cohere, Phi, NovaSky, etc.) and their **base** (pre-trained) counterparts for reproducibility and fine-tuning.
+  - **Abliterated / uncensored**: Variants that fulfill a clear use (huihui-ai, tensorblock, mlabonne, failspy, Dolphin, CombinHorizon, rombodawg, FINGU-AI, etc.).
+  - **Niche / SME**: Models that fulfill a function — e.g. embeddings (BAAI, gte-Qwen2, e5-mistral) for RAG, reward models (Skywork) for RLHF, reasoning (QwQ, OlympicCoder), vision (VL), math, research (grok, zephyr-style reference).
+- **Move to legacy registry** (`registry-legacy.yaml`): Older or superseded models, and things that can be recreated or are only of historical significance (e.g. TinyLlama, Phi-3-mini, Qwen1.5-110B, Yi-34B, starcoder2, zephyr-7b-beta). These do not consume download cycles unless explicitly requested with `--include-legacy` and the legacy registry.
+- When adding new models, prefer **space-aware** placement: large BF16 on D1/D2; research/experimental and GGUF on D3.
 
 ## Reporting, Status, and ETA
 

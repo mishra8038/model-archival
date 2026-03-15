@@ -17,7 +17,8 @@ if [[ -z "$RCLONE_CONFIG" || ! -f "$RCLONE_CONFIG" ]]; then
   exit 1
 fi
 
-# If the archiver has queued a metadata upload (run_state or archive changed), run extra first.
-python3 backup.py backup-extra-if-pending
+# Always refresh metadata (extra_paths) first so registry, archive, run_state, and code archives
+# are synced even if they were backed up before.
+python3 backup.py backup-extra-refresh
 python3 backup.py backup-gguf
 python3 backup.py backup-full

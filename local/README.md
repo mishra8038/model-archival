@@ -15,7 +15,7 @@ Downloads raw BF16/FP16 weights, quantized GGUFs, and uncensored variants across
 | C — Quantized | Top models in GGUF Q4_K_M / Q8_0 | GGUF | 0.4 TB |
 | D — Uncensored | Dolphin, abliterated Llama/Qwen/Mistral variants | Raw BF16 + GGUF | 0.5 TB |
 
-Full model list: [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md)
+Full model list: [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md). We prioritise **frontier/base, abliterated, and niche** models; legacy (older, superseded) are in [`config/registry-legacy.yaml`](config/registry-legacy.yaml) and excluded from default runs. See [Model preference criteria and reproduction prompt](docs/PROJECT_PROMPT.md#3-model-tiers-and-preference-criteria) and the [model selection prompt for any LLM](docs/MODEL-SELECTION-PROMPT.md).
 
 ---
 

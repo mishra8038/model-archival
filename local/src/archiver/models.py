@@ -22,6 +22,7 @@ class ModelEntry:
     parent_model: Optional[str] = None
     method: Optional[str] = None
     notes: Optional[str] = None
+    legacy: bool = False             # True = legacy / historical model (excluded by default)
 
     # Derived: set after registry is loaded alongside drive config
     drive_path: Optional[Path] = None
@@ -114,6 +115,7 @@ def load_registry(registry_path: Path, drives_path: Optional[Path] = None) -> Re
             parent_model=raw.get("parent_model"),
             method=raw.get("method"),
             notes=raw.get("notes"),
+            legacy=raw.get("legacy", False),
         )
         if entry.drive in drives:
             entry.drive_path = drives[entry.drive].mount_point
@@ -147,6 +149,8 @@ def save_registry(registry: Registry, registry_path: Path) -> None:
             entry["method"] = m.method
         if m.notes:
             entry["notes"] = m.notes
+        if m.legacy:
+            entry["legacy"] = m.legacy
         data["models"].append(entry)
 
     tmp = registry_path.with_suffix(".yaml.tmp")

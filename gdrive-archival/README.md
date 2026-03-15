@@ -19,19 +19,23 @@ bash run.sh
 Or run subcommands:
 
 ```bash
-python3 backup.py backup-extra              # only extra_paths (metadata)
-python3 backup.py backup-extra-if-pending   # run extra if archiver queued metadata, then clear queue
-python3 backup.py backup-gguf              # only GGUF models
-python3 backup.py backup-full              # only full-weight models
-python3 backup.py backup-all               # extra + gguf + full
-python3 backup.py list-candidates          # dry-run: what would be uploaded
-python3 backup.py compare-with-archiver   # planned vs registry vs already-downloaded
+python3 backup.py backup-extra               # only extra_paths (metadata), idempotent
+python3 backup.py backup-extra-refresh       # force extra_paths upload (ignores local state / remote presence)
+python3 backup.py backup-extra-if-pending    # run extra if archiver queued metadata, then clear queue
+python3 backup.py backup-gguf               # only GGUF models
+python3 backup.py backup-full               # only full-weight models
+python3 backup.py backup-all                # extra + gguf + full
+python3 backup.py list-candidates           # dry-run: what would be uploaded
+python3 backup.py compare-with-archiver    # planned vs registry vs already-downloaded
 python3 backup.py backup-dirs /path/to/model/dir ...   # arbitrary dirs (or --from-file)
 ```
 
-### Metadata upload queue
+### Metadata upload queue and refresh
 
-When the archiver updates `run_state.json` or runs `sync_archive()` (e.g. after a model completes), it touches `metadata_pending_path` on D5 (default `/mnt/models/d5/gdrive_metadata_pending`). `run.sh` runs `backup-extra-if-pending` first: if that file exists, it uploads all extra paths (registry, D5 archive, run_state, etc.) and then removes the sentinel. So the next GDrive backup run picks up metadata changes without a separate trigger.
+When the archiver updates `run_state.json` or runs `sync_archive()` (e.g. after a model completes), it touches `metadata_pending_path` on D5 (default `/mnt/models/d5/gdrive_metadata_pending`). You can:
+
+- Use `backup-extra-if-pending` to only upload extra paths when that sentinel exists (and then clear it), or
+- Use `backup-extra-refresh` (what `run.sh` does) to always re-run rclone for extra paths on each backup run. `--checksum` ensures unchanged files are not re-transferred, but any new / changed metadata is synced.
 
 All uploads are **idempotent**: `state.json` records what was backed up; re-runs skip already-uploaded models and paths. `backup-dirs` supports an arbitrary set of directory paths (or a file listing them) and uploads each to `models/<slug>` on GDrive, skipping dirs already in state.
 

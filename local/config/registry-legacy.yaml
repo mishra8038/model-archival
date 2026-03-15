@@ -1,0 +1,115 @@
+# Legacy / historical models — excluded from default download (--all).
+# Use: uv run archiver download --all --registry config/registry-legacy.yaml --include-legacy
+#      or merge into main registry and pass --include-legacy when you want them.
+# These are older, superseded, or recreatable; frontier/base/abliterated/niche stay in registry.yaml.
+models:
+- id: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  hf_repo: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  tier: A
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Ultra-small 1.1B — demo; excluded from default (frontier-only).
+- id: microsoft/Phi-3-mini-128k-instruct
+  hf_repo: microsoft/Phi-3-mini-128k-instruct
+  tier: A
+  drive: d3
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Superseded by Phi-4; excluded from default.
+- id: Qwen/Qwen1.5-110B
+  hf_repo: Qwen/Qwen1.5-110B
+  tier: A
+  drive: d1
+  priority: 2
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Pre-trained 110B base (Qwen1.5 gen); superseded by Qwen2.5/3 — preservation only.
+- id: 01-ai/Yi-34B-Chat
+  hf_repo: 01-ai/Yi-34B-Chat
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Yi
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Older 34B chat; superseded by frontier — excluded from default.
+- id: THUDM/glm-4-9b-chat
+  hf_repo: THUDM/glm-4-9b-chat
+  tier: A
+  drive: d2
+  priority: 2
+  licence: GLM-4
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Tsinghua GLM-4 9B — older; excluded from default.
+- id: internlm/internlm2_5-20b-chat
+  hf_repo: internlm/internlm2_5-20b-chat
+  tier: A
+  drive: d2
+  priority: 2
+  licence: InternLM
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: InternLM2.5 20B chat — older; excluded from default.
+- id: upstage/solar-pro-preview-instruct
+  hf_repo: upstage/solar-pro-preview-instruct
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Older ~20B; excluded from default.
+- id: tiiuae/Falcon3-10B-Instruct
+  hf_repo: tiiuae/Falcon3-10B-Instruct
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Older 10B; excluded from default.
+- id: bigcode/starcoder2-15b
+  hf_repo: bigcode/starcoder2-15b
+  tier: B
+  drive: d2
+  priority: 2
+  licence: BigCode-OpenRAIL-M
+  requires_auth: false
+  commit_sha: 46d44742909c03ac8cee08eb03fdebce02e193ec
+  legacy: true
+  notes: Pure code-completion baseline; historically significant — excluded from default.
+- id: Intel/neural-chat-7b-v3-1
+  hf_repo: Intel/neural-chat-7b-v3-1
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Older 7B DPO-style; excluded from default.
+- id: HuggingFaceH4/zephyr-7b-beta
+  hf_repo: HuggingFaceH4/zephyr-7b-beta
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Canonical 7B DPO reference — excluded from default; use --include-legacy to fetch.

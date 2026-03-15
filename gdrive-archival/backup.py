@@ -598,6 +598,8 @@ def main():
     backup_models(cfg, archiver_root, kind="full")
   elif args.cmd == "backup-extra":
     backup_extra_paths(cfg)
+  elif args.cmd == "backup-extra-refresh":
+    backup_extra_paths_refresh(cfg)
   elif args.cmd == "backup-extra-if-pending":
     pending_path = cfg.get("metadata_pending_path")
     if not pending_path:

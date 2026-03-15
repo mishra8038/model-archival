@@ -1,0 +1,171 @@
+# =============================================================================
+# Agent / LLM Skills archival registry
+#
+# Snapshots the main Agent Skills ecosystem:
+#   - agentskills.io spec (agentskills/agentskills)
+#   - Anthropic official skills (anthropics/skills)
+#   - Awesome LLM Skills curated list (Prat011/awesome-llm-skills)
+#   - All external GitHub repos referenced by awesome-llm-skills
+#
+# Download: use code-archival/archive.sh with this registry (see README-skills.md).
+# Site snapshot: wget mirror agentskills.io (see README-skills.md).
+#
+# Schema matches code-archival/registry.yaml: id, github, category, risk, licence, notes.
+# category: agent-skills (filter with --category agent-skills if merged into main registry).
+# =============================================================================
+
+repos:
+
+  # --- Spec & official ---
+  - id: agentskills/agentskills
+    github: agentskills/agentskills
+    category: agent-skills
+    risk: low
+    licence: NOASSERTION
+    notes: >
+      Open Agent Skills format spec, validation (skills-ref), reference library.
+      agentskills.io docs reference this repo.
+
+  - id: anthropics/skills
+    github: anthropics/skills
+    category: agent-skills
+    risk: low
+    licence: Apache-2.0
+    notes: >
+      Official Anthropic Agent Skills: document-skills (docx, pdf, pptx, xlsx),
+      example skills (artifacts-builder, etc.), spec and templates.
+
+  - id: Prat011/awesome-llm-skills
+    github: Prat011/awesome-llm-skills
+    category: agent-skills
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      Curated list of LLM Skills for Claude Code, Codex, Gemini CLI, OpenCode, Qwen Code.
+      Contains in-repo skills (notion-*, changelog-generator, webapp-testing, etc.)
+      and links to external repos below.
+
+  # --- Referenced external repos (unique roots from awesome-llm-skills README) ---
+  - id: smerchek/claude-epub-skill
+    github: smerchek/claude-epub-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: Markdown to EPUB converter skill.
+
+  - id: zxkane/aws-skills
+    github: zxkane/aws-skills
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: AWS development with CDK, cost optimization MCP, serverless patterns.
+
+  - id: chrisvoncsefalvay/claude-d3js-skill
+    github: chrisvoncsefalvay/claude-d3js-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: D3.js charts and interactive data visualizations.
+
+  - id: jthack/ffuf_claude_skill
+    github: jthack/ffuf_claude_skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: FFUF web fuzzer integration for vulnerability analysis.
+
+  - id: obra/superpowers
+    github: obra/superpowers
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Multiple skills: finishing-a-development-branch, test-driven-development,
+      using-git-worktrees, brainstorming, root-cause-tracing.
+
+  - id: 1NickPappas/move-code-quality-skill
+    github: 1NickPappas/move-code-quality-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: Move language code quality checklist compliance.
+
+  - id: lackeyjb/playwright-skill
+    github: lackeyjb/playwright-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: Playwright browser automation for testing.
+
+  - id: omkamal/pypict-claude-skill
+    github: omkamal/pypict-claude-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: PICT pairwise combinatorial test case generation.
+
+  - id: yusufkaraaslan/Skill_Seekers
+    github: yusufkaraaslan/Skill_Seekers
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: Converts documentation sites into Claude AI skills.
+
+  - id: coffeefuelbump/csv-data-summarizer-claude-skill
+    github: coffeefuelbump/csv-data-summarizer-claude-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: CSV analysis and visualizations.
+
+  - id: sanjay3290/ai-skills
+    github: sanjay3290/ai-skills
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: postgres (read-only SQL), imagen (Gemini image generation) skills.
+
+  - id: conorluddy/ios-simulator-skill
+    github: conorluddy/ios-simulator-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: iOS Simulator interaction for testing/debugging.
+
+  - id: michalparkola/tapestry-skills
+    github: michalparkola/tapestry-skills
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: article-extractor, youtube-transcript, ship-learn-next, tapestry.
+
+  - id: emaynard/claude-family-history-research-skill
+    github: emaynard/claude-family-history-research-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: Family history and genealogy research planning.
+
+  - id: PleasePrompto/notebooklm-skill
+    github: PleasePrompto/notebooklm-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: NotebookLM integration for source-grounded answers.
+
+  - id: mhattingpete/claude-skills-marketplace
+    github: mhattingpete/claude-skills-marketplace
+    category: agent-skills
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      git-pushing, review-implementing, test-fixing; computer-forensics-skills
+      (computer-forensics, file-deletion, metadata-extraction).
+
+  # Repo may be private/renamed/deleted — API returns no data; leave in list for retry
+  - id: jthack/threat-hunting-with-sigma-rules-skill
+    github: jthack/threat-hunting-with-sigma-rules-skill
+    category: agent-skills
+    risk: high
+    licence: NOASSERTION
+    notes: Sigma detection rules for threat hunting. Archive failed (repo not accessible).

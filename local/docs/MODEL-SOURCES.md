@@ -1,5 +1,7 @@
 # Model sources beyond Hugging Face
 
+**Model preference criteria** (what we keep in the main registry vs legacy): see [PROJECT_PROMPT.md §3](PROJECT_PROMPT.md#3-model-tiers-and-preference-criteria) and [MODEL-SELECTION-PROMPT.md](MODEL-SELECTION-PROMPT.md) for the prompt to generate candidate model lists with any LLM.
+
 ## Summary
 
 **Abliterated and specialist models:** There are **no** Kaggle-hosted abliterated or uncensored LLM weights that are missing from Hugging Face. Kaggle does not host a separate catalogue of abliterated/specialist models.

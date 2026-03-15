@@ -45,9 +45,22 @@ host changes.
 
 ---
 
-## 3. Model Tiers
+## 3. Model Tiers and Preference Criteria
 
-Models are organised into four tiers. The canonical list lives in `config/registry.yaml`.
+Models are organised into tiers. The **main** list lives in `config/registry.yaml`; **legacy** (older, superseded, or recreatable) models are in `config/registry-legacy.yaml` and are **excluded from default downloads**.
+
+### Model preference criteria (default = frontier snapshot)
+
+- **Default download** targets: **frontier / leaderboard** models, **base** (pre-trained) models, **abliterated / uncensored** variants, and **niche / SME** models that fulfill a function. We do **not** prioritise older models of historical significance only.
+- **Main registry** (`registry.yaml`) — keep:
+  - **Frontier / leaderboard**: Top open models (DeepSeek, Qwen, Llama, Gemma, Mistral, Cohere, Phi, NovaSky, etc.) and their **base** counterparts.
+  - **Abliterated / uncensored**: huihui-ai, tensorblock, mlabonne, failspy, Dolphin, CombinHorizon, rombodawg, FINGU-AI, etc.
+  - **Niche / SME**: Embeddings (BAAI, gte-Qwen2, e5-mistral), reward models (Skywork), reasoning (QwQ, OlympicCoder), vision (VL), math, research.
+- **Legacy registry** (`registry-legacy.yaml`) — move here: older or superseded models, and things that can be recreated or are only historically significant (e.g. TinyLlama, Phi-3-mini, Qwen1.5-110B, Yi-34B, starcoder2, zephyr-7b-beta). Fetch only with `--registry config/registry-legacy.yaml --include-legacy`.
+
+To **generate or extend** the model list using an LLM, use the prompt in `docs/MODEL-SELECTION-PROMPT.md`.
+
+### Tiers (summary)
 
 | Tier | Type | Format | Approx Size |
 |------|------|--------|-------------|
@@ -55,12 +68,13 @@ Models are organised into four tiers. The canonical list lives in `config/regist
 | B | Code-specialist models | Raw BF16 safetensors | ~0.9 TB |
 | C | Quantized inference models | GGUF Q4_K_M / Q8_0 | ~0.4 TB |
 | D | Uncensored / abliterated variants | Raw BF16 + GGUF | ~0.5 TB |
+| E/F/G | Reasoning, vision, math, research | Mixed | varies |
 
-### Tier A — Key models
-DeepSeek-V3 (~1340 GB), DeepSeek-R1 (~850 GB), DeepSeek-R1-Distill-Llama-70B, DeepSeek-R1-Distill-Qwen-32B, Qwen2.5-72B-Instruct, Qwen2.5-32B-Instruct, Qwen2.5-7B-Instruct, Mistral-7B-v0.3, Phi-4, Command-R+, Llama-3.1-405B-Instruct, Llama-3.1-70B-Instruct, Llama-3.3-70B-Instruct, Llama-3.1-8B-Instruct, Gemma-3-27B-IT/PT, Gemma-3-12B-IT, Mistral-Large-2407
+### Tier A — Key models (examples)
+DeepSeek-V3, DeepSeek-R1, DeepSeek-R1-Distill-*, Qwen2.5-72B/32B/7B-Instruct, Qwen3-*, Phi-4, Command-R+, Llama-3.1-405B, Llama-3.3-70B, Gemma-3-27B/12B, Mistral-Large-2411, Mistral-Small-24B
 
-### Tier B — Key models
-DeepSeek-Coder-V2-Instruct, Qwen2.5-Coder-32B-Instruct, Qwen2.5-Coder-7B-Instruct, CodeLlama-70B-Instruct, Codestral-22B
+### Tier B — Key models (examples)
+DeepSeek-Coder-V2-Instruct, Qwen2.5-Coder-32B, Codestral-22B, Devstral-Small, OlympicCoder-32B
 
 ### Priority system
 - **Priority 1** — token-free, download immediately
@@ -334,7 +348,10 @@ d5:
   role: "Primary archive/ + logs + .tmp scratch"
 ```
 
-### `config/registry.yaml` structure (per model)
+### `config/registry.yaml` and `config/registry-legacy.yaml`
+
+Main registry holds frontier/base, abliterated, and niche models; legacy registry holds older/superseded models (excluded from default download). Per-model structure:
+
 ```yaml
 models:
   - id: deepseek-ai/DeepSeek-R1
@@ -347,6 +364,7 @@ models:
     requires_auth: false
     notes: ""
     quant_levels: []        # non-empty for Tier C (e.g. ["Q4_K_M", "Q8_0"])
+    legacy: false           # true only in registry-legacy.yaml; main registry omits or false
 ```
 
 ---
@@ -368,7 +386,7 @@ models:
 
 When extending this project, an AI agent should:
 
-1. **Add a new model** — edit `config/registry.yaml`, add entry with correct `tier`, `priority`, `drive`, `licence`, `requires_auth`
+1. **Add a new model** — edit `config/registry.yaml` (or `config/registry-legacy.yaml` for legacy), add entry with correct `tier`, `priority`, `drive`, `licence`, `requires_auth`. Prefer frontier/base/abliterated/niche in main registry; see `docs/MODEL-SELECTION-PROMPT.md` for a prompt to generate candidate lists.
 2. **Add a new drive** — edit `config/drives.yaml`, add mount point; update `REQUIREMENTS.md` allocation table
 3. **Support a new download backend** — extend `downloader.py` `_resolve_files()` storage detection and add a new `_download_*` method
 4. **Add a new CLI command** — add a `@cli.command()` function in `cli.py`

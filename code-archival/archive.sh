@@ -24,6 +24,7 @@
 #   bash archive.sh --repo ggml-org/llama.cpp   # single repo only
 #   bash archive.sh --category inference        # one category only
 #   bash archive.sh --risk critical             # one risk level only
+#   bash archive.sh --registry registry-skills.yaml  # use alternate registry (e.g. skills)
 #
 # Output layout:
 #   <output>/code-archives/
@@ -43,7 +44,6 @@ set -uo pipefail
 
 # ── Config ────────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REGISTRY="$SCRIPT_DIR/registry.yaml"
 OUTPUT_ROOT="/mnt/models/d5"
 
 # Auto-load GITHUB_TOKEN from .secrets if not already in environment
@@ -54,6 +54,7 @@ if [[ -z "${GITHUB_TOKEN:-}" && -f "$SCRIPT_DIR/.secrets" ]]; then
 fi
 GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 
+REGISTRY="$SCRIPT_DIR/registry.yaml"
 DRY_RUN=false
 UPDATE=false
 SINGLE_REPO=""
@@ -75,12 +76,20 @@ while [[ $i -le $# ]]; do
         --category=*) FILTER_CATEGORY="${arg#--category=}" ;;
         --risk)       i=$((i+1)); FILTER_RISK="${!i}" ;;
         --risk=*)     FILTER_RISK="${arg#--risk=}" ;;
+        --registry)   i=$((i+1)); REGISTRY="${!i}" ;;
+        --registry=*) REGISTRY="${arg#--registry=}" ;;
         --help|-h)
             sed -n '/^# Usage:/,/^# ===/{s/^# \{0,1\}//p}' "$0"; exit 0 ;;
         *) echo "Unknown option: $arg" >&2; exit 1 ;;
     esac
     i=$((i+1))
 done
+
+# Resolve relative registry path to script dir
+case "$REGISTRY" in
+    /*) ;;
+    *) REGISTRY="$SCRIPT_DIR/$REGISTRY" ;;
+esac
 
 ARCHIVE_DIR="$OUTPUT_ROOT/code-archives"
 LOG_FILE="$ARCHIVE_DIR/archive.log"
@@ -228,6 +237,7 @@ log "=================================================="
 log "code-archival run started"
 log "Output    : $ARCHIVE_DIR"
 log "Repos     : $TOTAL"
+log "Registry  : $REGISTRY"
 log "Dry-run   : $DRY_RUN"
 log "Update    : $UPDATE"
 log "Filter cat: ${FILTER_CATEGORY:-(all)}"

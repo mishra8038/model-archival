@@ -143,6 +143,7 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option("--tier", type=click.Choice(["A", "B", "C", "D", "E", "F", "G"]), help="Download a specific tier")
 @click.option("--all", "download_all", is_flag=True, default=False, help="Download everything")
 @click.option("--priority-only", type=int, help="Download only models with this priority (1 or 2)")
+@click.option("--include-legacy", is_flag=True, default=False, help="Include legacy/historical models")
 @click.option("--dry-run", is_flag=True, help="Print what would be downloaded without fetching")
 @click.option("--max-parallel-drives", "max_parallel_models", type=int, default=12, show_default=True,
               help="Max simultaneous model downloads (worker pool size)")
@@ -167,6 +168,7 @@ def cmd_download(
     tier: Optional[str],
     download_all: bool,
     priority_only: Optional[int],
+    include_legacy: bool,
     dry_run: bool,
     max_parallel_models: int,
     max_per_drive: int,
@@ -240,6 +242,8 @@ def cmd_download(
 
     # ── Select models ────────────────────────────────────────────────────
     models = reg.models
+    if not include_legacy:
+        models = [m for m in models if not getattr(m, "legacy", False)]
     if tier:
         models = [m for m in models if m.tier == tier]
     elif not download_all and target not in ("--all", ""):
@@ -260,6 +264,7 @@ def cmd_download(
     cli_args = {
         "tier": tier or "all",
         "priority_only": priority_only or "all",
+        "include_legacy": include_legacy,
         "max_parallel_models": max_parallel_models,
         "max_per_drive": max_per_drive,
         "min_speed_mbps": min_speed_mbps,
