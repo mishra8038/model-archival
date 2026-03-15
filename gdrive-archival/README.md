@@ -69,6 +69,10 @@ bash /home/x/dev/model-archival/gdrive-archival/run.sh
 
 State is stored in `gdrive-archival/state.json`; models, extra paths, and arbitrary dirs (from `backup-dirs`) are skipped on re-runs if already backed up. Before each upload the script also checks the remote (rclone lsf): if the destination already has files, it skips and updates state so runs remain idempotent even if `state.json` was lost. rclone is invoked with `--checksum` so any run that does upload will only transfer changed files.
 
+**Verification before upload:** For each model (or `backup-dirs` path), the script verifies the local directory with the archiver’s logic (manifest.json or .sha256 sidecars) before starting rclone. If verification fails, that model is skipped and no upload is attempted.
+
+**Upload log:** Successfully uploaded models are appended to `gdrive-archival/logs/uploaded.log` (one line per upload: ISO timestamp, kind, model id or slug, source path). Use this as an audit list of what has been backed up to GDrive.
+
 ### 3 TB budget selection
 
 With ~3 TB free on GDrive, set `upload_selection` in `config.yaml` (already set by default): the script picks completed D2/D3 models from the archiver’s `run_state.json`, caps each at `max_per_model_gb` (200), and fills up to `max_total_gb` (3000), ordered by tier and priority. See `UPLOAD-SELECTION.md` for details.

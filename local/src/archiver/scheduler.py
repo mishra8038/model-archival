@@ -11,13 +11,14 @@ Maximize simultaneous downloads (bandwidth permitting):
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 import random
 import signal
 import threading
 import time
-from collections import defaultdict, deque
+from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Optional
@@ -70,6 +71,7 @@ class DriveScheduler:
         max_models_per_drive: int = 4,
         min_speed_per_model_mbps: float = MIN_SPEED_PER_MODEL_MBPS,
         activity_log_path: Optional[Path] = None,
+        priority_overrides_path: Optional[Path] = None,
     ) -> None:
         self.registry = registry
         self.state = state
@@ -83,10 +85,12 @@ class DriveScheduler:
         self.max_models_per_drive = max_models_per_drive
         self.min_speed_per_model_mbps = min_speed_per_model_mbps
         self._activity_log_path = activity_log_path
+        self._priority_overrides_path = priority_overrides_path
         self._activity_lock = threading.Lock()
         self._sampler_tick = 0
 
-        self._queues: dict[str, deque[ModelEntry]] = defaultdict(deque)
+        # Pending (drive, model) — order is decided at pick time via priority_overrides
+        self._pending_models: list[tuple[str, ModelEntry]] = []
         self._ewma_speed = 0.0
 
         self._stats = SchedulerStats()
@@ -100,8 +104,22 @@ class DriveScheduler:
     # Public API
     # ------------------------------------------------------------------
 
+    def _load_priority_overrides(self) -> dict[str, int]:
+        """Load model_id -> priority from JSON file. Lower = sooner. Re-read on each call for dynamic updates."""
+        if not self._priority_overrides_path or not self._priority_overrides_path.exists():
+            return {}
+        try:
+            data = json.loads(self._priority_overrides_path.read_text())
+            return {
+                k: int(v) for k, v in data.items()
+                if isinstance(k, str) and isinstance(v, (int, float))
+            }
+        except Exception as e:
+            log.debug("Priority overrides load failed: %s", e)
+            return {}
+
     def build_queue(self, models: list[ModelEntry]) -> None:
-        """Populate per-drive queues. Called before run()."""
+        """Populate pending list. Order is decided at pick time via priority_overrides (or registry priority)."""
         skipped = 0
         for m in models:
             if self.state.is_complete(m.id):
@@ -113,18 +131,18 @@ class DriveScheduler:
                 skipped += 1
                 continue
             if m.requires_auth and not self.token_accessible:
-                # Token not set at all — skip priority-2
+                # No token — defer gated models (priority >= 2)
                 if m.priority >= 2:
                     log.info("Deferring gated model (no HF_TOKEN): %s", m.id)
                     continue
-            self._queues[m.drive].append(m)
+            self._pending_models.append((m.drive, m))
 
-        total = sum(len(q) for q in self._queues.values())
+        drives = {d for d, _ in self._pending_models}
         log.info(
             "Queue built: %d models across %d drives (%d skipped)",
-            total, len(self._queues), skipped
+            len(self._pending_models), len(drives), skipped
         )
-        self._stats.pending = [m.id for q in self._queues.values() for m in q]
+        self._stats.pending = [m.id for _, m in self._pending_models]
 
     def _log_activity(self, line: str) -> None:
         """Append one line to the activity log (thread-safe)."""
@@ -139,8 +157,8 @@ class DriveScheduler:
                 log.debug("Activity log write failed: %s", e)
 
     def run(self) -> SchedulerStats:
-        """Start worker pool and block until all queues are drained or shutdown requested."""
-        total_pending = sum(len(q) for q in self._queues.values())
+        """Start worker pool and block until all pending models are done or shutdown requested."""
+        total_pending = len(self._pending_models)
         if total_pending == 0:
             log.info("Nothing to download.")
             return self._stats
@@ -203,7 +221,7 @@ class DriveScheduler:
         log.debug("Worker finished")
 
     def _next_model(self) -> Optional[tuple[str, ModelEntry]]:
-        """Get next (drive, model) or None. Waits when at cap or when adding one more would drop avg below min_speed."""
+        """Get next (drive, model) or None. Uses priority_overrides file at pick time for dynamic prioritization."""
         with self._work_condition:
             while not self._stop_event.is_set():
                 n_active = sum(len(v) for v in self._active_drives.values())
@@ -214,17 +232,29 @@ class DriveScheduler:
                 if n_active > 0 and speed / (n_active + 1) < self.min_speed_per_model_mbps:
                     self._work_condition.wait(timeout=ADD_ON_WAIT_S)
                     continue
-                # Pick a drive with pending and under per-drive cap
-                for drive in sorted(self._queues.keys()):
-                    if not self._queues[drive]:
-                        continue
-                    if len(self._active_drives[drive]) >= self.max_models_per_drive:
-                        continue
-                    model = self._queues[drive].popleft()
-                    self._active_drives[drive].append(model.id)
-                    self._sync_active_to_stats()
-                    return (drive, model)
-                self._work_condition.wait(timeout=ADD_ON_WAIT_S)
+                overrides = self._load_priority_overrides()
+                # Candidates: pending (d, m) where drive is under per-drive cap
+                candidates = [
+                    (d, m) for d, m in self._pending_models
+                    if len(self._active_drives[d]) < self.max_models_per_drive
+                ]
+                if not self._pending_models:
+                    return None
+                if not candidates:
+                    self._work_condition.wait(timeout=ADD_ON_WAIT_S)
+                    continue
+                # Sort by effective priority (lower first), then drive, then id for stability
+                def key(pair: tuple[str, ModelEntry]) -> tuple[int, str, str]:
+                    d, m = pair
+                    eff = overrides.get(m.id, m.priority)
+                    return (eff, d, m.id)
+                candidates.sort(key=key)
+                drive, model = candidates[0]
+                self._pending_models.remove((drive, model))
+                self._stats.pending = [m.id for _, m in self._pending_models]
+                self._active_drives[drive].append(model.id)
+                self._sync_active_to_stats()
+                return (drive, model)
         return None
 
     def _sync_active_to_stats(self) -> None:

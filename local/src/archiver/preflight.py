@@ -142,8 +142,8 @@ def check_registry(registry: Registry) -> None:
             errors.append(f"{m.id}: invalid hf_repo '{m.hf_repo}'")
         if m.tier not in ("A", "B", "C", "D", "E", "F", "G"):
             errors.append(f"{m.id}: invalid tier '{m.tier}'")
-        if m.priority not in (1, 2):
-            errors.append(f"{m.id}: invalid priority {m.priority}")
+        if m.priority not in (1, 2, 3, 4):
+            errors.append(f"{m.id}: invalid priority {m.priority} (must be 1–4)")
         if m.drive not in registry.drives and registry.drives:
             errors.append(f"{m.id}: drive '{m.drive}' not in drives config")
     if errors:

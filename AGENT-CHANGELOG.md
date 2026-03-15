@@ -2,6 +2,21 @@
 
 Entries added by Cursor agent; commit this file with the related code changes.
 
+## 2026-03-15 (base-first priority policy)
+
+- **Summary**: Adopt base-first priority policy going forward (1=base, 2=smallest GGUF, 3=instruct, 4=middle quants); document in rules; allow priority 3 and 4 in preflight/CLI. No deletion of already-downloaded models.
+- **Files**: .cursor/rules/model-archival-project.mdc, .cursor/rules/archiver-codebase.mdc, local/src/archiver/preflight.py, local/src/archiver/cli.py, local/src/archiver/scheduler.py, local/src/archiver/models.py.
+
+## 2026-03-15 (non-obsolete flagship models)
+
+- **Summary**: Add missing non-obsolete flagship models to registry at lowest priority (Falcon 40B/180B, MPT 7B/30B, Llama 3.2-1B, SmolLM2, IBM Granite 20B).
+- **Files**: local/config/registry.yaml.
+
+## 2026-03-15 (GDrive verify + upload log)
+
+- **Summary**: GDrive backup: verify each model dir (manifest/sidecar checksums) before upload; record successfully uploaded models to logs/uploaded.log.
+- **Files**: gdrive-archival/backup.py.
+
 ## 2026-03-15 (MCP code archive)
 
 - **Summary**: Add MCP servers code archive: registry, README, archive script, FastMCP starter example.

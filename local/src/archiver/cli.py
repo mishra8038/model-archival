@@ -142,7 +142,7 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.argument("target", default="--all")
 @click.option("--tier", type=click.Choice(["A", "B", "C", "D", "E", "F", "G"]), help="Download a specific tier")
 @click.option("--all", "download_all", is_flag=True, default=False, help="Download everything")
-@click.option("--priority-only", type=int, help="Download only models with this priority (1 or 2)")
+@click.option("--priority-only", type=int, help="Download only models with this priority (1=base, 2=small GGUF, 3=instruct, 4=middle quants)")
 @click.option("--include-legacy", is_flag=True, default=False, help="Include legacy/historical models")
 @click.option("--dry-run", is_flag=True, help="Print what would be downloaded without fetching")
 @click.option("--max-parallel-drives", "max_parallel_models", type=int, default=12, show_default=True,
@@ -325,6 +325,7 @@ def cmd_download(
         def on_failed(model, reason):
             run_report.record_model_fail(model, reason)
 
+        priority_overrides_path = d5 / "priority_overrides.json"
         scheduler = DriveScheduler(
             registry=reg,
             state=state,
@@ -338,6 +339,7 @@ def cmd_download(
             max_models_per_drive=max_per_drive,
             min_speed_per_model_mbps=min_speed_mbps,
             activity_log_path=activity_log_path,
+            priority_overrides_path=priority_overrides_path,
         )
         scheduler.build_queue(models)
 
@@ -975,6 +977,7 @@ def _print_download_plan(models, d5: Path, tmp_dir: Path) -> None:
     path_table.add_row("archive",    str(d5 / "archive"))
     path_table.add_row("state",      str(d5 / "run_state.json"))
     path_table.add_row("STATUS.md",  str(d5 / "STATUS.md"))
+    path_table.add_row("priority_overrides", str(d5 / "priority_overrides.json"))
     console.print(path_table)
     console.print()
 

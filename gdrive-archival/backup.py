@@ -2,7 +2,9 @@
 import argparse
 import json
 import subprocess
+import sys
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -11,6 +13,7 @@ import yaml
 
 CONFIG_PATH = Path(__file__).with_name("config.yaml")
 STATE_PATH = Path(__file__).with_name("state.json")
+UPLOADED_LOG_PATH = Path(__file__).with_name("logs") / "uploaded.log"
 TIER_ORDER = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6}
 
 
@@ -46,6 +49,35 @@ def save_state(state: Dict):
   with tmp.open("w") as f:
     json.dump(state, f, indent=2, sort_keys=True)
   tmp.replace(STATE_PATH)
+
+
+def verify_model_dir_before_upload(archiver_root: Path, src: Path) -> bool:
+  """
+  Verify all files in src against manifest.json or .sha256 sidecars (archiver semantics).
+  Returns True if all checks pass (or there are no files to verify); False if any fail.
+  """
+  archiver_src = archiver_root / "src"
+  if not archiver_src.is_dir():
+    return True  # no archiver tree — skip verification
+  if str(archiver_src) not in sys.path:
+    sys.path.insert(0, str(archiver_src))
+  try:
+    from archiver.verifier import verify_model_dir
+  except ImportError:
+    return True  # archiver not available — skip verification
+  results = verify_model_dir(src)
+  if not results:
+    return True
+  return all(r.get("ok", False) for r in results)
+
+
+def log_upload_success(identifier: str, source_path: str, kind: str = "model") -> None:
+  """Append one line to the uploaded-models log (timestamp, id/path, source)."""
+  UPLOADED_LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+  ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+  line = f"{ts}\t{kind}\t{identifier}\t{source_path}\n"
+  with UPLOADED_LOG_PATH.open("a") as f:
+    f.write(line)
 
 
 def load_drives(archiver_root: Path) -> Dict[str, DriveConfig]:
@@ -302,6 +334,10 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
       save_state(state)
       continue
 
+    if not verify_model_dir_before_upload(archiver_root, src):
+      print(f"[skip] {mid}: verification failed (checksum/manifest) — not uploading")
+      continue
+
     g = cfg["gdrive"]
     bwlimit = g.get("bwlimit")
     transfers = g.get("transfers", 1)
@@ -313,6 +349,7 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
         "backed_up": True,
       }
       save_state(state)
+      log_upload_success(mid, str(src), kind="model")
     else:
       print(f"[err] {mid}: backup failed")
 
@@ -372,6 +409,11 @@ def backup_dirs(
       save_state(state)
       continue
 
+    archiver_root = Path(cfg.get("archiver_root", "."))
+    if not verify_model_dir_before_upload(archiver_root, src):
+      print(f"[skip] {src}: verification failed (checksum/manifest) — not uploading")
+      continue
+
     g = cfg["gdrive"]
     ok = run_rclone_copy(
       src, remote_base, rel_dest,
@@ -382,6 +424,7 @@ def backup_dirs(
     if ok:
       st_dirs[key] = {"source_path": key, "backed_up": True}
       save_state(state)
+      log_upload_success(_slug_for_dir(src), key, kind="dir")
     else:
       print(f"[err] {src}: backup failed")
 

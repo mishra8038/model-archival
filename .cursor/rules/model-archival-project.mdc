@@ -44,9 +44,13 @@ alwaysApply: true
   - **A/B**: flagship and code models (BF16/FP16).
   - **C/D**: GGUF and uncensored / abliterated variants.
   - **E/F/G**: reasoning, vision, math, and research/experimental models.
-- Priority:
-  - **1**: core, token-free models; should be safe to run with `--priority-only 1`.
-  - **2**: gated or nice-to-have models that may require explicit HF token access.
+- Priority (lower number = downloaded sooner):
+  - **1**: highest — base (pre-trained) models; irreplaceable for reproducibility; instruct can be recreated from base.
+  - **2**: smallest self-hostable quantized/GGUF (e.g. Q4_K_M, Q3_K_M) — runnable on limited hardware.
+  - **3**: instruct models — convenient runnable chat; derivable from base + SFT/DPO.
+  - **4**: lowest — middle quantized versions (Q6, Q8, etc.); many can be skipped for lowest-priority tiers.
+- **Priority policy (going forward)**: When adding or editing registry entries, assign priority by the above order. **Do not delete or remove already-downloaded models**; this policy applies only to new entries and future edits. Existing registry entries keep their current priority until explicitly changed.
+- **Runtime overrides**: optional `priority_overrides.json` on D5 (JSON: `model_id -> priority`, lower = sooner). Re-read when choosing the next model — change priorities without restarting the archiver.
 
 ### Model preference criteria (default behaviour)
 

@@ -14,7 +14,7 @@ class ModelEntry:
     hf_repo: str
     tier: str                        # A | B | C | D | E | F | G
     drive: str                       # d1 .. d5
-    priority: int                    # 1 = token-free, 2 = gated
+    priority: int                    # 1=base, 2=small GGUF, 3=instruct, 4=middle quants (lower = sooner)
     licence: str
     requires_auth: bool
     commit_sha: Optional[str] = None

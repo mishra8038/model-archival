@@ -39,6 +39,7 @@ local/
 
 - Downloads are always resumable — never delete `.tmp` partial files or `.aria2` control files
 - run_state.json lives on D5; `.tmp` scratch lives on D1 (not D5)
+- **Dynamic priority**: optional `priority_overrides.json` on D5. JSON map `model_id -> priority` (lower = sooner). Re-read when picking each next model — edit the file anytime without restarting. Example: `{"meta-llama/Llama-3.3-70B-Instruct": 3}` defers that model until after priority-1/2.
 - `commit_sha` in registry.yaml is auto-pinned after first download
 - LFS CDN URLs expire ~1 hour — always re-fetch with `hf_hub_url()` before each attempt
 - On SHA-256 mismatch: remove both the corrupt file AND its `.aria2` control file (force clean restart)
@@ -52,7 +53,7 @@ org/ModelName:
   hf_repo: org/ModelName
   commit_sha: null        # auto-pinned on first download
   tier: A                 # A/B/C/D
-  priority: 1             # 1 = no token, 2 = gated (HF_TOKEN + licence acceptance)
+  priority: 1             # 1 = base, 2 = smallest GGUF, 3 = instruct, 4 = middle quants (going forward)
   drive: d1
   requires_auth: false
   licence: Apache-2.0

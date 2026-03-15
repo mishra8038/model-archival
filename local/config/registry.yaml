@@ -301,6 +301,25 @@ models:
   requires_auth: true
   commit_sha: null
   notes: 3B Llama 3.2 instruct; 128K context; good for constrained GPUs
+- id: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  hf_repo: TinyLlama/TinyLlama-1.1B-Chat-v1.0
+  tier: A
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Ultra-small 1.1B — valuable if GPU access becomes restricted; runs on CPU/low
+    memory
+- id: microsoft/Phi-3-mini-128k-instruct
+  hf_repo: microsoft/Phi-3-mini-128k-instruct
+  tier: A
+  drive: d3
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: Very capable tiny model; 128K context — strong fallback when GPU is scarce
 - id: Qwen/Qwen3-4B-Instruct-2507
   hf_repo: Qwen/Qwen3-4B-Instruct-2507
   tier: A
@@ -346,6 +365,33 @@ models:
   requires_auth: true
   commit_sha: cfc1d855e534a0b9b82a9cea6bf9e8dda30b10d7
   notes: lb=42.3 — AllenAI RLVR alignment research flagship; scientifically significant
+- id: 01-ai/Yi-34B-Chat
+  hf_repo: 01-ai/Yi-34B-Chat
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Yi
+  requires_auth: false
+  commit_sha: null
+  notes: Chinese ecosystem — 34B chat; fragile to geopolitical restriction
+- id: THUDM/glm-4-9b-chat
+  hf_repo: THUDM/glm-4-9b-chat
+  tier: A
+  drive: d2
+  priority: 2
+  licence: GLM-4
+  requires_auth: false
+  commit_sha: null
+  notes: Tsinghua GLM-4 9B — strong CN/EN; 128K context; regulatory-risk hedge
+- id: internlm/internlm2_5-20b-chat
+  hf_repo: internlm/internlm2_5-20b-chat
+  tier: A
+  drive: d2
+  priority: 2
+  licence: InternLM
+  requires_auth: false
+  commit_sha: null
+  notes: InternLM2.5 20B — Chinese ecosystem; realistic candidate for access restriction
 - id: Qwen/Qwen2.5-Coder-32B-Instruct
   hf_repo: Qwen/Qwen2.5-Coder-32B-Instruct
   tier: B
@@ -425,6 +471,15 @@ models:
   requires_auth: false
   commit_sha: 34113aee9d255591a1fa75b60d1e3422e82c3b1f
   notes: Coding reasoning model from the open-r1 initiative
+- id: bigcode/starcoder2-15b
+  hf_repo: bigcode/starcoder2-15b
+  tier: B
+  drive: d2
+  priority: 2
+  licence: BigCode-OpenRAIL-M
+  requires_auth: false
+  commit_sha: 46d44742909c03ac8cee08eb03fdebce02e193ec
+  notes: Best pure code-completion model; historically significant
 - id: BAAI/bge-en-icl
   hf_repo: BAAI/bge-en-icl
   tier: B
@@ -900,9 +955,9 @@ models:
   drive: d3
   priority: 2
   licence: Apache-2.0
-  requires_auth: true
+  requires_auth: false
   commit_sha: null
-  notes: UC Berkeley open reasoning (Sky-T1). Gated — set requires_auth so token is used.
+  notes: UC Berkeley open reasoning model trained on Sky-T1 data
 - id: Qwen/Qwen2.5-VL-72B-Instruct
   hf_repo: Qwen/Qwen2.5-VL-72B-Instruct
   tier: F
@@ -1037,6 +1092,25 @@ models:
   commit_sha: null
   notes: Top ~20B pretrained model on HF Open LLM leaderboard; llamafied InternLM2.5
     base
+- id: upstage/solar-pro-preview-instruct
+  hf_repo: upstage/solar-pro-preview-instruct
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: High-ranking ~20B chat/instruct model from Open LLM leaderboard best-models
+    collection
+- id: tiiuae/Falcon3-10B-Instruct
+  hf_repo: tiiuae/Falcon3-10B-Instruct
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: 10B Falcon3 instruct model — strong open chat baseline
 - id: unsloth/phi-4-unsloth-bnb-4bit
   hf_repo: unsloth/phi-4-unsloth-bnb-4bit
   tier: C
@@ -1047,6 +1121,26 @@ models:
   commit_sha: null
   notes: Space-efficient 4-bit Phi-4 variant — practical small chat model for limited
     hardware
+- id: HuggingFaceH4/zephyr-7b-beta
+  hf_repo: HuggingFaceH4/zephyr-7b-beta
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Canonical 7B DPO-tuned chat model — reference for preference optimization
+    behaviour
+- id: Intel/neural-chat-7b-v3-1
+  hf_repo: Intel/neural-chat-7b-v3-1
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Intel 7B chat model with preference-style tuning; useful DPO-style alignment
+    baseline
 - id: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
   hf_repo: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
   tier: D
@@ -1076,7 +1170,7 @@ models:
   priority: 2
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 49b7b720ddd40ccdca303922037a4bb34b1ca33b
   method: merge
   notes: 14B fusion/merge chat model — uncensored-leaning; strong single-GPU option
 - id: FINGU-AI/RomboUltima-32B
@@ -1086,7 +1180,116 @@ models:
   priority: 2
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 98a732a32e2366a2ab8f08fdc3d668892e7c1f7f
   method: merge
   notes: 32B merge model — uncensored / experimental; complements other Qwen2.5/Llama
     merges
+# Non-obsolete flagships with no direct replacement — lowest priority (priority 2)
+- id: tiiuae/falcon-40b-instruct
+  hf_repo: tiiuae/falcon-40b-instruct
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: TII Falcon 40B instruct; no Falcon3 at this scale
+- id: tiiuae/falcon-180B
+  hf_repo: tiiuae/falcon-180B
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Falcon-180B-TII
+  requires_auth: true
+  commit_sha: null
+  notes: TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF
+- id: tiiuae/falcon-180B-chat
+  hf_repo: tiiuae/falcon-180B-chat
+  tier: A
+  drive: d1
+  priority: 2
+  licence: Falcon-180B-TII
+  requires_auth: true
+  commit_sha: null
+  notes: TII Falcon 180B instruct; no direct replacement
+- id: mosaicml/mpt-7b
+  hf_repo: mosaicml/mpt-7b
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: MPT base 7B; no MPT-2 successor line
+- id: mosaicml/mpt-7b-instruct
+  hf_repo: mosaicml/mpt-7b-instruct
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: MPT instruct 7B; family frozen
+- id: mosaicml/mpt-30b
+  hf_repo: mosaicml/mpt-30b
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: MPT base 30B; no successor
+- id: mosaicml/mpt-30b-instruct
+  hf_repo: mosaicml/mpt-30b-instruct
+  tier: A
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: MPT instruct 30B; family frozen
+- id: meta-llama/Llama-3.2-1B
+  hf_repo: meta-llama/Llama-3.2-1B
+  tier: A
+  drive: d3
+  priority: 2
+  licence: llama3.2
+  requires_auth: true
+  commit_sha: null
+  notes: Meta 1B base; still current (no 3.3-1B)
+- id: meta-llama/Llama-3.2-1B-Instruct
+  hf_repo: meta-llama/Llama-3.2-1B-Instruct
+  tier: A
+  drive: d3
+  priority: 2
+  licence: llama3.2
+  requires_auth: true
+  commit_sha: null
+  notes: Meta 1B instruct; still current
+- id: HuggingFaceTB/SmolLM2-1.7B-Instruct
+  hf_repo: HuggingFaceTB/SmolLM2-1.7B-Instruct
+  tier: A
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: HF SmolLM2 flagship; no SmolLM3
+- id: ibm-granite/granite-20b-code-instruct-r1.1
+  hf_repo: ibm-granite/granite-20b-code-instruct-r1.1
+  tier: B
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: IBM Granite 20B instruct; flagship open code model from IBM
+- id: ibm-granite/granite-20b-code-base-8k
+  hf_repo: ibm-granite/granite-20b-code-base-8k
+  tier: B
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: IBM Granite 20B base; foundation for code fine-tunes
