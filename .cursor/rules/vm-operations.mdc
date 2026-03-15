@@ -51,14 +51,15 @@ surfshark-vpn status 2>/dev/null; curl -s https://ipinfo.io | grep -E '"ip"|"org
 # Should show: "AS9009 M247 Europe SRL" — not your ISP
 
 # Connect (if not auto-started by dinit)
-sudo openvpn --config /etc/openvpn/client/surfshark/us-nyc.prod.surfshark.com_udp.ovpn \
+sudo openvpn --config /etc/openvpn/client/surfshark/nl-ams.prod.surfshark.com_udp.ovpn \
              --auth-user-pass /etc/openvpn/client/surfshark.auth \
              --daemon --log /var/log/surfshark-openvpn.log
 
-# Auto-starts via dinit: /etc/dinit.d/boot.d/surfshark-vpn
+# Auto-starts via dinit: /etc/dinit.d/boot.d/openvpn-surfshark (service: openvpn-surfshark)
+# If bandwidth is poor, try another EU server: de-fra, uk-lon, fr-par (configs in /etc/openvpn/client/surfshark/).
 ```
 
-Note: Surfshark AUR CLI (`surfshark-vpn` binary v1.1.0) is broken — use OpenVPN directly.
+Note: Surfshark AUR CLI (`surfshark-vpn` binary) is broken — use OpenVPN + openvpn-surfshark service.
 Note: Surfshark flatpak GUI fails with "No internet connection" on connman systems — use OpenVPN.
 
 ## Monitor downloads

@@ -190,8 +190,16 @@ sudo chmod 600 /etc/openvpn/client/surfshark.auth
 
 ### Connect and verify
 
+Pick a server close to you for lower latency and better bandwidth. Configs live in `/etc/openvpn/client/surfshark/`.
+
+| Location        | Config file (UDP)        | Use case              |
+|----------------|--------------------------|------------------------|
+| **US East (NYC)** | `us-nyc.prod.surfshark.com_udp.ovpn` | NYC / US Northeast     |
+| US East alt.   | `us-bos`, `us-ash`       | Boston, Ashburn DC     |
+| **EU (e.g. VM)**  | `nl-ams.prod.surfshark.com_udp.ovpn` | Amsterdam; or `de-fra`, `uk-lon` |
+
 ```bash
-# Connect to nearest server (pick a server close to you)
+# Example: NYC / US East (change to nl-ams for EU)
 sudo openvpn --config /etc/openvpn/client/surfshark/us-nyc.prod.surfshark.com_udp.ovpn \
              --auth-user-pass /etc/openvpn/client/surfshark.auth \
              --daemon --log /var/log/surfshark-openvpn.log
@@ -201,27 +209,40 @@ sleep 3
 curl -s https://ipinfo.io | grep -E '"ip"|"org"'
 ```
 
-### Auto-start on boot (Artix / dinit)
+### Auto-start on boot
+
+**MX Linux with sysvinit (or other SysV-style init):** install the init script, then start the VPN. If your system has no `update-rc.d` or `service`, use the script path directly.
 
 ```bash
-sudo tee /etc/dinit.d/surfshark-vpn << 'EOF'
-type            = process
-command         = /usr/bin/openvpn --config /etc/openvpn/client/surfshark/us-nyc.prod.surfshark.com_udp.ovpn --auth-user-pass /etc/openvpn/client/surfshark.auth
-smooth-recovery = true
-restart         = true
-restart-delay   = 10
-logfile         = /var/log/dinit/surfshark-vpn.log
-depends-on      = network.target
-before          = login.target
-EOF
-
-sudo ln -sf /etc/dinit.d/surfshark-vpn /etc/dinit.d/boot.d/surfshark-vpn
+# From repo root (e.g. /home/x/dev/model-archival/local). Optional: pass server name (default us-nyc).
+sudo bash deploy/install-surfshark-sysvinit.sh
+# Or for EU: sudo bash deploy/install-surfshark-sysvinit.sh nl-ams
 ```
 
-For MX Linux / systemd:
+Then start (use whichever works on your system):
+
 ```bash
-sudo systemctl enable openvpn-client@surfshark-nyc
+# If you have service:
+sudo service openvpn-surfshark start
+
+# If service is not found, run the script directly:
+sudo /etc/init.d/openvpn-surfshark start
 ```
+
+Check: `curl -s https://ipinfo.io | grep -E '"ip"|"org"'` (should show VPN provider, not Verizon/ISP).
+
+To start at boot when `update-rc.d` is not available: add to root crontab `sudo crontab -e`:  
+`@reboot /etc/init.d/openvpn-surfshark start`
+
+**Artix / dinit:** use the install script (default us-nyc; pass `nl-ams` for EU):
+
+```bash
+sudo bash deploy/install-surfshark-dinit.sh
+# Then start:
+sudo dinitctl start openvpn-surfshark
+```
+
+**MX Linux with systemd:** use a systemd unit or `sudo systemctl enable openvpn-client@surfshark-nyc` if your distro provides a generic openvpn-client@.service template.
 
 ---
 

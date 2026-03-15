@@ -33,6 +33,9 @@ fingerprints/output/
 # GDrive backup — contains OAuth token
 gdrive-archival/rclone.conf
 
+# Large binaries / installers (exceed GitHub 100 MB limit)
+local/google-cloud-cli-linux-x86_64.tar.gz
+
 # code-archival sub-project
 code-archival/.secrets
 code-archival/*.token

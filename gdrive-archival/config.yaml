@@ -1,13 +1,16 @@
-# GDrive backup — uploads to folder 1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ
+# GDrive backup — uploads to folder 1HK8Ug4FZWXxk08A_nWGJ-iyHTcFkl6Gt (root for all models)
 # Use rclone.conf (see README): RCLONE_CONFIG or RCLONE_CONFIG_DIR points to your config.
 # Remote must be named "gdrive"; path gdrive:<folder_id> sends data into that folder.
 
 archiver_root: /home/x/dev/model-archival/local
 
 gdrive:
-  # Target folder on Google Drive (ID from share link)
-  remote: gdrive:1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ
+  # Target folder on Google Drive (ID from share link: drive.google.com/.../folders/<id>)
+  remote: gdrive:1HK8Ug4FZWXxk08A_nWGJ-iyHTcFkl6Gt
   base_path: ""
+  # Single worker: one file transfer at a time (set higher for parallel uploads)
+  transfers: 1
+  checkers: 1
   # Limit upload to 3 MB/s so downloads are not starved (rclone: upload:download, "off" = unlimited download)
   bwlimit: "3M:off"
 
@@ -20,59 +23,24 @@ extra_paths:
   - /home/x/dev/fingerprints
   - /home/x/dev/code-archives
 
-# --- Budget-based selection (3 TB): set this to pick from D2/D3 by size from run_state ---
-# When set, model_ids_gguf / model_ids_full below are ignored for the backup list.
-upload_selection:
-  run_state_path: /mnt/models/d5/run_state.json
-  drives: [d2, d3]
-  max_total_gb: 3000
-  max_per_model_gb: 200
+# --- Critical backup: models we actually use in practice; GDrive more reliable than local disks ---
+# Lean heavy on smaller (<200 GB) + GGUF; preserve what we can't lose.
+# When upload_selection is set below, model_ids_* are ignored. Keep it commented to use this list.
+# upload_selection:
+#   run_state_path: /mnt/models/d5/run_state.json
+#   drives: [d2, d3]
+#   max_total_gb: 3000
+#   max_per_model_gb: 200
 
-# Fallback explicit lists (used only when upload_selection is not set).
-# GGUF: small–medium quants, coders, phi, abliterated variants.
-model_ids_gguf:
-  - bartowski/Qwen2.5-7B-Instruct-GGUF
-  - bartowski/Qwen2.5-14B-Instruct-GGUF
-  - bartowski/Qwen2.5-32B-Instruct-GGUF
-  - bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
-  - bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
-  - bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
-  - bartowski/Mistral-Small-24B-Instruct-2501-GGUF
-  - bartowski/phi-4-GGUF
-  - bartowski/google_gemma-3-27b-it-GGUF
-  - bartowski/Codestral-22B-v0.1-GGUF
-  - bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
-  - mistralai/Devstral-Small-2507_gguf
-  - unsloth/Phi-4-mini-instruct-GGUF
-  - unsloth/Qwen3-4B-Instruct-2507-GGUF
-  - Qwen/Qwen3-32B-GGUF
-  - Qwen/QwQ-32B-GGUF
-  - tensorblock/Llama-3.2-3B-Instruct-GGUF
-  - tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF
-  - mlabonne/NeuralDaredevil-8B-abliterated-GGUF
-  - tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
+# Base models only (pre-trained, no instruct). GGUF list empty — registry GGUF are instruct quants; add base GGUF here when available.
+model_ids_gguf: []
 
-# Full weights: 7B–32B range only (omit 70B/72B to keep each backup < 200 GB).
 model_ids_full:
-  - Qwen/Qwen2.5-7B-Instruct
-  - Qwen/Qwen2.5-14B-Instruct
-  - Qwen/Qwen2.5-32B-Instruct
-  - Qwen/Qwen3-8B
-  - Qwen/Qwen3-14B
-  - Qwen/Qwen3-4B-Instruct-2507
-  - Qwen/Qwen2.5-Coder-32B-Instruct
-  - Qwen/Qwen3-Coder-30B-A3B-Instruct
-  - deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
-  - deepseek-ai/DeepSeek-R1-Distill-Llama-8B
-  - deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
-  - mistralai/Mixtral-8x7B-Instruct-v0.1
-  - mistralai/Mistral-Small-24B-Instruct-2501
-  - mistralai/Devstral-Small-2507
-  - mistralai/Codestral-22B-v0.1
-  - microsoft/phi-4
-  - microsoft/Phi-4-mini-instruct
-  - meta-llama/Llama-3.2-3B-Instruct
-  - huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
-  - huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
-  - cognitivecomputations/Dolphin3.0-Llama3.1-8B
-  - mlabonne/NeuralDaredevil-8B-abliterated
+  # Qwen2.5 bases (pre-trained)
+  - Qwen/Qwen2.5-3B
+  - Qwen/Qwen2.5-7B
+  - Qwen/Qwen2.5-14B
+  - Qwen/Qwen2.5-32B
+  - Qwen/Qwen2.5-72B
+  # Other bases when available
+  - google/gemma-3-27b-pt

@@ -203,10 +203,10 @@ source ~/.bashrc
 
 ## VPN for ISP throttling
 
-If your ISP throttles HuggingFace downloads, use OpenVPN with Surfshark (or any provider that supplies `.ovpn` configs):
+If your ISP throttles HuggingFace downloads, use OpenVPN with Surfshark (or any provider that supplies `.ovpn` configs). Use a server near you (e.g. **us-nyc** for NYC/US East, **nl-ams** for EU).
 
 ```bash
-# Connect (config and auth file set up during deployment):
+# Connect — use us-nyc for NYC/US East; nl-ams for EU (configs in /etc/openvpn/client/surfshark/)
 sudo openvpn --config /etc/openvpn/client/surfshark/us-nyc.prod.surfshark.com_udp.ovpn \
              --auth-user-pass /etc/openvpn/client/surfshark.auth \
              --daemon --log /var/log/surfshark-openvpn.log
@@ -219,7 +219,7 @@ curl -s https://ipinfo.io | grep -E '"ip"|"org"'
 sudo pkill openvpn
 ```
 
-The VPN auto-starts on boot via dinit. See [`docs/DEPLOYMENT.md`](DEPLOYMENT.md) for setup.
+Auto-start: **MX Linux (sysvinit)** — `sudo service openvpn-surfshark start|stop|status` or `sudo /etc/init.d/openvpn-surfshark start` (see [DEPLOYMENT.md](DEPLOYMENT.md)). **Artix/dinit** — `sudo dinitctl start openvpn-surfshark`.
 
 ---
 

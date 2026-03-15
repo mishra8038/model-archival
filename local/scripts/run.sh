@@ -109,6 +109,7 @@ while [[ $# -gt 0 ]]; do
         --rehash)           REHASH=true;               shift ;;
         --skip-env-check)   SKIP_ENV_CHECK=true;       shift ;;
         --skip-verify)      SKIP_VERIFY=true;          shift ;;
+        --skip-drive-space-check) SKIP_DRIVE_SPACE_CHECK=true; shift ;;
         --bandwidth-cap)    BANDWIDTH_CAP="$2";        shift 2 ;;
         --max-parallel)     MAX_PARALLEL="$2";         shift 2 ;;
         --skip-network)     SKIP_NETWORK=true;         shift ;;
@@ -371,6 +372,7 @@ DOWNLOAD_ARGS=("--all")   # always pass --all; filters narrow it down
 [[ -n "$TIER" ]]          && DOWNLOAD_ARGS+=("--tier" "$TIER")
 [[ -n "$PRIORITY_ONLY" ]] && DOWNLOAD_ARGS+=("--priority-only" "$PRIORITY_ONLY")
 [[ -n "$BANDWIDTH_CAP" ]] && DOWNLOAD_ARGS+=("--bandwidth-cap" "$BANDWIDTH_CAP")
+[[ -n "$SKIP_DRIVE_SPACE_CHECK" ]] && DOWNLOAD_ARGS+=("--skip-drive-space-check")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
 
 info "Running dry-run to capture download plan…"

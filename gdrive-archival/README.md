@@ -4,7 +4,7 @@ Backs up extra paths (registry, drives, D5 archive/logs/run_state, fingerprints,
 
 ## rclone config
 
-- **Config in repo:** `gdrive-archival/rclone.conf` is in the codebase with the target folder set (`root_folder_id = 1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ`). Replace the `token` line with your OAuth token (from `rclone config` or your existing config). The file is in `.gitignore` so your token is not committed.
+- **Config in repo:** `gdrive-archival/rclone.conf` is in the codebase with the target folder set (`root_folder_id = 1HK8Ug4FZWXxk08A_nWGJ-iyHTcFkl6Gt`). Replace the `token` line with your OAuth token (from `rclone config` or your existing config). The file is in `.gitignore` so your token is not committed.
 - **Remote name:** Must be `[gdrive]`. Backup uses this remote; uploads go to the folder above.
 - **Config location:** `run.sh` uses `./rclone.conf` in this directory first, then `~/Downloads/rclone.conf`, or set `RCLONE_CONFIG` to point at your config.
 
@@ -23,7 +23,12 @@ python3 backup.py backup-extra   # only extra_paths
 python3 backup.py backup-gguf   # only GGUF models
 python3 backup.py backup-full   # only full-weight models
 python3 backup.py backup-all    # extra + gguf + full
+python3 backup.py list-candidates        # dry-run: what would be uploaded
+python3 backup.py compare-with-archiver  # planned vs registry vs already-downloaded
+python3 backup.py backup-dirs /path/to/model/dir ...   # arbitrary dirs (or --from-file)
 ```
+
+All uploads are **idempotent**: `state.json` records what was backed up; re-runs skip already-uploaded models and paths. `backup-dirs` supports an arbitrary set of directory paths (or a file listing them) and uploads each to `models/<slug>` on GDrive, skipping dirs already in state.
 
 ## Autostart (dinit)
 
@@ -53,7 +58,7 @@ bash /home/x/dev/model-archival/gdrive-archival/run.sh
 - **extra_paths:** registry.yaml, drives.yaml, D5 archive/, logs/, run_state.json, fingerprints dir, code-archives (see `config.yaml`).
 - **Models:** Either a fixed list (`model_ids_gguf` / `model_ids_full`) or **budget-based selection** when `upload_selection` is set (see below). Run `python3 backup.py list-candidates` to see what would be uploaded without running rclone.
 
-State is stored in `gdrive-archival/state.json` so already-backed-up models and paths are skipped on later runs.
+State is stored in `gdrive-archival/state.json`; models, extra paths, and arbitrary dirs (from `backup-dirs`) are skipped on re-runs if already backed up. Before each upload the script also checks the remote (rclone lsf): if the destination already has files, it skips and updates state so runs remain idempotent even if `state.json` was lost. rclone is invoked with `--checksum` so any run that does upload will only transfer changed files.
 
 ### 3 TB budget selection
 

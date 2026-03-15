@@ -246,7 +246,7 @@ models:
   priority: 1
   licence: Mistral-Research
   requires_auth: true
-  commit_sha: null
+  commit_sha: ba78820945ae22361b0274cf0ae6d696c967c1a4
   notes: lb=46.5 — supersedes 2407; accept at huggingface.co/mistralai/Mistral-Large-Instruct-2411
 - id: mistralai/Mistral-Small-24B-Instruct-2501
   hf_repo: mistralai/Mistral-Small-24B-Instruct-2501
@@ -761,8 +761,8 @@ models:
   requires_auth: false
   commit_sha: null
   quant_levels:
-  - Q8_0
-  notes: Llama 3.2 3B GGUF; compact general-purpose
+  - Q3_K_M
+  notes: Llama 3.2 3B GGUF; tensorblock only hosts Q2_K/Q3_K_M
 - id: huihui-ai/Llama-3.3-70B-Instruct-abliterated
   hf_repo: huihui-ai/Llama-3.3-70B-Instruct-abliterated
   tier: D
@@ -876,10 +876,10 @@ models:
   requires_auth: false
   commit_sha: null
   quant_levels:
-  - Q8_0
+  - Q3_K_M
   parent_model: meta-llama/Llama-3.3-70B-Instruct
   method: abliteration
-  notes: Replacement for 404 huihui-ai/Llama-3.3-70B-Instruct-abliterated-GGUF
+  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
 - id: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   tier: D
@@ -889,10 +889,10 @@ models:
   requires_auth: false
   commit_sha: null
   quant_levels:
-  - Q8_0
+  - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
   method: abliteration
-  notes: Replacement for 404 huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
+  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
 - id: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   tier: D
@@ -902,10 +902,10 @@ models:
   requires_auth: false
   commit_sha: null
   quant_levels:
-  - Q8_0
+  - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
   method: abliteration
-  notes: Replacement for 404 huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
+  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
 - id: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
   hf_repo: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
   tier: D
@@ -927,10 +927,10 @@ models:
   requires_auth: false
   commit_sha: null
   quant_levels:
-  - Q8_0
+  - Q3_K_M
   parent_model: mistralai/Mistral-Small-24B-Instruct-2501
   method: abliteration
-  notes: Replacement for 404 huihui-ai/Mistral-Small-24B-abliterated-GGUF
+  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
 - id: Qwen/QwQ-32B
   hf_repo: Qwen/QwQ-32B
   tier: E
@@ -1080,7 +1080,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: 1818d35814b8319459f4bd55ed1ac8709630f003
   notes: Pre-trained 32B base for Qwen2.5 — large dense base; pairs with 32B instruct
 - id: IntervitensInc/internlm2_5-20b-llamafied
   hf_repo: IntervitensInc/internlm2_5-20b-llamafied
@@ -1148,7 +1148,7 @@ models:
   priority: 2
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: d976a5d6768d54c5e59a88fe63238a055c30c06a
   parent_model: Qwen/Qwen2.5-32B-Instruct
   method: abliteration+merge
   notes: High-performing uncensored Qwen2.5-32B merge from HF best-models collection

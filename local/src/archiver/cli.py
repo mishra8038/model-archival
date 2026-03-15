@@ -152,6 +152,10 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
     "--status-out", type=click.Path(), default=None,
     help="Path to write STATUS.md [default: <d5>/STATUS.md]",
 )
+@click.option(
+    "--skip-drive-space-check", is_flag=True,
+    help="Do not abort when a drive has <50 GB free (e.g. D2 full by design)",
+)
 @click.pass_context
 def cmd_download(
     ctx: click.Context,
@@ -166,6 +170,7 @@ def cmd_download(
     bandwidth_cap: Optional[float],
     fast: bool,
     status_out: Optional[str],
+    skip_drive_space_check: bool,
 ) -> None:
     """Download model weights. Use --all, --tier X, or specify a model ID."""
     from archiver.aria2_manager import Aria2Manager
@@ -204,7 +209,9 @@ def cmd_download(
     # ── Pre-flight checks ────────────────────────────────────────────────
     console.print(Rule("[bold cyan]Pre-flight Checks[/bold cyan]"))
     try:
-        warnings, token_results = preflight.run_all(reg, hf_token)
+        warnings, token_results = preflight.run_all(
+            reg, hf_token, skip_drive_space_check=skip_drive_space_check
+        )
         console.print("[green]✔[/green]  All pre-flight checks passed")
     except preflight.PreflightError as e:
         console.print(Panel(str(e), title="[bold red]Pre-flight FAILED[/bold red]",
@@ -448,6 +455,41 @@ def cmd_status(ctx: click.Context, drive_filter: Optional[str]) -> None:
     console.print(table)
     summary = state.summary()
     console.print(f"\n[bold]Summary:[/] {summary}")
+
+
+# ------------------------------------------------------------------
+# stats
+# ------------------------------------------------------------------
+
+TIER_LABELS = {"A": "flagship", "B": "smaller/code", "C": "GGUF", "D": "uncensored", "E": "reasoning", "F": "vision/math", "G": "research"}
+
+
+@cli.command("stats")
+@click.pass_context
+def cmd_stats(ctx: click.Context) -> None:
+    """Print completed/total counts by tier (no downloads)."""
+    registry_path: Path = ctx.obj["registry_path"]
+    drives_path: Path = ctx.obj["drives_path"]
+    reg, state = _load(registry_path, drives_path)
+
+    table = Table(title="Completed by tier")
+    table.add_column("Tier", width=4)
+    table.add_column("Label", width=16)
+    table.add_column("Complete", justify="right", width=8)
+    table.add_column("Total", justify="right", width=6)
+
+    for tier in "ABCDEFG":
+        models = [m for m in reg.models if m.tier == tier]
+        n = len(models)
+        if n == 0:
+            continue
+        complete = sum(1 for m in models if state.is_complete(m.id))
+        table.add_row(tier, TIER_LABELS.get(tier, tier), str(complete), str(n))
+
+    console.print(table)
+    summary = state.summary()
+    n_complete = summary.get(STATUS_COMPLETE, 0)
+    console.print(f"\n[bold]Overall:[/] {n_complete} complete, {summary}")
 
 
 # ------------------------------------------------------------------

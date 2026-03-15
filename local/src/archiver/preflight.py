@@ -47,10 +47,11 @@ def check_network() -> None:
         raise PreflightError(f"Cannot reach huggingface.co: {e}") from e
 
 
-def check_drives(registry: Registry) -> list[str]:
+def check_drives(registry: Registry, skip_space_check: bool = False) -> list[str]:
     """
     Verify all drive mount points exist and are writable.
     Returns list of warning strings (non-fatal space warnings).
+    If skip_space_check is True, do not abort on low free space (e.g. D2 full by design).
     """
     warnings = []
     missing = []
@@ -72,7 +73,7 @@ def check_drives(registry: Registry) -> list[str]:
         free_gb = usage.free / (1024 ** 3)
         free_pct = usage.free / usage.total * 100
 
-        if free_gb < MIN_FREE_ABORT_GB:
+        if not skip_space_check and free_gb < MIN_FREE_ABORT_GB:
             missing.append(
                 f"Drive {label} ({mp}): only {free_gb:.1f} GB free — "
                 f"below minimum {MIN_FREE_ABORT_GB} GB"
@@ -154,6 +155,7 @@ def run_all(
     registry: Registry,
     hf_token: Optional[str],
     skip_network: bool = False,
+    skip_drive_space_check: bool = False,
 ) -> tuple[list[str], dict[str, bool]]:
     """
     Run all pre-flight checks.
@@ -164,6 +166,6 @@ def run_all(
     check_registry(registry)
     if not skip_network:
         check_network()
-    warnings = check_drives(registry)
+    warnings = check_drives(registry, skip_space_check=skip_drive_space_check)
     token_results = check_hf_token(hf_token, registry)
     return warnings, token_results
