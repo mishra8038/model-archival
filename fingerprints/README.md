@@ -140,6 +140,38 @@ Markdown files, entirely self-contained and human-readable.
 
 ---
 
+## Leaderboard snapshots and cross-leaderboard fingerprints
+
+The `scripts/` folder can collect **leaderboard data** (no weight download) for analysis and model selection:
+
+| Script | Purpose | Output |
+|--------|---------|--------|
+| `snapshot_leaderboard.py` | HF Open LLM Leaderboard v2 + live HF metadata | `leaderboard-snapshots/YYYY-MM-DD/snapshot.json`, `leaderboard.csv` |
+| `snapshot_lmsys_arena.py` | LMSYS Chatbot Arena (from a JSON URL or file you provide) | `leaderboard-snapshots/lmsys/YYYY-MM-DD/snapshot.json` |
+| `collect_cross_leaderboard.py` | Join HF + LMSYS snapshots into one fingerprint table | `cross-leaderboard/YYYY-MM-DD/cross-leaderboard.json`, `.csv` |
+| `build_registry.py` | Rebuild `config/registry.yaml` from leaderboard + HF popularity | `config/registry.yaml` |
+
+**Collect cross-leaderboard fingerprints (recommended pipeline):**
+
+```bash
+cd fingerprints
+
+# 1. Snapshot HF Open LLM Leaderboard (takes a few minutes; fetches live HF metadata for all models)
+uv run python scripts/snapshot_leaderboard.py --output-dir .
+
+# 2. (Optional) Snapshot LMSYS Arena if you have a JSON source
+uv run python scripts/snapshot_lmsys_arena.py --source-url https://.../arena.json --output-dir .
+# or: --source-file /path/to/arena-leaderboard.json
+
+# 3. Join into a single cross-leaderboard table (HF + Arena by hf_repo)
+uv run python scripts/collect_cross_leaderboard.py --output-dir .
+# Uses latest HF snapshot; optionally latest LMSYS snapshot under leaderboard-snapshots/lmsys/
+```
+
+Output: `cross-leaderboard/YYYY-MM-DD/cross-leaderboard.json` (and `.csv`) with one row per model, combining `lb_score`, `lb_*` benchmarks, `params_b`, `arch`, `hf_downloads`, and when available `arena_elo`, `arena_rank`, `arena_win_rate`.
+
+---
+
 ## Relation to model-archival
 
 `model-archival` downloads full weight files and verifies them at download time.

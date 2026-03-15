@@ -1037,16 +1037,15 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Smallest reasoning distill — fits in 8 GB VRAM
-- id: xai-org/grok-1
-  hf_repo: xai-org/grok-1
+- id: xai-org/grok-2
+  hf_repo: xai-org/grok-2
   tier: G
   drive: d1
   priority: 2
-  licence: Apache-2.0
+  licence: Grok-2-Community
   requires_auth: false
   commit_sha: null
-  notes: 314B MoE base model from xAI ('Grok-1'); historically significant open weights,
-    not aligned for chat
+  notes: ~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License)
 - id: Qwen/Qwen2.5-3B
   hf_repo: Qwen/Qwen2.5-3B
   tier: A

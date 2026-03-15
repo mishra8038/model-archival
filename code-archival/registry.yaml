@@ -843,6 +843,66 @@ repos:
       base used by privacy-conscious developers to run Cline, Continue,
       Tabby and other open-source AI extensions locally.
 
+  # From awesome-ai-devtools — additional coding agents & code-gen tools
+
+  - id: AbanteAI/mentat
+    github: AbanteAI/mentat
+    category: coding-agents
+    risk: high
+    licence: Apache-2.0
+    notes: >
+      Mentat — AI coding assistant (CLI + VS Code). Makes changes to repos
+      from natural language; integrates with GitHub. Single org; high link-rot risk.
+      Note: GitHub API has returned no data (repo may be private or renamed); consider
+      removing or updating id/github if a public fork is found.
+
+  - id: AntonOsika/gpt-engineer
+    github: AntonOsika/gpt-engineer
+    category: coding-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      GPT Engineer — specify what to build in plain language; AI asks
+      clarifying questions then generates and runs code. Widely used for
+      prototyping; org-backed but important to archive.
+
+  - id: mattzcarey/shippie
+    github: mattzcarey/shippie
+    category: coding-agents
+    risk: high
+    licence: MIT
+    notes: >
+      Shippie (fka Code Review GPT) — LLM-powered PR/code review. GitHub/GitLab/Azure
+      DevOps; runs as Action or locally. Single maintainer; high archival value.
+
+  - id: stackblitz-labs/bolt.diy
+    github: stackblitz-labs/bolt.diy
+    category: coding-agents
+    risk: high
+    licence: MIT
+    notes: >
+      Bolt.diy — open-source Bolt.new. Prompt, run, edit, deploy full-stack
+      apps in browser with any LLM (Ollama, LM Studio, OpenRouter, etc.).
+      Community-maintained; critical for reproducible local app-gen.
+
+  - id: sweepai/sweep
+    github: sweepai/sweep
+    category: coding-agents
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Sweep — AI junior dev: turns GitHub issues into PRs. Self-hostable;
+      JetBrains/VS Code/Zed. VC-backed; archive for research and continuity.
+
+  - id: smallcloudai/refact
+    github: smallcloudai/refact
+    category: coding-agents
+    risk: high
+    licence: BSD-3-Clause
+    notes: >
+      Refact — open-source AI code assistant (completion, chat, refactor).
+      BYOK and on-prem; 25+ languages. Small company; high vanishing risk.
+
   # ===========================================================================
   # AGENTS — orchestration, tool-use, autonomous agents
   # ===========================================================================
@@ -1229,6 +1289,65 @@ repos:
     notes: >
       btop — resource monitor (CPU, memory, disk, network, processes). Modern
       replacement for htop; standard companion to nvtop on LLM host servers.
+
+  # From awesome-ai-devtools — code search, shell, context for LLMs
+
+  - id: kantord/SeaGOAT
+    github: kantord/SeaGOAT
+    category: tooling
+    risk: medium
+    licence: MIT
+    notes: >
+      SeaGOAT — local-first semantic code search using vector embeddings.
+      No cloud; ripgrep + ChromaDB. Essential for AI-era codebase discovery.
+
+  - id: rsaryev/talk-codebase
+    github: rsaryev/talk-codebase
+    category: tooling
+    risk: high
+    licence: MIT
+    notes: >
+      talk-codebase — CLI to chat with a codebase using OpenAI, LlamaCpp, or
+      GPT4All. Local or cloud; FAISS + LangChain. Single maintainer.
+
+  - id: bakks/butterfish
+    github: bakks/butterfish
+    category: tooling
+    risk: high
+    licence: MIT
+    notes: >
+      Butterfish — ChatGPT in the shell (Go). Capital-letter prefix for AI
+      commands; shell history context; agent mode. Single author; high archival value.
+
+  - id: tawandakembo/code-collator
+    github: tawandakembo/code-collator
+    category: tooling
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      code-collator — single Markdown file describing entire codebase for
+      LLM context. Respects .gitignore; supports exclusions. Pairs with
+      repo2prompt-style workflows.
+
+  - id: eclipse-theia/theia
+    github: eclipse-theia/theia
+    category: tooling
+    risk: low
+    licence: EPL-2.0
+    notes: >
+      Eclipse Theia — cloud & desktop IDE framework (TypeScript). VS Code–
+      compatible; base for AI-powered IDEs and web dev environments.
+      Eclipse Foundation; stable but worth archiving for reproducibility.
+
+  - id: jamesmurdza/awesome-ai-devtools
+    github: jamesmurdza/awesome-ai-devtools
+    category: prompt-engineering
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Awesome AI Dev Tools — curated list of AI-powered developer tools (IDEs,
+      assistants, agents, PR tools, app generators, testing). Snapshot for
+      discovery and cross-check against our archive.
 
   # ===========================================================================
   # MULTIMODAL & DIFFUSION — image/audio/video generation

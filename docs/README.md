@@ -26,6 +26,7 @@ This folder describes the **model-archival** repository: its mission, the sub-pr
 | [CONFIGURATION.md](CONFIGURATION.md) | Decided configuration: registry layout, drives, tiers, priorities, tooling list. |
 | [ARTIFACTS.md](ARTIFACTS.md) | What we archive: model weights (tiers A–G), checksums, code snapshots, tooling mirrors. |
 | [DISKS-AND-DISTRIBUTION.md](DISKS-AND-DISTRIBUTION.md) | Physical disk layout, roles, and distribution of artifacts per drive. |
+| [CHAT-ARCHIVE.md](CHAT-ARCHIVE.md) | Index of Cursor agent chat transcripts (date, title, UUID) and how to refresh it. |
 
 ---
 
