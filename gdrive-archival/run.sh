@@ -17,4 +17,7 @@ if [[ -z "$RCLONE_CONFIG" || ! -f "$RCLONE_CONFIG" ]]; then
   exit 1
 fi
 
-python3 backup.py backup-all
+# If the archiver has queued a metadata upload (run_state or archive changed), run extra first.
+python3 backup.py backup-extra-if-pending
+python3 backup.py backup-gguf
+python3 backup.py backup-full

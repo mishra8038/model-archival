@@ -386,6 +386,16 @@ def backup_dirs(
       print(f"[err] {src}: backup failed")
 
 
+def _normalize_extra_path(p: object) -> Tuple[Path, str]:
+  """Return (source path, remote rel_dest e.g. extra/name)."""
+  if isinstance(p, dict):
+    src = Path(p["path"])
+    rel = (p.get("dest") or f"extra/{src.name}").strip()
+    return (src, rel if rel.startswith("extra/") else f"extra/{rel}")
+  src = Path(p)
+  return (src, f"extra/{src.name}")
+
+
 def backup_extra_paths(cfg: Dict):
   state = load_state()
   remote = cfg["gdrive"]["remote"]
@@ -394,7 +404,7 @@ def backup_extra_paths(cfg: Dict):
   st_paths = state.setdefault("paths", {})
 
   for p in cfg.get("extra_paths", []):
-    src = Path(p)
+    src, rel_dest = _normalize_extra_path(p)
     if not src.exists():
       print(f"[skip] extra {src}: not found")
       continue
@@ -403,7 +413,6 @@ def backup_extra_paths(cfg: Dict):
       print(f"[ok] extra {src}: already backed up")
       continue
 
-    rel_dest = f"extra/{src.name}"
     dst = f"{remote_base.rstrip('/')}/{rel_dest}"
     if remote_path_has_files(dst):
       print(f"[ok] extra {src}: already on drive (skipping)")
@@ -423,6 +432,33 @@ def backup_extra_paths(cfg: Dict):
       save_state(state)
     else:
       print(f"[err] extra {src}: backup failed")
+
+
+def backup_extra_paths_refresh(cfg: Dict):
+  """Force-upload extra_paths: ignore local state and remote presence.
+
+  rclone still uses --checksum, so unchanged files are not re-transferred,
+  but any changed metadata or new files will be synced.
+  """
+  remote = cfg["gdrive"]["remote"]
+  base_path = cfg["gdrive"].get("base_path", "").strip()
+  remote_base = f"{remote}/{base_path}" if base_path else remote
+
+  for p in cfg.get("extra_paths", []):
+    src, rel_dest = _normalize_extra_path(p)
+    if not src.exists():
+      print(f"[skip] extra {src}: not found")
+      continue
+
+    g = cfg["gdrive"]
+    ok = run_rclone_copy(
+      src, remote_base, rel_dest,
+      bwlimit=g.get("bwlimit"),
+      transfers=g.get("transfers", 1),
+      checkers=g.get("checkers", 1),
+    )
+    if not ok:
+      print(f"[err] extra {src}: refresh backup failed")
 
 
 def list_candidates(cfg: Dict, archiver_root: Path) -> None:
@@ -542,6 +578,8 @@ def main():
   sub.add_parser("backup-gguf")
   sub.add_parser("backup-full")
   sub.add_parser("backup-extra")
+  sub.add_parser("backup-extra-refresh", help="Force-upload extra_paths even if already backed up.")
+  sub.add_parser("backup-extra-if-pending", help="Run backup-extra if metadata_pending_path exists, then clear it.")
   sub.add_parser("backup-all")
   sub.add_parser("list-candidates")
   sub.add_parser("compare-with-archiver")
@@ -560,6 +598,20 @@ def main():
     backup_models(cfg, archiver_root, kind="full")
   elif args.cmd == "backup-extra":
     backup_extra_paths(cfg)
+  elif args.cmd == "backup-extra-if-pending":
+    pending_path = cfg.get("metadata_pending_path")
+    if not pending_path:
+      print("metadata_pending_path not set in config; skipping.")
+    else:
+      path = Path(pending_path)
+      if path.exists():
+        backup_extra_paths(cfg)
+        try:
+          path.unlink()
+        except OSError as e:
+          print(f"[warn] could not remove {path}: {e}")
+      else:
+        print("No pending metadata upload (sentinel not present).")
   elif args.cmd == "backup-all":
     backup_models(cfg, archiver_root, kind="gguf")
     backup_models(cfg, archiver_root, kind="full")

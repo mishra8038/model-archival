@@ -1,8 +1,11 @@
 # GDrive backup — uploads to folder 1HK8Ug4FZWXxk08A_nWGJ-iyHTcFkl6Gt (root for all models)
 # Use rclone.conf (see README): RCLONE_CONFIG or RCLONE_CONFIG_DIR points to your config.
 # Remote must be named "gdrive"; path gdrive:<folder_id> sends data into that folder.
+# When the archiver updates run_state or sync_archive it touches metadata_pending_path;
+# run.sh runs backup-extra first when that file exists (queued metadata upload).
 
 archiver_root: /home/x/dev/model-archival/local
+metadata_pending_path: /mnt/models/d5/gdrive_metadata_pending
 
 gdrive:
   # Target folder on Google Drive (ID from share link: drive.google.com/.../folders/<id>)
@@ -14,6 +17,8 @@ gdrive:
   # Limit upload to 3 MB/s so downloads are not starved (rclone: upload:download, "off" = unlimited download)
   bwlimit: "3M:off"
 
+# Each entry: path string (remote dir name = basename) or { path: ..., dest: "extra/name" }.
+# d5-code-archives = code-archival output on D5 (manifest, release tarballs); avoid collision with dev code-archives.
 extra_paths:
   - /home/x/dev/model-archival/local/config/registry.yaml
   - /home/x/dev/model-archival/local/config/drives.yaml
@@ -22,6 +27,8 @@ extra_paths:
   - /mnt/models/d5/run_state.json
   - /home/x/dev/fingerprints
   - /home/x/dev/code-archives
+  - path: /mnt/models/d5/code-archives
+    dest: extra/d5-code-archives
 
 # --- Critical backup: models we actually use in practice; GDrive more reliable than local disks ---
 # Lean heavy on smaller (<200 GB) + GGUF; preserve what we can't lose.

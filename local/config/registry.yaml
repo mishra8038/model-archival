@@ -94,6 +94,15 @@ models:
   commit_sha: null
   notes: Pre-trained base (no instruct) — foundation for fine-tunes; preservation
     priority
+- id: Qwen/Qwen1.5-110B
+  hf_repo: Qwen/Qwen1.5-110B
+  tier: A
+  drive: d1
+  priority: 2
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: Pre-trained 110B base (no instruct) — largest Qwen1.5; preservation
 - id: Qwen/Qwen2.5-32B-Instruct
   hf_repo: Qwen/Qwen2.5-32B-Instruct
   tier: A
@@ -955,8 +964,9 @@ models:
   drive: d3
   priority: 2
   licence: Apache-2.0
-  requires_auth: false
+  requires_auth: true
   commit_sha: null
+  notes: Gated; API returns 401 without token, 404 in some contexts — set requires_auth so token is used
   notes: UC Berkeley open reasoning model trained on Sky-T1 data
 - id: Qwen/Qwen2.5-VL-72B-Instruct
   hf_repo: Qwen/Qwen2.5-VL-72B-Instruct

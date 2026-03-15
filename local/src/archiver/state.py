@@ -26,8 +26,14 @@ class RunState:
     status of every model across all runs.
     """
 
-    def __init__(self, state_path: Path) -> None:
+    def __init__(
+        self,
+        state_path: Path,
+        *,
+        metadata_dirty_sentinel: Optional[Path] = None,
+    ) -> None:
         self.state_path = state_path
+        self.metadata_dirty_sentinel = metadata_dirty_sentinel
         self._lock = threading.Lock()
         self._data: dict = self._load()
 
@@ -44,6 +50,9 @@ class RunState:
         tmp = self.state_path.with_suffix(".json.tmp")
         tmp.write_text(json.dumps(self._data, indent=2))
         tmp.replace(self.state_path)
+        if self.metadata_dirty_sentinel:
+            self.metadata_dirty_sentinel.parent.mkdir(parents=True, exist_ok=True)
+            self.metadata_dirty_sentinel.touch()
 
     # ------------------------------------------------------------------
     # Model status

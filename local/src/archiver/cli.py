@@ -72,7 +72,11 @@ def _load(registry_path: Path, drives_path: Path) -> tuple[Registry, RunState]:
         raise click.ClickException(f"Registry not found: {registry_path}")
     reg = load_registry(registry_path, drives_path if drives_path.exists() else None)
     # State file is on D5 — the 1 TB scratch/infra drive — not on the root SSD.
-    state = RunState(_state_path(reg))
+    # Optional sentinel on D5: when set, GDrive backup runs metadata upload first (see gdrive-archival).
+    state = RunState(
+        _state_path(reg),
+        metadata_dirty_sentinel=_d5_path(reg) / "gdrive_metadata_pending",
+    )
     return reg, state
 
 
@@ -303,10 +307,14 @@ def cmd_download(
             d.mount_point for label, d in reg.drives.items() if label != "d5"
         ]
 
+        sentinel_path = d5 / "gdrive_metadata_pending"
+
         def on_complete(model, manifest):
             run_report.record_model_complete(model, manifest)
             save_registry(reg, registry_path)
             sync_archive(archive_dir, replica_roots)
+            sentinel_path.parent.mkdir(parents=True, exist_ok=True)
+            sentinel_path.touch()  # queue metadata upload to GDrive (gdrive-archival)
             status_display.update(scheduler._stats)
 
         def on_failed(model, reason):

@@ -110,12 +110,14 @@ def check_hf_token(token: Optional[str], registry: Registry) -> dict[str, bool]:
 
     results: dict[str, bool] = {}
     headers = {"Authorization": f"Bearer {token}"}
+    # 200 = OK; 307/308 = redirect to canonical (e.g. CohereForAI → CohereLabs) — still has access
+    ok_statuses = {200, 307, 308}
     for model in registry.gated():
         url = f"https://huggingface.co/api/models/{model.hf_repo}"
         try:
             with httpx.Client(timeout=15, headers=headers) as client:
                 resp = client.get(url)
-            ok = resp.status_code == 200
+            ok = resp.status_code in ok_statuses
             results[model.id] = ok
             symbol = "✓" if ok else "✗"
             log.info("%s Token access for %s (HTTP %d)", symbol, model.id, resp.status_code)
