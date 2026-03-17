@@ -372,7 +372,7 @@ DOWNLOAD_ARGS=("--all")   # always pass --all; filters narrow it down
 [[ -n "$TIER" ]]          && DOWNLOAD_ARGS+=("--tier" "$TIER")
 [[ -n "$PRIORITY_ONLY" ]] && DOWNLOAD_ARGS+=("--priority-only" "$PRIORITY_ONLY")
 [[ -n "$BANDWIDTH_CAP" ]] && DOWNLOAD_ARGS+=("--bandwidth-cap" "$BANDWIDTH_CAP")
-[[ -n "$SKIP_DRIVE_SPACE_CHECK" ]] && DOWNLOAD_ARGS+=("--skip-drive-space-check")
+[[ -n "${SKIP_DRIVE_SPACE_CHECK:-}" ]] && DOWNLOAD_ARGS+=("--skip-drive-space-check")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
 
 info "Running dry-run to capture download plan…"

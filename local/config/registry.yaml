@@ -356,6 +356,42 @@ models:
   requires_auth: true
   commit_sha: a83af1f4968437064635f6726fb745e5b615e863
   notes: NVIDIA's best-in-class fine-tune; dominated HF open leaderboard on release
+- id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16
+  tier: A
+  drive: d2
+  priority: 1
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Nano base (pre-trained); 31.6B MoE, 1M ctx; foundation for NemoClaw agent
+- id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
+  tier: A
+  drive: d2
+  priority: 3
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Nano instruct; NemoClaw agent platform model; 1M ctx, reasoning ON/OFF
+- id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4
+  tier: C
+  drive: d3
+  priority: 2
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Nano NVFP4 quant; smallest runnable for NemoClaw-style agents
+- id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8
+  tier: C
+  drive: d3
+  priority: 4
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Nano FP8 quant; efficient inference for agent workloads
 - id: allenai/Llama-3.1-Tulu-3-70B
   hf_repo: allenai/Llama-3.1-Tulu-3-70B
   tier: A
@@ -1293,3 +1329,156 @@ models:
   requires_auth: false
   commit_sha: null
   notes: IBM Granite 20B base; foundation for code fine-tunes
+- id: Salesforce/CoDA-1.7B-Base
+  hf_repo: Salesforce/CoDA-1.7B-Base
+  tier: G
+  drive: d3
+  priority: 4
+  licence: CC-BY-NC-4.0
+  requires_auth: false
+  commit_sha: null
+  notes: Salesforce CoDA 1.7B diffusion code model (base); research / diffusion coding
+- id: Salesforce/CoDA-1.7B-Instruct
+  hf_repo: Salesforce/CoDA-1.7B-Instruct
+  tier: G
+  drive: d3
+  priority: 4
+  licence: CC-BY-NC-4.0
+  requires_auth: false
+  commit_sha: null
+  notes: Salesforce CoDA 1.7B diffusion code model (instruct); research / diffusion coding
+- id: apple/DiffuCoder-7B-Base
+  hf_repo: apple/DiffuCoder-7B-Base
+  tier: G
+  drive: d3
+  priority: 4
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: Apple DiffuCoder 7B base diffusion code model; 130B code tokens; research
+- id: apple/DiffuCoder-7B-Instruct
+  hf_repo: apple/DiffuCoder-7B-Instruct
+  tier: G
+  drive: d3
+  priority: 4
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: Apple DiffuCoder 7B instruct diffusion code model; research / diffusion coding
+- id: apple/DiffuCoder-7B-cpGRPO
+  hf_repo: apple/DiffuCoder-7B-cpGRPO
+  tier: G
+  drive: d3
+  priority: 4
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: DiffuCoder 7B cpGRPO post-trained variant; RL for diffusion LMs; research
+- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
+  tier: D
+  drive: d1
+  priority: 4
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority
+- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
+  tier: D
+  drive: d1
+  priority: 4
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Super instruct; 124B MoE, 1M ctx; lowest priority
+- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+  tier: D
+  drive: d1
+  priority: 4
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Super FP8 quant; lowest priority
+- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4
+  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4
+  tier: D
+  drive: d1
+  priority: 4
+  licence: nvidia-open-model-license
+  requires_auth: false
+  commit_sha: null
+  notes: Nemotron 3 Super NVFP4 quant; lowest priority
+- id: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
+  hf_repo: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
+  tier: D
+  drive: d1
+  priority: 4
+  licence: llama3.1
+  requires_auth: true
+  commit_sha: null
+  notes: Nemotron Ultra 253B; Llama-3.1-based flagship; lowest priority
+- id: meta-llama/Llama-4-Scout-17B-16E
+  hf_repo: meta-llama/Llama-4-Scout-17B-16E
+  tier: A
+  drive: d1
+  priority: 1
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: Llama 4 Scout base MoE (17B params, 16 experts); core pre-trained checkpoint for future fine-tunes
+- id: meta-llama/Llama-4-Scout-17B-16E-Instruct
+  hf_repo: meta-llama/Llama-4-Scout-17B-16E-Instruct
+  tier: A
+  drive: d2
+  priority: 3
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: Llama 4 Scout instruct chat model; smaller of the Llama 4 family; general-purpose open assistant
+- id: meta-llama/Llama-4-Maverick-17B-128E
+  hf_repo: meta-llama/Llama-4-Maverick-17B-128E
+  tier: A
+  drive: d1
+  priority: 1
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: Llama 4 Maverick base MoE (17B params, 128 experts); high-capability foundation model
+- id: meta-llama/Llama-4-Maverick-17B-128E-Instruct
+  hf_repo: meta-llama/Llama-4-Maverick-17B-128E-Instruct
+  tier: A
+  drive: d2
+  priority: 3
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: Llama 4 Maverick instruct chat model; frontier open assistant; heavier than Scout
+- id: meta-llama/Llama-Guard-4-12B
+  hf_repo: meta-llama/Llama-Guard-4-12B
+  tier: E
+  drive: d3
+  priority: 1
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: 12B multimodal safety classifier pruned from Llama 4 Scout; input/output content moderation for text+images
+- id: meta-llama/Llama-Prompt-Guard-2-22M
+  hf_repo: meta-llama/Llama-Prompt-Guard-2-22M
+  tier: E
+  drive: d3
+  priority: 1
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: Lightweight prompt safety model (22M); detects jailbreaks/malicious prompts for Llama 3/4 and other LLMs
+- id: meta-llama/Llama-Prompt-Guard-2-86M
+  hf_repo: meta-llama/Llama-Prompt-Guard-2-86M
+  tier: E
+  drive: d3
+  priority: 1
+  licence: llama4
+  requires_auth: true
+  commit_sha: null
+  notes: Larger Prompt Guard 2 model (86M); broader language support and higher accuracy for prompt-safety classification
