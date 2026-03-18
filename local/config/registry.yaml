@@ -187,7 +187,7 @@ models:
   priority: 2
   licence: llama3.1
   requires_auth: true
-  commit_sha: null
+  commit_sha: b906e4dc842aa489c962f9db26554dcfdde901fe
   notes: Pre-trained base (no instruct) — foundation for fine-tunes; accept licence
     on HF
 - id: meta-llama/Llama-3.3-70B-Instruct
@@ -264,7 +264,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: eba92302a2861cdc0098cc54bc9f17cb2c47eb61
   notes: 8x7B MoE (~47B total) — flagship open MoE; runs well locally
 - id: mistralai/Mixtral-8x22B-Instruct-v0.1
   hf_repo: mistralai/Mixtral-8x22B-Instruct-v0.1
@@ -273,7 +273,7 @@ models:
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: null
+  commit_sha: cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d
   notes: 8x22B MoE — larger open MoE; capability type not fully covered elsewhere
 - id: microsoft/phi-4
   hf_repo: microsoft/phi-4
@@ -286,7 +286,7 @@ models:
 - id: microsoft/Phi-4-mini-instruct
   hf_repo: microsoft/Phi-4-mini-instruct
   tier: A
-  drive: d2
+  drive: d5
   priority: 1
   licence: MIT
   requires_auth: false
@@ -299,7 +299,7 @@ models:
   priority: 1
   licence: llama3.2
   requires_auth: true
-  commit_sha: null
+  commit_sha: 0cb88a4f764b7a12671c53f0838cd831a0843b95
   notes: 3B Llama 3.2 instruct; 128K context; good for constrained GPUs
 - id: TinyLlama/TinyLlama-1.1B-Chat-v1.0
   hf_repo: TinyLlama/TinyLlama-1.1B-Chat-v1.0
@@ -323,21 +323,12 @@ models:
 - id: Qwen/Qwen3-4B-Instruct-2507
   hf_repo: Qwen/Qwen3-4B-Instruct-2507
   tier: A
-  drive: d2
+  drive: d5
   priority: 1
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
   notes: 4B Qwen3 instruct; leaderboard-strong small model
-- id: CohereForAI/c4ai-command-r-plus
-  hf_repo: CohereForAI/c4ai-command-r-plus
-  tier: A
-  drive: d1
-  priority: 2
-  licence: CC-BY-NC
-  requires_auth: true
-  commit_sha: null
-  notes: CC-BY-NC — non-commercial only. 104B. lb=30.9
 - id: CohereLabs/c4ai-command-r-plus-08-2024
   hf_repo: CohereLabs/c4ai-command-r-plus-08-2024
   tier: A
@@ -363,8 +354,9 @@ models:
   priority: 1
   licence: nvidia-open-model-license
   requires_auth: false
-  commit_sha: null
-  notes: Nemotron 3 Nano base (pre-trained); 31.6B MoE, 1M ctx; foundation for NemoClaw agent
+  commit_sha: 97ab8012882a655dc38df4fee47422aca9caca07
+  notes: Nemotron 3 Nano base (pre-trained); 31.6B MoE, 1M ctx; foundation for NemoClaw
+    agent
 - id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
   hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
   tier: A
@@ -373,7 +365,8 @@ models:
   licence: nvidia-open-model-license
   requires_auth: false
   commit_sha: null
-  notes: Nemotron 3 Nano instruct; NemoClaw agent platform model; 1M ctx, reasoning ON/OFF
+  notes: Nemotron 3 Nano instruct; NemoClaw agent platform model; 1M ctx, reasoning
+    ON/OFF
 - id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4
   hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4
   tier: C
@@ -457,21 +450,21 @@ models:
 - id: deepseek-ai/deepseek-coder-33b-instruct
   hf_repo: deepseek-ai/deepseek-coder-33b-instruct
   tier: B
-  drive: d2
+  drive: d1
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 61dc97b922b13995e7f83b7c8397701dbf9cfd4c
   notes: DeepSeek Coder v1 33B — extremely strong code model; beats GPT-3.5-turbo
     on HumanEval
 - id: deepseek-ai/deepseek-coder-6.7b-instruct
   hf_repo: deepseek-ai/deepseek-coder-6.7b-instruct
   tier: B
-  drive: d2
+  drive: d1
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: e5d64addd26a6a1db0f9b863abf6ee3141936807
   notes: DeepSeek Coder v1 6.7B — strong small code model; 16K context
 - id: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
   hf_repo: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
@@ -721,7 +714,7 @@ models:
   priority: 1
   licence: Gemma-ToU
   requires_auth: false
-  commit_sha: null
+  commit_sha: 4a05c54413bd0d87d77a97af403266f69cec0ee6
   quant_levels:
   - Q8_0
   notes: Replacement for 404 bartowski/gemma-3-27b-it-GGUF (same publisher, renamed
@@ -923,7 +916,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: 89b48f9faec5188e7a05011676538aaf0889ad9a
   quant_levels:
   - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
@@ -936,7 +929,7 @@ models:
   priority: 1
   licence: MIT
   requires_auth: false
-  commit_sha: null
+  commit_sha: de00cb261ea6fea79a45ffbb6e583befed7be954
   quant_levels:
   - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
@@ -976,6 +969,15 @@ models:
   requires_auth: false
   commit_sha: 976055f8c83f394f35dbd3ab09a285a984907bd0
   notes: Qwen reasoning model — 61k downloads, strong math/coding CoT
+- id: mistralai/Leanstral-120B-A6B
+  hf_repo: mistralai/Leanstral-120B-A6B
+  tier: E
+  drive: d1
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Leanstral 120B-A6B sparse code/proof agent for Lean 4; Apache-2.0; see https://mistral.ai/news/leanstral
 - id: open-r1/OlympicCoder-32B
   hf_repo: open-r1/OlympicCoder-32B
   tier: E
@@ -985,15 +987,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Olympiad-level coding reasoning from the open-r1 project
-- id: NovaSky-Berkeley/Sky-T1-32B-Preview
-  hf_repo: NovaSky-Berkeley/Sky-T1-32B-Preview
-  tier: E
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: UC Berkeley open reasoning model trained on Sky-T1 data
 - id: Qwen/Qwen2.5-VL-72B-Instruct
   hf_repo: Qwen/Qwen2.5-VL-72B-Instruct
   tier: F
@@ -1220,7 +1213,6 @@ models:
   method: merge
   notes: 32B merge model — uncensored / experimental; complements other Qwen2.5/Llama
     merges
-# Non-obsolete flagships with no direct replacement — lowest priority (priority 2)
 - id: tiiuae/falcon-40b-instruct
   hf_repo: tiiuae/falcon-40b-instruct
   tier: A
@@ -1346,7 +1338,8 @@ models:
   licence: CC-BY-NC-4.0
   requires_auth: false
   commit_sha: null
-  notes: Salesforce CoDA 1.7B diffusion code model (instruct); research / diffusion coding
+  notes: Salesforce CoDA 1.7B diffusion code model (instruct); research / diffusion
+    coding
 - id: apple/DiffuCoder-7B-Base
   hf_repo: apple/DiffuCoder-7B-Base
   tier: G
@@ -1427,7 +1420,8 @@ models:
   licence: llama4
   requires_auth: true
   commit_sha: null
-  notes: Llama 4 Scout base MoE (17B params, 16 experts); core pre-trained checkpoint for future fine-tunes
+  notes: Llama 4 Scout base MoE (17B params, 16 experts); core pre-trained checkpoint
+    for future fine-tunes
 - id: meta-llama/Llama-4-Scout-17B-16E-Instruct
   hf_repo: meta-llama/Llama-4-Scout-17B-16E-Instruct
   tier: A
@@ -1436,7 +1430,8 @@ models:
   licence: llama4
   requires_auth: true
   commit_sha: null
-  notes: Llama 4 Scout instruct chat model; smaller of the Llama 4 family; general-purpose open assistant
+  notes: Llama 4 Scout instruct chat model; smaller of the Llama 4 family; general-purpose
+    open assistant
 - id: meta-llama/Llama-4-Maverick-17B-128E
   hf_repo: meta-llama/Llama-4-Maverick-17B-128E
   tier: A
@@ -1444,8 +1439,9 @@ models:
   priority: 1
   licence: llama4
   requires_auth: true
-  commit_sha: null
-  notes: Llama 4 Maverick base MoE (17B params, 128 experts); high-capability foundation model
+  commit_sha: 10751cb97a4d7c90f7ed89196b98eb8220cfa1c2
+  notes: Llama 4 Maverick base MoE (17B params, 128 experts); high-capability foundation
+    model
 - id: meta-llama/Llama-4-Maverick-17B-128E-Instruct
   hf_repo: meta-llama/Llama-4-Maverick-17B-128E-Instruct
   tier: A
@@ -1454,7 +1450,8 @@ models:
   licence: llama4
   requires_auth: true
   commit_sha: null
-  notes: Llama 4 Maverick instruct chat model; frontier open assistant; heavier than Scout
+  notes: Llama 4 Maverick instruct chat model; frontier open assistant; heavier than
+    Scout
 - id: meta-llama/Llama-Guard-4-12B
   hf_repo: meta-llama/Llama-Guard-4-12B
   tier: E
@@ -1462,8 +1459,9 @@ models:
   priority: 1
   licence: llama4
   requires_auth: true
-  commit_sha: null
-  notes: 12B multimodal safety classifier pruned from Llama 4 Scout; input/output content moderation for text+images
+  commit_sha: 87acb4b94e930c3d679e6e7ee9d57e2feab9ea71
+  notes: 12B multimodal safety classifier pruned from Llama 4 Scout; input/output
+    content moderation for text+images
 - id: meta-llama/Llama-Prompt-Guard-2-22M
   hf_repo: meta-llama/Llama-Prompt-Guard-2-22M
   tier: E
@@ -1471,8 +1469,9 @@ models:
   priority: 1
   licence: llama4
   requires_auth: true
-  commit_sha: null
-  notes: Lightweight prompt safety model (22M); detects jailbreaks/malicious prompts for Llama 3/4 and other LLMs
+  commit_sha: 11614a155199674a0a95e6602d6ab0417b790ed0
+  notes: Lightweight prompt safety model (22M); detects jailbreaks/malicious prompts
+    for Llama 3/4 and other LLMs
 - id: meta-llama/Llama-Prompt-Guard-2-86M
   hf_repo: meta-llama/Llama-Prompt-Guard-2-86M
   tier: E
@@ -1480,5 +1479,6 @@ models:
   priority: 1
   licence: llama4
   requires_auth: true
-  commit_sha: null
-  notes: Larger Prompt Guard 2 model (86M); broader language support and higher accuracy for prompt-safety classification
+  commit_sha: a8ded8e697ce7c355e395a0df51f94adb4a2fd27
+  notes: Larger Prompt Guard 2 model (86M); broader language support and higher accuracy
+    for prompt-safety classification

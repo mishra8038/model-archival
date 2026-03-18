@@ -1,0 +1,244 @@
+manifest_version: "1.0"
+archive_date: "2026-03-18"
+scope:
+  include_model_artifacts: false
+  description: "Software BOM for rebuildable self-hosted NVIDIA local AI stacks."
+
+epochs:
+  - id: E0
+    name: legacy-deep
+    ubuntu:
+      series: "18.04 LTS"
+      preferred_iso: "ubuntu-18.04.6-live-server-amd64.iso"
+    nvidia_driver:
+      preferred_branches: ["440", "450"]
+    cuda:
+      versions: ["10.2"]
+    python:
+      versions: ["3.8"]
+    compiler:
+      gcc_major: ["7", "8"]
+    pytorch:
+      channel: "cu102"
+      pinned_triplets:
+        - torch: "1.12.1"
+          torchvision: "0.13.1"
+          torchaudio: "0.12.1"
+    notes:
+      - "Preserve older Pascal/Volta-compatible environments."
+      - "Avoid assuming modern kernels or glibc compatibility."
+
+  - id: E1
+    name: early-11-bridge
+    ubuntu:
+      series: "20.04 LTS"
+      preferred_iso: "ubuntu-20.04.6-live-server-amd64.iso"
+    nvidia_driver:
+      preferred_branches: ["470"]
+    cuda:
+      versions: ["11.3"]
+    python:
+      versions: ["3.8", "3.9"]
+    compiler:
+      gcc_major: ["9"]
+    pytorch:
+      channel: "cu113"
+      pinned_triplets:
+        - torch: "1.13.1"
+          torchvision: "0.14.1"
+          torchaudio: "0.13.1"
+    notes:
+      - "Bridge stack for early Ampere-era software assumptions."
+      - "Useful for projects hard-pinned to early CUDA 11."
+
+  - id: E2
+    name: broad-safe
+    ubuntu:
+      series: "20.04 LTS / 22.04 LTS"
+      preferred_iso_candidates:
+        - "ubuntu-20.04.6-live-server-amd64.iso"
+        - "ubuntu-22.04.4-live-server-amd64.iso"
+    nvidia_driver:
+      preferred_branches: ["525"]
+    cuda:
+      versions: ["11.8"]
+    python:
+      versions: ["3.10"]
+    compiler:
+      gcc_major: ["10", "11"]
+    pytorch:
+      channel: "cu118"
+      pinned_triplets:
+        - torch: "2.1.2"
+          torchvision: "0.16.2"
+          torchaudio: "2.1.2"
+    notes:
+      - "Most important baseline for long-lived rebuildability."
+      - "Covers many projects that remain stable on CUDA 11.8."
+
+  - id: E3
+    name: mainline-stable
+    ubuntu:
+      series: "22.04 LTS"
+      preferred_iso: "ubuntu-22.04.4-live-server-amd64.iso"
+    nvidia_driver:
+      preferred_branches: ["535"]
+    cuda:
+      versions: ["12.1"]
+    python:
+      versions: ["3.10", "3.11"]
+    compiler:
+      gcc_major: ["11"]
+    pytorch:
+      channel: "cu121"
+      pinned_triplets:
+        - torch: "2.2.1"
+          torchvision: "0.17.1"
+          torchaudio: "2.2.1"
+    notes:
+      - "Mainline stable stack for broad current compatibility."
+      - "Good default target for a reproducible offline reinstall."
+
+  - id: E4
+    name: forward-stable
+    ubuntu:
+      series: "24.04 LTS"
+      preferred_iso: "ubuntu-24.04.2-live-server-amd64.iso"
+      preferred_iso_candidates:
+        - "ubuntu-24.04.2-live-server-amd64.iso"
+        - "ubuntu-24.04.1-live-server-amd64.iso"
+    nvidia_driver:
+      preferred_branches: ["570", "550"]
+      preferred_versions: ["570.86.16"]
+    cuda:
+      versions: ["12.8", "12.4"]
+      preferred_versions: ["12.8.0"]
+    cudnn:
+      preferred_versions: ["9.7.1"]
+    nvidia_container_toolkit:
+      preferred_versions: ["1.17.x"]
+    python:
+      versions: ["3.11", "3.12"]
+    compiler:
+      gcc_major: ["13"]
+    pytorch:
+      channels: ["cu124", "cu128"]
+      pinned_triplets:
+        - torch: "2.5.1"
+          torchvision: "0.20.1"
+          torchaudio: "2.5.1"
+        - torch: "2.6.0+cu128"
+          torchvision: "0.21.0+cu128"
+          torchaudio: "2.6.0+cu128"
+    applications:
+      docker_ce: "27.x"
+      ollama: "0.6.x"
+      llama_cpp: "b5000+"
+      vllm: "0.7.x"
+      transformers: "4.50.x"
+      open_webui: "0.5.x"
+      anythingllm: "1.7.x"
+    notes:
+      - "Forward stack for newer Ubuntu 24.04 and CUDA 12.4/12.8 paths."
+      - "Keep CUDA 12.4 and 12.8 as separate artifact sets even if they share the same epoch."
+      - "Claude BOM pins this forward stack to Ubuntu 24.04.2 + driver 570.86.16 + CUDA 12.8.0."
+
+required_artifacts:
+  os:
+    - "Ubuntu ISO"
+    - "SHA256SUMS"
+    - "Release notes"
+  nvidia:
+    - "Driver installers or exact .deb dependency tree"
+    - "CUDA runfiles and/or local repo .deb bundles"
+    - "cuDNN archives"
+    - "NCCL packages"
+    - "TensorRT archives"
+    - "NVIDIA Container Toolkit packages"
+  toolchains:
+    - "GCC/G++ packages or source tarballs"
+    - "Clang/LLVM source archives or distro packages"
+    - "CMake and Ninja release archives"
+    - "Python source tarballs"
+    - "OpenJDK LTS tarballs"
+    - "Maven and Gradle binary distributions"
+    - "Go toolchain tarballs and release metadata"
+    - "Rust toolchain tarballs and channel metadata"
+    - "Virtualenv/pip bootstrap artifacts"
+  python_runtime:
+    - "Offline wheelhouses"
+    - "sdists/source archives for fragile native-extension packages"
+  source:
+    - "Git mirrors"
+    - "Tagged source tarballs"
+    - "Release notes and licenses"
+  containers:
+    - "Saved OCI images"
+    - "Image digests"
+    - "Compose files or launch scripts"
+  metadata:
+    - "sha256 manifest"
+    - "source URL manifest"
+    - "rebuild notes"
+    - "smoke test plan"
+
+software_families:
+  low_level:
+    - "Ubuntu Server ISOs"
+    - "NVIDIA driver installers"
+    - "CUDA toolkit"
+    - "cuDNN"
+    - "NCCL"
+    - "TensorRT"
+    - "NVIDIA Container Toolkit"
+    - "GCC/G++ toolchains"
+    - "Clang/LLVM"
+    - "CMake"
+    - "Ninja"
+    - "Python source tarballs"
+  language_toolchains:
+    - "OpenJDK"
+    - "Maven"
+    - "Gradle"
+    - "Go"
+    - "Rust"
+  python_runtime:
+    - "PyTorch"
+    - "torchvision"
+    - "torchaudio"
+    - "transformers"
+    - "accelerate"
+    - "safetensors"
+    - "tokenizers"
+    - "huggingface-hub"
+    - "sentencepiece"
+    - "numpy"
+    - "scipy"
+    - "protobuf"
+  inference_and_serving:
+    - "llama.cpp"
+    - "llama-cpp-python"
+    - "Ollama"
+    - "vLLM"
+    - "SGLang"
+    - "TensorRT-LLM"
+    - "text-generation-inference"
+    - "text-generation-webui"
+    - "koboldcpp"
+    - "tabbyAPI"
+    - "LiteLLM"
+    - "AutoGPTQ"
+    - "exllamav2"
+    - "flash-attn"
+    - "xformers"
+    - "bitsandbytes"
+  ui:
+    - "Open WebUI"
+    - "AnythingLLM"
+  legacy_and_research:
+    - "fairseq"
+    - "apex"
+    - "deepspeed"
+    - "OpenNMT"
+    - "ESPnet"
+    - "Kaldi"

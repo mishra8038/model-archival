@@ -7,7 +7,9 @@ import os
 import shutil
 import signal
 import subprocess
+import threading
 import time
+from datetime import datetime, time as dt_time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -31,6 +33,23 @@ class DownloadTask:
     filename: str
 
 
+@dataclass(frozen=True)
+class BandwidthSchedule:
+    """Local-time bandwidth cap window for aria2."""
+
+    cap_mbps: float
+    start_time: dt_time
+    end_time: dt_time
+
+    def is_active(self, now: Optional[dt_time] = None) -> bool:
+        current = now or datetime.now().time()
+        if self.start_time == self.end_time:
+            return True
+        if self.start_time < self.end_time:
+            return self.start_time <= current < self.end_time
+        return current >= self.start_time or current < self.end_time
+
+
 class Aria2Manager:
     """Manages a local aria2c RPC daemon and wraps aria2p for task control."""
 
@@ -40,6 +59,7 @@ class Aria2Manager:
         connections_per_file: int = ARIA2_CONNECTIONS_PER_FILE,
         max_concurrent: int = ARIA2_MAX_CONCURRENT,
         max_overall_download_limit_mbps: Optional[float] = None,
+        bandwidth_schedule: Optional[BandwidthSchedule] = None,
         port: int = ARIA2_PORT,
         secret: str = ARIA2_SECRET,
     ) -> None:
@@ -47,10 +67,14 @@ class Aria2Manager:
         self.connections_per_file = connections_per_file
         self.max_concurrent = max_concurrent
         self.max_overall_download_limit_mbps = max_overall_download_limit_mbps
+        self.bandwidth_schedule = bandwidth_schedule
         self.port = port
         self.secret = secret
         self._proc: Optional[subprocess.Popen] = None
         self._api: Optional[aria2p.API] = None
+        self._schedule_stop = threading.Event()
+        self._schedule_thread: Optional[threading.Thread] = None
+        self._last_applied_limit_mbps: Optional[float] = None
 
     # ------------------------------------------------------------------
     # Daemon lifecycle
@@ -107,12 +131,25 @@ class Aria2Manager:
             try:
                 self._api.get_stats()
                 log.info("aria2c daemon ready")
+                self._apply_bandwidth_policy(force=True)
+                if self.bandwidth_schedule is not None:
+                    self._schedule_stop.clear()
+                    self._schedule_thread = threading.Thread(
+                        target=self._bandwidth_schedule_loop,
+                        name="aria2-bandwidth-schedule",
+                        daemon=True,
+                    )
+                    self._schedule_thread.start()
                 return
             except Exception:
                 time.sleep(0.5)
         raise RuntimeError("aria2c daemon did not start within 10 seconds")
 
     def stop(self) -> None:
+        self._schedule_stop.set()
+        if self._schedule_thread is not None:
+            self._schedule_thread.join(timeout=5)
+            self._schedule_thread = None
         if self._proc is not None:
             log.info("Stopping aria2c daemon (pid %d)", self._proc.pid)
             try:
@@ -222,3 +259,38 @@ class Aria2Manager:
             return stats.download_speed / (1024 * 1024)
         except Exception:
             return 0.0
+
+    def _scheduled_limit_mbps(self) -> Optional[float]:
+        if self.bandwidth_schedule is None:
+            return None
+        if self.bandwidth_schedule.is_active():
+            return self.bandwidth_schedule.cap_mbps
+        return None
+
+    def _apply_bandwidth_policy(self, force: bool = False) -> None:
+        limit_mbps = self._scheduled_limit_mbps()
+        if self.bandwidth_schedule is None:
+            limit_mbps = self.max_overall_download_limit_mbps
+
+        if not force and limit_mbps == self._last_applied_limit_mbps:
+            return
+
+        options = {
+            "max-overall-download-limit": "0"
+            if limit_mbps is None or limit_mbps <= 0
+            else f"{int(limit_mbps)}M"
+        }
+        self.api.set_global_options(options)
+        self._last_applied_limit_mbps = limit_mbps
+
+        if limit_mbps is None or limit_mbps <= 0:
+            log.info("Bandwidth cap disabled")
+        else:
+            log.info("Bandwidth cap set to %.0f MB/s", limit_mbps)
+
+    def _bandwidth_schedule_loop(self) -> None:
+        while not self._schedule_stop.wait(30):
+            try:
+                self._apply_bandwidth_policy()
+            except Exception as exc:
+                log.warning("Failed to refresh bandwidth cap schedule: %s", exc)

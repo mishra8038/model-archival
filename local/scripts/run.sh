@@ -23,8 +23,12 @@
 #   --rehash              After download, do full SHA-256 re-hash (slow)
 #   --skip-env-check      Skip the environment pre-check step
 #   --skip-verify         Skip the post-download integrity verification step
-#   --bandwidth-cap N     Cap download bandwidth at N MB/s
-#   --max-parallel N      Max parallel drive workers (default: 4)
+#   --bandwidth-cap N     Cap download bandwidth at N MB/s (0.75 = 6 Mbps; disables schedule)
+#   --no-scheduled-bandwidth-cap  Disable the scheduled cap
+#   --scheduled-bandwidth-cap N   Scheduled cap in MB/s (0.75 = 6 Mbps)
+#   --scheduled-bandwidth-window W  Scheduled cap window HH:MM-HH:MM
+#   --queue-mode MODE     Queue mode: adaptive|serial (default: serial)
+#   --max-parallel N      Max parallel drive workers (default: 1; ignored in serial queue mode)
 #   --skip-network        Pass --skip-network to environment check
 #   --help                Show this message
 #
@@ -35,8 +39,8 @@
 #   # Actual first run (priority 1 / token-free only):
 #   bash run.sh --priority-only 1
 #
-#   # Full run all tiers with bandwidth cap and re-hash verify:
-#   bash run.sh --all --bandwidth-cap 200 --rehash
+#   # Full run all tiers with a neighbor-friendly cap and serial queue:
+#   bash run.sh --all --bandwidth-cap 0.75 --queue-mode serial --rehash
 #
 #   # Tier A only, dry-run:
 #   bash run.sh --tier A --dry-run
@@ -88,8 +92,11 @@ DOWNLOAD_ALL=true      # default: download everything
 REHASH=false
 SKIP_ENV_CHECK=false
 SKIP_VERIFY=false
-BANDWIDTH_CAP=""
-MAX_PARALLEL=4
+BANDWIDTH_CAP="0.75"      # 6 Mbps ~= 0.75 MB/s
+SCHEDULED_BANDWIDTH_CAP=""
+SCHEDULED_BANDWIDTH_WINDOW=""
+QUEUE_MODE="serial"
+MAX_PARALLEL=1
 SKIP_NETWORK=false
 
 # ---------------------------------------------------------------------------
@@ -111,12 +118,21 @@ while [[ $# -gt 0 ]]; do
         --skip-verify)      SKIP_VERIFY=true;          shift ;;
         --skip-drive-space-check) SKIP_DRIVE_SPACE_CHECK=true; shift ;;
         --bandwidth-cap)    BANDWIDTH_CAP="$2";        shift 2 ;;
+        --no-scheduled-bandwidth-cap) SCHEDULED_BANDWIDTH_CAP=""; shift ;;
+        --scheduled-bandwidth-cap) SCHEDULED_BANDWIDTH_CAP="$2"; shift 2 ;;
+        --scheduled-bandwidth-window) SCHEDULED_BANDWIDTH_WINDOW="$2"; shift 2 ;;
+        --queue-mode)       QUEUE_MODE="$2";           shift 2 ;;
         --max-parallel)     MAX_PARALLEL="$2";         shift 2 ;;
         --skip-network)     SKIP_NETWORK=true;         shift ;;
         --help|-h)          usage ;;
         *) echo "Unknown option: $1  (run with --help)"; exit 1 ;;
     esac
 done
+
+if [[ "$QUEUE_MODE" != "adaptive" && "$QUEUE_MODE" != "serial" ]]; then
+    echo "Unknown queue mode: $QUEUE_MODE  (expected: adaptive or serial)"
+    exit 1
+fi
 
 # ---------------------------------------------------------------------------
 # Initialise report (lands in REPO_DIR)
@@ -142,6 +158,9 @@ _rpt "| Tier filter | ${TIER:-all} |"
 _rpt "| Download all | $DOWNLOAD_ALL |"
 _rpt "| Rehash verify | $REHASH |"
 _rpt "| Bandwidth cap | ${BANDWIDTH_CAP:-unlimited} MB/s |"
+_rpt "| Scheduled bandwidth cap | ${SCHEDULED_BANDWIDTH_CAP:-disabled} MB/s |"
+_rpt "| Scheduled bandwidth window | ${SCHEDULED_BANDWIDTH_WINDOW:-disabled} |"
+_rpt "| Queue mode | $QUEUE_MODE |"
 _rpt "| Max parallel | $MAX_PARALLEL |"
 _rpt ""
 _rpt "---"
@@ -161,6 +180,8 @@ info "Dry run:      $DRY_RUN"
 info "Priority:     ${PRIORITY_ONLY:-all}"
 info "Tier:         ${TIER:-all}"
 info "Rehash:       $REHASH"
+info "Queue mode:   $QUEUE_MODE"
+info "Bandwidth:    ${BANDWIDTH_CAP:-unlimited} MB/s"
 info "Report:       $_REPORT_FILE"
 echo ""
 
@@ -372,7 +393,14 @@ DOWNLOAD_ARGS=("--all")   # always pass --all; filters narrow it down
 [[ -n "$TIER" ]]          && DOWNLOAD_ARGS+=("--tier" "$TIER")
 [[ -n "$PRIORITY_ONLY" ]] && DOWNLOAD_ARGS+=("--priority-only" "$PRIORITY_ONLY")
 [[ -n "$BANDWIDTH_CAP" ]] && DOWNLOAD_ARGS+=("--bandwidth-cap" "$BANDWIDTH_CAP")
+if [[ -z "$BANDWIDTH_CAP" && -n "$SCHEDULED_BANDWIDTH_CAP" && -n "$SCHEDULED_BANDWIDTH_WINDOW" ]]; then
+    DOWNLOAD_ARGS+=(
+        "--scheduled-bandwidth-cap" "$SCHEDULED_BANDWIDTH_CAP"
+        "--scheduled-bandwidth-window" "$SCHEDULED_BANDWIDTH_WINDOW"
+    )
+fi
 [[ -n "${SKIP_DRIVE_SPACE_CHECK:-}" ]] && DOWNLOAD_ARGS+=("--skip-drive-space-check")
+DOWNLOAD_ARGS+=("--queue-mode" "$QUEUE_MODE")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
 
 info "Running dry-run to capture download plan…"

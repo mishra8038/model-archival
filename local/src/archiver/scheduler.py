@@ -1,12 +1,15 @@
 """
 Drive-aware download scheduler.
 
-Maximize simultaneous downloads (bandwidth permitting):
-- Worker pool of max_parallel_models threads. Each worker picks the next model from any
-  drive that has pending work and is under that drive's concurrency cap (max_models_per_drive).
-- Add more models only when average speed per model would stay >= min_speed_per_model_mbps
-  (default 6 MB/s). So when aggregate speed / (active + 1) < 6 we wait before starting another.
-- A background thread samples aggregate speed for ETA and for the 6 MB/s gating.
+Two queue modes are supported through the CLI/orchestrator:
+- adaptive: worker pool of max_parallel_models threads. Each worker picks the next model from
+  any drive that has pending work and is under that drive's concurrency cap.
+- serial: one model at a time across the whole run (implemented by passing max_parallel_models=1
+  and max_models_per_drive=1).
+
+In adaptive mode, add more models only when average speed per model would stay
+>= min_speed_per_model_mbps (default 6 MB/s). A background thread samples aggregate
+speed for ETA and for the add-on gating.
 """
 
 from __future__ import annotations
@@ -164,9 +167,14 @@ class DriveScheduler:
             return self._stats
 
         n_workers = min(self.max_parallel_models, total_pending)
+        queue_mode = (
+            "serial"
+            if self.max_parallel_models == 1 and self.max_models_per_drive == 1
+            else "adaptive"
+        )
         self._log_activity(
             f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} RUN_START "
-            f"workers={n_workers} max_per_drive={self.max_models_per_drive} "
+            f"queue_mode={queue_mode} workers={n_workers} max_per_drive={self.max_models_per_drive} "
             f"min_speed_mbps={self.min_speed_per_model_mbps}"
         )
 

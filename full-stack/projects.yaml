@@ -1,0 +1,660 @@
+manifest_version: "1.0"
+archive_date: "2026-03-18"
+default_destination: "/mnt/models/d5/full-stack-archives"
+description: "Expansive catalog of software to archive for self-hosted NVIDIA local AI stacks."
+
+artifact_policy:
+  required_formats:
+    - source_release
+    - git_mirror
+    - deb_packages
+    - rpm_packages
+    - arch_packages
+  additional_formats:
+    - python_wheels
+    - python_sdists
+    - container_images
+    - runfiles
+    - iso_images
+    - release_notes
+    - checksums
+  package_rule: "Archive deb/rpm/arch package forms wherever they exist; when a project is primarily source- or wheel-distributed, preserve the canonical artifact and record package-form status in notes."
+
+categories:
+  - id: os
+    description: "Operating systems, package feeds, and release metadata."
+  - id: nvidia-low-level
+    description: "Drivers, CUDA, math libraries, and GPU container runtime."
+  - id: compilers-toolchains
+    description: "Compiler, linker, and language-toolchain foundations required to rebuild old stacks."
+  - id: containers-infra
+    description: "Container runtime, registries, and packaging support."
+  - id: kubernetes-orchestration
+    description: "Kubernetes and lightweight cluster tooling for self-hosted inference services."
+  - id: python-runtime
+    description: "Core Python ML runtime libraries and model-loading stack."
+  - id: inference-serving
+    description: "LLM inference engines, OpenAI-compatible servers, and runtime alternates."
+  - id: ui-orchestration
+    description: "Desktop, web, and workflow layers around local AI services."
+  - id: training-finetuning
+    description: "Fine-tuning, quantization, and training helpers."
+  - id: retrieval-data
+    description: "RAG frameworks, vector stores, and document ingestion."
+  - id: speech-multimodal
+    description: "Speech, vision, and OCR adjuncts."
+  - id: eval-observability
+    description: "Evaluation, tracing, and metrics."
+  - id: legacy-specialized
+    description: "Older or specialized stacks worth preserving."
+
+projects:
+  - id: ubuntu-server
+    category: os
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      home: "https://releases.ubuntu.com/"
+      old_releases: "https://old-releases.ubuntu.com/releases/"
+    desired_formats:
+      required: ["iso_images", "checksums", "release_notes"]
+      when_available: ["deb_packages"]
+    notes: "Preserve 18.04.6, 20.04.6, 22.04.4, 24.04.1, and 24.04.2."
+
+  - id: nvidia-driver
+    category: nvidia-low-level
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      home: "https://www.nvidia.com/en-us/drivers/unix/"
+      archive: "https://download.nvidia.com/XFree86/Linux-x86_64/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "checksums", "release_notes"]
+      when_available: ["runfiles"]
+    package_names:
+      debian_family: ["nvidia-driver-440", "nvidia-driver-450", "nvidia-driver-470", "nvidia-driver-525", "nvidia-driver-535", "nvidia-driver-550", "nvidia-driver-570"]
+      rpm_family: ["nvidia-driver", "akmod-nvidia", "xorg-x11-drv-nvidia"]
+      arch_linux: ["nvidia", "nvidia-utils", "nvidia-dkms", "nvidia-open-dkms"]
+
+  - id: cuda-toolkit
+    category: nvidia-low-level
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      home: "https://developer.nvidia.com/cuda-toolkit-archive"
+    desired_formats:
+      required: ["runfiles", "deb_packages", "rpm_packages", "arch_packages", "release_notes"]
+    package_names:
+      debian_family: ["cuda-toolkit-10-2", "cuda-toolkit-11-3", "cuda-toolkit-11-8", "cuda-toolkit-12-1", "cuda-toolkit-12-4", "cuda-toolkit-12-8"]
+      rpm_family: ["cuda-toolkit-10-2", "cuda-toolkit-11-3", "cuda-toolkit-11-8", "cuda-toolkit-12-1", "cuda-toolkit-12-4", "cuda-toolkit-12-8"]
+      arch_linux: ["cuda"]
+
+  - id: cudnn
+    category: nvidia-low-level
+    priority: critical
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://developer.nvidia.com/cudnn-downloads"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "release_notes"]
+    package_names:
+      debian_family: ["libcudnn8", "libcudnn9", "libcudnn8-dev", "libcudnn9-dev"]
+      rpm_family: ["libcudnn8", "libcudnn9", "libcudnn8-devel", "libcudnn9-devel"]
+      arch_linux: ["cudnn"]
+    notes: "Requires NVIDIA developer authentication; archive metadata and auth notes if redistribution is restricted."
+
+  - id: nccl
+    category: nvidia-low-level
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://developer.nvidia.com/nccl"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["libnccl2", "libnccl-dev"]
+      rpm_family: ["libnccl", "libnccl-devel"]
+      arch_linux: ["nccl"]
+
+  - id: tensorrt
+    category: nvidia-low-level
+    priority: high
+    supported_epochs: ["E3", "E4"]
+    upstream:
+      home: "https://developer.nvidia.com/tensorrt"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "release_notes"]
+    package_names:
+      debian_family: ["tensorrt", "libnvinfer-dev", "python3-libnvinfer"]
+      rpm_family: ["tensorrt", "libnvinfer-devel", "python3-libnvinfer"]
+      arch_linux: ["tensorrt"]
+    notes: "May require NVIDIA developer login depending on distribution method."
+
+  - id: nvidia-container-toolkit
+    category: nvidia-low-level
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://github.com/NVIDIA/nvidia-container-toolkit"
+      repo: "https://nvidia.github.io/libnvidia-container/"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["nvidia-container-toolkit", "libnvidia-container1", "libnvidia-container-tools"]
+      rpm_family: ["nvidia-container-toolkit", "libnvidia-container1", "libnvidia-container-tools"]
+      arch_linux: ["nvidia-container-toolkit", "libnvidia-container"]
+
+  - id: gcc
+    category: compilers-toolchains
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      home: "https://gcc.gnu.org/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["gcc-7", "g++-7", "gcc-8", "g++-8", "gcc-9", "g++-9", "gcc-10", "g++-10", "gcc-11", "g++-11", "gcc-13", "g++-13"]
+      rpm_family: ["gcc", "gcc-c++"]
+      arch_linux: ["gcc"]
+
+  - id: cmake-ninja
+    category: compilers-toolchains
+    priority: high
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      cmake: "https://github.com/Kitware/CMake"
+      ninja: "https://github.com/ninja-build/ninja"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["cmake", "ninja-build"]
+      rpm_family: ["cmake", "ninja-build"]
+      arch_linux: ["cmake", "ninja"]
+
+  - id: python
+    category: compilers-toolchains
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      home: "https://www.python.org/downloads/source/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["python3.8", "python3.9", "python3.10", "python3.11", "python3.12", "python3-pip", "python3-venv"]
+      rpm_family: ["python3.8", "python3.9", "python3.10", "python3.11", "python3.12", "python3-pip"]
+      arch_linux: ["python", "python-pip", "python-virtualenv"]
+
+  - id: uv-poetry-pip-tools
+    category: compilers-toolchains
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      uv: "https://github.com/astral-sh/uv"
+      poetry: "https://github.com/python-poetry/poetry"
+      pip_tools: "https://github.com/jazzband/pip-tools"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "python_wheels"]
+    package_names:
+      debian_family: ["python3-pip-tools"]
+      rpm_family: ["python3-pip-tools"]
+      arch_linux: ["uv", "python-poetry", "python-pip-tools"]
+
+  - id: openjdk
+    category: compilers-toolchains
+    priority: high
+    supported_epochs: ["E1", "E2", "E3", "E4"]
+    upstream:
+      home: "https://jdk.java.net/archive/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["openjdk-17-jdk", "openjdk-21-jdk", "openjdk-17-jre", "openjdk-21-jre"]
+      rpm_family: ["java-17-openjdk-devel", "java-21-openjdk-devel", "java-17-openjdk", "java-21-openjdk"]
+      arch_linux: ["jdk17-openjdk", "jdk21-openjdk", "jre17-openjdk", "jre21-openjdk"]
+    notes: "Keep LTS JDK anchors because Java-based build and orchestration tools often disappear from distro mirrors sooner than desired."
+
+  - id: maven-gradle
+    category: compilers-toolchains
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      maven: "https://maven.apache.org/"
+      gradle: "https://gradle.org/releases/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["maven", "gradle"]
+      rpm_family: ["maven", "gradle"]
+      arch_linux: ["maven", "gradle"]
+
+  - id: rust-toolchain
+    category: compilers-toolchains
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://www.rust-lang.org/tools/install"
+      dist: "https://static.rust-lang.org/dist/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["rustc", "cargo", "rustfmt", "clippy"]
+      rpm_family: ["rust", "cargo", "rustfmt", "clippy"]
+      arch_linux: ["rust", "cargo", "rustfmt", "clippy"]
+    notes: "Archive rustup channel metadata alongside full toolchain tarballs to preserve installer and component resolution."
+
+  - id: go-toolchain
+    category: compilers-toolchains
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://go.dev/dl/"
+    desired_formats:
+      required: ["source_release", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["golang-1.21-go", "golang-1.22-go", "golang-go"]
+      rpm_family: ["golang"]
+      arch_linux: ["go"]
+    notes: "Preserve upstream release metadata feed because Go publishes hashes centrally rather than as sidecars for every file."
+
+  - id: llvm-clang-family
+    category: compilers-toolchains
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      llvm: "https://github.com/llvm/llvm-project"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["llvm", "clang", "clang-format", "clang-tidy", "lld", "lldb", "libc++-dev", "libc++abi-dev"]
+      rpm_family: ["llvm", "clang", "clang-tools-extra", "lld", "lldb", "libcxx", "libcxx-devel"]
+      arch_linux: ["llvm", "clang", "clang-tools-extra", "lld", "lldb", "libc++"]
+    notes: "Treat LLVM/Clang as the portable C++ fallback when distro GCC packaging drifts away from older CUDA rebuild needs."
+
+  - id: cpp-build-tools
+    category: compilers-toolchains
+    priority: high
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      cmake: "https://github.com/Kitware/CMake"
+      ninja: "https://github.com/ninja-build/ninja"
+      meson: "https://github.com/mesonbuild/meson"
+      ccache: "https://github.com/ccache/ccache"
+      autoconf: "https://www.gnu.org/software/autoconf/"
+      automake: "https://www.gnu.org/software/automake/"
+      libtool: "https://www.gnu.org/software/libtool/"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "checksums"]
+    package_names:
+      debian_family: ["make", "pkg-config", "ccache", "meson", "autoconf", "automake", "libtool", "patchelf"]
+      rpm_family: ["make", "pkgconf-pkg-config", "ccache", "meson", "autoconf", "automake", "libtool", "patchelf"]
+      arch_linux: ["make", "pkgconf", "ccache", "meson", "autoconf", "automake", "libtool", "patchelf"]
+
+  - id: docker-ce
+    category: containers-infra
+    priority: critical
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://download.docker.com/linux/"
+      repo: "https://github.com/moby/moby"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-buildx-plugin", "docker-compose-plugin"]
+      rpm_family: ["docker-ce", "docker-ce-cli", "containerd.io", "docker-buildx-plugin", "docker-compose-plugin"]
+      arch_linux: ["docker", "docker-buildx", "docker-compose"]
+
+  - id: podman-skopeo-buildah
+    category: containers-infra
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      podman: "https://github.com/containers/podman"
+      skopeo: "https://github.com/containers/skopeo"
+      buildah: "https://github.com/containers/buildah"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["podman", "skopeo", "buildah"]
+      rpm_family: ["podman", "skopeo", "buildah"]
+      arch_linux: ["podman", "skopeo", "buildah"]
+
+  - id: containerd-nerdctl
+    category: containers-infra
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      containerd: "https://github.com/containerd/containerd"
+      nerdctl: "https://github.com/containerd/nerdctl"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["containerd.io"]
+      rpm_family: ["containerd.io"]
+      arch_linux: ["containerd", "nerdctl"]
+
+  - id: local-registry
+    category: containers-infra
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      distribution: "https://github.com/distribution/distribution"
+      harbor: "https://github.com/goharbor/harbor"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["docker-distribution", "harbor"]
+
+  - id: kubernetes-stack
+    category: kubernetes-orchestration
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      kubernetes: "https://github.com/kubernetes/kubernetes"
+      k3s: "https://github.com/k3s-io/k3s"
+      helm: "https://github.com/helm/helm"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: ["kubeadm", "kubelet", "kubectl"]
+      rpm_family: ["kubeadm", "kubelet", "kubectl"]
+      arch_linux: ["kubeadm", "kubectl", "kubelet", "k3s", "helm"]
+    notes: "Archive both standard Kubernetes packages and k3s releases because lightweight local clusters are often easier to recover."
+
+  - id: pytorch-stack
+    category: python-runtime
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      pytorch: "https://github.com/pytorch/pytorch"
+      wheel_index: "https://download.pytorch.org/whl/"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["python3-torch", "python3-torchvision", "python3-torchaudio"]
+      rpm_family: ["python3-torch", "python3-torchvision", "python3-torchaudio"]
+      arch_linux: ["python-pytorch", "python-torchvision", "python-torchaudio"]
+    notes: "Distro packages are useful as a fallback but not a substitute for pinned CUDA wheelhouses."
+
+  - id: huggingface-core
+    category: python-runtime
+    priority: critical
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      transformers: "https://github.com/huggingface/transformers"
+      accelerate: "https://github.com/huggingface/accelerate"
+      safetensors: "https://github.com/huggingface/safetensors"
+      tokenizers: "https://github.com/huggingface/tokenizers"
+      hub: "https://github.com/huggingface/huggingface_hub"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["python3-transformers", "python3-accelerate", "python3-safetensors", "python3-tokenizers", "python3-huggingface-hub"]
+      rpm_family: ["python3-transformers", "python3-accelerate", "python3-safetensors", "python3-tokenizers", "python3-huggingface-hub"]
+      arch_linux: ["python-transformers", "python-accelerate", "python-safetensors", "python-tokenizers", "python-huggingface-hub"]
+
+  - id: base-python-ml
+    category: python-runtime
+    priority: high
+    supported_epochs: ["E0", "E1", "E2", "E3", "E4"]
+    upstream:
+      numpy: "https://github.com/numpy/numpy"
+      scipy: "https://github.com/scipy/scipy"
+      protobuf: "https://github.com/protocolbuffers/protobuf"
+      sentencepiece: "https://github.com/google/sentencepiece"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["python3-numpy", "python3-scipy", "protobuf-compiler", "python3-protobuf", "sentencepiece"]
+      rpm_family: ["python3-numpy", "python3-scipy", "protobuf-compiler", "python3-protobuf", "sentencepiece"]
+      arch_linux: ["python-numpy", "python-scipy", "protobuf", "python-protobuf", "sentencepiece"]
+
+  - id: llama-cpp-family
+    category: inference-serving
+    priority: critical
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      llama_cpp: "https://github.com/ggml-org/llama.cpp"
+      llama_cpp_python: "https://github.com/abetlen/llama-cpp-python"
+      koboldcpp: "https://github.com/LostRuins/koboldcpp"
+      whisper_cpp: "https://github.com/ggml-org/whisper.cpp"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "python_wheels"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["llama.cpp", "python-llama-cpp", "koboldcpp"]
+
+  - id: ollama
+    category: inference-serving
+    priority: critical
+    supported_epochs: ["E3", "E4"]
+    upstream:
+      home: "https://github.com/ollama/ollama"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: ["ollama"]
+      rpm_family: ["ollama"]
+      arch_linux: ["ollama"]
+
+  - id: localai
+    category: inference-serving
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      home: "https://github.com/mudler/LocalAI"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["local-ai"]
+
+  - id: vllm-family
+    category: inference-serving
+    priority: critical
+    supported_epochs: ["E3", "E4"]
+    upstream:
+      vllm: "https://github.com/vllm-project/vllm"
+      sglang: "https://github.com/sgl-project/sglang"
+      aphrodite: "https://github.com/PygmalionAI/aphrodite-engine"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["python-vllm", "python-sglang"]
+
+  - id: tgi-and-trtllm
+    category: inference-serving
+    priority: high
+    supported_epochs: ["E3", "E4"]
+    upstream:
+      tgi: "https://github.com/huggingface/text-generation-inference"
+      trtllm: "https://github.com/NVIDIA/TensorRT-LLM"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["text-generation-inference"]
+
+  - id: quantization-stack
+    category: training-finetuning
+    priority: critical
+    supported_epochs: ["E1", "E2", "E3", "E4"]
+    upstream:
+      bitsandbytes: "https://github.com/bitsandbytes-foundation/bitsandbytes"
+      flash_attn: "https://github.com/Dao-AILab/flash-attention"
+      xformers: "https://github.com/facebookresearch/xformers"
+      autogptq: "https://github.com/AutoGPTQ/AutoGPTQ"
+      autoawq: "https://github.com/casper-hansen/AutoAWQ"
+      exllamav2: "https://github.com/turboderp-org/exllamav2"
+      llm_awq: "https://github.com/mit-han-lab/llm-awq"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["python-bitsandbytes", "python-flash-attn", "python-xformers"]
+
+  - id: finetuning-stack
+    category: training-finetuning
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      peft: "https://github.com/huggingface/peft"
+      trl: "https://github.com/huggingface/trl"
+      axolotl: "https://github.com/axolotl-ai-cloud/axolotl"
+      llama_factory: "https://github.com/hiyouga/LLaMA-Factory"
+      unsloth: "https://github.com/unslothai/unsloth"
+      deepspeed: "https://github.com/microsoft/DeepSpeed"
+      megatron: "https://github.com/NVIDIA/Megatron-LM"
+      colossalai: "https://github.com/hpcaitech/ColossalAI"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["python-peft", "python-trl", "deepspeed"]
+
+  - id: ui-and-desktop
+    category: ui-orchestration
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      open_webui: "https://github.com/open-webui/open-webui"
+      anythingllm: "https://github.com/Mintplex-Labs/anything-llm"
+      jan: "https://github.com/menloresearch/jan"
+      continue: "https://github.com/continuedev/continue"
+      aider: "https://github.com/Aider-AI/aider"
+    desired_formats:
+      required: ["source_release", "git_mirror", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["open-webui", "anythingllm-desktop", "jan", "aider-chat"]
+
+  - id: orchestration-agents
+    category: ui-orchestration
+    priority: medium
+    supported_epochs: ["E3", "E4"]
+    upstream:
+      langgraph: "https://github.com/langchain-ai/langgraph"
+      autogen: "https://github.com/microsoft/autogen"
+      crewai: "https://github.com/crewAIInc/crewAI"
+      dify: "https://github.com/langgenius/dify"
+      flowise: "https://github.com/FlowiseAI/Flowise"
+      n8n: "https://github.com/n8n-io/n8n"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["n8n", "flowise"]
+
+  - id: retrieval-data
+    category: retrieval-data
+    priority: high
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      faiss: "https://github.com/facebookresearch/faiss"
+      qdrant: "https://github.com/qdrant/qdrant"
+      milvus: "https://github.com/milvus-io/milvus"
+      chroma: "https://github.com/chroma-core/chroma"
+      weaviate: "https://github.com/weaviate/weaviate"
+      llamaindex: "https://github.com/run-llama/llama_index"
+      langchain: "https://github.com/langchain-ai/langchain"
+      txtai: "https://github.com/neuml/txtai"
+      haystack: "https://github.com/deepset-ai/haystack"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: ["pgvector"]
+      rpm_family: ["pgvector"]
+      arch_linux: ["faiss", "qdrant", "python-llama-index", "python-langchain", "python-haystack-ai"]
+
+  - id: document-and-ocr
+    category: speech-multimodal
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      paddleocr: "https://github.com/PaddlePaddle/PaddleOCR"
+      tesseract: "https://github.com/tesseract-ocr/tesseract"
+      marker: "https://github.com/VikParuchuri/marker"
+      unstructured: "https://github.com/Unstructured-IO/unstructured"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: ["tesseract-ocr"]
+      rpm_family: ["tesseract"]
+      arch_linux: ["tesseract", "python-unstructured"]
+
+  - id: speech-stack
+    category: speech-multimodal
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      faster_whisper: "https://github.com/SYSTRAN/faster-whisper"
+      whisperx: "https://github.com/m-bain/whisperX"
+      piper: "https://github.com/rhasspy/piper"
+      coqui_tts: "https://github.com/coqui-ai/TTS"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["python-faster-whisper", "piper-tts"]
+
+  - id: multimodal-vision
+    category: speech-multimodal
+    priority: medium
+    supported_epochs: ["E3", "E4"]
+    upstream:
+      llava: "https://github.com/haotian-liu/LLaVA"
+      openclip: "https://github.com/mlfoundations/open_clip"
+      clip: "https://github.com/openai/CLIP"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["python-open-clip"]
+
+  - id: evaluation-observability
+    category: eval-observability
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      lm_eval: "https://github.com/EleutherAI/lm-evaluation-harness"
+      opencompass: "https://github.com/open-compass/opencompass"
+      ragas: "https://github.com/explodinggradients/ragas"
+      promptfoo: "https://github.com/promptfoo/promptfoo"
+      langfuse: "https://github.com/langfuse/langfuse"
+      prometheus: "https://github.com/prometheus/prometheus"
+      grafana: "https://github.com/grafana/grafana"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "deb_packages", "rpm_packages", "arch_packages", "container_images"]
+    package_names:
+      debian_family: ["prometheus", "grafana"]
+      rpm_family: ["prometheus", "grafana"]
+      arch_linux: ["prometheus", "grafana", "promptfoo"]
+
+  - id: legacy-specialized
+    category: legacy-specialized
+    priority: medium
+    supported_epochs: ["E0", "E1", "E2"]
+    upstream:
+      fairseq: "https://github.com/facebookresearch/fairseq"
+      apex: "https://github.com/NVIDIA/apex"
+      opennmt: "https://github.com/OpenNMT/OpenNMT-py"
+      espnet: "https://github.com/espnet/espnet"
+      kaldi: "https://github.com/kaldi-asr/kaldi"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["fairseq"]

@@ -120,8 +120,9 @@ main thread  (signal handler: SIGTERM/SIGINT → set _stop_event)
         └── bandwidth sampler thread  → EWMA speed + ETA every 10s
 ```
 
-- Models assigned to different drives download in parallel (up to `--max-parallel 4`)
+- In `adaptive` queue mode, models assigned to different drives can download in parallel (bounded by `--max-parallel`)
 - Models assigned to the same drive download sequentially (avoids seek thrashing on HDD)
+- In `serial` queue mode, the orchestrator constrains the scheduler to one active model at a time across the whole run
 - Workers check `_stop_event` before starting each new model — a shutdown signal completes the current shard cleanly then exits without starting the next model
 - `run_state.json` is protected by a `threading.Lock`; all writes go through an atomic `.json.tmp` → rename pattern
 

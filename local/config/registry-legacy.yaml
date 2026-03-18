@@ -113,3 +113,23 @@ models:
   commit_sha: null
   legacy: true
   notes: Canonical 7B DPO reference — excluded from default; use --include-legacy to fetch.
+- id: CohereForAI/c4ai-command-r-plus
+  hf_repo: CohereForAI/c4ai-command-r-plus
+  tier: A
+  drive: d1
+  priority: 2
+  licence: CC-BY-NC
+  requires_auth: true
+  commit_sha: null
+  legacy: true
+  notes: CC-BY-NC — non-commercial only; requires HF access and token; excluded from default.
+- id: NovaSky-Berkeley/Sky-T1-32B-Preview
+  hf_repo: NovaSky-Berkeley/Sky-T1-32B-Preview
+  tier: E
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: Repo 404 / unavailable; kept here as historical reference only.

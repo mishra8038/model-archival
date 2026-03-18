@@ -41,6 +41,7 @@ source ~/.bashrc
 bash run.sh --dry-run
 
 # 6. Start downloads inside screen (survives SSH disconnect)
+# Default run.sh behavior is neighbor-friendly: 6 Mbps cap + serial queue
 screen -S archiver bash run.sh --all
 # Ctrl+A D  → detach   |   screen -r archiver  → reattach
 ```
@@ -58,10 +59,13 @@ bash run.sh --all                  # download everything (P1 + P2, all tiers)  [
 bash run.sh --dry-run              # simulate full pipeline, no downloads
 bash run.sh --priority-only 1      # token-free models only (no HF token needed)
 bash run.sh --tier A               # Tier A only
-bash run.sh --bandwidth-cap 200    # cap at 200 MB/s
+bash run.sh --bandwidth-cap 0.75   # cap at 0.75 MB/s = 6 Mbps
+bash run.sh --queue-mode adaptive  # allow parallelism again when desired
 bash run.sh --rehash               # full SHA-256 re-hash after download
 bash run.sh --skip-env-check       # skip environment verification step
 ```
+
+`run.sh` now defaults to a strict `6 Mbps` (`0.75 MB/s`) cap and a serial queue so the archiver only downloads one model at a time unless you explicitly opt back into adaptive parallelism.
 
 ### `stop.sh` — graceful shutdown
 

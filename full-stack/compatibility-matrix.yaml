@@ -1,0 +1,615 @@
+manifest_version: "1.0"
+archive_date: "2026-03-18"
+description: "Compatibility matrix for releases that are meaningfully constrained by Ubuntu, GCC, Python, CUDA, and Torch epochs."
+
+compatibility_classes:
+  epoch_pinned:
+    - pytorch
+    - xformers
+    - flash-attn
+    - bitsandbytes
+    - vllm
+    - tensorrt-llm
+    - deepspeed
+    - apex
+  python_pinned:
+    - transformers
+    - accelerate
+    - peft
+    - trl
+    - tokenizers
+    - sentencepiece
+    - safetensors
+  source_first:
+    - llama.cpp
+    - whisper.cpp
+    - koboldcpp
+    - open-webui
+    - anythingllm
+
+epoch_requirements:
+  E0:
+    role: "legacy-deep"
+    os: ["ubuntu-18.04.6-live-server-amd64.iso"]
+    driver: ["440.x", "450.x"]
+    cuda: ["10.2"]
+    gcc: ["7", "8"]
+    python: ["3.8"]
+    required_software:
+      - "pytorch 1.12.1+cu102"
+      - "torchvision 0.13.1"
+      - "torchaudio 0.12.1"
+      - "transformers 4.30.2"
+      - "accelerate 0.21.0"
+      - "tokenizers 0.13.3"
+      - "sentencepiece 0.1.99"
+      - "llama-cpp-python 0.1.78"
+    notes:
+      - "Preserve older Pascal/Volta-compatible rebuild path."
+      - "Do not assume modern kernels or glibc."
+  E1:
+    role: "early-11-bridge"
+    os: ["ubuntu-20.04.6-live-server-amd64.iso"]
+    driver: ["470.x"]
+    cuda: ["11.3"]
+    gcc: ["9"]
+    python: ["3.8", "3.9"]
+    required_software:
+      - "pytorch 1.13.1+cu113"
+      - "torchvision 0.14.1"
+      - "torchaudio 0.13.1"
+      - "transformers 4.33.3"
+      - "accelerate 0.23.0"
+      - "tokenizers 0.14.1"
+      - "bitsandbytes 0.39.0"
+    notes:
+      - "Bridge stack for early Ampere-era assumptions."
+  E2:
+    role: "broad-safe"
+    os:
+      - "ubuntu-20.04.6-live-server-amd64.iso"
+      - "ubuntu-22.04.4-live-server-amd64.iso"
+    driver: ["525.x"]
+    cuda: ["11.8"]
+    gcc: ["10", "11"]
+    python: ["3.10"]
+    required_software:
+      - "docker-ce 24.x"
+      - "podman 4.4.x"
+      - "k3s 1.28.x"
+      - "openjdk 17"
+      - "go 1.21.x"
+      - "rust 1.75.0"
+      - "clang/llvm 16.x"
+      - "cmake 3.27.x"
+      - "pytorch 2.1.2+cu118"
+      - "torchvision 0.16.2"
+      - "torchaudio 2.1.2"
+      - "xformers 0.0.23.post1"
+      - "bitsandbytes 0.42.0"
+      - "transformers 4.39.3"
+      - "accelerate 0.28.0"
+      - "llama.cpp b3500-era"
+      - "deepspeed 0.10.x"
+    notes:
+      - "Most reusable long-lived CUDA 11 baseline."
+  E3:
+    role: "mainline-stable"
+    os: ["ubuntu-22.04.4-live-server-amd64.iso"]
+    driver: ["535.x"]
+    cuda: ["12.1"]
+    gcc: ["11"]
+    python: ["3.10", "3.11"]
+    required_software:
+      - "docker-ce 26.x"
+      - "podman 4.9.x"
+      - "k3s 1.30.x"
+      - "openjdk 17 or 21"
+      - "maven 3.9.x"
+      - "go 1.22.x"
+      - "rust 1.75.x"
+      - "clang/llvm 17.x"
+      - "cmake 3.30.x"
+      - "pytorch 2.2.1+cu121"
+      - "torchvision 0.17.1"
+      - "torchaudio 2.2.1"
+      - "xformers 0.0.25.post1"
+      - "flash-attn 2.5.8"
+      - "bitsandbytes 0.43.1"
+      - "vllm 0.4.0.post1"
+      - "tensorrt-llm 1.2.x"
+      - "ollama 0.3.x"
+      - "text-generation-inference 2.x"
+    notes:
+      - "Stable CUDA 12.1 baseline."
+  E4:
+    role: "forward-stable"
+    os:
+      - "ubuntu-24.04.2-live-server-amd64.iso"
+      - "ubuntu-24.04.1-live-server-amd64.iso"
+    driver: ["570.86.16", "550.x"]
+    cuda: ["12.8.0", "12.4"]
+    gcc: ["13"]
+    python: ["3.11", "3.12"]
+    required_software:
+      - "docker-ce 27.x"
+      - "podman 5.2.x"
+      - "k3s 1.31.x"
+      - "openjdk 21"
+      - "maven 3.9.x"
+      - "gradle 8.12.x"
+      - "go 1.23.x"
+      - "rust 1.85.0"
+      - "clang/llvm 19.1.x"
+      - "cmake 4.0.x"
+      - "pytorch 2.6.0+cu128"
+      - "pytorch 2.5.1+cu124"
+      - "torchvision 0.21.0+cu128"
+      - "torchaudio 2.6.0+cu128"
+      - "xformers 0.0.28.post3"
+      - "flash-attn 2.7.4.post1"
+      - "bitsandbytes 0.45.2"
+      - "vllm 0.7.3"
+      - "tensorrt-llm 1.3.x"
+      - "ollama 0.6.x"
+      - "llama.cpp b5000+"
+      - "transformers 4.50.x"
+      - "open-webui 0.5.x"
+      - "anythingllm 1.7.x"
+    notes:
+      - "Forward reference stack from the merged BOM."
+
+projects:
+  - project: pytorch
+    releases:
+      - version: "1.12.1+cu102"
+        supported_epochs: ["E0"]
+        ubuntu: ["18.04"]
+        python: ["3.8"]
+        gcc: ["7", "8"]
+        cuda: ["10.2"]
+        notes: "Legacy anchor for CUDA 10.2 rebuilds."
+      - version: "1.13.1+cu113"
+        supported_epochs: ["E1"]
+        ubuntu: ["20.04"]
+        python: ["3.8", "3.9"]
+        gcc: ["9"]
+        cuda: ["11.3"]
+      - version: "2.1.2+cu118"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+        python: ["3.10"]
+        gcc: ["10", "11"]
+        cuda: ["11.8"]
+      - version: "2.2.1+cu121"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+        python: ["3.10", "3.11"]
+        gcc: ["11"]
+        cuda: ["12.1"]
+      - version: "2.5.1+cu124"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+        python: ["3.11"]
+        gcc: ["13"]
+        cuda: ["12.4"]
+      - version: "2.6.0+cu128"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+        python: ["3.11", "3.12"]
+        gcc: ["13"]
+        cuda: ["12.8"]
+
+  - project: xformers
+    releases:
+      - version: "0.0.23.post1"
+        supported_epochs: ["E2"]
+        python: ["3.10"]
+        torch: ["2.1.2+cu118"]
+        cuda: ["11.8"]
+        gcc: ["10", "11"]
+      - version: "0.0.25.post1"
+        supported_epochs: ["E3"]
+        python: ["3.10", "3.11"]
+        torch: ["2.2.1+cu121"]
+        cuda: ["12.1"]
+        gcc: ["11"]
+      - version: "0.0.28.post3"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        torch: ["2.5.1+cu124", "2.6.0+cu128"]
+        cuda: ["12.4", "12.8"]
+        gcc: ["13"]
+
+  - project: flash-attn
+    releases:
+      - version: "2.5.8"
+        supported_epochs: ["E3"]
+        python: ["3.10", "3.11"]
+        torch: ["2.2.1+cu121"]
+        cuda: ["12.1"]
+        gcc: ["11"]
+        notes: "Treat as fragile native-extension package."
+      - version: "2.7.4.post1"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        torch: ["2.5.1+cu124", "2.6.0+cu128"]
+        cuda: ["12.4", "12.8"]
+        gcc: ["13"]
+
+  - project: bitsandbytes
+    releases:
+      - version: "0.39.0"
+        supported_epochs: ["E1"]
+        python: ["3.8", "3.9"]
+        cuda: ["11.3"]
+        gcc: ["9"]
+      - version: "0.42.0"
+        supported_epochs: ["E2"]
+        python: ["3.10"]
+        cuda: ["11.8"]
+        gcc: ["10", "11"]
+      - version: "0.43.1"
+        supported_epochs: ["E3"]
+        python: ["3.10", "3.11"]
+        cuda: ["12.1"]
+        gcc: ["11"]
+      - version: "0.45.2"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        cuda: ["12.4", "12.8"]
+        gcc: ["13"]
+
+  - project: vllm
+    releases:
+      - version: "0.4.0.post1"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+        python: ["3.10", "3.11"]
+        torch: ["2.2.1+cu121"]
+        cuda: ["12.1"]
+        gcc: ["11"]
+      - version: "0.7.3"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+        python: ["3.11", "3.12"]
+        torch: ["2.5.1+cu124", "2.6.0+cu128"]
+        cuda: ["12.4", "12.8"]
+        gcc: ["13"]
+        notes: "Modern-stack project; not a good fit for older epochs."
+
+  - project: tensorrt-llm
+    releases:
+      - version: "1.2.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+        python: ["3.10", "3.11"]
+        cuda: ["12.1"]
+        gcc: ["11"]
+      - version: "1.3.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+        python: ["3.11", "3.12"]
+        cuda: ["12.4", "12.8"]
+        gcc: ["13"]
+
+  - project: deepspeed
+    releases:
+      - version: "0.10.x"
+        supported_epochs: ["E2"]
+        python: ["3.10"]
+        torch: ["2.1.2+cu118"]
+        cuda: ["11.8"]
+      - version: "0.14.x"
+        supported_epochs: ["E3", "E4"]
+        python: ["3.10", "3.11", "3.12"]
+        torch: ["2.2.1+cu121", "2.5.1+cu124", "2.6.0+cu128"]
+        cuda: ["12.1", "12.4", "12.8"]
+
+  - project: apex
+    releases:
+      - version: "23.05-source"
+        supported_epochs: ["E2", "E3"]
+        python: ["3.10", "3.11"]
+        torch: ["2.1.2+cu118", "2.2.1+cu121"]
+        cuda: ["11.8", "12.1"]
+        notes: "Prefer source archive and git mirror over wheels."
+
+  - project: tokenizers
+    releases:
+      - version: "0.13.3"
+        supported_epochs: ["E0"]
+        python: ["3.8"]
+      - version: "0.14.1"
+        supported_epochs: ["E1"]
+        python: ["3.8", "3.9"]
+      - version: "0.15.2"
+        supported_epochs: ["E2", "E3"]
+        python: ["3.10", "3.11"]
+      - version: "0.21.0"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+
+  - project: sentencepiece
+    releases:
+      - version: "0.1.99"
+        supported_epochs: ["E0", "E1", "E2", "E3"]
+        python: ["3.8", "3.9", "3.10", "3.11"]
+      - version: "0.2.0"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+
+  - project: llama-cpp-python
+    releases:
+      - version: "0.1.78"
+        supported_epochs: ["E0"]
+        python: ["3.8"]
+        gcc: ["7", "8"]
+      - version: "0.2.57"
+        supported_epochs: ["E2"]
+        python: ["3.10"]
+        gcc: ["10", "11"]
+      - version: "0.3.x"
+        supported_epochs: ["E3", "E4"]
+        python: ["3.10", "3.11", "3.12"]
+        gcc: ["11", "13"]
+
+  - project: transformers
+    releases:
+      - version: "4.30.2"
+        supported_epochs: ["E0"]
+        python: ["3.8"]
+      - version: "4.33.3"
+        supported_epochs: ["E1"]
+        python: ["3.8", "3.9"]
+      - version: "4.39.3"
+        supported_epochs: ["E2", "E3"]
+        python: ["3.10", "3.11"]
+      - version: "4.49.0"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+      - version: "4.50.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        notes: "Forward stack from BOM."
+
+  - project: accelerate
+    releases:
+      - version: "0.21.0"
+        supported_epochs: ["E0"]
+        python: ["3.8"]
+      - version: "0.23.0"
+        supported_epochs: ["E1"]
+        python: ["3.8", "3.9"]
+      - version: "0.28.0"
+        supported_epochs: ["E2", "E3"]
+        python: ["3.10", "3.11"]
+      - version: "1.4.0"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+
+  - project: peft
+    releases:
+      - version: "0.7.x"
+        supported_epochs: ["E2", "E3"]
+        python: ["3.10", "3.11"]
+      - version: "0.14.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+
+  - project: trl
+    releases:
+      - version: "0.7.x"
+        supported_epochs: ["E2", "E3"]
+        python: ["3.10", "3.11"]
+      - version: "0.15.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+
+  - project: llama.cpp
+    releases:
+      - version: "b3500-era"
+        supported_epochs: ["E2"]
+        python: []
+        gcc: ["10", "11"]
+        cuda: ["11.8"]
+      - version: "b4500-era"
+        supported_epochs: ["E3"]
+        python: []
+        gcc: ["11"]
+        cuda: ["12.1"]
+      - version: "b5000+"
+        supported_epochs: ["E4"]
+        python: []
+        gcc: ["13"]
+        cuda: ["12.4", "12.8"]
+
+  - project: docker-ce
+    releases:
+      - version: "24.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+        notes: "Conservative baseline for the CUDA 11.8 era."
+      - version: "26.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+      - version: "27.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: podman
+    releases:
+      - version: "4.4.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+      - version: "4.9.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+      - version: "5.2.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: kubernetes
+    releases:
+      - version: "1.28.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+        notes: "Archive both kubeadm/kubelet/kubectl and k3s where practical."
+      - version: "1.30.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+      - version: "1.31.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: k3s
+    releases:
+      - version: "1.28.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+      - version: "1.30.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+      - version: "1.31.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: containerd
+    releases:
+      - version: "1.7.x"
+        supported_epochs: ["E2", "E3", "E4"]
+        ubuntu: ["20.04", "22.04", "24.04"]
+        notes: "Useful common denominator for Docker, nerdctl, and Kubernetes runtimes."
+
+  - project: nerdctl
+    releases:
+      - version: "2.0.x"
+        supported_epochs: ["E3", "E4"]
+        ubuntu: ["22.04", "24.04"]
+
+  - project: openjdk
+    releases:
+      - version: "17.0.2"
+        supported_epochs: ["E1", "E2", "E3"]
+        ubuntu: ["20.04", "22.04"]
+        notes: "LTS anchor for older Java-based build tools and services."
+      - version: "21.0.2"
+        supported_epochs: ["E3", "E4"]
+        ubuntu: ["22.04", "24.04"]
+        notes: "Preferred modern LTS for current Gradle and platform tooling."
+
+  - project: maven
+    releases:
+      - version: "3.9.9"
+        supported_epochs: ["E2", "E3", "E4"]
+        ubuntu: ["20.04", "22.04", "24.04"]
+        java: ["17", "21"]
+
+  - project: gradle
+    releases:
+      - version: "8.12.x"
+        supported_epochs: ["E3", "E4"]
+        ubuntu: ["22.04", "24.04"]
+        java: ["17", "21"]
+        notes: "Modern Gradle generally assumes newer JDK baselines than the oldest CUDA epochs."
+
+  - project: go
+    releases:
+      - version: "1.21.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+      - version: "1.22.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+      - version: "1.23.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: rust
+    releases:
+      - version: "1.75.0"
+        supported_epochs: ["E2", "E3"]
+        ubuntu: ["20.04", "22.04"]
+      - version: "1.85.0"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: clang-llvm
+    releases:
+      - version: "16.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+        gcc: ["10", "11"]
+      - version: "17.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+        gcc: ["11"]
+      - version: "19.1.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+        gcc: ["13"]
+        notes: "Archive source plus distro package closures because upstream Linux binaries are inconsistent across releases."
+
+  - project: cmake
+    releases:
+      - version: "3.27.x"
+        supported_epochs: ["E2"]
+        ubuntu: ["20.04", "22.04"]
+      - version: "3.30.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+      - version: "4.0.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+
+  - project: ollama
+    releases:
+      - version: "0.3.x"
+        supported_epochs: ["E3"]
+        ubuntu: ["22.04"]
+        gcc: ["11"]
+      - version: "0.6.x"
+        supported_epochs: ["E4"]
+        ubuntu: ["24.04"]
+        gcc: ["13"]
+
+  - project: sglang
+    releases:
+      - version: "0.3.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        torch: ["2.5.1+cu124", "2.6.0+cu128"]
+        cuda: ["12.4", "12.8"]
+
+  - project: text-generation-inference
+    releases:
+      - version: "2.x"
+        supported_epochs: ["E3"]
+        python: ["3.10", "3.11"]
+        cuda: ["12.1"]
+      - version: "3.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        cuda: ["12.4", "12.8"]
+
+  - project: exllamav2
+    releases:
+      - version: "0.1.x"
+        supported_epochs: ["E3"]
+        python: ["3.10", "3.11"]
+        cuda: ["12.1"]
+      - version: "0.2.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        cuda: ["12.4", "12.8"]
+
+  - project: autogptq
+    releases:
+      - version: "0.7.x"
+        supported_epochs: ["E3"]
+        python: ["3.10", "3.11"]
+        torch: ["2.2.1+cu121"]
+      - version: "0.8.x"
+        supported_epochs: ["E4"]
+        python: ["3.11", "3.12"]
+        torch: ["2.5.1+cu124", "2.6.0+cu128"]

@@ -1,0 +1,434 @@
+manifest_version: "1.0"
+archive_date: "2026-03-18"
+destination: "/mnt/models/d5/full-stack-archives"
+description: "Pinned direct-download artifacts for the first full-stack archive pass."
+notes:
+  - "Downloader is intended to be idempotent and resumable."
+  - "Fetch upstream checksum or signature files whenever available."
+  - "Always generate a local SHA-256 manifest for downloaded files."
+  - "Ubuntu 18.04.6 and 20.04.6 live-server ISO URLs were not directly fetchable from old-releases; this initial manifest uses the latest directly verified old-releases server ISOs for those series."
+
+bundles:
+  - id: ubuntu-18.04.5-server
+    group: ubuntu-isos
+    items:
+      - url: "https://old-releases.ubuntu.com/releases/bionic/ubuntu-18.04.5-live-server-amd64.iso"
+        path: "os/ubuntu-18.04.6/ubuntu-18.04.5-live-server-amd64.iso"
+      - url: "https://old-releases.ubuntu.com/releases/bionic/SHA256SUMS"
+        path: "os/ubuntu-18.04.6/SHA256SUMS"
+      - url: "https://old-releases.ubuntu.com/releases/bionic/SHA256SUMS.gpg"
+        path: "os/ubuntu-18.04.6/SHA256SUMS.gpg"
+
+  - id: ubuntu-20.04.5-server
+    group: ubuntu-isos
+    items:
+      - url: "https://old-releases.ubuntu.com/releases/focal/ubuntu-20.04.5-live-server-amd64.iso"
+        path: "os/ubuntu-20.04.6/ubuntu-20.04.5-live-server-amd64.iso"
+      - url: "https://old-releases.ubuntu.com/releases/focal/SHA256SUMS"
+        path: "os/ubuntu-20.04.6/SHA256SUMS"
+      - url: "https://old-releases.ubuntu.com/releases/focal/SHA256SUMS.gpg"
+        path: "os/ubuntu-20.04.6/SHA256SUMS.gpg"
+
+  - id: ubuntu-22.04.4-server
+    group: ubuntu-isos
+    items:
+      - url: "https://old-releases.ubuntu.com/releases/jammy/ubuntu-22.04.4-live-server-amd64.iso"
+        path: "os/ubuntu-22.04.4/ubuntu-22.04.4-live-server-amd64.iso"
+      - url: "https://old-releases.ubuntu.com/releases/jammy/SHA256SUMS"
+        path: "os/ubuntu-22.04.4/SHA256SUMS"
+      - url: "https://old-releases.ubuntu.com/releases/jammy/SHA256SUMS.gpg"
+        path: "os/ubuntu-22.04.4/SHA256SUMS.gpg"
+
+  - id: ubuntu-24.04.1-server
+    group: ubuntu-isos
+    items:
+      - url: "https://old-releases.ubuntu.com/releases/24.04.1/ubuntu-24.04.1-live-server-amd64.iso"
+        path: "os/ubuntu-24.04.1/ubuntu-24.04.1-live-server-amd64.iso"
+      - url: "https://old-releases.ubuntu.com/releases/24.04.1/SHA256SUMS"
+        path: "os/ubuntu-24.04.1/SHA256SUMS"
+      - url: "https://old-releases.ubuntu.com/releases/24.04.1/SHA256SUMS.gpg"
+        path: "os/ubuntu-24.04.1/SHA256SUMS.gpg"
+
+  - id: ubuntu-24.04.2-server
+    group: ubuntu-isos
+    items:
+      - url: "https://old-releases.ubuntu.com/releases/24.04.2/ubuntu-24.04.2-live-server-amd64.iso"
+        path: "os/ubuntu-24.04.2/ubuntu-24.04.2-live-server-amd64.iso"
+      - url: "https://old-releases.ubuntu.com/releases/24.04.2/SHA256SUMS"
+        path: "os/ubuntu-24.04.2/SHA256SUMS"
+      - url: "https://old-releases.ubuntu.com/releases/24.04.2/SHA256SUMS.gpg"
+        path: "os/ubuntu-24.04.2/SHA256SUMS.gpg"
+
+  - id: python-3.8.20
+    group: python-sources
+    items:
+      - url: "https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tar.xz"
+        path: "python/3.8/Python-3.8.20.tar.xz"
+      - url: "https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tar.xz.asc"
+        path: "python/3.8/Python-3.8.20.tar.xz.asc"
+      - url: "https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tar.xz.crt"
+        path: "python/3.8/Python-3.8.20.tar.xz.crt"
+      - url: "https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tar.xz.sig"
+        path: "python/3.8/Python-3.8.20.tar.xz.sig"
+      - url: "https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tar.xz.sigstore"
+        path: "python/3.8/Python-3.8.20.tar.xz.sigstore"
+
+  - id: python-3.9.21
+    group: python-sources
+    items:
+      - url: "https://www.python.org/ftp/python/3.9.21/Python-3.9.21.tar.xz"
+        path: "python/3.9/Python-3.9.21.tar.xz"
+      - url: "https://www.python.org/ftp/python/3.9.21/Python-3.9.21.tar.xz.asc"
+        path: "python/3.9/Python-3.9.21.tar.xz.asc"
+      - url: "https://www.python.org/ftp/python/3.9.21/Python-3.9.21.tar.xz.crt"
+        path: "python/3.9/Python-3.9.21.tar.xz.crt"
+      - url: "https://www.python.org/ftp/python/3.9.21/Python-3.9.21.tar.xz.sig"
+        path: "python/3.9/Python-3.9.21.tar.xz.sig"
+      - url: "https://www.python.org/ftp/python/3.9.21/Python-3.9.21.tar.xz.sigstore"
+        path: "python/3.9/Python-3.9.21.tar.xz.sigstore"
+
+  - id: python-3.10.16
+    group: python-sources
+    items:
+      - url: "https://www.python.org/ftp/python/3.10.16/Python-3.10.16.tar.xz"
+        path: "python/3.10/Python-3.10.16.tar.xz"
+      - url: "https://www.python.org/ftp/python/3.10.16/Python-3.10.16.tar.xz.asc"
+        path: "python/3.10/Python-3.10.16.tar.xz.asc"
+      - url: "https://www.python.org/ftp/python/3.10.16/Python-3.10.16.tar.xz.crt"
+        path: "python/3.10/Python-3.10.16.tar.xz.crt"
+      - url: "https://www.python.org/ftp/python/3.10.16/Python-3.10.16.tar.xz.sig"
+        path: "python/3.10/Python-3.10.16.tar.xz.sig"
+      - url: "https://www.python.org/ftp/python/3.10.16/Python-3.10.16.tar.xz.sigstore"
+        path: "python/3.10/Python-3.10.16.tar.xz.sigstore"
+
+  - id: python-3.11.11
+    group: python-sources
+    items:
+      - url: "https://www.python.org/ftp/python/3.11.11/Python-3.11.11.tar.xz"
+        path: "python/3.11/Python-3.11.11.tar.xz"
+      - url: "https://www.python.org/ftp/python/3.11.11/Python-3.11.11.tar.xz.asc"
+        path: "python/3.11/Python-3.11.11.tar.xz.asc"
+      - url: "https://www.python.org/ftp/python/3.11.11/Python-3.11.11.tar.xz.crt"
+        path: "python/3.11/Python-3.11.11.tar.xz.crt"
+      - url: "https://www.python.org/ftp/python/3.11.11/Python-3.11.11.tar.xz.sig"
+        path: "python/3.11/Python-3.11.11.tar.xz.sig"
+      - url: "https://www.python.org/ftp/python/3.11.11/Python-3.11.11.tar.xz.sigstore"
+        path: "python/3.11/Python-3.11.11.tar.xz.sigstore"
+
+  - id: python-3.12.9
+    group: python-sources
+    items:
+      - url: "https://www.python.org/ftp/python/3.12.9/Python-3.12.9.tar.xz"
+        path: "python/3.12/Python-3.12.9.tar.xz"
+      - url: "https://www.python.org/ftp/python/3.12.9/Python-3.12.9.tar.xz.asc"
+        path: "python/3.12/Python-3.12.9.tar.xz.asc"
+      - url: "https://www.python.org/ftp/python/3.12.9/Python-3.12.9.tar.xz.crt"
+        path: "python/3.12/Python-3.12.9.tar.xz.crt"
+      - url: "https://www.python.org/ftp/python/3.12.9/Python-3.12.9.tar.xz.sig"
+        path: "python/3.12/Python-3.12.9.tar.xz.sig"
+      - url: "https://www.python.org/ftp/python/3.12.9/Python-3.12.9.tar.xz.sigstore"
+        path: "python/3.12/Python-3.12.9.tar.xz.sigstore"
+
+  - id: openjdk-17.0.2
+    group: language-toolchains
+    items:
+      - url: "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz"
+        path: "compilers/java/openjdk/openjdk-17.0.2_linux-x64_bin.tar.gz"
+      - url: "https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz.sha256"
+        path: "compilers/java/openjdk/openjdk-17.0.2_linux-x64_bin.tar.gz.sha256"
+
+  - id: openjdk-21.0.2
+    group: language-toolchains
+    items:
+      - url: "https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz"
+        path: "compilers/java/openjdk/openjdk-21.0.2_linux-x64_bin.tar.gz"
+      - url: "https://download.java.net/java/GA/jdk21.0.2/f2283984656d49d69e91c558476027ac/13/GPL/openjdk-21.0.2_linux-x64_bin.tar.gz.sha256"
+        path: "compilers/java/openjdk/openjdk-21.0.2_linux-x64_bin.tar.gz.sha256"
+
+  - id: apache-maven-3.9.9
+    group: language-toolchains
+    items:
+      - url: "https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz"
+        path: "compilers/java/maven/apache-maven-3.9.9-bin.tar.gz"
+      - url: "https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz.asc"
+        path: "compilers/java/maven/apache-maven-3.9.9-bin.tar.gz.asc"
+      - url: "https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.tar.gz.sha512"
+        path: "compilers/java/maven/apache-maven-3.9.9-bin.tar.gz.sha512"
+
+  - id: gradle-8.12.1
+    group: language-toolchains
+    items:
+      - url: "https://services.gradle.org/distributions/gradle-8.12.1-bin.zip"
+        path: "compilers/java/gradle/gradle-8.12.1-bin.zip"
+      - url: "https://services.gradle.org/distributions/gradle-8.12.1-bin.zip.sha256"
+        path: "compilers/java/gradle/gradle-8.12.1-bin.zip.sha256"
+
+  - id: go-toolchains
+    group: language-toolchains
+    items:
+      - url: "https://go.dev/dl/?mode=json&include=all"
+        path: "compilers/go/go-dl-all.json"
+      - url: "https://dl.google.com/go/go1.21.13.linux-amd64.tar.gz"
+        path: "compilers/go/go1.21.13.linux-amd64.tar.gz"
+      - url: "https://dl.google.com/go/go1.22.12.linux-amd64.tar.gz"
+        path: "compilers/go/go1.22.12.linux-amd64.tar.gz"
+      - url: "https://dl.google.com/go/go1.23.6.linux-amd64.tar.gz"
+        path: "compilers/go/go1.23.6.linux-amd64.tar.gz"
+
+  - id: rust-toolchains
+    group: language-toolchains
+    items:
+      - url: "https://static.rust-lang.org/dist/channel-rust-stable.toml"
+        path: "compilers/rust/channel-rust-stable.toml"
+      - url: "https://static.rust-lang.org/dist/channel-rust-stable.toml.asc"
+        path: "compilers/rust/channel-rust-stable.toml.asc"
+      - url: "https://static.rust-lang.org/dist/rust-1.75.0-x86_64-unknown-linux-gnu.tar.xz"
+        path: "compilers/rust/rust-1.75.0-x86_64-unknown-linux-gnu.tar.xz"
+      - url: "https://static.rust-lang.org/dist/rust-1.75.0-x86_64-unknown-linux-gnu.tar.xz.asc"
+        path: "compilers/rust/rust-1.75.0-x86_64-unknown-linux-gnu.tar.xz.asc"
+      - url: "https://static.rust-lang.org/dist/rust-1.85.0-x86_64-unknown-linux-gnu.tar.xz"
+        path: "compilers/rust/rust-1.85.0-x86_64-unknown-linux-gnu.tar.xz"
+      - url: "https://static.rust-lang.org/dist/rust-1.85.0-x86_64-unknown-linux-gnu.tar.xz.asc"
+        path: "compilers/rust/rust-1.85.0-x86_64-unknown-linux-gnu.tar.xz.asc"
+
+  - id: cpp-tooling
+    group: language-toolchains
+    items:
+      - url: "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-project-19.1.7.src.tar.xz"
+        path: "compilers/cpp/llvm/llvm-project-19.1.7.src.tar.xz"
+      - url: "https://github.com/llvm/llvm-project/releases/download/llvmorg-19.1.7/llvm-project-19.1.7.src.tar.xz.sig"
+        path: "compilers/cpp/llvm/llvm-project-19.1.7.src.tar.xz.sig"
+      - url: "https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-linux-x86_64.tar.gz"
+        path: "compilers/cpp/cmake/cmake-4.0.3-linux-x86_64.tar.gz"
+      - url: "https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-SHA-256.txt"
+        path: "compilers/cpp/cmake/cmake-4.0.3-SHA-256.txt"
+      - url: "https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3-SHA-256.txt.asc"
+        path: "compilers/cpp/cmake/cmake-4.0.3-SHA-256.txt.asc"
+      - url: "https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-linux.zip"
+        path: "compilers/cpp/ninja/ninja-linux-v1.12.1.zip"
+
+  - id: nvidia-driver-381.22
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/381.22/NVIDIA-Linux-x86_64-381.22.run"
+        path: "nvidia/drivers/381/NVIDIA-Linux-x86_64-381.22.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/381.22/license.txt"
+        path: "nvidia/drivers/381/license.txt"
+
+  - id: nvidia-driver-384.130
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/384.130/NVIDIA-Linux-x86_64-384.130.run"
+        path: "nvidia/drivers/384/NVIDIA-Linux-x86_64-384.130.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/384.130/license.txt"
+        path: "nvidia/drivers/384/license.txt"
+
+  - id: nvidia-driver-387.34
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/387.34/NVIDIA-Linux-x86_64-387.34.run"
+        path: "nvidia/drivers/387/NVIDIA-Linux-x86_64-387.34.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/387.34/license.txt"
+        path: "nvidia/drivers/387/license.txt"
+
+  - id: nvidia-driver-390.157
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/390.157/NVIDIA-Linux-x86_64-390.157.run"
+        path: "nvidia/drivers/390/NVIDIA-Linux-x86_64-390.157.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/390.157/NVIDIA-Linux-x86_64-390.157-no-compat32.run"
+        path: "nvidia/drivers/390/NVIDIA-Linux-x86_64-390.157-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/390.157/license.txt"
+        path: "nvidia/drivers/390/license.txt"
+
+  - id: nvidia-driver-396.54
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/396.54/NVIDIA-Linux-x86_64-396.54.run"
+        path: "nvidia/drivers/396/NVIDIA-Linux-x86_64-396.54.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/396.54/license.txt"
+        path: "nvidia/drivers/396/license.txt"
+
+  - id: nvidia-driver-410.104
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/410.104/NVIDIA-Linux-x86_64-410.104.run"
+        path: "nvidia/drivers/410/NVIDIA-Linux-x86_64-410.104.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/410.104/license.txt"
+        path: "nvidia/drivers/410/license.txt"
+
+  - id: nvidia-driver-418.113
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/418.113/NVIDIA-Linux-x86_64-418.113.run"
+        path: "nvidia/drivers/418/NVIDIA-Linux-x86_64-418.113.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/418.113/license.txt"
+        path: "nvidia/drivers/418/license.txt"
+
+  - id: nvidia-driver-430.64
+    group: nvidia-drivers-legacy
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/430.64/NVIDIA-Linux-x86_64-430.64.run"
+        path: "nvidia/drivers/430/NVIDIA-Linux-x86_64-430.64.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/430.64/license.txt"
+        path: "nvidia/drivers/430/license.txt"
+
+  - id: nvidia-driver-440.100
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/440.100/NVIDIA-Linux-x86_64-440.100.run"
+        path: "nvidia/drivers/440/NVIDIA-Linux-x86_64-440.100.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/440.100/NVIDIA-Linux-x86_64-440.100-no-compat32.run"
+        path: "nvidia/drivers/440/NVIDIA-Linux-x86_64-440.100-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/440.100/license.txt"
+        path: "nvidia/drivers/440/license.txt"
+
+  - id: nvidia-driver-450.119.03
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/450.119.03/NVIDIA-Linux-x86_64-450.119.03.run"
+        path: "nvidia/drivers/450/NVIDIA-Linux-x86_64-450.119.03.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/450.119.03/NVIDIA-Linux-x86_64-450.119.03-no-compat32.run"
+        path: "nvidia/drivers/450/NVIDIA-Linux-x86_64-450.119.03-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/450.119.03/license.txt"
+        path: "nvidia/drivers/450/license.txt"
+
+  - id: nvidia-driver-470.256.02
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/NVIDIA-Linux-x86_64-470.256.02.run"
+        path: "nvidia/drivers/470/NVIDIA-Linux-x86_64-470.256.02.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/NVIDIA-Linux-x86_64-470.256.02.run.md5sum"
+        path: "nvidia/drivers/470/NVIDIA-Linux-x86_64-470.256.02.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/NVIDIA-Linux-x86_64-470.256.02.run.sha256sum"
+        path: "nvidia/drivers/470/NVIDIA-Linux-x86_64-470.256.02.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/NVIDIA-Linux-x86_64-470.256.02-no-compat32.run"
+        path: "nvidia/drivers/470/NVIDIA-Linux-x86_64-470.256.02-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/NVIDIA-Linux-x86_64-470.256.02-no-compat32.run.md5sum"
+        path: "nvidia/drivers/470/NVIDIA-Linux-x86_64-470.256.02-no-compat32.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/NVIDIA-Linux-x86_64-470.256.02-no-compat32.run.sha256sum"
+        path: "nvidia/drivers/470/NVIDIA-Linux-x86_64-470.256.02-no-compat32.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/470.256.02/license.txt"
+        path: "nvidia/drivers/470/license.txt"
+
+  - id: nvidia-driver-525.147.05
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/NVIDIA-Linux-x86_64-525.147.05.run"
+        path: "nvidia/drivers/525/NVIDIA-Linux-x86_64-525.147.05.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/NVIDIA-Linux-x86_64-525.147.05.run.md5sum"
+        path: "nvidia/drivers/525/NVIDIA-Linux-x86_64-525.147.05.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/NVIDIA-Linux-x86_64-525.147.05.run.sha256sum"
+        path: "nvidia/drivers/525/NVIDIA-Linux-x86_64-525.147.05.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/NVIDIA-Linux-x86_64-525.147.05-no-compat32.run"
+        path: "nvidia/drivers/525/NVIDIA-Linux-x86_64-525.147.05-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/NVIDIA-Linux-x86_64-525.147.05-no-compat32.run.md5sum"
+        path: "nvidia/drivers/525/NVIDIA-Linux-x86_64-525.147.05-no-compat32.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/NVIDIA-Linux-x86_64-525.147.05-no-compat32.run.sha256sum"
+        path: "nvidia/drivers/525/NVIDIA-Linux-x86_64-525.147.05-no-compat32.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/525.147.05/license.txt"
+        path: "nvidia/drivers/525/license.txt"
+
+  - id: nvidia-driver-535.288.01
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/NVIDIA-Linux-x86_64-535.288.01.run"
+        path: "nvidia/drivers/535/NVIDIA-Linux-x86_64-535.288.01.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/NVIDIA-Linux-x86_64-535.288.01.run.md5sum"
+        path: "nvidia/drivers/535/NVIDIA-Linux-x86_64-535.288.01.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/NVIDIA-Linux-x86_64-535.288.01.run.sha256sum"
+        path: "nvidia/drivers/535/NVIDIA-Linux-x86_64-535.288.01.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/NVIDIA-Linux-x86_64-535.288.01-no-compat32.run"
+        path: "nvidia/drivers/535/NVIDIA-Linux-x86_64-535.288.01-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/NVIDIA-Linux-x86_64-535.288.01-no-compat32.run.md5sum"
+        path: "nvidia/drivers/535/NVIDIA-Linux-x86_64-535.288.01-no-compat32.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/NVIDIA-Linux-x86_64-535.288.01-no-compat32.run.sha256sum"
+        path: "nvidia/drivers/535/NVIDIA-Linux-x86_64-535.288.01-no-compat32.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/535.288.01/license.txt"
+        path: "nvidia/drivers/535/license.txt"
+
+  - id: nvidia-driver-550.163.01
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/NVIDIA-Linux-x86_64-550.163.01.run"
+        path: "nvidia/drivers/550/NVIDIA-Linux-x86_64-550.163.01.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/NVIDIA-Linux-x86_64-550.163.01.run.md5sum"
+        path: "nvidia/drivers/550/NVIDIA-Linux-x86_64-550.163.01.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/NVIDIA-Linux-x86_64-550.163.01.run.sha256sum"
+        path: "nvidia/drivers/550/NVIDIA-Linux-x86_64-550.163.01.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/NVIDIA-Linux-x86_64-550.163.01-no-compat32.run"
+        path: "nvidia/drivers/550/NVIDIA-Linux-x86_64-550.163.01-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/NVIDIA-Linux-x86_64-550.163.01-no-compat32.run.md5sum"
+        path: "nvidia/drivers/550/NVIDIA-Linux-x86_64-550.163.01-no-compat32.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/NVIDIA-Linux-x86_64-550.163.01-no-compat32.run.sha256sum"
+        path: "nvidia/drivers/550/NVIDIA-Linux-x86_64-550.163.01-no-compat32.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/550.163.01/license.txt"
+        path: "nvidia/drivers/550/license.txt"
+
+  - id: nvidia-driver-570.86.16
+    group: nvidia-drivers-core
+    items:
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/NVIDIA-Linux-x86_64-570.86.16.run"
+        path: "nvidia/drivers/570/NVIDIA-Linux-x86_64-570.86.16.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/NVIDIA-Linux-x86_64-570.86.16.run.md5sum"
+        path: "nvidia/drivers/570/NVIDIA-Linux-x86_64-570.86.16.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/NVIDIA-Linux-x86_64-570.86.16.run.sha256sum"
+        path: "nvidia/drivers/570/NVIDIA-Linux-x86_64-570.86.16.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/NVIDIA-Linux-x86_64-570.86.16-no-compat32.run"
+        path: "nvidia/drivers/570/NVIDIA-Linux-x86_64-570.86.16-no-compat32.run"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/NVIDIA-Linux-x86_64-570.86.16-no-compat32.run.md5sum"
+        path: "nvidia/drivers/570/NVIDIA-Linux-x86_64-570.86.16-no-compat32.run.md5sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/NVIDIA-Linux-x86_64-570.86.16-no-compat32.run.sha256sum"
+        path: "nvidia/drivers/570/NVIDIA-Linux-x86_64-570.86.16-no-compat32.run.sha256sum"
+      - url: "https://download.nvidia.com/XFree86/Linux-x86_64/570.86.16/license.txt"
+        path: "nvidia/drivers/570/license.txt"
+
+  - id: k3s-v1.31.6-k3s1
+    group: container-orchestration
+    items:
+      - url: "https://github.com/k3s-io/k3s/releases/download/v1.31.6%2Bk3s1/k3s"
+        path: "containers/k3s/k3s-v1.31.6+k3s1"
+      - url: "https://github.com/k3s-io/k3s/releases/download/v1.31.6%2Bk3s1/k3s-airgap-images-amd64.tar.zst"
+        path: "containers/k3s/k3s-airgap-images-amd64-v1.31.6+k3s1.tar.zst"
+      - url: "https://github.com/k3s-io/k3s/releases/download/v1.31.6%2Bk3s1/sha256sum-amd64.txt"
+        path: "containers/k3s/sha256sum-amd64-v1.31.6+k3s1.txt"
+
+  - id: helm-v3.17.3
+    group: container-orchestration
+    items:
+      - url: "https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz"
+        path: "containers/helm/helm-v3.17.3-linux-amd64.tar.gz"
+      - url: "https://get.helm.sh/helm-v3.17.3-linux-amd64.tar.gz.sha256sum"
+        path: "containers/helm/helm-v3.17.3-linux-amd64.tar.gz.sha256sum"
+      - url: "https://github.com/helm/helm/releases/download/v3.17.3/helm-v3.17.3-linux-amd64.tar.gz.asc"
+        path: "containers/helm/helm-v3.17.3-linux-amd64.tar.gz.asc"
+      - url: "https://github.com/helm/helm/releases/download/v3.17.3/helm-v3.17.3-linux-amd64.tar.gz.sha256.asc"
+        path: "containers/helm/helm-v3.17.3-linux-amd64.tar.gz.sha256.asc"
+      - url: "https://github.com/helm/helm/releases/download/v3.17.3/helm-v3.17.3-linux-amd64.tar.gz.sha256sum.asc"
+        path: "containers/helm/helm-v3.17.3-linux-amd64.tar.gz.sha256sum.asc"
+
+  - id: containerd-v1.7.25
+    group: container-orchestration
+    items:
+      - url: "https://github.com/containerd/containerd/releases/download/v1.7.25/containerd-1.7.25-linux-amd64.tar.gz"
+        path: "containers/containerd/containerd-1.7.25-linux-amd64.tar.gz"
+      - url: "https://github.com/containerd/containerd/releases/download/v1.7.25/containerd-1.7.25-linux-amd64.tar.gz.sha256sum"
+        path: "containers/containerd/containerd-1.7.25-linux-amd64.tar.gz.sha256sum"
+      - url: "https://github.com/containerd/containerd/releases/download/v1.7.25/containerd-static-1.7.25-linux-amd64.tar.gz"
+        path: "containers/containerd/containerd-static-1.7.25-linux-amd64.tar.gz"
+      - url: "https://github.com/containerd/containerd/releases/download/v1.7.25/containerd-static-1.7.25-linux-amd64.tar.gz.sha256sum"
+        path: "containers/containerd/containerd-static-1.7.25-linux-amd64.tar.gz.sha256sum"
+      - url: "https://github.com/containerd/containerd/releases/download/v1.7.25/cri-containerd-1.7.25-linux-amd64.tar.gz"
+        path: "containers/containerd/cri-containerd-1.7.25-linux-amd64.tar.gz"
+      - url: "https://github.com/containerd/containerd/releases/download/v1.7.25/cri-containerd-1.7.25-linux-amd64.tar.gz.sha256sum"
+        path: "containers/containerd/cri-containerd-1.7.25-linux-amd64.tar.gz.sha256sum"
+
+  - id: nerdctl-v2.0.3
+    group: container-orchestration
+    items:
+      - url: "https://github.com/containerd/nerdctl/releases/download/v2.0.3/nerdctl-2.0.3-linux-amd64.tar.gz"
+        path: "containers/nerdctl/nerdctl-2.0.3-linux-amd64.tar.gz"
+      - url: "https://github.com/containerd/nerdctl/releases/download/v2.0.3/SHA256SUMS"
+        path: "containers/nerdctl/SHA256SUMS-v2.0.3"
+      - url: "https://github.com/containerd/nerdctl/releases/download/v2.0.3/SHA256SUMS.asc"
+        path: "containers/nerdctl/SHA256SUMS-v2.0.3.asc"

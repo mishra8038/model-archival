@@ -17,6 +17,8 @@ screen -S archiver bash run.sh --all
 screen -r archiver
 ```
 
+The default `run.sh` profile is intentionally neighbor-friendly: it caps aggregate download traffic at `6 Mbps` (`0.75 MB/s`) and processes the queue serially.
+
 ### Common run.sh options
 
 ```bash
@@ -25,7 +27,8 @@ bash run.sh --dry-run               # simulate, no downloads
 bash run.sh --priority-only 1       # token-free models only (no HF token needed)
 bash run.sh --tier A                # Tier A only
 bash run.sh --tier B                # Tier B (code models) only
-bash run.sh --bandwidth-cap 200     # cap at 200 MB/s
+bash run.sh --bandwidth-cap 0.75    # cap at 0.75 MB/s = 6 Mbps
+bash run.sh --queue-mode adaptive   # opt back into adaptive parallel downloads
 bash run.sh --rehash                # full SHA-256 re-hash of all files after download
 bash run.sh --skip-env-check        # skip environment verification (faster restart)
 ```

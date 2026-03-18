@@ -6,7 +6,7 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, time as dt_time, timezone
 from collections import deque
 from pathlib import Path
 from typing import Optional
@@ -65,6 +65,27 @@ def _tmp_dir(reg: Registry) -> Path:
 def _state_path(reg: Registry) -> Path:
     """run_state.json always lives on D5, never on the root SSD."""
     return _d5_path(reg) / "run_state.json"
+
+
+def _parse_local_clock(value: str) -> dt_time:
+    """Parse a local wall-clock time in HH:MM format."""
+    try:
+        return datetime.strptime(value, "%H:%M").time()
+    except ValueError as exc:
+        raise click.BadParameter(
+            f"Invalid time '{value}'. Expected HH:MM in local time."
+        ) from exc
+
+
+def _parse_bandwidth_window(value: str) -> tuple[dt_time, dt_time]:
+    """Parse a bandwidth schedule window like 14:00-01:00."""
+    parts = value.split("-", 1)
+    if len(parts) != 2:
+        raise click.BadParameter(
+            "Invalid bandwidth window. Expected HH:MM-HH:MM in local time."
+        )
+    start_raw, end_raw = (part.strip() for part in parts)
+    return _parse_local_clock(start_raw), _parse_local_clock(end_raw)
 
 
 def _load(registry_path: Path, drives_path: Path) -> tuple[Registry, RunState]:
@@ -146,12 +167,31 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option("--include-legacy", is_flag=True, default=False, help="Include legacy/historical models")
 @click.option("--dry-run", is_flag=True, help="Print what would be downloaded without fetching")
 @click.option("--max-parallel-drives", "max_parallel_models", type=int, default=12, show_default=True,
-              help="Max simultaneous model downloads (worker pool size)")
+              help="Max simultaneous model downloads (worker pool size; ignored in serial queue mode)")
 @click.option("--max-per-drive", type=int, default=4, show_default=True,
-              help="Max concurrent models per drive (limits disk thrash)")
+              help="Max concurrent models per drive (limits disk thrash; ignored in serial queue mode)")
 @click.option("--min-speed-mbps", type=float, default=6.0, show_default=True,
-              help="Only add another model if aggregate/(n+1) >= this (MB/s)")
-@click.option("--bandwidth-cap", type=float, default=None, help="Total bandwidth cap in MB/s")
+              help="Only add another model if aggregate/(n+1) >= this (MB/s; ignored in serial queue mode)")
+@click.option("--bandwidth-cap", type=float, default=None, help="Total bandwidth cap in MB/s (0.75 = 6 Mbps)")
+@click.option(
+    "--queue-mode",
+    type=click.Choice(["adaptive", "serial"]),
+    default="adaptive",
+    show_default=True,
+    help="Adaptive uses the worker pool; serial processes one model at a time",
+)
+@click.option(
+    "--scheduled-bandwidth-cap",
+    type=float,
+    default=None,
+    help="Cap total bandwidth during a local-time window (MB/s; 0.75 = 6 Mbps)",
+)
+@click.option(
+    "--scheduled-bandwidth-window",
+    type=str,
+    default=None,
+    help="Local-time cap window as HH:MM-HH:MM; wraps midnight if needed",
+)
 @click.option("--fast", is_flag=True, help="Use hf_transfer fast-path (no resume)")
 @click.option(
     "--status-out", type=click.Path(), default=None,
@@ -174,12 +214,15 @@ def cmd_download(
     max_per_drive: int,
     min_speed_mbps: float,
     bandwidth_cap: Optional[float],
+    queue_mode: str,
+    scheduled_bandwidth_cap: Optional[float],
+    scheduled_bandwidth_window: Optional[str],
     fast: bool,
     status_out: Optional[str],
     skip_drive_space_check: bool,
 ) -> None:
     """Download model weights. Use --all, --tier X, or specify a model ID."""
-    from archiver.aria2_manager import Aria2Manager
+    from archiver.aria2_manager import Aria2Manager, BandwidthSchedule
     from archiver.downloader import Downloader
     from archiver.scheduler import DriveScheduler
     from archiver.status import StatusDisplay, RunReport
@@ -199,6 +242,32 @@ def cmd_download(
     index_path  = archive_dir / "checksums" / "global_index.jsonl"
     status_path = Path(status_out) if status_out else (d5 / "STATUS.md")
     activity_log_path = d5 / "archiver-activity.log"
+
+    if bandwidth_cap is not None and scheduled_bandwidth_cap is not None:
+        raise click.UsageError(
+            "Use either --bandwidth-cap or the scheduled bandwidth options, not both."
+        )
+    if (scheduled_bandwidth_cap is None) != (scheduled_bandwidth_window is None):
+        raise click.UsageError(
+            "Provide both --scheduled-bandwidth-cap and --scheduled-bandwidth-window."
+        )
+
+    bandwidth_schedule: Optional[BandwidthSchedule] = None
+    if scheduled_bandwidth_cap is not None and scheduled_bandwidth_window is not None:
+        start_time, end_time = _parse_bandwidth_window(scheduled_bandwidth_window)
+        bandwidth_schedule = BandwidthSchedule(
+            cap_mbps=scheduled_bandwidth_cap,
+            start_time=start_time,
+            end_time=end_time,
+        )
+
+    effective_max_parallel_models = max_parallel_models
+    effective_max_per_drive = max_per_drive
+    effective_min_speed_mbps = min_speed_mbps
+    if queue_mode == "serial":
+        effective_max_parallel_models = 1
+        effective_max_per_drive = 1
+        effective_min_speed_mbps = 0.0
 
     _setup_logging(verbose, log_dir=logs_dir if not dry_run else None)
 
@@ -265,10 +334,13 @@ def cmd_download(
         "tier": tier or "all",
         "priority_only": priority_only or "all",
         "include_legacy": include_legacy,
-        "max_parallel_models": max_parallel_models,
-        "max_per_drive": max_per_drive,
-        "min_speed_mbps": min_speed_mbps,
+        "queue_mode": queue_mode,
+        "max_parallel_models": effective_max_parallel_models,
+        "max_per_drive": effective_max_per_drive,
+        "min_speed_mbps": effective_min_speed_mbps,
         "bandwidth_cap": bandwidth_cap or "unlimited",
+        "scheduled_bandwidth_cap": scheduled_bandwidth_cap or "disabled",
+        "scheduled_bandwidth_window": scheduled_bandwidth_window or "disabled",
         "hf_token": "set" if hf_token else "not set",
         "logs_dir": str(logs_dir),
         "tmp_dir": str(tmp_dir),
@@ -295,6 +367,7 @@ def cmd_download(
     with Aria2Manager(
         tmp_dir=tmp_dir,
         max_overall_download_limit_mbps=bandwidth_cap,
+        bandwidth_schedule=bandwidth_schedule,
     ) as aria2:
         downloader = Downloader(
             aria2=aria2,
@@ -335,9 +408,9 @@ def cmd_download(
             on_model_failed=on_failed,
             on_status_update=status_display.update,
             token_accessible=token_results,
-            max_parallel_models=max_parallel_models,
-            max_models_per_drive=max_per_drive,
-            min_speed_per_model_mbps=min_speed_mbps,
+            max_parallel_models=effective_max_parallel_models,
+            max_models_per_drive=effective_max_per_drive,
+            min_speed_per_model_mbps=effective_min_speed_mbps,
             activity_log_path=activity_log_path,
             priority_overrides_path=priority_overrides_path,
         )

@@ -15,8 +15,9 @@
 #   --tier A              Only Tier A models
 #   --dry-run             Print plan without downloading
 #   --verbose             Debug logging
-#   --bandwidth-cap N     Cap total bandwidth at N MB/s
-#   --max-parallel-drives N  Parallel drive workers (default 4)
+#   --bandwidth-cap N     Cap total bandwidth at N MB/s (0.75 = 6 Mbps)
+#   --queue-mode MODE     adaptive|serial
+#   --max-parallel-drives N  Parallel drive workers (ignored in serial mode)
 #
 # Examples:
 #   bash archiver-download.sh --all --priority-only 1
