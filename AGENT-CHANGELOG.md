@@ -136,3 +136,8 @@ Entries added by Cursor agent; commit this file with the related code changes.
 
 - **Summary**: Add a serial queue mode and make `run.sh` default to a strict 6 Mbps cap (`0.75 MB/s`) so downloads stay neighbor-friendly unless explicitly overridden.
 - **Files**: local/src/archiver/cli.py, local/src/archiver/scheduler.py, local/scripts/run.sh, local/scripts/archiver-download.sh, local/README.md, local/docs/OPERATIONS.md, local/docs/ARCHITECTURE.md.
+
+## 2026-03-18 20:22
+
+- **Summary**: Add the same neighbor-friendly defaults to the full-stack direct downloader: `6 Mbps` cap (`0.75 MB/s`) and serial queue mode in the CLI and initial download script.
+- **Files**: full-stack/src/full_stack_archive/cli.py, full-stack/scripts/download-initial.sh, full-stack/README.md.

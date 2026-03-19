@@ -107,6 +107,7 @@ LAYOUT_DIRS = [
 ]
 DOWNLOAD_STATE_PATH = Path("state/download-state.json")
 WHEEL_REPORT_PATH = Path("state/wheel-download-report.json")
+DEFAULT_BANDWIDTH_CAP_MBPS = 0.75  # 6 Mbps ~= 0.75 MB/s
 
 
 def _read_yaml(path: Path) -> dict[str, Any]:
@@ -189,56 +190,71 @@ def _is_optional_item(item: dict[str, Any], url: str, rel_path: str) -> bool:
     return False
 
 
-def _download_with_tool(url: str, target: Path) -> None:
+def _download_with_tool(
+    url: str,
+    target: Path,
+    bandwidth_cap_mbps: float | None = None,
+    queue_mode: str = "serial",
+) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     aria2c = shutil.which("aria2c")
+    limit_bps = int(bandwidth_cap_mbps * 1024 * 1024) if bandwidth_cap_mbps and bandwidth_cap_mbps > 0 else None
+    limit_kib = max(1, int(bandwidth_cap_mbps * 1024)) if bandwidth_cap_mbps and bandwidth_cap_mbps > 0 else None
     if aria2c:
-        subprocess.run(
-            [
-                aria2c,
-                "--continue=true",
-                "--auto-file-renaming=false",
-                "--allow-overwrite=true",
-                "--summary-interval=0",
-                "--console-log-level=warn",
-                "--dir",
-                str(target.parent),
-                "--out",
-                target.name,
-                url,
-            ],
-            check=True,
-        )
+        cmd = [
+            aria2c,
+            "--continue=true",
+            "--auto-file-renaming=false",
+            "--allow-overwrite=true",
+            "--summary-interval=0",
+            "--console-log-level=warn",
+            "--dir",
+            str(target.parent),
+            "--out",
+            target.name,
+        ]
+        if queue_mode == "serial":
+            cmd.extend(
+                [
+                    "--max-concurrent-downloads=1",
+                    "--split=1",
+                    "--max-connection-per-server=1",
+                ]
+            )
+        if limit_bps is not None:
+            cmd.append(f"--max-overall-download-limit={limit_bps}")
+        cmd.append(url)
+        subprocess.run(cmd, check=True)
         return
 
     curl = shutil.which("curl")
     if curl:
-        subprocess.run(
-            [
-                curl,
-                "-fL",
-                "-C",
-                "-",
-                "--output",
-                str(target),
-                url,
-            ],
-            check=True,
-        )
+        cmd = [
+            curl,
+            "-fL",
+            "-C",
+            "-",
+            "--output",
+            str(target),
+        ]
+        if limit_kib is not None:
+            cmd.extend(["--limit-rate", f"{limit_kib}K"])
+        cmd.append(url)
+        subprocess.run(cmd, check=True)
         return
 
     wget = shutil.which("wget")
     if wget:
-        subprocess.run(
-            [
-                wget,
-                "-c",
-                "-O",
-                str(target),
-                url,
-            ],
-            check=True,
-        )
+        cmd = [
+            wget,
+            "-c",
+            "-O",
+            str(target),
+        ]
+        if limit_kib is not None:
+            cmd.append(f"--limit-rate={limit_kib}k")
+        cmd.append(url)
+        subprocess.run(cmd, check=True)
         return
 
     raise click.ClickException("Need one of: aria2c, curl, or wget")
@@ -483,6 +499,20 @@ def bootstrap_d5(destination: Path) -> None:
 @click.option("--id", "ids", multiple=True, help="Only download a specific bundle id.")
 @click.option("--limit-bundles", type=int, default=None, help="Download only the first N selected bundles.")
 @click.option("--continue-on-error", is_flag=True, help="Keep going if one bundle fails.")
+@click.option(
+    "--bandwidth-cap",
+    type=float,
+    default=DEFAULT_BANDWIDTH_CAP_MBPS,
+    show_default=True,
+    help="Total bandwidth cap in MB/s (0.75 = 6 Mbps)",
+)
+@click.option(
+    "--queue-mode",
+    type=click.Choice(["adaptive", "serial"]),
+    default="serial",
+    show_default=True,
+    help="Serial uses one file and one connection at a time; adaptive uses tool defaults",
+)
 def download_direct(
     manifest: Path,
     destination: Path,
@@ -490,6 +520,8 @@ def download_direct(
     ids: tuple[str, ...],
     limit_bundles: int | None,
     continue_on_error: bool,
+    bandwidth_cap: float,
+    queue_mode: str,
 ) -> None:
     """Download direct artifacts idempotently and resumably."""
     _bootstrap_destination(destination)
@@ -517,7 +549,12 @@ def download_direct(
                 else:
                     click.echo(f"fetch {rel_path}")
                     try:
-                        _download_with_tool(url, target)
+                        _download_with_tool(
+                            url,
+                            target,
+                            bandwidth_cap_mbps=bandwidth_cap,
+                            queue_mode=queue_mode,
+                        )
                     except Exception:
                         if _is_optional_item(item, url, rel_path):
                             click.echo(f"warn  optional missing: {rel_path}", err=True)

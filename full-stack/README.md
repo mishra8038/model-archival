@@ -99,6 +99,7 @@ Per-epoch wheel requirements live under `full-stack/requirements/`.
 ## Current readiness
 
 - The direct-download archive is manifest-driven, resumable, and safe to rerun; completed files are skipped and partial files resume.
+- The direct-download helper now defaults to a neighbor-friendly profile: `6 Mbps` (`0.75 MB/s`) and `serial` queue mode.
 - The project currently automates direct artifacts, wheelhouse downloads, checksum refresh, and package-plan export.
 - The current direct-download wave covers Ubuntu ISOs, Python sources, NVIDIA driver artifacts, container/orchestration binaries, and cross-language toolchains for Java, Go, Rust, and C++ build chains.
 - Package-closure mirroring for `deb`/`rpm`/Arch and full git/container-image mirroring are still expansion phases; the catalog and package plans are in place, but those fetchers are not yet fully automated.
@@ -126,11 +127,14 @@ uv run --project full-stack full-stack-archive summary
 uv run --project full-stack full-stack-archive bootstrap-d5
 uv run --project full-stack full-stack-archive download-direct --group language-toolchains
 uv run --project full-stack full-stack-archive download-direct --group container-orchestration
+uv run --project full-stack full-stack-archive download-direct --bandwidth-cap 0.75 --queue-mode serial --group nvidia-drivers-core
 uv run --project full-stack full-stack-archive download-wheelhouse --epoch E3 --epoch E4
 uv run --project full-stack full-stack-archive export-package-plans
 uv run --project full-stack full-stack-archive refresh-checksums
 bash full-stack/scripts/download-initial.sh
 ```
+
+`download-direct` now defaults to `--bandwidth-cap 0.75` and `--queue-mode serial`, so the initial archive wave stays capped at `6 Mbps` and downloads one file at a time unless you explicitly override it.
 
 For a clean "next wave" restart from the latest manifests, rerun the direct-download helper and then restart the wheelhouse passes:
 
