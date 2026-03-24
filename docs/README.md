@@ -63,6 +63,7 @@ registries in other subprojects mirror that intent for their own artifact types.
 | Document | Contents |
 | -------- | -------- |
 | [PROJECTS.md](PROJECTS.md) | Summary of each project in its directory (local, fingerprints, code-archival, gdrive-archival). |
+| [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md) | Full inventory of weight registries (master, legacy, specialists), uncensored vs specialty sections, tier counts, code/fingerprint scale. Regenerate: `uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py`. |
 | [CONFIGURATION.md](CONFIGURATION.md) | Decided configuration: registry layout, drives, tiers, priorities, tooling list. |
 | [ARTIFACTS.md](ARTIFACTS.md) | What we archive: model weights (tiers A–G), checksums, code snapshots, tooling mirrors. |
 | [DISKS-AND-DISTRIBUTION.md](DISKS-AND-DISTRIBUTION.md) | Physical disk layout, roles, and distribution of artifacts per drive. |

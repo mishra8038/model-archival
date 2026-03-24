@@ -1,0 +1,16 @@
+# Graphcore Docker VM image archive manifest
+# Source: graphcore-setup/repro-archive/ubuntu18.04-ipu
+# Generated: 2026-03-20
+#
+# These are file-level SHA256 checksums for the two archived Docker image tarballs.
+# Use them to verify archive integrity before docker load.
+#
+# Verify:
+#   sha256sum -c SHA256SUMS.txt
+# Load:
+#   zstd -d -c denizbgraphcore-pytorch-2.4.0_latest.tar.zst | docker load
+#   zstd -d -c denizbgraphcore-tensorflow2-amd-2.4.0_latest.tar.zst | docker load
+#
+# Image archive checksums:
+b2ad5feefa8de01ed8171e1a6a90b6b01d9812cf25737db96ca5a771e5fcb01e  denizbgraphcore-pytorch-2.4.0_latest.tar.zst
+eac6dd582b62f112b96d288f508a757abb8be0e023c1bf695b5e0fcaa274476d  denizbgraphcore-tensorflow2-amd-2.4.0_latest.tar.zst

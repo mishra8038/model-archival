@@ -28,7 +28,7 @@ per-project map: purpose, entry points, authoritative files, and outputs.
 
 **Output:** Model weights and manifests live on D1, D2, D3 per drive assignment in the registry. State, logs, and STATUS live on D5. In-progress downloads use `D1/.tmp/` only.
 
-**Docs:** `model-archival/docs/` — REQUIREMENTS.md, DEPLOYMENT.md, ARCHITECTURE.md, OPERATIONS.md, HF-TOKEN-GUIDE.md.
+**Docs:** `model-archival/docs/` — REQUIREMENTS.md, DEPLOYMENT.md, ARCHITECTURE.md, OPERATIONS.md, HF-TOKEN-GUIDE.md. Repository-level model inventory: [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md).
 
 ---
 

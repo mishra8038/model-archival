@@ -112,6 +112,7 @@ The central `docs/` folder is the repository-level source of truth for mission,
 architecture by subsystem, configuration policy, and storage layout:
 
 - [docs/README.md](docs/README.md) — Overview, mission, objectives, doc index
+- [docs/ARCHIVED-MODELS.md](docs/ARCHIVED-MODELS.md) — Complete model inventory (master + legacy + specialists; uncensored and specialty sections)
 - [docs/PROJECTS.md](docs/PROJECTS.md) — Summary of each project (local, fingerprints, code-archival, gdrive-archival)
 - [docs/CONFIGURATION.md](docs/CONFIGURATION.md) — Registry, drives, tiers, priorities
 - [docs/ARTIFACTS.md](docs/ARTIFACTS.md) — What we archive (weights, checksums, code, tooling)

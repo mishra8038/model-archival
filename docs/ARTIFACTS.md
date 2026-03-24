@@ -10,6 +10,8 @@ control-plane metadata.
 
 Downloaded from Hugging Face, verified with SHA-256, and stored per-drive. Formats: raw BF16/FP16 safetensors, GGUF (selected quant levels).
 
+**Full per-model list** (master registry, legacy, specialist queue, uncensored vs tier-D Nemotron, tier E/F/G breakdown): [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md). Regenerate that file after registry edits: `uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py`.
+
 ### Tier A — Major models (raw)
 
 - **General / reasoning:** DeepSeek-V3, DeepSeek-R1, R1 distills (Llama-70B, Qwen-32B/14B/8B), Qwen2.5/Qwen3 (72B, 32B, 14B, 7B, MoE), Llama 3.1/3.3 (405B, 70B, 8B), Gemma 3 (27B, 12B), Mistral-Large, Mistral-Small-24B, Phi-4, Command R+, Nemotron-70B, Tulu-3-70B.
@@ -27,8 +29,10 @@ Downloaded from Hugging Face, verified with SHA-256, and stored per-drive. Forma
 
 ### Tier D — Uncensored / abliterated
 
-- **Raw:** huihui-ai abliterated (Llama-3.3-70B, DeepSeek-R1-Distill-Llama-70B, Qwen-32B, Qwen2.5-72B, Mistral-Small-24B), Dolphin (Llama-3.1-8B, Qwen2-72B), mlabonne (Llama-3.1-70B-lorablated, NeuralDaredevil-8B), failspy Llama-3-70B-abliterated.
-- **GGUF:** tensorblock/mlabonne abliterated GGUF variants of the above.
+Exact Hugging Face `id` lists (including Nemotron rows on tier D for placement) live in [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md) under **Uncensored, abliterated, and alignment-relaxed weights** and **Tier D — large checkpoints**.
+
+- **Raw:** huihui-ai abliterated line, Dolphin family, mlabonne lorablated / NeuralDaredevil, failspy, CombinHorizon merges, FINGU Rombo/Chocolatine, rombodawg merge.
+- **GGUF:** tensorblock and mlabonne abliterated GGUF variants aligned with the above.
 - **Sizes:** Similar to base models; GGUF smaller.
 
 ### Tier E — Reasoning
