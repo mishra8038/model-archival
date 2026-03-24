@@ -1,0 +1,5 @@
+# GDrive: full D5 mirror + upload urgency
+
+- **`config.yaml`:** `extra_paths` now includes `/mnt/models/d5` → `extra/d5` with rclone `--exclude '.tmp/**'`. Removed redundant per-file D5 entries (archive, logs, run_state, code-archives) since they live under the tree. Enabled **`upload_selection`** with **`drives: [d2, d3, d5]`**; explicit `model_ids_*` kept as legacy reference but ignored while `upload_selection` is set.
+- **`backup.py`:** `run_rclone_copy` accepts optional `exclude_patterns`; `_normalize_extra_path` supports YAML `exclude` on dict entries. **`compute_upload_lists`** sorts by **`gdrive_urgency_rank`** (0 explicit/disappearance notes → 1 tier D / F·G / uncensor heuristics → 2 hostable tier C / priority 2 / ≤50GB → 3 default), then tier, priority, size. Optional registry field **`gdrive_urgency: critical|high|first`**. `list-candidates` prints `[uN]` per model.
+- **Docs:** `UPLOAD-SELECTION.md`, `README.md`, `GDRIVE-UPLOAD-LIST.md`, `docs/CONFIGURATION.md`, `docs/ARTIFACTS.md` updated.

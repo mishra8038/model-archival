@@ -1,0 +1,40 @@
+{
+  "models": [
+    {
+      "name": "DeepSeek-R1",
+      "domain": "reasoning",
+      "size": "MoE ~600B",
+      "open": true
+    },
+    {
+      "name": "Qwen2.5-Coder-32B",
+      "domain": "coding",
+      "size": "32B",
+      "open": true
+    },
+    {
+      "name": "Mathstral-7B",
+      "domain": "math",
+      "size": "7B",
+      "open": true
+    },
+    {
+      "name": "Saul-7B",
+      "domain": "legal",
+      "size": "7B",
+      "open": true
+    },
+    {
+      "name": "ChemLLM",
+      "domain": "chemistry",
+      "size": "7B",
+      "open": true
+    },
+    {
+      "name": "OpenBioLLM",
+      "domain": "biomedical",
+      "size": "8B",
+      "open": true
+    }
+  ]
+}

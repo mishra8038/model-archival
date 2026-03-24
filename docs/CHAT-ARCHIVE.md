@@ -57,7 +57,7 @@ Raw transcripts: `~/.cursor/projects/home-x-dev-model-archival/agent-transcripts
    - Note on where raw transcripts live (`~/.cursor/.../agent-transcripts/`).
 
 2. **Earlier in this conversation**
-   - **Leaderboards:** Analyzed major LLM/LRM leaderboards (HF Open LLM Leaderboard v2, LMSYS Chatbot Arena); compared open models and our `local/config/registry.yaml`; confirmed coverage and suggested watching for new family releases.
+   - **Leaderboards:** Analyzed major LLM/LRM leaderboards (HF Open LLM Leaderboard v2, LMSYS Chatbot Arena); compared open models and our `model-archival/config/registry.yaml`; confirmed coverage and suggested watching for new family releases.
    - **Fingerprints:** Ensured leaderboard collection and fingerprinting are in place:
      - HF: `fingerprints/scripts/snapshot_leaderboard.py` — snapshots `open-llm-leaderboard/contents` + HF metadata into `fingerprints/leaderboard-snapshots/YYYY-MM-DD/`.
      - LMSYS: `fingerprints/scripts/snapshot_lmsys_arena.py` — snapshots Arena from a JSON URL or file into `fingerprints/leaderboard-snapshots/lmsys/YYYY-MM-DD/`.

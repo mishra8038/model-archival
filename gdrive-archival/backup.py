@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import json
+import re
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -15,6 +16,19 @@ CONFIG_PATH = Path(__file__).with_name("config.yaml")
 STATE_PATH = Path(__file__).with_name("state.json")
 UPLOADED_LOG_PATH = Path(__file__).with_name("logs") / "uploaded.log"
 TIER_ORDER = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6}
+
+# GDrive budget fill order: lower rank = chosen earlier. See UPLOAD-SELECTION.md.
+DISAPPEARING_RE = re.compile(
+  r"takedown|\bdmca\b|re-?host|at\s+risk|may\s+disappear|preservation\s+priority|"
+  r"community\s+mirror|fork-only|unofficial\s+mirror",
+  re.I,
+)
+ABLIT_UNCENSOR_RE = re.compile(
+  r"ablitr|uncensor|uncensored|unaligned|\bdolphin\b|mlabonne|tensorblock|huihui|"
+  r"rombod|fingu|failspy|combinhorizon|wizard.*vicuna|uncens",
+  re.I,
+)
+HOSTABLE_MAX_BYTES = 50 * 1024**3
 
 
 @dataclass
@@ -143,6 +157,28 @@ def is_gguf(entry: ModelEntry) -> bool:
   return False
 
 
+def gdrive_urgency_rank(mid: str, raw: dict, entry: ModelEntry, size_bytes: int) -> int:
+  """
+  Lower = higher off-site priority when filling upload_selection budget.
+  0 explicit / disappearance-risk notes, 1 abliterated-uncensored / niche-experimental,
+  2 hostable (GGUF / small / priority-2), 3 default.
+  """
+  notes = f"{raw.get('notes') or ''} {mid} {raw.get('hf_repo') or ''}"
+  g = raw.get("gdrive_urgency")
+  if g in ("critical", "high", "first", 0, 1, "0", "1"):
+    return 0
+  if DISAPPEARING_RE.search(notes):
+    return 0
+  if entry.tier == "D" or ABLIT_UNCENSOR_RE.search(notes) or ABLIT_UNCENSOR_RE.search(mid):
+    return 1
+  if entry.tier == "G" or entry.tier == "F":
+    return 1
+  pr = raw.get("priority", 99)
+  if entry.tier == "C" or pr == 2 or size_bytes <= HOSTABLE_MAX_BYTES:
+    return 2
+  return 3
+
+
 def compute_upload_lists(
   cfg: Dict,
   archiver_root: Path,
@@ -175,17 +211,20 @@ def compute_upload_lists(
       continue
     candidates.append((mid, total, is_gguf(entry)))
 
-  # Sort: tier (A first), then priority (1 first), then size ascending (smaller first)
+  # Sort: GDrive urgency (disappearance / uncensored / hostable first), then tier,
+  # priority, then size ascending (fit more models in budget).
   reg_raw = load_yaml(archiver_root / "config" / "registry.yaml")
   reg_models = reg_raw.get("models", [])
+  reg_by_id = {m["id"]: m for m in reg_models if m.get("id")}
 
-  def sort_key(item: Tuple[str, int, bool]) -> Tuple[int, int, int]:
+  def sort_key(item: Tuple[str, int, bool]) -> Tuple[int, int, int, int]:
     mid, size, _ = item
     entry = registry[mid]
     tier_rank = TIER_ORDER.get(entry.tier, 99)
-    raw = next((m for m in reg_models if m.get("id") == mid), {})
+    raw = reg_by_id.get(mid, {})
     priority = raw.get("priority", 1)
-    return (tier_rank, priority, size)
+    urg = gdrive_urgency_rank(mid, raw, entry, size)
+    return (urg, tier_rank, priority, size)
 
   candidates.sort(key=sort_key)
 
@@ -247,13 +286,13 @@ def filter_downloaded(
   return out
 
 
-def remote_path_has_files(remote_path: str) -> bool:
-  """Return True if the remote path exists and contains at least one file (idempotent skip)."""
-  cmd = ["rclone", "lsf", remote_path.rstrip("/"), "--max-depth", "1"]
-  result = subprocess.run(cmd, capture_output=True, text=True)
-  if result.returncode != 0:
-    return False
-  return bool(result.stdout.strip())
+def gdrive_remote_base(cfg: Dict) -> str:
+  """rclone destination root: remote + base_path (e.g. gdrive:FOLDER_ID/models)."""
+  remote = cfg["gdrive"]["remote"].rstrip("/")
+  base_path = cfg["gdrive"].get("base_path", "").strip().strip("/")
+  if not base_path:
+    return remote
+  return f"{remote}/{base_path}"
 
 
 def run_rclone_copy(
@@ -263,7 +302,12 @@ def run_rclone_copy(
   bwlimit: Optional[str] = None,
   transfers: int = 1,
   checkers: int = 1,
+  exclude_patterns: Optional[List[str]] = None,
 ) -> bool:
+  """
+  Idempotent merge to remote: rclone copy only uploads missing or changed files (--checksum).
+  Safe to re-run after interruption; do not skip calling this based on “any file exists” on Drive.
+  """
   dst = f"{remote_base.rstrip('/')}/{rel_dest}"
   cmd = [
     "rclone",
@@ -280,6 +324,8 @@ def run_rclone_copy(
     "--low-level-retries",
     "20",
   ]
+  for pat in exclude_patterns or []:
+    cmd.extend(["--exclude", pat])
   if bwlimit:
     cmd.extend(["--bwlimit", bwlimit])
   print(f"[rclone] {' '.join(cmd)}")
@@ -292,9 +338,7 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
   registry = load_registry(archiver_root)
   state = load_state()
 
-  remote = cfg["gdrive"]["remote"]
-  base_path = cfg["gdrive"].get("base_path", "").strip()
-  remote_base = f"{remote}/{base_path}" if base_path else remote
+  remote_base = gdrive_remote_base(cfg)
 
   planned: List[str] = get_model_ids_for_backup(cfg, archiver_root, kind)
   run_state_path = Path(
@@ -322,17 +366,15 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
     st_models = state.setdefault("models", {})
     st_entry = st_models.get(mid, {})
 
-    rel_dest = f"models/{mid.replace('/', '--')}"
+    # rel_dest is under gdrive.base_path (set to "models" in config); do not prefix "models/" again.
+    rel_dest = mid.replace("/", "--")
     dst = f"{remote_base.rstrip('/')}/{rel_dest}"
-
-    if st_entry.get("source_path") == str(src) and st_entry.get("backed_up", False):
-      print(f"[ok] {mid}: already backed up from {src}")
-      continue
-    if remote_path_has_files(dst):
-      print(f"[ok] {mid}: already on drive (skipping)")
-      st_models[mid] = {"source_path": str(src), "backed_up": True}
-      save_state(state)
-      continue
+    upload_target = dst
+    was_marked_complete = (
+      st_entry.get("source_path") == str(src)
+      and st_entry.get("backed_up", False)
+      and st_entry.get("upload_target") == upload_target
+    )
 
     if not verify_model_dir_before_upload(archiver_root, src):
       print(f"[skip] {mid}: verification failed (checksum/manifest) — not uploading")
@@ -342,14 +384,24 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
     bwlimit = g.get("bwlimit")
     transfers = g.get("transfers", 1)
     checkers = g.get("checkers", 1)
-    ok = run_rclone_copy(src, remote_base, rel_dest, bwlimit=bwlimit, transfers=transfers, checkers=checkers)
+    ok = run_rclone_copy(
+      src,
+      remote_base,
+      rel_dest,
+      bwlimit=bwlimit,
+      transfers=transfers,
+      checkers=checkers,
+      exclude_patterns=None,
+    )
     if ok:
       st_models[mid] = {
         "source_path": str(src),
         "backed_up": True,
+        "upload_target": upload_target,
       }
       save_state(state)
-      log_upload_success(mid, str(src), kind="model")
+      if not was_marked_complete:
+        log_upload_success(mid, str(src), kind="model")
     else:
       print(f"[err] {mid}: backup failed")
 
@@ -368,8 +420,8 @@ def backup_dirs(
   from_file: Optional[Path] = None,
 ) -> None:
   """
-  Upload an arbitrary set of model directories to GDrive. Idempotent: skips dirs
-  already recorded in state. Paths can be given as arguments or one per line in --from-file.
+  Upload an arbitrary set of model directories to GDrive. Each run invokes rclone copy
+  (checksum); interrupted uploads resume on the next run without manual cleanup.
   """
   if from_file:
     if not from_file.exists():
@@ -385,9 +437,7 @@ def backup_dirs(
 
   state = load_state()
   st_dirs = state.setdefault("dirs", {})
-  remote = cfg["gdrive"]["remote"]
-  base_path = cfg["gdrive"].get("base_path", "").strip()
-  remote_base = f"{remote}/{base_path}" if base_path else remote
+  remote_base = gdrive_remote_base(cfg)
   bwlimit = cfg["gdrive"].get("bwlimit")
 
   for src in paths:
@@ -397,17 +447,11 @@ def backup_dirs(
       continue
 
     key = str(src)
-    if st_dirs.get(key, {}).get("backed_up", False):
-      print(f"[ok] {src}: already backed up")
-      continue
-
-    rel_dest = f"models/{_slug_for_dir(src)}"
+    rel_dest = _slug_for_dir(src)
     dst = f"{remote_base.rstrip('/')}/{rel_dest}"
-    if remote_path_has_files(dst):
-      print(f"[ok] {src}: already on drive (skipping)")
-      st_dirs[key] = {"source_path": key, "backed_up": True}
-      save_state(state)
-      continue
+    upload_target = dst
+    st_e = st_dirs.get(key, {})
+    was_marked_complete = st_e.get("backed_up", False) and st_e.get("upload_target") == upload_target
 
     archiver_root = Path(cfg.get("archiver_root", "."))
     if not verify_model_dir_before_upload(archiver_root, src):
@@ -416,91 +460,221 @@ def backup_dirs(
 
     g = cfg["gdrive"]
     ok = run_rclone_copy(
-      src, remote_base, rel_dest,
+      src,
+      remote_base,
+      rel_dest,
       bwlimit=g.get("bwlimit"),
       transfers=g.get("transfers", 1),
       checkers=g.get("checkers", 1),
+      exclude_patterns=None,
     )
     if ok:
-      st_dirs[key] = {"source_path": key, "backed_up": True}
+      st_dirs[key] = {"source_path": key, "backed_up": True, "upload_target": upload_target}
       save_state(state)
-      log_upload_success(_slug_for_dir(src), key, kind="dir")
+      if not was_marked_complete:
+        log_upload_success(_slug_for_dir(src), key, kind="dir")
     else:
       print(f"[err] {src}: backup failed")
 
 
-def _normalize_extra_path(p: object) -> Tuple[Path, str]:
-  """Return (source path, remote rel_dest e.g. extra/name)."""
+def _normalize_extra_path(p: object) -> Tuple[Path, str, List[str]]:
+  """Return (source path, remote rel_dest e.g. extra/name, rclone --exclude patterns)."""
   if isinstance(p, dict):
     src = Path(p["path"])
     rel = (p.get("dest") or f"extra/{src.name}").strip()
-    return (src, rel if rel.startswith("extra/") else f"extra/{rel}")
+    rel = rel if rel.startswith("extra/") else f"extra/{rel}"
+    excl = p.get("exclude") or []
+    if isinstance(excl, str):
+      excl = [excl]
+    return (src, rel, list(excl))
   src = Path(p)
-  return (src, f"extra/{src.name}")
+  return (src, f"extra/{src.name}", [])
 
 
 def backup_extra_paths(cfg: Dict):
   state = load_state()
-  remote = cfg["gdrive"]["remote"]
-  base_path = cfg["gdrive"].get("base_path", "").strip()
-  remote_base = f"{remote}/{base_path}" if base_path else remote
+  remote_base = gdrive_remote_base(cfg)
   st_paths = state.setdefault("paths", {})
 
   for p in cfg.get("extra_paths", []):
-    src, rel_dest = _normalize_extra_path(p)
+    src, rel_dest, excludes = _normalize_extra_path(p)
     if not src.exists():
       print(f"[skip] extra {src}: not found")
       continue
 
-    if st_paths.get(str(src), {}).get("backed_up", False):
-      print(f"[ok] extra {src}: already backed up")
-      continue
-
     dst = f"{remote_base.rstrip('/')}/{rel_dest}"
-    if remote_path_has_files(dst):
-      print(f"[ok] extra {src}: already on drive (skipping)")
-      st_paths[str(src)] = {"backed_up": True}
-      save_state(state)
-      continue
+    upload_target = dst
 
     g = cfg["gdrive"]
     ok = run_rclone_copy(
-      src, remote_base, rel_dest,
+      src,
+      remote_base,
+      rel_dest,
       bwlimit=g.get("bwlimit"),
       transfers=g.get("transfers", 1),
       checkers=g.get("checkers", 1),
+      exclude_patterns=excludes or None,
     )
     if ok:
-      st_paths[str(src)] = {"backed_up": True}
+      st_paths[str(src)] = {"backed_up": True, "upload_target": upload_target}
       save_state(state)
     else:
       print(f"[err] extra {src}: backup failed")
 
 
-def backup_extra_paths_refresh(cfg: Dict):
-  """Force-upload extra_paths: ignore local state and remote presence.
+def _normalize_staging_entry(p: object) -> Tuple[Path, str, List[str]]:
+  """upload_staging list item -> (local root dir, remote subpath under gdrive remote_base, excludes)."""
+  if not isinstance(p, dict):
+    raise ValueError("upload_staging entries must be mappings with 'path' and 'dest'")
+  src = Path(p["path"])
+  dest = (p.get("dest") or "").strip().strip("/")
+  if not dest:
+    raise ValueError(f"upload_staging entry missing dest: {p!r}")
+  excl = p.get("exclude") or []
+  if isinstance(excl, str):
+    excl = [excl]
+  return (src, dest, list(excl))
 
-  rclone still uses --checksum, so unchanged files are not re-transferred,
-  but any changed metadata or new files will be synced.
+
+def list_staging(cfg: Dict, archiver_root: Path) -> None:
+  """Print staging roots, immediate subdirs, and whether local verification would pass."""
+  entries = cfg.get("upload_staging") or []
+  if not entries:
+    print("upload_staging is empty in config.yaml")
+    return
+  verify_children = cfg.get("upload_staging_verify", True)
+  remote_base = gdrive_remote_base(cfg)
+  print(f"Remote base: {remote_base}")
+  print()
+  for raw in entries:
+    try:
+      src, dest, _ = _normalize_staging_entry(raw)
+    except ValueError as e:
+      print(f"[err] {e}")
+      continue
+    print(f"Staging root: {src}")
+    print(f"  -> Drive: {remote_base.rstrip('/')}/{dest}/<model_dir>/")
+    if not src.is_dir():
+      print("  (missing or not a directory)")
+      print()
+      continue
+    children = [c for c in sorted(src.iterdir()) if c.is_dir()]
+    files = [c for c in src.iterdir() if c.is_file()]
+    if files:
+      print(f"  note: {len(files)} loose file(s) at root (not uploaded as model trees)")
+    if not children:
+      print("  (no subdirectories — add model dirs here, then run backup-staging)")
+      print()
+      continue
+    for child in children:
+      ok = True
+      if verify_children:
+        ok = verify_model_dir_before_upload(archiver_root, child)
+      vs = "ok" if ok else "FAIL"
+      print(f"  [{vs}] {child.name}")
+    print()
+
+
+def backup_staging(cfg: Dict, archiver_root: Path) -> None:
   """
-  remote = cfg["gdrive"]["remote"]
-  base_path = cfg["gdrive"].get("base_path", "").strip()
-  remote_base = f"{remote}/{base_path}" if base_path else remote
+  Upload only from configured staging folders (e.g. D3/D5 gdrive-upload).
+  Each immediate subdirectory is one model tree → remote dest/<subdir_name>/.
+  Same rclone copy --checksum merge/resume semantics as other backup commands.
+  """
+  entries = cfg.get("upload_staging") or []
+  if not entries:
+    print("upload_staging is empty; nothing to do.")
+    return
+  verify_children = cfg.get("upload_staging_verify", True)
+  remote_base = gdrive_remote_base(cfg)
+  state = load_state()
+  st_st = state.setdefault("staging", {})
+  g = cfg["gdrive"]
+
+  for raw in entries:
+    try:
+      src, dest, excludes = _normalize_staging_entry(raw)
+    except ValueError as e:
+      print(f"[err] {e}")
+      continue
+    if not src.exists():
+      print(f"[skip] staging root missing: {src}")
+      continue
+    if not src.is_dir():
+      print(f"[skip] staging path not a directory: {src}")
+      continue
+
+    children = [c for c in sorted(src.iterdir()) if c.is_dir()]
+    for c in src.iterdir():
+      if c.is_file():
+        print(f"[warn] loose file at staging root (ignored): {c.name}")
+
+    if not children:
+      print(f"[info] no model subdirs under {src} — nothing to upload")
+      continue
+
+    for child in children:
+      key = str(child.resolve())
+      rel_dest = f"{dest}/{child.name}"
+      dst = f"{remote_base.rstrip('/')}/{rel_dest}"
+      upload_target = dst
+      st_entry = st_st.get(key, {})
+      was_marked_complete = st_entry.get("backed_up", False) and st_entry.get("upload_target") == upload_target
+
+      if verify_children and not verify_model_dir_before_upload(archiver_root, child):
+        print(f"[skip] {dest}/{child.name}: verification failed — not uploading")
+        continue
+
+      ok = run_rclone_copy(
+        child,
+        remote_base,
+        rel_dest,
+        bwlimit=g.get("bwlimit"),
+        transfers=g.get("transfers", 1),
+        checkers=g.get("checkers", 1),
+        exclude_patterns=excludes or None,
+      )
+      if ok:
+        st_st[key] = {
+          "backed_up": True,
+          "upload_target": upload_target,
+          "staging_root": str(src),
+          "dest": dest,
+        }
+        save_state(state)
+        if not was_marked_complete:
+          log_upload_success(f"{dest}/{child.name}", key, kind="staging")
+      else:
+        print(f"[err] {dest}/{child.name}: backup failed")
+
+
+def backup_extra_paths_refresh(cfg: Dict):
+  """Same merge as backup_extra_paths; always runs rclone (no short-circuit). Records state on success."""
+  state = load_state()
+  st_paths = state.setdefault("paths", {})
+  remote_base = gdrive_remote_base(cfg)
 
   for p in cfg.get("extra_paths", []):
-    src, rel_dest = _normalize_extra_path(p)
+    src, rel_dest, excludes = _normalize_extra_path(p)
     if not src.exists():
       print(f"[skip] extra {src}: not found")
       continue
 
+    dst = f"{remote_base.rstrip('/')}/{rel_dest}"
     g = cfg["gdrive"]
     ok = run_rclone_copy(
-      src, remote_base, rel_dest,
+      src,
+      remote_base,
+      rel_dest,
       bwlimit=g.get("bwlimit"),
       transfers=g.get("transfers", 1),
       checkers=g.get("checkers", 1),
+      exclude_patterns=excludes or None,
     )
-    if not ok:
+    if ok:
+      st_paths[str(src)] = {"backed_up": True, "upload_target": dst}
+      save_state(state)
+    else:
       print(f"[err] extra {src}: refresh backup failed")
 
 
@@ -529,20 +703,30 @@ def list_candidates(cfg: Dict, archiver_root: Path) -> None:
 
   run_state = load_archiver_run_state(run_state_path)
   models_state = run_state.get("models", {})
+  registry = load_registry(archiver_root)
+  reg_raw = load_yaml(archiver_root / "config" / "registry.yaml")
+  reg_by_id = {m["id"]: m for m in reg_raw.get("models", []) if m.get("id")}
   total_gguf = sum(models_state.get(mid, {}).get("total_bytes", 0) for mid in gguf_ids)
   total_full = sum(models_state.get(mid, {}).get("total_bytes", 0) for mid in full_ids)
   total_gb = (total_gguf + total_full) / 1024**3
 
   print(f"Upload selection: drives={drives}, max_total_gb={max_total_gb}, max_per_model_gb={max_per_gb}")
+  print("  Urgency ranks: 0=explicit/disappearance-risk, 1=uncensored-abliterated/niche tier F·G, 2=hostable, 3=default")
   print(f"  GGUF: {len(gguf_ids)} models, {total_gguf / 1024**3:.1f} GB")
   print(f"  Full: {len(full_ids)} models, {total_full / 1024**3:.1f} GB")
   print(f"  Total: {total_gb:.1f} GB")
   for mid in gguf_ids:
     b = models_state.get(mid, {}).get("total_bytes", 0)
-    print(f"    gguf  {mid}  ({b / 1024**3:.1f} GB)")
+    ent = registry.get(mid)
+    raw = reg_by_id.get(mid, {})
+    u = gdrive_urgency_rank(mid, raw, ent, b) if ent else "?"
+    print(f"    gguf  [u{u}] {mid}  ({b / 1024**3:.1f} GB)")
   for mid in full_ids:
     b = models_state.get(mid, {}).get("total_bytes", 0)
-    print(f"    full {mid}  ({b / 1024**3:.1f} GB)")
+    ent = registry.get(mid)
+    raw = reg_by_id.get(mid, {})
+    u = gdrive_urgency_rank(mid, raw, ent, b) if ent else "?"
+    print(f"    full [u{u}] {mid}  ({b / 1024**3:.1f} GB)")
 
 
 def compare_with_archiver(cfg: Dict, archiver_root: Path) -> None:
@@ -629,6 +813,36 @@ def main():
   p_dirs = sub.add_parser("backup-dirs", help="Upload arbitrary model directories (paths or --from-file).")
   p_dirs.add_argument("paths", nargs="*", help="Directory paths to upload.")
   p_dirs.add_argument("--from-file", type=Path, metavar="FILE", help="File with one directory path per line.")
+  sub.add_parser("backup-staging", help="Upload from upload_staging folders (D3/D5 staging dirs).")
+  sub.add_parser("list-staging", help="Dry-run: list staging dirs and verification status.")
+  p_reg = sub.add_parser("backup-registry", help="Upload from gdrive-registry.yaml (verify + rclone --checksum).")
+  p_reg.add_argument("--dry-run", action="store_true")
+  p_reg.add_argument("--limit", type=int, default=None, metavar="N", help="Only first N model dirs")
+  p_reg.add_argument("--no-verify", action="store_true", help="Skip local SHA verify (not recommended)")
+  p_reg.add_argument(
+    "--resync-all",
+    action="store_true",
+    help="Ignore logs/registry-upload-state.json; run rclone for every dir (full re-upload pass).",
+  )
+  p_reg.add_argument(
+    "--verify-remote",
+    action="store_true",
+    help="Tracker-skipped dirs: rclone check local vs remote (checksum) before skipping.",
+  )
+  p_reg.add_argument(
+    "--no-verify-remote",
+    action="store_true",
+    help="Disable remote check even if registry_verify_remote is set in config.",
+  )
+  sub.add_parser("list-registry", help="List model revision dirs implied by gdrive-registry.yaml.")
+  sub.add_parser(
+    "uploaded-registry-list",
+    help="Write definitive uploaded model list from registry-upload-state.json (+uploaded.log metadata).",
+  )
+  sub.add_parser(
+    "upload-registry-status",
+    help="Write logs/GDRIVE-REGISTRY-UPLOAD-STATUS.md from discovery + uploaded.log.",
+  )
 
   args = parser.parse_args()
 
@@ -667,6 +881,55 @@ def main():
     compare_with_archiver(cfg, archiver_root)
   elif args.cmd == "backup-dirs":
     backup_dirs(cfg, getattr(args, "paths", []) or [], getattr(args, "from_file", None))
+  elif args.cmd == "backup-staging":
+    backup_staging(cfg, archiver_root)
+  elif args.cmd == "list-staging":
+    list_staging(cfg, archiver_root)
+  elif args.cmd == "backup-registry":
+    from upload_registry import run_registry_upload
+
+    reg_path = Path(__file__).resolve().parent / "gdrive-registry.yaml"
+    reg = load_yaml(reg_path)
+    g = cfg.get("gdrive") or {}
+    want_remote = bool(
+      getattr(args, "verify_remote", False)
+      or g.get("registry_verify_remote")
+      or cfg.get("registry_verify_remote")
+    )
+    verify_remote = want_remote and not getattr(args, "no_verify_remote", False)
+    sys.exit(
+      run_registry_upload(
+        cfg,
+        reg,
+        archiver_root=archiver_root,
+        dry_run=args.dry_run,
+        limit=args.limit,
+        no_verify=args.no_verify,
+        resync_all=getattr(args, "resync_all", False),
+        verify_remote=verify_remote,
+      )
+    )
+  elif args.cmd == "list-registry":
+    from upload_registry import print_registry_plan
+
+    reg_path = Path(__file__).resolve().parent / "gdrive-registry.yaml"
+    reg = load_yaml(reg_path)
+    print_registry_plan(cfg, reg)
+  elif args.cmd == "upload-registry-status":
+    from upload_registry import write_registry_upload_status
+
+    reg_path = Path(__file__).resolve().parent / "gdrive-registry.yaml"
+    reg = load_yaml(reg_path)
+    out = write_registry_upload_status(cfg, reg)
+    print(f"Wrote {out}")
+  elif args.cmd == "uploaded-registry-list":
+    from upload_registry import write_uploaded_models_catalog
+
+    reg_path = Path(__file__).resolve().parent / "gdrive-registry.yaml"
+    reg = load_yaml(reg_path)
+    out_json, out_md = write_uploaded_models_catalog(cfg, reg)
+    print(f"Wrote {out_json}")
+    print(f"Wrote {out_md}")
 
 
 if __name__ == "__main__":

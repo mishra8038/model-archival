@@ -9,7 +9,7 @@ alwaysApply: true
 
 - **VM IP**: 192.168.8.65, user: `x`
 - **OS**: Artix Linux, init: dinit (not systemd — use `dinitctl`, not `systemctl`)
-- **Project path**: `/home/x/dev/model-archival/local/`
+- **Project path**: `/home/x/dev/model-archival/model-archival/`
 - **Screen session**: `archiver` (`screen -S archiver bash run.sh --all`)
 
 ## Disk layout
@@ -26,14 +26,14 @@ In-progress downloads land in `D1/.tmp/` — never on D5 or root SSD.
 ## Before rebooting — always stop gracefully
 
 ```bash
-bash /home/x/dev/model-archival/local/stop.sh   # wait for "stopped cleanly"
+bash /home/x/dev/model-archival/model-archival/stop.sh   # wait for "stopped cleanly"
 # then reboot — skipping this can corrupt D1/D2 (requires fsck to fix)
 ```
 
 ## If drives not mounted after reboot
 
 ```bash
-sudo bash /home/x/dev/model-archival/local/deploy/vm-mount-disks.sh
+sudo bash /home/x/dev/model-archival/model-archival/deploy/vm-mount-disks.sh
 ```
 
 ## If a drive shows "Structure needs cleaning"

@@ -1,6 +1,8 @@
 # Artifacts We Archive
 
-This document describes what we archive: model weights (by tier), checksums, code snapshots, and tooling mirrors.
+This document describes the artifact inventory across all subprojects:
+weight trees, checksum metadata, code snapshots, tooling mirrors, and
+control-plane metadata.
 
 ---
 
@@ -80,7 +82,7 @@ Downloaded from Hugging Face, verified with SHA-256, and stored per-drive. Forma
 
 ## 4. Tooling mirrors (bare git)
 
-- From `tooling:` in `local/config/registry.yaml`.
+- From `tooling:` in `model-archival/config/registry.yaml`.
 - **Artifacts:** Bare git repos at `/mnt/models/d5/tooling-archive/<id>.git`.
 - **Projects:** Continue, Aider, Tabby, OpenHands, OpenDevin, LangChain, LangGraph, LlamaIndex, Semantic Kernel, AutoGen, vLLM, llama.cpp, Ollama, Sourcegraph, SWE-bench, HumanEval, etc.
 - **Purpose:** Preserve code for IDE assistants, agent platforms, and serving backends without storing weights.
@@ -99,7 +101,16 @@ Downloaded from Hugging Face, verified with SHA-256, and stored per-drive. Forma
 
 ## 6. Cloud backup (gdrive-archival)
 
-- **Config and metadata:** registry.yaml, drives.yaml, D5 archive/, logs/, run_state.json.
-- **Paths:** Optional fingerprints and code-archives paths.
-- **Optional:** Subset of model IDs (GGUF and/or full) for selective backup.
-- **Purpose:** Off-site copy of configuration and critical metadata, not full weight sets.
+- **Registry uploads:** `gdrive-archival/logs/registry-upload-state.json` — which model relpaths finished verify + rclone (skip those on later runs; `--resync-all` to force). `gdrive-archival/logs/GDRIVE-REGISTRY-UPLOAD-STATUS.md` — human summary from discovery + log + tracker; refresh via `python3 backup.py upload-registry-status` or after `backup-registry`.
+- **Default:** **Staging folders** on D3/D5 (`upload_staging`); only immediate subdirectories are uploaded to the configured Drive folder (`backup-staging` / `run-staging.sh`). See `gdrive-archival/README.md`.
+- **Legacy (optional in config):** `extra_paths` (registry, full D5 mirror, etc.), budget `upload_selection`, or explicit `model_ids_*`.
+
+---
+
+## Artifact integrity model
+
+- **Weights:** verified locally against `manifest.json` / `.sha256` sidecars.
+- **Fingerprints:** capture upstream SHA-256 values from HF LFS pointers.
+- **Code snapshots:** preserve repo state + release tarballs + metadata.
+- **Cloud uploads:** rely on verify-first local checks and `rclone --checksum`
+  for resumable transfer decisions.

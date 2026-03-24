@@ -8,7 +8,7 @@ alwaysApply: true
 ## Project structure
 
 ```
-local/
+model-archival/
   run.sh              orchestrator — always use this to start downloads
   stop.sh             graceful shutdown — always use before rebooting
   config/

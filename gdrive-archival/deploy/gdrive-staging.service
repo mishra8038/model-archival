@@ -1,0 +1,11 @@
+# dinit oneshot: upload only from upload_staging (D3/D5 gdrive-upload dirs).
+# Install: sudo ln -sf .../gdrive-staging.service /etc/dinit.d/boot.d/
+# Prefer this when config.yaml uses the staging workflow (run-staging.sh).
+type            = scripted
+command         = /usr/bin/bash /home/x/dev/model-archival/gdrive-archival/run-staging.sh
+working-dir     = /home/x/dev/model-archival/gdrive-archival
+run-as          = x
+start-timeout   = 0
+restart         = false
+waits-for       = network
+logfile         = /home/x/dev/model-archival/gdrive-archival/logs/gdrive-staging.log

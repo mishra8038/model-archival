@@ -1,0 +1,141 @@
+SPECIALIST AI & SMALL LANGUAGE MODELS — 2026 REFERENCE GUIDE
+=============================================================
+
+
+1. TOP SMALL LANGUAGE MODELS (SLMs)
+-------------------------------------
+Models up to ~10B parameters emerging as production leaders
+
+  Llama 4 Scout         | Meta               | GPT-4-level reasoning, open weights, enterprise starting point (~10B active params)
+  Gemma 3               | Google DeepMind    | Multilingual + STEM leader, multimodal (vision + text), strong benchmark scores
+  Qwen3 (0.6B-8B)       | Alibaba            | 200+ languages, thinking/non-thinking dual mode, 131K context, CJK dominant
+  Phi-3.5 Mini          | Microsoft          | 3.8B params, 128K context, excels at math, logic & edge/mobile deployment
+  Llama 3.2 (1B-3B)     | Meta               | Default for on-device/mobile AI, optimised for Qualcomm & Apple Silicon
+  Mistral Small 3       | Mistral AI         | SMB-friendly, Apache 2.0, fast inference, available on HuggingFace & Ollama
+  SmolLM3 (3B)          | Hugging Face       | Agentic tool-calling, dual reasoning mode, strong math & coding for its size
+
+
+2. TOP AI MODELS FOR CODING
+------------------------------
+
+  Claude (Sonnet/Opus)  | Anthropic          | Best for complex reasoning, refactoring, debugging, and deep code explanation
+  GPT-5.2               | OpenAI             | Gold standard for algorithmic tasks, SQL, unit tests, lowest syntax error rate
+  Gemini 2.5 Pro        | Google             | 1M token context, best for large codebase understanding and monorepos
+  Llama 4               | Meta (open source) | Local/private deployment, highly customisable, enterprise data security
+  DeepSeek V3/R1-Distill| DeepSeek           | RL-driven reasoning, 78.65% HumanEval Pass@1, fast sprints
+  Cursor                | Anysphere           | Best AI-native IDE; multi-file refactors, repo-level context, agent mode
+  Claude Code           | Anthropic           | Terminal-native agentic coding, scriptable, MCP-powered, zero data retention
+  GitHub Copilot        | Microsoft/GitHub    | IDE inline autocomplete, PR review, widest editor coverage
+
+
+3. LEADING SPECIALIST DOMAIN MODELS
+--------------------------------------
+
+--- LEGAL ---
+
+  LegalBERT             | BERT-based         | Pre-trained on EU legislation, court cases & contracts; NER, classification, judgment analysis
+  DISC-LawLLM           | RAG + fine-tuned   | Fine-tuned LLM + external legal databases for factual legal research, advisory, statute retrieval
+  LawGPT / LawGPT-zh    | Open source        | Pre-trained on Chinese legal texts; judicial Q&A, case analysis, bar exam tasks
+  Llama-LegalBar        | Fine-tuned SFT     | Supervised fine-tuning on multi-state bar exam data; strong common-law reasoning
+
+--- MATHEMATICS ---
+
+  DeepSeekMath-V2       | Open weights       | IMO 2025 gold-level (5/6 problems); 118/120 on Putnam 2024; verifier-generator dual engine
+  Llemma (7B / 34B)     | Open source        | Pre-trained on Proof-Pile-2 (math papers, formal proofs, STEM code); theorem proving
+  InternLM-Math (7B)    | Open source        | Verifiable chain-of-thought reasoning; integrates with Lean 4 for formal proof verification
+  MathCoder (7B / 13B)  | Code + math        | Blends code execution with symbolic math; generates and runs Python alongside reasoning
+
+--- CHEMISTRY & MATERIALS ---
+
+  ChemCrow              | Tool-augmented     | LLM + 17 chemistry tools (RDKit, synthesis planners, databases); drug discovery, reaction planning
+  ChemAgent             | Agentic            | Self-updating tool library; multi-step chemical reasoning via structured planning
+  Darwin 1.5            | Materials AI       | Two-stage training on natural language + materials corpus; materials discovery pipelines
+  MolBERT / ChemBERTa   | Molecular          | SMILES-trained encoder; molecular property prediction, drug-target interaction, retrosynthesis
+
+--- BIOMEDICAL & HEALTHCARE ---
+
+  BioGPT (355M / 1.5B)  | PubMed-trained     | Trained on 15M PubMed abstracts; biomedical relation extraction, Q&A, text generation
+  BioMedLM (2.7B)       | Open source        | Outperforms models 10x its size on clinical NLP; EHR summarisation and clinical Q&A
+  HuatuoGPT (7B / 13B)  | RLHF medical       | Doctor-patient dialogue; RLHF-tuned on real physician feedback for safe clinical interaction
+  ESM-2 (ProteinLM)     | Protein sequences  | Meta model trained on 250M sequences; predicts structure, function, and mutation effects
+
+--- LANGUAGE TRANSLATION ---
+
+  NLLB-200              | Meta (600M-54B)    | 200-language translation model, strong on low-resource languages, open weights
+  GemmaX2-28 (9B)       | Top-tier MT        | Parallel-First Monolingual-Second training; rivals GPT-4 Turbo on MT across 28 languages
+  TowerInstruct (7B)    | Instruction-tuned  | Fine-tuned on parallel data for European language pairs; strong context-aware MT
+  Aya Expanse           | Cohere             | 101 languages; cross-lingual generation, summarisation, low-resource dialogue
+
+--- ADVANCED REASONING ---
+
+  DeepSeek-R1/R1-Distill| Open weights       | RL-trained chain-of-thought; distilled 7B-14B packages matching o1-level logic at low cost
+  Qwen3 (thinking mode) | Dual mode          | Extended thinking mode; strong on AIME, logic, and planning benchmarks
+  Phi-4 Mini            | Microsoft (3.8B)   | MMLU ~82%; reasoning-dense training; top reasoning per parameter for edge/mobile
+  AM-Thinking-v1        | Open source        | Specialised RL-trained; competition math and logical puzzle solving; efficient inference
+
+--- FINANCE ---
+
+  FinGPT                | Open source        | Fine-tuned on market news, SEC filings, earnings calls; sentiment & forecasting
+  BloombergGPT (50B)    | Proprietary        | Trained on 363B tokens of financial text; NER, sentiment, headline classification
+  FinBERT               | BERT-based         | Fine-tuned on financial communications; earnings call sentiment, risk classification, compliance
+
+--- CYBERSECURITY & OTHER SCIENCES ---
+
+  SecureFalcon          | Security           | Fine-tuned Falcon; vulnerability detection, C code analysis, CWE classification
+  AstroLLaMA (7B)       | Astronomy          | Pre-trained on 300K arXiv astrophysics abstracts; literature Q&A, hypothesis generation
+  GeoGPT                | Geoscience         | Geological surveys, seismic data, earth science; mineral exploration, climate research
+
+
+4. SPECIALIST MODELS FOR MATERIALS SCIENCE
+--------------------------------------------
+
+--- LITERATURE MINING & TEXT UNDERSTANDING ---
+
+  MatSciBERT            | BERT-based         | Trained on peer-reviewed MatSci publications; state-of-the-art NER, relation & abstract classification
+  LLaMat / LLaMat-Chat  | LLaMA-based        | Pre-trained on 30B tokens from ~4M MatSci publications; outperforms larger general LLMs on 42 MatSci tasks
+  MaterialsBERT         | Property extraction| 2.4M abstracts; builds ~300K structured property records; powers PolymerScholar database
+  ChemDFM               | Chemistry + MatSci | Synthesis information extraction, document classification, literature-based reasoning
+
+--- ATOMISTIC SIMULATION & INTERATOMIC POTENTIALS ---
+
+  MatterSim             | Microsoft          | 17M DFT-labeled structures; zero-shot universal interatomic potential across all elements; near-DFT accuracy
+  MACE-MP-0             | Equivariant GNN    | State-of-the-art periodic systems; physically symmetric force/energy predictions
+
+--- PROPERTY PREDICTION ---
+
+  GNoME                 | DeepMind           | Discovered 2.2M new stable crystal candidates via GNN ensembles with active-learning DFT validation
+  AtomGPT               | GPT + atomics      | GPT-2 / quantised Mistral for atomic structure-property relationships from JARVIS-DFT
+  LLaMP                 | RAG-powered        | Grounds LLM reasoning in Materials Project database; prevents hallucinations in property queries
+
+--- GENERATIVE MATERIALS DESIGN & DISCOVERY ---
+
+  MatterGen             | Microsoft (Diffusion)| Generates stable inorganic crystals; 2x more novel/stable and 15x closer to energy minima vs. prior models
+  MatterGPT             | Transformer        | SLICES notation; autoregressive multi-property inverse design targeting formation energy and band gap
+  CrysVCD               | Valence-constrained| 85% thermodynamic stability, 68% phonon stability; chemical valence constraints built into generation
+  CrystaLLM             | LLM + CIF strings  | Treats crystallographic information files as text for autoregressive structure generation
+
+--- AGENTIC & TOOL-AUGMENTED SYSTEMS ---
+
+  ChatMOF               | MOF specialist     | LLM agent for metal-organic frameworks: 96.9% search, 95.7% property prediction, 87.5% structure generation
+  LLMatDesign           | Self-reflective    | Iterative loop: proposes atomic modifications -> ML property evaluation -> repeats until target met
+  MatPilot              | Human-in-the-loop  | Literature search, hypothesis generation, experimental design, and verification via physical lab robots
+
+--- SYNTHESIS PLANNING & PROCESS OPTIMISATION ---
+
+  Molecular Transformer | Reaction prediction| Seq-to-seq reaction translation; state-of-the-art for retrosynthesis and forward reaction prediction
+  ChemFormer            | BART-based         | Forward synthesis, retrosynthesis, reaction condition prediction; generalises to novel reaction classes
+  Darwin 1.5            | Materials discovery| Two-stage training; autonomous materials discovery pipelines and synthesis route recommendation
+  AlloyGAN              | Alloy design       | LLM text mining + conditional GAN; thermodynamic properties of metallic glasses with <8% error vs. experiment
+
+--- MULTIMODAL & CROSS-DOMAIN MODELS ---
+
+  nach0                 | Text + structure   | Cross-modal reasoning over text, molecular structures, and spectral data in a single model
+  MatterChat            | Multimodal chat    | Conversational interface reasoning over structural, textual, and spectral materials data
+  Hybrid-LLM-GNN        | GNN + LLM fusion   | Up to 25% improvement over GNN-only models; combines structural precision with LLM contextual understanding
+
+
+=============================================================
+Compiled March 2026.
+Models and capabilities evolve rapidly — verify current benchmarks
+and licensing before production deployment.
+=============================================================

@@ -1,4 +1,4 @@
-# dinit oneshot: run GDrive backup once (scripted = run command then consider started).
+# dinit oneshot: legacy pipeline (extra_paths + registry models). For staging-only, use gdrive-staging.service + run-staging.sh.
 # Install: sudo ln -sf /home/x/dev/model-archival/gdrive-archival/deploy/gdrive-backup.service /etc/dinit.d/boot.d/
 # Optional: set RCLONE_CONFIG in deploy/gdrive-backup.env or ensure run.sh finds rclone.conf (e.g. ~/Downloads/rclone.conf).
 type            = scripted

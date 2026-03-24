@@ -456,6 +456,84 @@ repos:
       chat UI and %%ai magic for LLM-assisted notebooks, using local or
       remote models.
 
+  - id: MaartenGr/BERTopic
+    github: MaartenGr/BERTopic
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      BERTopic - topic modeling framework built on transformer embeddings,
+      UMAP, and HDBSCAN. Useful for marketing segmentation and narrative
+      analysis on large text corpora.
+
+  - id: sktime/pytorch-forecasting
+    github: sktime/pytorch-forecasting
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      PyTorch Forecasting including TemporalFusionTransformer and other
+      production-ready time-series models. Core library for demand and
+      campaign forecasting workflows.
+
+  - id: pymc-labs/pymc-marketing
+    github: pymc-labs/pymc-marketing
+    category: training
+    risk: medium
+    licence: Apache-2.0
+    notes: >
+      PyMC-Marketing: Bayesian marketing models (MMM, CLV, attribution)
+      built on PyMC. Important for interpretable budget allocation and
+      uncertainty-aware decision support.
+
+  - id: Novartis/torchsurv
+    github: Novartis/torchsurv
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      TorchSurv survival analysis toolkit for deep learning. Useful for
+      churn-time and retention-time modeling where censoring is present.
+
+  - id: pyg-team/pytorch_geometric
+    github: pyg-team/pytorch_geometric
+    category: training
+    risk: medium
+    licence: MIT
+    notes: >
+      PyTorch Geometric (PyG) - canonical graph neural network library for
+      relational and network-structured learning pipelines.
+
+  - id: PriorLabs/TabPFN
+    github: PriorLabs/TabPFN
+    category: training
+    risk: high
+    licence: NOASSERTION
+    notes: >
+      PriorLabs TabPFN codebase for tabular foundation models. Matches
+      TabPFN model artifacts in model registry and supports fast tabular
+      classification/regression experimentation.
+
+  - id: lightgbm-org/LightGBM
+    github: lightgbm-org/LightGBM
+    category: training
+    risk: low
+    licence: MIT
+    notes: >
+      LightGBM - highly optimized gradient boosting framework for tabular
+      prediction, ranking, and feature importance workflows in marketing
+      and forecasting pipelines.
+
+  - id: williamleif/GraphSAGE
+    github: williamleif/GraphSAGE
+    category: training
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Original GraphSAGE implementation from the paper authors. Canonical
+      reference for inductive graph representation learning and neighborhood
+      sampling methods used across graph ML pipelines.
+
   - id: ydataai/ydata-profiling
     github: ydataai/ydata-profiling
     category: training

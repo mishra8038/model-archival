@@ -19,7 +19,7 @@ alwaysApply: true
   - **D3**: Tier C/D/G quantized GGUF and research/experimental models.
   - **D5**: metadata, logs, state, `STATUS.md`, and archive index.
 - All important writes (run state, STATUS/REPORT MD, logs) must use **atomic write semantics**: write to `.tmp` then `rename`.
-- Before any reboot, always run `local/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
+- Before any reboot, always run `model-archival/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
 
 ## Downloads, State, and Resumability
 

@@ -12,17 +12,17 @@ wheels/
 # Secrets — never commit tokens or credentials
 *.token
 .hf_token
-local/deploy/sethfToken.sh
+model-archival/deploy/sethfToken.sh
 **/HF_TOKEN
 .env
 *.env
 
 # Runtime outputs (live on storage drives, not in repo)
 run-report-*.md
-local/deploy/verify-environment-report-*.md
-local/deploy/run-report-*.md
-local/verification/verification-reports/
-local/chat/
+model-archival/deploy/verify-environment-report-*.md
+model-archival/deploy/run-report-*.md
+model-archival/verification/verification-reports/
+model-archival/chat/
 .chat/
 
 # fingerprints sub-project
@@ -34,7 +34,7 @@ fingerprints/output/
 gdrive-archival/rclone.conf
 
 # Large binaries / installers (exceed GitHub 100 MB limit)
-local/google-cloud-cli-linux-x86_64.tar.gz
+model-archival/google-cloud-cli-linux-x86_64.tar.gz
 
 # code-archival sub-project
 code-archival/.secrets
@@ -43,3 +43,7 @@ code-archival/*.key
 code-archival/output/
 code-archival/*.part
 code-archival/*.tmp
+
+# Large artifacts
+agent-tools/graphcore-sdk/*.tar.gz
+agent-tools/graphcore-repo-tarballs/*.tar.gz

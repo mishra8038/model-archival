@@ -520,6 +520,36 @@ projects:
       rpm_family: []
       arch_linux: ["python-peft", "python-trl", "deepspeed"]
 
+  - id: graph-learning
+    category: training-finetuning
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      graphsage: "https://github.com/williamleif/GraphSAGE"
+      pytorch_geometric: "https://github.com/pyg-team/pytorch_geometric"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["python-pytorch-geometric"]
+    notes: "Archive canonical GraphSAGE code and modern PyG graph tooling for inductive graph representation learning workflows."
+
+  - id: tabular-ml
+    category: training-finetuning
+    priority: medium
+    supported_epochs: ["E2", "E3", "E4"]
+    upstream:
+      lightgbm: "https://github.com/lightgbm-org/LightGBM"
+      tabpfn: "https://github.com/PriorLabs/TabPFN"
+    desired_formats:
+      required: ["source_release", "git_mirror", "python_wheels", "python_sdists", "deb_packages", "rpm_packages", "arch_packages"]
+    package_names:
+      debian_family: []
+      rpm_family: []
+      arch_linux: ["lightgbm", "python-lightgbm"]
+    notes: "Tabular learning stack for forecasting, segmentation, and uplift-style tasks: LightGBM plus TabPFN."
+
   - id: ui-and-desktop
     category: ui-orchestration
     priority: high

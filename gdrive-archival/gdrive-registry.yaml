@@ -1,0 +1,23 @@
+# Frozen upload roots: path = relative to /mnt/models
+# Remote (under shared folder): models/<path>/...
+# See docs/GDRIVE-UPLOAD-RUNBOOK.md for rclone usage.
+
+version: 1
+
+roots:
+  # Highest priority specialist roots
+  - path: d3/specialist
+  - path: d5/specialist
+  # Staging specialist roots
+  - path: d3/gdrive-upload
+  - path: d5/gdrive-upload
+  # Existing broad roots
+  - path: d1/uncensored
+  - path: d2/uncensored
+  - path: d3/uncensored
+  - path: d3/quantized
+  - path: d5
+
+# Uploader should exclude under d5:
+d5_exclude:
+  - ".tmp/**"

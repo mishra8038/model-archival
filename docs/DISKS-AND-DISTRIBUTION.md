@@ -14,7 +14,7 @@ Physical disk layout, roles, and how artifacts are distributed across drives.
 | D5    | /dev/sdb | /mnt/models/d5 | 916 GB | Metadata, logs, state, STATUS.md, tooling-archive |
 
 - **Root SSD:** No model data. Only Python env and logs symlink. All important writes use atomic semantics (write to `.tmp` then rename).
-- **Before reboot:** Always run `local/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
+- **Before reboot:** Always run `model-archival/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
 
 ---
 

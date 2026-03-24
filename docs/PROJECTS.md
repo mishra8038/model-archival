@@ -1,10 +1,11 @@
 # Projects — Summary by Directory
 
-Each sub-project lives in its own directory. This document summarizes each one: purpose, entry points, key files, and where outputs go.
+Each sub-project lives in its own directory. This document gives a coherent
+per-project map: purpose, entry points, authoritative files, and outputs.
 
 ---
 
-## local/ — Model weight downloader (archiver)
+## model-archival/ — Model weight downloader (archiver)
 
 **Purpose:** Unattended, resumable, cryptographically verified offline archival of open-source LLM/LRM weights from Hugging Face onto a fleet of physical drives. Downloads raw BF16/FP16 weights, quantized GGUF, and uncensored variants; verifies SHA-256; produces manifests and provenance descriptors.
 
@@ -17,17 +18,17 @@ Each sub-project lives in its own directory. This document summarizes each one: 
 - `bash stop.sh` — graceful shutdown (always use before reboot).
 - `uv run archiver download|verify|status|list|drives|tokens|pin|report` — CLI.
 
-**Key files:**
+**Authoritative files:**
 
-- `local/config/registry.yaml` — master model list (tiers, drive, priority, licence, `requires_auth`).
-- `local/config/drives.yaml` — drive mount points and roles.
+- `model-archival/config/registry.yaml` — master model list (tiers, drive, priority, licence, `requires_auth`).
+- `model-archival/config/drives.yaml` — drive mount points and roles.
 - `/mnt/models/d5/run_state.json` — per-model download state (source of truth).
 - `/mnt/models/d5/STATUS.md` — live dashboard (refreshed ~60s).
 - `/mnt/models/d5/archive/` — replicated metadata archive across drives.
 
 **Output:** Model weights and manifests live on D1, D2, D3 per drive assignment in the registry. State, logs, and STATUS live on D5. In-progress downloads use `D1/.tmp/` only.
 
-**Docs:** `local/docs/` — REQUIREMENTS.md, DEPLOYMENT.md, ARCHITECTURE.md, OPERATIONS.md, HF-TOKEN-GUIDE.md.
+**Docs:** `model-archival/docs/` — REQUIREMENTS.md, DEPLOYMENT.md, ARCHITECTURE.md, OPERATIONS.md, HF-TOKEN-GUIDE.md.
 
 ---
 
@@ -44,7 +45,7 @@ Each sub-project lives in its own directory. This document summarizes each one: 
 - `fingerprints show <model-id>` — inspect one model.
 - `fingerprints verify <model-id> <path>` — verify a local file against stored fingerprints.
 
-**Key files:**
+**Authoritative files:**
 
 - `fingerprints/config/registry.yaml` — models to fingerprint (families, tiers, importance).
 - `fingerprints/scripts/build_registry.py` — regenerate registry from leaderboard data.
@@ -64,7 +65,7 @@ Each sub-project lives in its own directory. This document summarizes each one: 
 - `bash archive.sh --category inference` — one category.
 - `bash archive.sh --risk high` — high-risk projects only.
 
-**Key files:**
+**Authoritative files:**
 
 - `code-archival/registry.yaml` — ~150 projects across categories (inference, training, agents, quantization, etc.) with risk levels (critical, high, medium, low).
 - `code-archival/.secrets` — `GITHUB_TOKEN` (git-ignored).
@@ -75,22 +76,27 @@ Each sub-project lives in its own directory. This document summarizes each one: 
 
 ## gdrive-archival/ — Cloud backup
 
-**Purpose:** Backs up essential configs, metadata, and a chosen subset of model identifiers to Google Drive via rclone. Complements local and fingerprints by providing an off-site copy of configuration and pointers, not full weights.
+**Purpose:** Upload selected model trees to Google Drive via rclone. Default workflow uses **staging directories** on D3/D5 (`upload_staging` in `config.yaml`) so the upload set is explicit and resumable; legacy modes can sync `extra_paths` and registry-driven model lists if enabled.
 
-**Key files:**
+**Authoritative files:**
 
-- `gdrive-archival/config.yaml` — `archiver_root`, rclone remote, `extra_paths` (registry, drives, D5 archive/logs/run_state, fingerprints path, code-archives), and optional `model_ids_gguf` / `model_ids_full` for selective backup.
-- `gdrive-archival/backup.py` — backup logic.
+- `gdrive-archival/config.yaml` — `archiver_root`, `gdrive.remote`, `upload_staging`, optional `extra_paths` / `upload_selection` / `model_ids_*`.
+- `gdrive-archival/backup.py` — `backup-staging`, `list-staging`, and legacy subcommands.
+- `run-staging.sh`, `start-staging-screen.sh` — staging-only upload.
 
-**Output:** Writes to the configured rclone remote (e.g. `gdrive:llm-survivor`) under the given base path.
+**Output:** Writes under the configured Drive folder (see `config.yaml`; folder ID must match `rclone.conf` if `root_folder_id` is set).
+
+Operational note: registry uploads (`backup-registry`) are the default automation
+path; staging uploads (`backup-staging`) are used when curation happens through
+explicit staging directories.
 
 ---
 
 ## Tooling mirror (from local registry)
 
-Tooling projects listed under `tooling:` in `local/config/registry.yaml` (Continue, Aider, Tabby, OpenHands, vLLM, llama.cpp, Ollama, etc.) are mirrored as **bare git repos** on D5 by a separate script:
+Tooling projects listed under `tooling:` in `model-archival/config/registry.yaml` (Continue, Aider, Tabby, OpenHands, vLLM, llama.cpp, Ollama, etc.) are mirrored as **bare git repos** on D5 by a separate script:
 
-- **Script:** `local/scripts/archive-tooling.sh`
+- **Script:** `model-archival/scripts/archive-tooling.sh`
 - **Output:** `/mnt/models/d5/tooling-archive/<id>.git`
 
 This keeps a copy of the code for IDE assistants, agent platforms, and serving backends on the metadata drive without duplicating weight data.

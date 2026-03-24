@@ -1,53 +1,74 @@
-# GDrive backup — uploads to folder 1HK8Ug4FZWXxk08A_nWGJ-iyHTcFkl6Gt (root for all models)
-# Use rclone.conf (see README): RCLONE_CONFIG or RCLONE_CONFIG_DIR points to your config.
-# Remote must be named "gdrive"; path gdrive:<folder_id> sends data into that folder.
-# When the archiver updates run_state or sync_archive it touches metadata_pending_path;
-# run.sh runs backup-extra first when that file exists (queued metadata upload).
+# Primary bulk upload: gdrive-registry.yaml → models/<relpath>/ on Drive
+#   python3 upload_registry.py --dry-run
+#   python3 backup.py list-registry
+#   bash run-registry-upload.sh
+models_mount: /mnt/models
 
-archiver_root: /home/x/dev/model-archival/local
+# --- Optional: staging folders on D3 + D5 (upload_staging in config) ---
+# Put only what you want uploaded under these directories (each model = one subdirectory).
+# Destination: https://drive.google.com/drive/folders/1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ
+# Run: bash run-staging.sh   or   python3 backup.py backup-staging
+#
+# Create once on the archive host:
+#   mkdir -p /mnt/models/d3/gdrive-upload /mnt/models/d5/gdrive-upload
+# Then move or bind-mount model trees into those folders and start the upload job; re-run anytime
+# to resume (rclone copy --checksum merges missing files only).
+
+archiver_root: /home/x/z/dev/model-archival/model-archival/model-archival
 metadata_pending_path: /mnt/models/d5/gdrive_metadata_pending
 
 gdrive:
-  # Target folder on Google Drive (ID from share link: drive.google.com/.../folders/<id>)
-  remote: gdrive:1HK8Ug4FZWXxk08A_nWGJ-iyHTcFkl6Gt
+  # If rclone.conf sets root_folder_id to the shared folder, use "gdrive:" only (do not repeat ID).
+  remote: "gdrive:"
   base_path: ""
-  # Single worker: one file transfer at a time (set higher for parallel uploads)
   transfers: 1
   checkers: 1
-  # Limit upload to 3 MB/s so downloads are not starved (rclone: upload:download, "off" = unlimited download)
-  bwlimit: "3M:off"
+  # rclone bwlimit is byte-based; 10 megabits/s = 1.25 megabytes/s ≈ 1250k
+  bwlimit: "1250k"
+  # Tracker-skipped dirs: run `rclone check --checksum --one-way` vs Drive before skipping (no full download).
+  # Disable for a run: `backup-registry --no-verify-remote`
+  registry_verify_remote: true
 
-# Each entry: path string (remote dir name = basename) or { path: ..., dest: "extra/name" }.
-# d5-code-archives = code-archival output on D5 (manifest, release tarballs); avoid collision with dev code-archives.
-extra_paths:
-  - /home/x/dev/model-archival/local/config/registry.yaml
-  - /home/x/dev/model-archival/local/config/drives.yaml
-  - /mnt/models/d5/archive
-  - /mnt/models/d5/logs
-  - /mnt/models/d5/run_state.json
-  - /home/x/dev/fingerprints
-  - /home/x/dev/code-archives
-  - path: /mnt/models/d5/code-archives
-    dest: extra/d5-code-archives
+# Local folders that are the *only* sources for backup-staging (known, resumable set).
+# Remote layout: <remote>/<dest>/<model_dir_name>/...
+upload_staging:
+  - path: /mnt/models/d3/gdrive-upload
+    dest: d3
+    exclude:
+      - ".tmp/**"
+  - path: /mnt/models/d5/gdrive-upload
+    dest: d5
+    exclude:
+      - ".tmp/**"
 
-# --- Critical backup: models we actually use in practice; GDrive more reliable than local disks ---
-# Lean heavy on smaller (<200 GB) + GGUF; preserve what we can't lose.
-# When upload_selection is set below, model_ids_* are ignored. Keep it commented to use this list.
+# Verify each immediate child of staging (manifest / .sha256) before rclone; set false to trust trees.
+upload_staging_verify: true
+
+# --- Legacy: registry-driven upload + full extra_paths (use run.sh, not run-staging.sh) ---
+# extra_paths:
+#   - /home/x/dev/model-archival/model-archival/config/registry.yaml
+#   - /home/x/dev/model-archival/model-archival/config/drives.yaml
+#   - path: /mnt/models/d5
+#     dest: extra/d5
+#     exclude:
+#       - ".tmp/**"
+#   - /home/x/dev/fingerprints
+#   - /home/x/dev/code-archives
+
 # upload_selection:
 #   run_state_path: /mnt/models/d5/run_state.json
-#   drives: [d2, d3]
+#   drives: [d2, d3, d5]
 #   max_total_gb: 3000
 #   max_per_model_gb: 200
 
-# Base models only (pre-trained, no instruct). GGUF list empty — registry GGUF are instruct quants; add base GGUF here when available.
 model_ids_gguf: []
 
 model_ids_full:
-  # Qwen2.5 bases (pre-trained)
   - Qwen/Qwen2.5-3B
   - Qwen/Qwen2.5-7B
   - Qwen/Qwen2.5-14B
+  - google/gemma-3-27b-pt
   - Qwen/Qwen2.5-32B
   - Qwen/Qwen2.5-72B
-  # Other bases when available
-  - google/gemma-3-27b-pt
+  - deepseek-ai/DeepSeek-V3-Base
+  - Qwen/Qwen3-235B-A22B-Base

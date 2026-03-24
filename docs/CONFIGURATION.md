@@ -1,10 +1,11 @@
 # Configuration
 
-This document describes the configuration we have decided upon: registry layout, drive roles, tiers, priorities, and tooling list.
+This document defines the current configuration contract: registry layout, drive
+roles, tiering, priority policy, and related subsystem configs.
 
 ---
 
-## Master model list — local/config/registry.yaml
+## Master model list — model-archival/config/registry.yaml
 
 The registry is the **source of truth** for the weight downloader. It defines:
 
@@ -13,7 +14,7 @@ The registry is the **source of truth** for the weight downloader. It defines:
   - `hf_repo` — Hugging Face repo (usually same as id).
   - `tier` — A (major), B (code), C (GGUF), D (uncensored/abliterated), E (reasoning), F (vision), G (math/research).
   - `drive` — `d1`, `d2`, or `d3` (where weights are stored).
-  - `priority` — 1 = token-free / core; 2 = gated (HF token + licence acceptance).
+  - `priority` — scheduling order (lower runs sooner): 1/2/3/4.
   - `licence` — e.g. MIT, Apache-2.0, Qwen, llama3.1, Gemma-ToU.
   - `requires_auth` — true if gated on Hugging Face.
   - `commit_sha` — pinned after first download; `null` until then.
@@ -29,11 +30,21 @@ Tiers encode usage and placement:
 - **C/D** — GGUF and uncensored/abliterated; D2 for raw uncensored, D3 for GGUF.
 - **E/F/G** — reasoning, vision, math, research; D1 for large VLMs, D3 for smaller and research.
 
-Priority 1 models are safe to run with `--priority-only 1` (no HF token). Priority 2 requires token and often licence acceptance on HF.
+Priority policy (canonical):
+
+- **1** — base/foundation checkpoints (highest preservation value).
+- **2** — smallest practical GGUF/quant variants.
+- **3** — instruct/chat variants.
+- **4** — medium/extra quant variants or lowest urgency.
+
+Auth policy is separate from priority:
+
+- `requires_auth: true` means an HF token and accepted license terms are needed.
+- `requires_auth: false` can run token-free (for example with `--priority-only 1` if those entries are priority 1).
 
 ---
 
-## Drive configuration — local/config/drives.yaml
+## Drive configuration — model-archival/config/drives.yaml
 
 Each logical drive has:
 
@@ -45,7 +56,7 @@ Each logical drive has:
 Decided roles:
 
 | Drive | Role |
-|-------|------|
+| ----- | ---- |
 | d1 | Raw giants (Tier A large + Tier B large); `.tmp` scratch for in-progress downloads. |
 | d2 | Raw mid-size (Tier A remainder + Tier B small + Tier D uncensored raw). |
 | d3 | Quantized GGUF (Tier C + Tier D quants). |
@@ -72,11 +83,18 @@ Projects to archive with:
 
 ## GDrive backup — gdrive-archival/config.yaml
 
-- **archiver_root** — path to `local/`.
-- **gdrive.remote** — rclone remote (e.g. `gdrive:llm-survivor`).
-- **gdrive.base_path** — prefix under remote.
-- **extra_paths** — list of paths to back up (registry, drives, D5 archive/logs/run_state, fingerprints dir, code-archives).
-- **model_ids_gguf** / **model_ids_full** — optional subset of model IDs for selective backup.
+- **archiver_root** — path to `model-archival/`.
+- **gdrive.remote** — rclone remote + Drive folder ID (e.g. `gdrive:1JFis3GX…`).
+- **gdrive.base_path** — optional prefix under that folder (often `""` for staging workflow).
+- **upload_staging** — list of `{ path, dest, exclude? }`: only these local roots are uploaded by `backup-staging` / `run-staging.sh`; each **immediate subdirectory** is one model tree → `remote/dest/<name>/`.
+- **upload_staging_verify** — if true, verify each staging subdir before rclone (manifest / sidecars).
+- **extra_paths** — legacy: registry, D5 mirror, etc. (commented out in default `config.yaml`).
+- **upload_selection** — legacy budget fill from `run_state.json`; ignores `model_ids_*` when set.
+- **model_ids_gguf** / **model_ids_full** — legacy explicit IDs when `upload_selection` is absent.
+
+Primary operational mode is typically `backup-registry` with
+`gdrive-registry.yaml`; staging mode (`upload_staging`) is also first-class.
+Legacy selectors remain optional.
 
 ---
 
