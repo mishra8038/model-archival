@@ -558,7 +558,7 @@ models:
   licence: Apache-2.0
   requires_auth: false
   commit_sha: 34113aee9d255591a1fa75b60d1e3422e82c3b1f
-  notes: Coding reasoning model from the open-r1 initiative
+  notes: Olympiad-level coding reasoning (open-r1); strong competition-style code / CoT
 - id: bigcode/starcoder2-15b
   hf_repo: bigcode/starcoder2-15b
   tier: B
@@ -1064,15 +1064,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Leanstral 120B-A6B sparse code/proof agent for Lean 4; Apache-2.0; see https://mistral.ai/news/leanstral
-- id: open-r1/OlympicCoder-32B
-  hf_repo: open-r1/OlympicCoder-32B
-  tier: E
-  drive: d3
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Olympiad-level coding reasoning from the open-r1 project
 - id: Qwen/Qwen2.5-VL-72B-Instruct
   hf_repo: Qwen/Qwen2.5-VL-72B-Instruct
   tier: F

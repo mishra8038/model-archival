@@ -10,7 +10,7 @@ control-plane metadata.
 
 Downloaded from Hugging Face, verified with SHA-256, and stored per-drive. Formats: raw BF16/FP16 safetensors, GGUF (selected quant levels).
 
-**Full per-model list** (master registry, legacy, specialist queue, uncensored vs tier-D Nemotron, tier E/F/G breakdown): [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md). Regenerate that file after registry edits: `uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py`.
+**Full per-model list** (master registry, legacy, specialist queue, uncensored vs tier-D Nemotron, tier E/F/G breakdown), plus **expected disk paths** and optional **download / GDrive** columns: [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md). Regenerate after registry or state changes: `uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py` (on the archive host, or set `ARCHIVER_RUN_STATE` / `ARCHIVER_MODELS_MOUNT` to your paths).
 
 ### Tier A — Major models (raw)
 
