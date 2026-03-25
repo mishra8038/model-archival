@@ -1,0 +1,4 @@
+# Shrink @-search / indexing noise (session scratch + editor local state)
+.chat/
+.vscode/
+
