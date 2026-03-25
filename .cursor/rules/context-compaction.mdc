@@ -1,0 +1,29 @@
+---
+description: Repo-local copy of global context compaction — transcript summary docs, .chat/, .cursorignore; use when user global rules are absent.
+alwaysApply: true
+---
+
+# Context compaction (workspace)
+
+Mirrors **`~/z/env/ai/cursor/rules/chat-context-and-transcripts.mdc`** and **`meta-interactions.mdc`** so clones behave without the user’s global Cursor rules.
+
+## Reading context
+
+- Do **not** bulk-read **`~/.cursor/projects/.../agent-transcripts/`** or **`.chat/`**.
+- Prefer **`docs/AGENT_TRANSCRIPT_SUMMARY.md`**, then **`docs/AGENT_TRANSCRIPT_DIGEST.md`** if present, then **`docs/AI_CONTEXT.md`**, **`AGENTS.md`**, **`docs/PROJECT_PROMPT.md`**.
+
+## Writing
+
+- Compact session notes: **`.chat/YYYY-MM-DD-topic.md`**.
+- Substantive outcomes: append to **`docs/AGENT_TRANSCRIPT_SUMMARY.md`**.
+
+## Indexing
+
+- Repo root **`.cursorignore`** must list **`.chat/`** and **`.vscode/`**. The agent **write tool may be unable to edit `.cursorignore`** — use the editor or:  
+  `printf '%s\n' '.chat/' '.vscode/' >> .cursorignore`  
+  then `git add -f .cursorignore` if needed.
+
+## Remote activity
+
+- For SSH/VM/cloud work, write activity on the remote machine at `docs/remote/REMOTE_ACTIVITY_LOG.md` first.
+- Sync the remote log back into local `docs/remote/` (e.g. `REMOTE_ACTIVITY_LOG.<host>.md`).

@@ -22,8 +22,9 @@ run-report-*.md
 model-archival/deploy/verify-environment-report-*.md
 model-archival/deploy/run-report-*.md
 model-archival/verification/verification-reports/
-model-archival/chat/
+# Compact session notes (see docs/AGENT_TRANSCRIPT_SUMMARY.md; also .cursorignore)
 .chat/
+chat/
 
 # fingerprints sub-project
 fingerprints/.venv/

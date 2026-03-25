@@ -2,6 +2,8 @@
 **Version:** 1.0 — 2026-03-04  
 **Purpose:** Portable AI context document. A future AI agent reading this file should be able to fully understand the project, its goals, its architecture, and resume work without the original transcript.
 
+**Agents — start smaller:** [`docs/AI_CONTEXT.md`](AI_CONTEXT.md) (and repo [`AGENTS.md`](../AGENTS.md)) are the compact bootstrap; curated session history: repo [`docs/AGENT_TRANSCRIPT_SUMMARY.md`](../../docs/AGENT_TRANSCRIPT_SUMMARY.md) (ignore Cursor `agent-transcripts`). Use this file when you need full narrative, tier lists, and environment detail.
+
 ---
 
 ## 1. Project Mission

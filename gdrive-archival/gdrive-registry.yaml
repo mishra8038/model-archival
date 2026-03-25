@@ -8,9 +8,6 @@ roots:
   # Highest priority specialist roots
   - path: d3/specialist
   - path: d5/specialist
-  # Staging specialist roots
-  - path: d3/gdrive-upload
-  - path: d5/gdrive-upload
   # Existing broad roots
   - path: d1/uncensored
   - path: d2/uncensored

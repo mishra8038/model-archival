@@ -261,6 +261,11 @@ def cmd_download(
             end_time=end_time,
         )
 
+    # Approximate aggregate cap: aria2 applies a global limit for LFS. Hub/XET does not share
+    # that knob; disabling hf_transfer env opt-in avoids huge bursts past the intended ballpark.
+    if bandwidth_cap is not None and bandwidth_cap > 0:
+        os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "0"
+
     effective_max_parallel_models = max_parallel_models
     effective_max_per_drive = max_per_drive
     effective_min_speed_mbps = min_speed_mbps

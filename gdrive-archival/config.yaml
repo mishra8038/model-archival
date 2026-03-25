@@ -4,16 +4,6 @@
 #   bash run-registry-upload.sh
 models_mount: /mnt/models
 
-# --- Optional: staging folders on D3 + D5 (upload_staging in config) ---
-# Put only what you want uploaded under these directories (each model = one subdirectory).
-# Destination: https://drive.google.com/drive/folders/1JFis3GXDbVxvRO_m4pJnBuO5LpYCf4sJ
-# Run: bash run-staging.sh   or   python3 backup.py backup-staging
-#
-# Create once on the archive host:
-#   mkdir -p /mnt/models/d3/gdrive-upload /mnt/models/d5/gdrive-upload
-# Then move or bind-mount model trees into those folders and start the upload job; re-run anytime
-# to resume (rclone copy --checksum merges missing files only).
-
 archiver_root: /home/x/z/dev/model-archival/model-archival/model-archival
 metadata_pending_path: /mnt/models/d5/gdrive_metadata_pending
 
@@ -28,21 +18,6 @@ gdrive:
   # Tracker-skipped dirs: run `rclone check --checksum --one-way` vs Drive before skipping (no full download).
   # Disable for a run: `backup-registry --no-verify-remote`
   registry_verify_remote: true
-
-# Local folders that are the *only* sources for backup-staging (known, resumable set).
-# Remote layout: <remote>/<dest>/<model_dir_name>/...
-upload_staging:
-  - path: /mnt/models/d3/gdrive-upload
-    dest: d3
-    exclude:
-      - ".tmp/**"
-  - path: /mnt/models/d5/gdrive-upload
-    dest: d5
-    exclude:
-      - ".tmp/**"
-
-# Verify each immediate child of staging (manifest / .sha256) before rclone; set false to trust trees.
-upload_staging_verify: true
 
 # --- Legacy: registry-driven upload + full extra_paths (use run.sh, not run-staging.sh) ---
 # extra_paths:

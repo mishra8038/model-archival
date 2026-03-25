@@ -2,6 +2,8 @@
 
 Archived index of Cursor agent conversations for the model-archival project. Raw transcripts live under the Cursor project data directory and are referenced here by ID for traceability and future context.
 
+**Agents:** For durable decisions, use **`docs/AGENT_TRANSCRIPT_SUMMARY.md`** first — do not mine transcripts by default. Session scratch notes live under **`.chat/`** (see global Cursor rules: **context compaction**).
+
 ---
 
 ## Where transcripts live

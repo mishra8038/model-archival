@@ -5,12 +5,14 @@ alwaysApply: true
 
 # Archiver Codebase
 
+**Compact map for agents:** `model-archival/docs/AI_CONTEXT.md` and `model-archival/AGENTS.md` — read before whole-repo exploration.
+
 ## Project structure
 
 ```
 model-archival/
-  run.sh              orchestrator — always use this to start downloads
-  stop.sh             graceful shutdown — always use before rebooting
+  scripts/run.sh      orchestrator — always use this to start downloads
+  scripts/stop.sh     graceful shutdown — always use before rebooting
   config/
     registry.yaml     master model list (source of truth)
     drives.yaml       drive mount points and roles
@@ -33,7 +35,7 @@ model-archival/
 - **`aria2_manager.py`**: `--allow-overwrite=true`; removes orphaned partials (file exists but no `.aria2` control file) before submitting to aria2
 - **`downloader.py`**: `GatedRepoError` + HTTP 401/403 raise `AuthError` immediately — no retry
 - **`scheduler.py`**: SIGTERM/SIGINT sets `_stop_event`; workers stop cleanly between models
-- **`run.sh`**: traps SIGTERM/SIGINT → forwards to Python child; writes `.archiver.pid`
+- **`scripts/run.sh`**: traps SIGTERM/SIGINT → forwards to Python child; writes `.archiver.pid`
 
 ## Design rules
 

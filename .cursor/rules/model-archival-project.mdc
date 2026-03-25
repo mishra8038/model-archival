@@ -9,6 +9,7 @@ alwaysApply: true
 
 - Provide unattended, resumable, cryptographically verified archival of open-source LLM/LRM weights from Hugging Face onto a fleet of local drives.
 - Capture not just raw weights but also manifests, provenance, and structured status/operations reports in Markdown.
+- **Agent context:** Prefer repo `docs/AGENT_TRANSCRIPT_SUMMARY.md` for curated session outcomes; do not rely on Cursor `agent-transcripts` JSONL. Session scratch lives in **`.chat/`**; **`.cursorignore`** excludes **`.chat/`** and **`.vscode/`**. **Global** defaults for all projects: `~/.cursor/rules` → `~/z/env/ai/cursor/rules/` (**meta-interactions**, **chat-context-and-transcripts**).
 
 ## Storage & Safety
 
@@ -19,7 +20,7 @@ alwaysApply: true
   - **D3**: Tier C/D/G quantized GGUF and research/experimental models.
   - **D5**: metadata, logs, state, `STATUS.md`, and archive index.
 - All important writes (run state, STATUS/REPORT MD, logs) must use **atomic write semantics**: write to `.tmp` then `rename`.
-- Before any reboot, always run `model-archival/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
+- Before any reboot, always run `model-archival/scripts/stop.sh` and wait for "stopped cleanly" to avoid filesystem corruption on model drives.
 
 ## Downloads, State, and Resumability
 

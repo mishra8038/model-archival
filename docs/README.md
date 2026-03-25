@@ -4,6 +4,8 @@ This folder describes the **model-archival** repository as one system: mission,
 sub-project roles, configuration policy, archived artifacts, and physical disk
 distribution.
 
+**AI agents:** Curated session outcomes (use instead of raw Cursor transcripts): [`AGENT_TRANSCRIPT_SUMMARY.md`](AGENT_TRANSCRIPT_SUMMARY.md). Compact archiver map: [`model-archival/docs/AI_CONTEXT.md`](../model-archival/docs/AI_CONTEXT.md).
+
 ---
 
 ## Mission and objectives
@@ -25,7 +27,7 @@ distribution.
 Think of the repository as a 4-part pipeline:
 
 1. **`model-archival/`** downloads and verifies model weight trees onto D1-D3, while D5
-   holds state/reporting control-plane files.
+   holds state/reporting control-plane files. **AI/agent bootstrap:** [`model-archival/docs/AI_CONTEXT.md`](../model-archival/docs/AI_CONTEXT.md) · [`model-archival/AGENTS.md`](../model-archival/AGENTS.md).
 2. **`fingerprints/`** records upstream HF checksum metadata for independent
    verification without storing weights.
 3. **`code-archival/`** snapshots surrounding OSS tooling (inference/training/UI/agents).

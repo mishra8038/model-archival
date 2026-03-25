@@ -35,6 +35,20 @@ bash run.sh --skip-env-check        # skip environment verification (faster rest
 
 The script is fully idempotent — re-running it skips already-verified models.
 
+### Specialist registry — one model, flat cap (restart friendly)
+
+To **resume or start exactly one** model from `config/registry-specialists.yaml` with a **single global cap** (serial queue = one model at a time):
+
+```bash
+# 1 MB/s total (tool uses mebibytes/s; not megabits/s)
+screen -S specialist bash scripts/download-specialist-one.sh 'org/model-id'
+
+# ~1 megabit/s line rate instead → 0.125 MB/s
+BANDWIDTH_CAP_MBPS=0.125 screen -S specialist bash scripts/download-specialist-one.sh 'org/model-id'
+```
+
+`archiver download` matches the positional argument to the registry **`id`** field (same string as on Hugging Face, e.g. `seyonec/ChemBERTa-zinc-base-v1`). Re-run the same command to **continue** a partial download.
+
 ---
 
 ## Stopping downloads gracefully

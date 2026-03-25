@@ -47,6 +47,9 @@
 #   # Flat cap 24/7 instead of day/night schedule:
 #   bash run.sh --all --bandwidth-cap 0.75 --no-scheduled-bandwidth-cap
 #
+#   # Flat 2 MB/s 24/7 (e.g. specialists queue); scheduled day/night vars are ignored when cap is set:
+#   bash run.sh --all --registry config/registry-specialists.yaml --bandwidth-cap 2
+#
 #   # Tier A only, dry-run:
 #   bash run.sh --tier A --dry-run
 # =============================================================================
@@ -137,6 +140,12 @@ while [[ $# -gt 0 ]]; do
         *) echo "Unknown option: $1  (run with --help)"; exit 1 ;;
     esac
 done
+
+# Flat 24/7 cap: download never receives scheduled options; align report with reality.
+if [[ -n "$BANDWIDTH_CAP" ]]; then
+    SCHEDULED_BANDWIDTH_CAP=""
+    SCHEDULED_BANDWIDTH_WINDOW=""
+fi
 
 if [[ "$QUEUE_MODE" != "adaptive" && "$QUEUE_MODE" != "serial" ]]; then
     echo "Unknown queue mode: $QUEUE_MODE  (expected: adaptive or serial)"
