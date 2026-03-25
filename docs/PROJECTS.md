@@ -53,6 +53,8 @@ per-project map: purpose, entry points, authoritative files, and outputs.
 
 **Output:** By default, `model-checksums/` is created under the given output root (default `/mnt/models/d1`), so full path is `/mnt/models/d1/model-checksums/`. Contains `index.jsonl`, per-repo `fingerprint.json` / `fingerprint.md`, and `commits/<sha>.json`. Leaderboard snapshots go under `model-checksums/leaderboard-snapshots/`.
 
+**Agents:** `fingerprints/AGENTS.md`
+
 ---
 
 ## code-archival/ — Source code archiver
@@ -72,23 +74,28 @@ per-project map: purpose, entry points, authoritative files, and outputs.
 
 **Output:** `/mnt/models/d1/code-archival/` (or as configured).
 
+**Agents:** `code-archival/AGENTS.md`
+
 ---
 
 ## gdrive-archival/ — Cloud backup
 
-**Purpose:** Upload selected model trees to Google Drive via rclone. Default workflow uses **staging directories** on D3/D5 (`upload_staging` in `config.yaml`) so the upload set is explicit and resumable; legacy modes can sync `extra_paths` and registry-driven model lists if enabled.
+**Purpose:** Upload selected model trees to Google Drive via rclone. Default workflow is **registry-driven** (`gdrive-registry.yaml` + `upload_registry.py`) with upload-only semantics. Optional staging mode can be used when explicitly curating per-dir uploads.
 
 **Authoritative files:**
 
-- `gdrive-archival/config.yaml` — `archiver_root`, `gdrive.remote`, `upload_staging`, optional `extra_paths` / `upload_selection` / `model_ids_*`.
-- `gdrive-archival/backup.py` — `backup-staging`, `list-staging`, and legacy subcommands.
-- `run-staging.sh`, `start-staging-screen.sh` — staging-only upload.
+- `gdrive-archival/gdrive-registry.yaml` — upload roots (relative to `/mnt/models`) → `models/<root>/...` on Drive.
+- `gdrive-archival/upload_registry.py` — registry uploader (local verify + `rclone copy --checksum`, optional `rclone check`).
+- `gdrive-archival/config.yaml` — `models_mount`, `archiver_root`, `gdrive.*` and remote-verify toggles.
+- `gdrive-archival/run-registry-upload.sh` — wrapper exporting `RCLONE_CONFIG` then running the uploader.
 
 **Output:** Writes under the configured Drive folder (see `config.yaml`; folder ID must match `rclone.conf` if `root_folder_id` is set).
 
 Operational note: registry uploads (`backup-registry`) are the default automation
 path; staging uploads (`backup-staging`) are used when curation happens through
 explicit staging directories.
+
+**Agents:** `gdrive-archival/AGENTS.md`
 
 ---
 
@@ -100,3 +107,19 @@ Tooling projects listed under `tooling:` in `model-archival/config/registry.yaml
 - **Output:** `/mnt/models/d5/tooling-archive/<id>.git`
 
 This keeps a copy of the code for IDE assistants, agent platforms, and serving backends on the metadata drive without duplicating weight data.
+
+---
+
+## full-stack/ — Full-stack archive utilities
+
+**Purpose:** End-to-end archive utilities and helpers (see `full-stack/README.md`).
+
+**Agents:** `full-stack/AGENTS.md`
+
+---
+
+## integrity_tools/ — Integrity helpers
+
+**Purpose:** Misc integrity/verification tooling.
+
+**Agents:** `integrity_tools/AGENTS.md`

@@ -1,0 +1,25 @@
+---
+description: Monorepo agent entrypoint — directs agents to per-subproject bootstraps and context-compaction docs.
+alwaysApply: true
+---
+
+# Monorepo agents (read this first)
+
+## Context compaction (default)
+
+- Prefer **`docs/AGENT_TRANSCRIPT_SUMMARY.md`** and subproject `docs/AI_CONTEXT.md` / `AGENTS.md` over raw transcripts and `.chat/`.
+- Session scratch: **`.chat/`** (ignored by `.cursorignore`).
+
+## Subprojects (each has its own `AGENTS.md`)
+
+- **`model-archival/`** — model weight archiver (downloads + verify + manifests). Start at `model-archival/AGENTS.md`.
+- **`gdrive-archival/`** — Google Drive uploader (upload-only). Start at `gdrive-archival/AGENTS.md`.
+- **`fingerprints/`** — checksum/fingerprint harvester. Start at `fingerprints/AGENTS.md`.
+- **`code-archival/`** — source/code snapshotter. Start at `code-archival/AGENTS.md`.
+- **`full-stack/`** — full-stack archive utility. Start at `full-stack/AGENTS.md`.
+- **`integrity_tools/`** — misc integrity helpers. Start at `integrity_tools/AGENTS.md`.
+
+## Remote activity logs (remote-first)
+
+When operating on a remote machine: write to remote `docs/remote/REMOTE_ACTIVITY_LOG.md` first, then sync into this repo under `docs/remote/REMOTE_ACTIVITY_LOG.<host>.md`.
+

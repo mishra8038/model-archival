@@ -2,6 +2,11 @@
 
 Upload to Google Drive via rclone. **Primary workflow:** `gdrive-registry.yaml` → `models/…` on Drive (`backup-registry`). Optional **staging** dirs on D3/D5 (`backup-staging`). Legacy **`run.sh`** if you re-enable `extra_paths` / `upload_selection` in `config.yaml`.
 
+## Safety: upload-only (never delete)
+
+- Use **`rclone copy`** (merge/resume) and optional **`rclone check`** only.
+- Do **not** use `rclone sync`, `delete`, `purge`, or any `--delete*` flags.
+
 ## Start / stop (screen + process cleanup)
 
 ```bash
@@ -58,6 +63,8 @@ bash stop.sh               # quit gdrive-* screens; upload Python; rclone copy /
 - **Remote name:** Must be `[gdrive]`. **Folder ID** in `config.yaml` → `gdrive.remote` must match `root_folder_id` in `rclone.conf` if you set it—**do not** point those at two different folders or uploads will land in the wrong tree.
 - **Token:** Copy `rclone.conf.sample` → `rclone.conf`, add OAuth token. `rclone.conf` is gitignored.
 - **Config discovery:** `run-staging.sh` / `run.sh` use `./rclone.conf`, then `~/Downloads/rclone.conf`, or `RCLONE_CONFIG`.
+
+**Important:** ensure rclone subprocesses use the same config file (no fallback to `~/.config/rclone/rclone.conf`). See `docs/GDRIVE-UPLOAD-RUNBOOK.md`.
 
 ## Legacy: `run.sh` (extra_paths + registry models)
 

@@ -6,6 +6,14 @@
 
 **Registry:** [`gdrive-archival/gdrive-registry.yaml`](../gdrive-archival/gdrive-registry.yaml)
 
+## Safety: upload-only (never delete)
+
+This workflow must **never delete** anything from Google Drive.
+
+- Uses **`rclone copy`** (merge/resume semantics) and optional **`rclone check`** only.
+- Does **not** use `rclone sync`, `delete`, `purge`, or any `--delete*` flags.
+- Removing roots from `gdrive-registry.yaml` only changes what we **attempt to upload**; it does **not** remove anything already present on Drive.
+
 **Automated uploader (archive host):**
 
 ```bash
@@ -23,6 +31,15 @@ python3 backup.py upload-registry-status      # refresh upload dashboard only (n
 **Local tracker (no GDrive listing for done dirs):** [`gdrive-archival/logs/registry-upload-state.json`](../gdrive-archival/logs/registry-upload-state.json) records each model relpath after a successful verify + `rclone copy`. Later `backup-registry` runs **skip** those dirs entirely (no rclone). First-time seed: if the JSON file is missing, it is built from existing `registry-model` / `registry-d5` lines in `uploaded.log`. Force a full pass: `backup-registry --resync-all`.
 
 **Remote spot-check (idempotent):** Default on via `gdrive.registry_verify_remote: true` in [`config.yaml`](../gdrive-archival/config.yaml). For tracker-skipped model dirs, runs **`rclone check --checksum --one-way`** (local hash vs Drive-side hash metadata; **does not** bulk-download weights). If the check fails, the uploader re-runs local verify + `rclone copy` for that path. Same for **`d5/`** when `d5_complete`. Turn off for one run: `backup-registry --no-verify-remote`. Force on: `--verify-remote`.
+
+## rclone config: always use the project config file
+
+Run scripts export `RCLONE_CONFIG` (or use `./rclone.conf`). The registry uploader also passes it down to rclone subprocesses:
+
+- `rclone --config "$RCLONE_CONFIG" copy ...`
+- `rclone --config "$RCLONE_CONFIG" check ...`
+
+This prevents accidental fallback to `~/.config/rclone/rclone.conf` and “didn’t find section (gdrive)” failures.
 
 **Screen lifecycle:** [`gdrive-archival/start.sh`](../gdrive-archival/start.sh) runs [`stop.sh`](../gdrive-archival/stop.sh) first (screens, upload Python, `rclone copy /mnt/models`), then starts `screen` **`gdrive-upload`**. Override: `START_SKIP_STOP=1 bash start.sh` (not recommended).
 

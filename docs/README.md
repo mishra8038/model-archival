@@ -33,6 +33,8 @@ Think of the repository as a 4-part pipeline:
 3. **`code-archival/`** snapshots surrounding OSS tooling (inference/training/UI/agents).
 4. **`gdrive-archival/`** uploads selected local archive trees to Google Drive.
 
+**Agents:** Monorepo entrypoint [`AGENTS.md`](../AGENTS.md). Per-subproject bootstraps: `gdrive-archival/AGENTS.md`, `fingerprints/AGENTS.md`, `code-archival/AGENTS.md`, `full-stack/AGENTS.md`, `integrity_tools/AGENTS.md`.
+
 `model-archival/config/registry.yaml` is the canonical model selection source; related
 registries in other subprojects mirror that intent for their own artifact types.
 

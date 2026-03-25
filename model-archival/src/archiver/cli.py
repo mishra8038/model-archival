@@ -359,6 +359,15 @@ def cmd_download(
         cli_args=cli_args,
     )
 
+    # ── Retry policy: failed/in-progress are retried on every restart ─────
+    reset_counts = state.reset_retryable_statuses([m.id for m in models])
+    if reset_counts.get("failed") or reset_counts.get("in_progress"):
+        console.print(
+            f"[yellow]↻[/yellow]  Reset for retry: "
+            f"{reset_counts.get('failed', 0)} failed, "
+            f"{reset_counts.get('in_progress', 0)} in_progress → pending"
+        )
+
     # ── Status display ───────────────────────────────────────────────────
     status_display = StatusDisplay(
         registry=reg,

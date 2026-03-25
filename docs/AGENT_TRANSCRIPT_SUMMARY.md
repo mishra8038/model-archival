@@ -20,6 +20,7 @@
 - **This file:** Established as the in-repo substitute for transcript mining.
 - **Remote ops log:** Added `docs/remote/REMOTE_ACTIVITY_LOG.<host>.md` to record commands/actions/outcomes on remote machines (VM/SSH).
 - **`.chat/` + `.cursorignore`:** Session notes folder renamed from `chat/` → **`.chat/`**; repo **`.cursorignore`** lists **`.chat/`** and **`.vscode/`**. User-wide Cursor rules under **`~/.cursor/rules`** (symlinks to `~/z/env/ai/cursor/rules/`) define default **context compaction** for all projects.
+- **GDrive registry upload fixes:** Removed `gdrive-upload` roots from `gdrive-registry.yaml`; patched registry uploader so rclone subprocesses always use `--config $RCLONE_CONFIG` (prevents fallback to `~/.config/rclone/rclone.conf`). Confirmed upload-only (rclone copy/check; no deletions).
 
 ---
 

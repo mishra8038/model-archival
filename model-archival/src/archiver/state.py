@@ -114,6 +114,39 @@ class RunState:
             counts[s] = counts.get(s, 0) + 1
         return counts
 
+    def reset_retryable_statuses(self, model_ids: list[str]) -> dict[str, int]:
+        """
+        On a fresh process start, treat previously failed or in-progress models as retryable.
+
+        This ensures every restart will re-attempt models that ended in STATUS_FAILED or were
+        interrupted mid-run (STATUS_IN_PROGRESS). We preserve the last error message for
+        reporting in a separate field.
+
+        Returns counts like {"failed": N, "in_progress": M}.
+        """
+        counts = {"failed": 0, "in_progress": 0}
+        now = datetime.now(timezone.utc).isoformat()
+        with self._lock:
+            for mid in model_ids:
+                entry = self._data["models"].get(mid)
+                if not entry:
+                    continue
+                st = entry.get("status", STATUS_PENDING)
+                if st == STATUS_FAILED:
+                    counts["failed"] += 1
+                    if entry.get("error"):
+                        entry["last_error"] = entry.get("error")
+                    entry["status"] = STATUS_PENDING
+                    entry["updated_at"] = now
+                elif st == STATUS_IN_PROGRESS:
+                    counts["in_progress"] += 1
+                    # Interrupted mid-run; make it eligible immediately.
+                    entry["status"] = STATUS_PENDING
+                    entry["updated_at"] = now
+        if counts["failed"] or counts["in_progress"]:
+            self._save()
+        return counts
+
     # ------------------------------------------------------------------
     # Run log
     # ------------------------------------------------------------------
