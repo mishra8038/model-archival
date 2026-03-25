@@ -10,6 +10,17 @@
 
 ---
 
+## 2026-03-25 — `multidisk-downloader` requirements scaffold
+
+- Added new project-doc folder **`multidisk-downloader/`** with:
+  - `README.md` (scope + document map),
+  - `REQUIREMENTS.md` (usage-pattern-derived downloader/uploader requirements),
+  - `ARCHITECTURE-BOUNDARIES.md` (strict selector vs transfer-engine contracts).
+- Formalized a hard separation rule: model selection/planning is selector-only; downloader/uploader execute versioned plans and must not read selection registries for decision logic.
+- Captured transfer safety invariants as requirements: resumability, atomic state/report writes, integrity verification, non-destructive upload semantics, clean shutdown/restart behavior, and explicit auth/config handling.
+
+---
+
 ## 2026-03-25 — Context + bandwidth + transcript policy
 
 - **`model-archival/docs/AI_CONTEXT.md`:** Compact module/path/invariant map for agents; tool hints (Cursor `@`, Aider `/read`).
