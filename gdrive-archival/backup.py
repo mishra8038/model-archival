@@ -247,7 +247,7 @@ def get_model_ids_for_backup(cfg: Dict, archiver_root: Path, kind: str) -> List[
   """Return list of model IDs to backup: from upload_selection or explicit model_ids_*."""
   sel = cfg.get("upload_selection")
   if sel:
-    run_state_path = Path(sel.get("run_state_path", "/mnt/models/d5/run_state.json"))
+    run_state_path = Path(sel.get("run_state_path", "/mnt/models/d3/run_state.json"))
     drives = sel.get("drives", ["d2", "d3"])
     max_total_gb = float(sel.get("max_total_gb", 3000))
     max_per_gb = float(sel.get("max_per_model_gb", 200))
@@ -342,7 +342,7 @@ def backup_models(cfg: Dict, archiver_root: Path, kind: str):
 
   planned: List[str] = get_model_ids_for_backup(cfg, archiver_root, kind)
   run_state_path = Path(
-    cfg.get("upload_selection", {}).get("run_state_path", "/mnt/models/d5/run_state.json")
+    cfg.get("upload_selection", {}).get("run_state_path", "/mnt/models/d3/run_state.json")
   )
   ids = filter_downloaded(planned, registry, drives, run_state_path)
   skipped = len(planned) - len(ids)
@@ -693,7 +693,7 @@ def list_candidates(cfg: Dict, archiver_root: Path) -> None:
       print(f"    full {mid}")
     return
 
-  run_state_path = Path(sel.get("run_state_path", "/mnt/models/d5/run_state.json"))
+  run_state_path = Path(sel.get("run_state_path", "/mnt/models/d3/run_state.json"))
   drives = sel.get("drives", ["d2", "d3"])
   max_total_gb = float(sel.get("max_total_gb", 3000))
   max_per_gb = float(sel.get("max_per_model_gb", 200))
@@ -739,7 +739,7 @@ def compare_with_archiver(cfg: Dict, archiver_root: Path) -> None:
 
   sel = cfg.get("upload_selection")
   if sel:
-    run_state_path = Path(sel.get("run_state_path", "/mnt/models/d5/run_state.json"))
+    run_state_path = Path(sel.get("run_state_path", "/mnt/models/d3/run_state.json"))
     drives = sel.get("drives", ["d2", "d3"])
     max_total_gb = float(sel.get("max_total_gb", 3000))
     max_per_gb = float(sel.get("max_per_model_gb", 200))
@@ -752,7 +752,7 @@ def compare_with_archiver(cfg: Dict, archiver_root: Path) -> None:
     gguf_ids = cfg.get("model_ids_gguf", []) or []
     full_ids = cfg.get("model_ids_full", []) or []
     planned_ids = set(gguf_ids) | set(full_ids)
-    run_state_path = Path("/mnt/models/d5/run_state.json")
+    run_state_path = Path("/mnt/models/d3/run_state.json")
     selection_note = "explicit model_ids_gguf / model_ids_full"
 
   run_state = load_archiver_run_state(run_state_path)

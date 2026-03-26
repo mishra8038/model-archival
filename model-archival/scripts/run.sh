@@ -32,6 +32,7 @@
 #   --max-parallel N      Max parallel drive workers (default: 1; ignored in serial queue mode)
 #   --skip-network        Pass --skip-network to environment check
 #   --registry PATH       Use alternate registry (default: config/registry.yaml)
+#   --storage-drive LABEL Write all models under this mount (e.g. d3); registry drive: unchanged
 #   --help                Show this message
 #
 # Examples:
@@ -109,6 +110,7 @@ QUEUE_MODE="serial"
 MAX_PARALLEL=1
 SKIP_NETWORK=false
 REGISTRY_FILE="config/registry.yaml"
+STORAGE_DRIVE=""       # optional: e.g. d3 — passed through to archiver download --storage-drive
 
 # ---------------------------------------------------------------------------
 # Argument parsing
@@ -136,6 +138,7 @@ while [[ $# -gt 0 ]]; do
         --max-parallel)     MAX_PARALLEL="$2";         shift 2 ;;
         --skip-network)     SKIP_NETWORK=true;         shift ;;
         --registry)         REGISTRY_FILE="$2";        shift 2 ;;
+        --storage-drive)    STORAGE_DRIVE="$2";        shift 2 ;;
         --help|-h)          usage ;;
         *) echo "Unknown option: $1  (run with --help)"; exit 1 ;;
     esac
@@ -181,6 +184,7 @@ _rpt "| Scheduled cap (inside window) | ${SCHEDULED_BANDWIDTH_CAP:-disabled} MB/
 _rpt "| Scheduled cap window (local) | ${SCHEDULED_BANDWIDTH_WINDOW:-disabled} (outside window = unlimited) |"
 _rpt "| Queue mode | $QUEUE_MODE |"
 _rpt "| Max parallel | $MAX_PARALLEL |"
+_rpt "| Storage drive override | ${STORAGE_DRIVE:-(none — use registry)} |"
 _rpt ""
 _rpt "---"
 _rpt ""
@@ -209,6 +213,7 @@ else
     info "Bandwidth:    unlimited (no cap)"
 fi
 info "Report:       $_REPORT_FILE"
+[[ -n "$STORAGE_DRIVE" ]] && info "Storage:      all models → $STORAGE_DRIVE (paths only; registry unchanged)"
 echo ""
 
 if $DRY_RUN; then
@@ -428,6 +433,7 @@ fi
 [[ -n "${SKIP_DRIVE_SPACE_CHECK:-}" ]] && DOWNLOAD_ARGS+=("--skip-drive-space-check")
 DOWNLOAD_ARGS+=("--queue-mode" "$QUEUE_MODE")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
+[[ -n "$STORAGE_DRIVE" ]] && DOWNLOAD_ARGS+=("--storage-drive" "$STORAGE_DRIVE")
 
 info "Running dry-run to capture download plan…"
 PLAN_RC=0
@@ -478,8 +484,8 @@ import sys; sys.path.insert(0,'src')
 from archiver.models import load_registry
 from pathlib import Path
 reg = load_registry(Path('$REGISTRY_FILE'), Path('config/drives.yaml'))
-d5 = reg.drives.get('d5')
-print(d5.mount_point / 'logs' if d5 else '/tmp/archiver/logs')
+d3 = reg.drives.get('d3')
+print(d3.mount_point / 'logs' if d3 else '/tmp/archiver/logs')
 " 2>/dev/null || echo "/tmp/archiver/logs")
 
     info "Logs directory → $LOGS_DIR"
@@ -611,19 +617,19 @@ else
     else
         info "Verifying drives: ${MOUNT_POINTS[*]}"
 
-        # Determine report dir (d5/logs if available, else repo root)
-        D5_LOGS=$(cd "$REPO_DIR" && uv run python3 -c "
+        # Determine report dir (d3/logs — archiver infra; fallback repo root)
+        INFRA_LOGS=$(cd "$REPO_DIR" && uv run python3 -c "
 import sys; sys.path.insert(0,'src')
 from archiver.models import load_registry
 from pathlib import Path
 reg = load_registry(Path('$REGISTRY_FILE'), Path('config/drives.yaml'))
-d5 = reg.drives.get('d5')
-p = d5.mount_point / 'logs' if d5 else Path('.')
+d3 = reg.drives.get('d3')
+p = d3.mount_point / 'logs' if d3 else Path('.')
 p.mkdir(parents=True, exist_ok=True)
 print(p)
 " 2>/dev/null || echo "$REPO_DIR")
 
-        VERIFY_ARGS=("--drives" "${MOUNT_POINTS[@]}" "--report-dir" "$D5_LOGS")
+        VERIFY_ARGS=("--drives" "${MOUNT_POINTS[@]}" "--report-dir" "$INFRA_LOGS")
         $REHASH && VERIFY_ARGS+=("--rehash")
         $REHASH && info "Full re-hash requested — this will read every byte from disk (may take hours)."
 
@@ -633,7 +639,7 @@ print(p)
         echo "$VERIFY_OUT"
 
         # Find the most recent verify report
-        VERIFY_REPORT=$(ls -t "$D5_LOGS"/verify-report-*.md 2>/dev/null | head -1 || echo "")
+        VERIFY_REPORT=$(ls -t "$INFRA_LOGS"/verify-report-*.md 2>/dev/null | head -1 || echo "")
 
         _rpt "Verification method: $( $REHASH && echo "full re-hash" || echo "sidecar cross-check" )"
         _rpt ""

@@ -23,7 +23,7 @@ Two download paths are used depending on how the file is stored on HF:
       .incomplete/ cache directory managed by the library.
 
 Resume across process restarts (the most important case):
-    LFS:  partial file + .aria2 control file persist in d5/.tmp/<model_id>/
+    LFS:  partial file + .aria2 control file persist in the configured scratch .tmp/<model_id>/
           → next run's aria2 daemon finds them automatically via --continue=true
     XET:  hf_xet's incomplete cache persists across restarts (library-managed)
     Both: run_state.json records per-model status → models marked complete are skipped

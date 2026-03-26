@@ -6,7 +6,7 @@ Enriches the master registry with expected on-disk paths, optional download stat
 checks when those paths exist on the machine running this script.
 
 Environment (optional):
-  ARCHIVER_RUN_STATE   — path to run_state.json (default: /mnt/models/d5/run_state.json)
+  ARCHIVER_RUN_STATE   — path to run_state.json (default: /mnt/models/d3/run_state.json)
   ARCHIVER_MODELS_MOUNT — models root (default: from gdrive-archival/config.yaml or /mnt/models)
 """
 from __future__ import annotations
@@ -200,7 +200,7 @@ def main() -> None:
 
     mount = load_models_mount()
     run_state_path = Path(
-        os.environ.get("ARCHIVER_RUN_STATE", "/mnt/models/d5/run_state.json")
+        os.environ.get("ARCHIVER_RUN_STATE", "/mnt/models/d3/run_state.json")
     ).resolve()
     state_map = load_run_state_map(run_state_path)
     gdrive_done = load_gdrive_completed(GD_UPLOAD_STATE)
@@ -270,7 +270,7 @@ This document summarises what the **model-archival** monorepo is configured to p
 
 Optional: point at your archive host’s state and mounts:
 
-`ARCHIVER_RUN_STATE=/mnt/models/d5/run_state.json ARCHIVER_MODELS_MOUNT=/mnt/models uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py`
+`ARCHIVER_RUN_STATE=/mnt/models/d3/run_state.json ARCHIVER_MODELS_MOUNT=/mnt/models uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py`
 
 **Last regenerated:** {today}
 

@@ -18,10 +18,10 @@ alwaysApply: true
 |-------|--------|-------|------|------|
 | D1 | /dev/sdc | /mnt/models/d1 | 5.5 TB | Large models + `.tmp/` scratch |
 | D2 | /dev/sdd | /mnt/models/d2 | 2.7 TB | Mid-size models + Tier D |
-| D3 | /dev/sde | /mnt/models/d3 | 2.7 TB | GGUF quants |
-| D5 | /dev/sdb | /mnt/models/d5 | 916 GB | Metadata, logs, state |
+| D3 | /dev/sde | /mnt/models/d3 | 2.7 TB | GGUF quants + archiver infra (logs, state, archive/) |
+| D5 | /dev/sdb | /mnt/models/d5 | 916 GB | Completed models only when `drive: d5` in registry |
 
-In-progress downloads land in `D1/.tmp/` — never on D5 or root SSD.
+In-progress downloads land in `D1/.tmp/` (then `D3/.tmp` if needed) — never on D5 or root SSD.
 
 ## Before rebooting — always stop gracefully
 
@@ -66,5 +66,5 @@ Note: Surfshark flatpak GUI fails with "No internet connection" on connman syste
 
 ```bash
 screen -S archiver -X hardcopy /tmp/s.txt && cat /tmp/s.txt   # snapshot screen
-watch -n 30 cat /mnt/models/d5/STATUS.md                       # live status file
+watch -n 30 cat /mnt/models/d3/STATUS.md                       # live status file
 ```

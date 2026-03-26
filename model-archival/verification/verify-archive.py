@@ -27,7 +27,7 @@ Usage
   python verify-archive.py --drives /mnt/models/d1 --rehash --failures-only
 
   # Write report to a custom path:
-  python verify-archive.py --drives /mnt/models/d1 --report-dir /mnt/models/d5/logs
+  python verify-archive.py --drives /mnt/models/d1 --report-dir /mnt/models/d3/logs
 
 Exit codes
 ----------

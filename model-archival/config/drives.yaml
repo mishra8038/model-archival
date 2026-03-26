@@ -25,7 +25,7 @@ d2:
 
 d3:
   mount_point: /mnt/models/d3
-  role: "Quantized GGUF (Tier C + Tier D quants)"
+  role: "Quantized GGUF (Tier C + Tier D quants); archiver infra (logs, run_state, archive/, STATUS.md)"
   # Local scratch area for D3 worker — GGUF downloads assemble here before being moved
   # into the final quantized/ tree.
   tmp_dir: /mnt/models/d3/.tmp
@@ -34,10 +34,8 @@ d3:
 
 d5:
   mount_point: /mnt/models/d5
-  # Primary role is still metadata and infra, but when d1 and d3 are near full you MAY place a small number
-  # of overflow models here (set drive: d5 in registry.yaml) to use the extra headroom safely.
-  role: "Metadata: archive/, logs, run_state.json, STATUS.md; limited overflow for d1/d3 when needed"
-  # Optional scratch area for any overflow models that explicitly target d5.
-  tmp_dir: /mnt/models/d5/.tmp
+  # Archiver does not write logs/state/archive here — only completed model trees when drive: d5.
+  # When d1 and d3 are near full you MAY place overflow models here (set drive: d5 in registry.yaml).
+  role: "Completed models only when assigned drive: d5; no archiver scratch or metadata"
   by_id: ""
   serial: ""

@@ -10,6 +10,21 @@
 
 ---
 
+## 2026-03-25 — GDrive: granular `registry-tree` tracking for d5/
+
+- **`gdrive-archival/upload_registry.py`:** For `path: d5` with `tree_upload_min_depth` (default **3** in yaml), discover non-overlapping subtree units (depth‑3 dirs + shallow top-level branches), skip units overlapping `d5_exclude` / `tree_upload_exclude` / `quantized/**` / `uncensored/**` / model revision paths; each successful `rclone copy` appends **`registry-tree`** to `logs/uploaded.log` and the relpath to `registry-upload-state.json` `completed_models`. **`tree_upload_min_depth: 0`** on the d5 root restores legacy single `registry-d5` full-tree copy.
+- **`gdrive-archival/gdrive-registry.yaml`:** d5 root documents `tree_upload_min_depth: 3`.
+
+---
+
+## 2026-03-25 — Archiver infra on D3; D5 models-only
+
+- **`model-archival/src/archiver/cli.py`:** `run_state.json`, `logs/`, `archive/` (primary), `STATUS.md`, activity log, `gdrive_metadata_pending`, `priority_overrides.json` → **D3** (`_infra_root`). Scratch: D1 then non-D5 `tmp_dir`, then `d3/.tmp` — **never D5**. `sync_archive()` replicas → **D1 + D2 only** (`_archive_replica_mounts`). One-time copy from legacy D5 paths via `_maybe_migrate_infra_from_d5` when D3 files are missing.
+- **`config/drives.yaml`:** D5 `tmp_dir` removed; roles updated. **`gdrive-archival/config.yaml`:** `metadata_pending_path` → `/mnt/models/d3/gdrive_metadata_pending`. **`gdrive-archival/backup.py`** defaults: `run_state` → d3.
+- **Rules/docs touched:** `.cursor/rules/archiver-codebase.mdc`, `vm-operations.mdc`, `model-archival/docs/AI_CONTEXT.md`; helper scripts `gen-manifest.py`, `generate-archived-models-doc.py`, `run.sh`, `verify-archive.py` example.
+
+---
+
 ## 2026-03-25 — `multidisk-downloader` requirements scaffold
 
 - Added new project-doc folder **`multidisk-downloader/`** with:

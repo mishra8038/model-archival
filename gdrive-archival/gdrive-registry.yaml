@@ -1,20 +1,36 @@
 # Frozen upload roots: path = relative to /mnt/models
 # Remote (under shared folder): models/<path>/...
 # See docs/GDRIVE-UPLOAD-RUNBOOK.md for rclone usage.
+#
+# Upload policy (upload_registry.py): when `path: d5` has tree_upload_min_depth (default 3),
+# each folder at least that many levels below `d5/` is synced and logged as `registry-tree`
+# (shallower branches use one unit per top-level child, e.g. d5/logs/). Excludes model trees
+# that are uploaded per-revision as `registry-model`. Set tree_upload_min_depth: 0 on the d5
+# root to restore a single full-d5 rclone + registry-d5 line.
 
 version: 1
 
 roots:
-  # Highest priority specialist roots
-  - path: d3/specialist
+  # D5 first (metadata + archive + any models on D5)
+  - path: d5
+    tree_upload_min_depth: 3
   - path: d5/specialist
-  # Existing broad roots
+  # Then other drives
+  - path: d3/specialist
   - path: d1/uncensored
   - path: d2/uncensored
   - path: d3/uncensored
   - path: d3/quantized
-  - path: d5
 
-# Uploader should exclude under d5:
+# Uploader should exclude under d5 (rclone patterns relative to d5/ root):
 d5_exclude:
   - ".tmp/**"
+  # Planned local staging for large weights moved off d1/d2 — omit from Drive sync
+  - "raw/**"
+
+# Optional: extra tree-unit exclude patterns (relative to each registry root), merged with d5_exclude for d5.
+# tree_upload_exclude: []
+
+# Per-model discovery skips (relpaths from models_mount). Must align with bulky local-only trees.
+d5_discovery_exclude_relpaths:
+  - d5/raw

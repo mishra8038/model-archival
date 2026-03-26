@@ -8,7 +8,7 @@
 
 ## What this repo is
 
-Python CLI + bash orchestration that downloads Hugging Face model weights to **mounted data drives**, verifies SHA-256, writes manifests/provenance, and runs **unattended** (typically `screen`). Everything is **resumable**; state lives on **D5**.
+Python CLI + bash orchestration that downloads Hugging Face model weights to **mounted data drives**, verifies SHA-256, writes manifests/provenance, and runs **unattended** (typically `screen`). Everything is **resumable**; archiver state/logs/archive live on **D3**; **D5** only stores finished models when the registry assigns `drive: d5`.
 
 **Monorepo note:** This directory (`model-archival/`) is the **archiver**; siblings under the repo root include `fingerprints/`, `code-archival/`, `gdrive-archival/`. See repo `docs/PROJECTS.md` for the full map.
 
@@ -27,7 +27,7 @@ Python CLI + bash orchestration that downloads Hugging Face model weights to **m
 | `src/archiver/` | All Python modules (package `archiver`) |
 | `deploy/` | VM setup, token helper, mount scripts |
 
-**On disk (runtime):** `d5/run_state.json`, `d5/STATUS.md`, `d5/logs/`, `d5/archive/`; scratch **`d1/.tmp/`** (or drive tmp from config) — never root SSD for weights.
+**On disk (runtime):** `d3/run_state.json`, `d3/STATUS.md`, `d3/logs/`, `d3/archive/` (replicated to d1/d2 `archive/`); scratch **`d1/.tmp/`** then **`d3/.tmp`** — never D5 for infra or partials; D5 only for completed `drive: d5` model trees — never root SSD for weights.
 
 ---
 

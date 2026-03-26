@@ -5,7 +5,7 @@
 models_mount: /mnt/models
 
 archiver_root: /home/x/z/dev/model-archival/model-archival/model-archival
-metadata_pending_path: /mnt/models/d5/gdrive_metadata_pending
+metadata_pending_path: /mnt/models/d3/gdrive_metadata_pending
 
 gdrive:
   # If rclone.conf sets root_folder_id to the shared folder, use "gdrive:" only (do not repeat ID).
@@ -13,8 +13,8 @@ gdrive:
   base_path: ""
   transfers: 1
   checkers: 1
-  # rclone bwlimit is byte-based; 10 megabits/s = 1.25 megabytes/s ≈ 1250k
-  bwlimit: "1250k"
+  # rclone bwlimit is bytes/s; cap uploads globally at ~2 MB/s.
+  bwlimit: "2M"
   # Tracker-skipped dirs: run `rclone check --checksum --one-way` vs Drive before skipping (no full download).
   # Disable for a run: `backup-registry --no-verify-remote`
   registry_verify_remote: true
@@ -31,7 +31,7 @@ gdrive:
 #   - /home/x/dev/code-archives
 
 # upload_selection:
-#   run_state_path: /mnt/models/d5/run_state.json
+#   run_state_path: /mnt/models/d3/run_state.json
 #   drives: [d2, d3, d5]
 #   max_total_gb: 3000
 #   max_per_model_gb: 200

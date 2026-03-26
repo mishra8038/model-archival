@@ -40,12 +40,12 @@ model-archival/
 ## Design rules
 
 - Downloads are always resumable — never delete `.tmp` partial files or `.aria2` control files
-- run_state.json lives on D5; `.tmp` scratch lives on D1 (not D5)
-- **Dynamic priority**: optional `priority_overrides.json` on D5. JSON map `model_id -> priority` (lower = sooner). Re-read when picking each next model — edit the file anytime without restarting. Example: `{"meta-llama/Llama-3.3-70B-Instruct": 3}` defers that model until after priority-1/2.
+- Archiver infra (`run_state.json`, `logs/`, `archive/`, `STATUS.md`, `priority_overrides.json`, GDrive sentinel) lives on **D3**; **D5** only receives finished model trees when `drive: d5`. `.tmp` scratch: D1 preferred, then D3 — never D5.
+- **Dynamic priority**: optional `priority_overrides.json` on D3 (infra root). JSON map `model_id -> priority` (lower = sooner). Re-read when picking each next model — edit the file anytime without restarting. Example: `{"meta-llama/Llama-3.3-70B-Instruct": 3}` defers that model until after priority-1/2.
 - `commit_sha` in registry.yaml is auto-pinned after first download
 - LFS CDN URLs expire ~1 hour — always re-fetch with `hf_hub_url()` before each attempt
 - On SHA-256 mismatch: remove both the corrupt file AND its `.aria2` control file (force clean restart)
-- `sync_archive()` replicates `archive/` to all drives after each model completes
+- `sync_archive()` replicates primary `archive/` (on D3) to **D1 and D2** only after each model completes (not D5)
 - Concurrency: MAX_FILES_IN_FLIGHT=8 per model (downloader.py); ARIA2_MAX_CONCURRENT=16 (aria2_manager.py). Bandwidth cap (if set) is applied in aria2 only.
 
 ## Adding a model to registry.yaml

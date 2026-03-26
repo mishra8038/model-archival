@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import shutil
 import sys
 from datetime import datetime, time as dt_time, timezone
 from collections import deque
@@ -19,7 +20,7 @@ from rich.rule import Rule
 from rich.table import Table
 from rich.text import Text
 
-from archiver.models import load_registry, save_registry, Registry
+from archiver.models import ModelEntry, load_registry, save_registry, Registry
 from archiver.state import (
     RunState,
     STATUS_COMPLETE,
@@ -41,30 +42,84 @@ ROOT_FS_MIN_FREE_GB = 10
 
 
 def _d5_path(reg: Registry) -> Path:
-    """Return the D5 mount point, falling back to /tmp/archiver if not configured."""
+    """Return the D5 mount point (model overflow only), falling back if not configured."""
     d5 = reg.drives.get("d5")
     return d5.mount_point if d5 else Path("/tmp/archiver")
 
 
+def _d3_path(reg: Registry) -> Path:
+    """D3 mount — archiver metadata/state/logs/archive primary; fallback for dev without d3."""
+    d3 = reg.drives.get("d3")
+    return d3.mount_point if d3 else Path("/tmp/archiver")
+
+
+def _infra_root(reg: Registry) -> Path:
+    """
+    Root for archiver operational files (run_state, logs, archive/, STATUS.md, etc.).
+    D5 is not used for this — only for completed model trees when registry says drive: d5.
+    """
+    return _d3_path(reg)
+
+
 def _tmp_dir(reg: Registry) -> Path:
     """
-    Return the scratch directory for in-progress downloads.
-    Reads tmp_dir from D1 in drives.yaml (D1 has ~2.3 TB headroom post-downloads,
-    far more than the 1 TB D5 drive). Falls back to <d5>/.tmp for safety.
+    Scratch for in-progress downloads (aria2 partials). Prefer D1, then any non-D5 tmp_dir,
+    then D3/.tmp. Never D5 — D5 only receives finished models when required by the registry.
     """
     d1 = reg.drives.get("d1")
     if d1 and d1.tmp_dir:
         return d1.tmp_dir
-    # Fallback: .tmp on whichever drive has a configured tmp_dir
-    for drive in reg.drives.values():
+    for label, drive in reg.drives.items():
+        if label == "d5":
+            continue
         if drive.tmp_dir:
             return drive.tmp_dir
-    return _d5_path(reg) / ".tmp"
+    return _d3_path(reg) / ".tmp"
 
 
 def _state_path(reg: Registry) -> Path:
-    """run_state.json always lives on D5, never on the root SSD."""
-    return _d5_path(reg) / "run_state.json"
+    """run_state.json on D3 (infra), never on the root SSD."""
+    return _infra_root(reg) / "run_state.json"
+
+
+def _maybe_migrate_infra_from_d5(reg: Registry, infra: Path) -> None:
+    """One-time copy from legacy D5 paths if D3 infra is empty but D5 still has files."""
+    legacy_root = _d5_path(reg)
+    if legacy_root == infra:
+        return
+    infra.mkdir(parents=True, exist_ok=True)
+    state_dst = infra / "run_state.json"
+    state_src = legacy_root / "run_state.json"
+    if not state_dst.exists() and state_src.exists():
+        shutil.copy2(state_src, state_dst)
+    po_dst = infra / "priority_overrides.json"
+    po_src = legacy_root / "priority_overrides.json"
+    if not po_dst.exists() and po_src.exists():
+        shutil.copy2(po_src, po_dst)
+
+
+def _archive_replica_mounts(reg: Registry) -> list[Path]:
+    """Replicate archive/ to D1 and D2 only — not D3 (primary) or D5 (models only when assigned)."""
+    out: list[Path] = []
+    for label in ("d1", "d2"):
+        d = reg.drives.get(label)
+        if d:
+            out.append(d.mount_point)
+    return out
+
+
+def _apply_storage_path_override(
+    models: list[ModelEntry], reg: Registry, label: str
+) -> None:
+    """Point model_dir at *label* mount; keep registry ``drive:`` unchanged (save_registry-safe)."""
+    d = reg.drives.get(label)
+    if not d:
+        raise click.ClickException(
+            f"--storage-drive {label!r} not in drives config "
+            f"(known: {', '.join(sorted(reg.drives))})"
+        )
+    for m in models:
+        m.drive_path = d.mount_point
 
 
 def _parse_local_clock(value: str) -> dt_time:
@@ -92,11 +147,12 @@ def _load(registry_path: Path, drives_path: Path) -> tuple[Registry, RunState]:
     if not registry_path.exists():
         raise click.ClickException(f"Registry not found: {registry_path}")
     reg = load_registry(registry_path, drives_path if drives_path.exists() else None)
-    # State file is on D5 — the 1 TB scratch/infra drive — not on the root SSD.
-    # Optional sentinel on D5: when set, GDrive backup runs metadata upload first (see gdrive-archival).
+    infra = _infra_root(reg)
+    _maybe_migrate_infra_from_d5(reg, infra)
+    # Sentinel on infra (D3): when set, GDrive backup runs metadata upload first (see gdrive-archival).
     state = RunState(
         _state_path(reg),
-        metadata_dirty_sentinel=_d5_path(reg) / "gdrive_metadata_pending",
+        metadata_dirty_sentinel=infra / "gdrive_metadata_pending",
     )
     return reg, state
 
@@ -195,11 +251,19 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option("--fast", is_flag=True, help="Use hf_transfer fast-path (no resume)")
 @click.option(
     "--status-out", type=click.Path(), default=None,
-    help="Path to write STATUS.md [default: <d5>/STATUS.md]",
+    help="Path to write STATUS.md [default: <d3 infra>/STATUS.md]",
 )
 @click.option(
     "--skip-drive-space-check", is_flag=True,
     help="Do not abort when a drive has <50 GB free (e.g. D2 full by design)",
+)
+@click.option(
+    "--storage-drive",
+    type=str,
+    default=None,
+    metavar="LABEL",
+    help="Write all selected models under this drive mount (raw/quantized/uncensored trees); "
+         "ignores registry drive for paths only — YAML drive: is unchanged on save.",
 )
 @click.pass_context
 def cmd_download(
@@ -220,6 +284,7 @@ def cmd_download(
     fast: bool,
     status_out: Optional[str],
     skip_drive_space_check: bool,
+    storage_drive: Optional[str],
 ) -> None:
     """Download model weights. Use --all, --tier X, or specify a model ID."""
     from archiver.aria2_manager import Aria2Manager, BandwidthSchedule
@@ -234,14 +299,22 @@ def cmd_download(
     verbose: bool = ctx.obj["verbose"]
     reg, state = _load(registry_path, drives_path)
 
-    # All runtime paths derived from storage drives — nothing written to the root SSD.
-    d5 = _d5_path(reg)
-    tmp_dir     = _tmp_dir(reg)      # D1/.tmp — 2.3 TB headroom, not D5's 1 TB
-    logs_dir    = d5 / "logs"
-    archive_dir = d5 / "archive"
+    # Infra on D3; D5 only stores finished model dirs when registry assigns drive: d5.
+    infra = _infra_root(reg)
+    tmp_dir = _tmp_dir(reg)
+    if storage_drive:
+        if storage_drive not in reg.drives:
+            raise click.BadParameter(
+                f"--storage-drive {storage_drive!r} not in drives config "
+                f"(known: {', '.join(sorted(reg.drives))})"
+            )
+        d_sd = reg.drives[storage_drive]
+        tmp_dir = d_sd.tmp_dir if d_sd.tmp_dir else (d_sd.mount_point / ".tmp")
+    logs_dir    = infra / "logs"
+    archive_dir = infra / "archive"
     index_path  = archive_dir / "checksums" / "global_index.jsonl"
-    status_path = Path(status_out) if status_out else (d5 / "STATUS.md")
-    activity_log_path = d5 / "archiver-activity.log"
+    status_path = Path(status_out) if status_out else (infra / "STATUS.md")
+    activity_log_path = infra / "archiver-activity.log"
 
     if bandwidth_cap is not None and scheduled_bandwidth_cap is not None:
         raise click.UsageError(
@@ -277,7 +350,13 @@ def cmd_download(
     _setup_logging(verbose, log_dir=logs_dir if not dry_run else None)
 
     # ── Startup banner ────────────────────────────────────────────────────
-    _print_startup_banner(reg, d5, tmp_dir, logs_dir, dry_run)
+    _print_startup_banner(reg, infra, tmp_dir, logs_dir, dry_run)
+    if storage_drive:
+        console.print(
+            f"[cyan]Storage override:[/] all selected models → "
+            f"[bold]{storage_drive}[/] ({reg.drives[storage_drive].mount_point}); "
+            f"registry [dim]drive:[/] field unchanged on save."
+        )
 
     # Warn if root SSD is unexpectedly low
     root_warn = _check_root_ssd_space()
@@ -329,8 +408,11 @@ def cmd_download(
 
     models = sorted(models, key=lambda m: (m.priority, m.drive, m.id))
 
+    if storage_drive:
+        _apply_storage_path_override(models, reg, storage_drive)
+
     if dry_run:
-        _print_download_plan(models, d5, tmp_dir)
+        _print_download_plan(models, infra, tmp_dir)
         return
 
     # ── Run report ───────────────────────────────────────────────────────
@@ -350,6 +432,7 @@ def cmd_download(
         "logs_dir": str(logs_dir),
         "tmp_dir": str(tmp_dir),
         "status_md": str(status_path),
+        "storage_drive": storage_drive or "(registry)",
     }
     run_report.open(
         hf_token_set=bool(hf_token),
@@ -395,11 +478,9 @@ def cmd_download(
             run_report.record_model_start(model)
             return downloader.download_model(model, run_report=run_report)
 
-        replica_roots = [
-            d.mount_point for label, d in reg.drives.items() if label != "d5"
-        ]
+        replica_roots = _archive_replica_mounts(reg)
 
-        sentinel_path = d5 / "gdrive_metadata_pending"
+        sentinel_path = infra / "gdrive_metadata_pending"
 
         def on_complete(model, manifest):
             run_report.record_model_complete(model, manifest)
@@ -412,7 +493,7 @@ def cmd_download(
         def on_failed(model, reason):
             run_report.record_model_fail(model, reason)
 
-        priority_overrides_path = d5 / "priority_overrides.json"
+        priority_overrides_path = infra / "priority_overrides.json"
         scheduler = DriveScheduler(
             registry=reg,
             state=state,
@@ -754,7 +835,7 @@ def cmd_drives(ctx: click.Context, action: str) -> None:
 
 @cli.command("report")
 @click.option("--output", type=click.Path(), default=None,
-              help="Output path [default: <d5>/STATUS.md or <d5>/ARCHIVE-REPORT.md]")
+              help="Output path [default: <d3 infra>/STATUS.md or ARCHIVE-REPORT.md]")
 @click.option(
     "--full",
     "full_report",
@@ -777,18 +858,18 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
     drives_path: Path = ctx.obj["drives_path"]
     reg, state = _load(registry_path, drives_path)
 
-    d5 = _d5_path(reg)
+    infra = _infra_root(reg)
 
     if not full_report:
         # Lightweight mode: just regenerate STATUS.md, similar to the live run.
-        out_path = Path(output) if output else (d5 / "STATUS.md")
+        out_path = Path(output) if output else (infra / "STATUS.md")
         display = StatusDisplay(registry=reg, state=state, status_md_path=out_path)
         display._write_status_md()
         console.print(f"[green]STATUS.md written → {out_path}[/]")
         return
 
     # Full report mode: richer snapshot that documents the entire archive state.
-    out_path = Path(output) if output else (d5 / "ARCHIVE-REPORT.md")
+    out_path = Path(output) if output else (infra / "ARCHIVE-REPORT.md")
 
     # Basic counts from persistent state.
     summary = state.summary()
@@ -819,7 +900,7 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
 
     # Recent activity from append-only log (for summaries and thread count).
     recent_activity_lines: list[str] = []
-    activity_log_path = d5 / "archiver-activity.log"
+    activity_log_path = infra / "archiver-activity.log"
     if activity_log_path.exists():
         try:
             with open(activity_log_path, "r", encoding="utf-8") as f:
@@ -830,7 +911,7 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
 
     # Try to pick up the latest ETA from the live STATUS.md if it exists.
     eta_str = "—"
-    status_md_path = d5 / "STATUS.md"
+    status_md_path = infra / "STATUS.md"
     if status_md_path.exists():
         try:
             for line in status_md_path.read_text(encoding="utf-8").splitlines():
@@ -987,7 +1068,7 @@ def _fmt_bytes_cli(b: int) -> str:
     return f"{b:.1f} PB"
 
 
-def _print_startup_banner(reg, d5: Path, tmp_dir: Path, logs_dir: Path, dry_run: bool) -> None:
+def _print_startup_banner(reg, infra: Path, tmp_dir: Path, logs_dir: Path, dry_run: bool) -> None:
     """Print a rich startup banner with run metadata and drive overview."""
     from rich.rule import Rule
     import socket
@@ -1008,7 +1089,7 @@ def _print_startup_banner(reg, d5: Path, tmp_dir: Path, logs_dir: Path, dry_run:
     info_table.add_row("Mode",     "[yellow]DRY RUN[/yellow]" if dry_run else "[green]LIVE[/green]")
     info_table.add_row("Tmp dir",  str(tmp_dir))
     info_table.add_row("Logs dir", str(logs_dir))
-    info_table.add_row("Status",   str(d5 / "STATUS.md"))
+    info_table.add_row("Status",   str(infra / "STATUS.md"))
     console.print(info_table)
 
     # Drive overview
@@ -1036,7 +1117,7 @@ def _print_startup_banner(reg, d5: Path, tmp_dir: Path, logs_dir: Path, dry_run:
     console.print()
 
 
-def _print_download_plan(models, d5: Path, tmp_dir: Path) -> None:
+def _print_download_plan(models, infra: Path, tmp_dir: Path) -> None:
     from rich.rule import Rule
 
     console.print(Rule("[bold cyan]Download Plan (dry run)[/bold cyan]"))
@@ -1060,11 +1141,11 @@ def _print_download_plan(models, d5: Path, tmp_dir: Path) -> None:
     path_table.add_column("key",   style="dim",  width=18)
     path_table.add_column("value", style="bold")
     path_table.add_row("tmp (D1)",   str(tmp_dir))
-    path_table.add_row("logs (D5)",  str(d5 / "logs"))
-    path_table.add_row("archive",    str(d5 / "archive"))
-    path_table.add_row("state",      str(d5 / "run_state.json"))
-    path_table.add_row("STATUS.md",  str(d5 / "STATUS.md"))
-    path_table.add_row("priority_overrides", str(d5 / "priority_overrides.json"))
+    path_table.add_row("logs (D3)",  str(infra / "logs"))
+    path_table.add_row("archive",    str(infra / "archive"))
+    path_table.add_row("state",      str(infra / "run_state.json"))
+    path_table.add_row("STATUS.md",  str(infra / "STATUS.md"))
+    path_table.add_row("priority_overrides", str(infra / "priority_overrides.json"))
     console.print(path_table)
     console.print()
 

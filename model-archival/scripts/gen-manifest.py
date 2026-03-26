@@ -4,7 +4,7 @@
 Usage (from model-archival/):
     uv run python3 scripts/gen-manifest.py
 
-Output: /mnt/models/d5/MANIFEST.md
+Output: /mnt/models/d3/MANIFEST.md (same infra root as run_state.json)
 """
 
 import json
@@ -16,8 +16,8 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 REG_PATH   = REPO_ROOT / "config" / "registry.yaml"
-STATE_PATH = Path("/mnt/models/d5/run_state.json")
-MANIFEST   = Path("/mnt/models/d5/MANIFEST.md")
+STATE_PATH = Path("/mnt/models/d3/run_state.json")
+MANIFEST   = Path("/mnt/models/d3/MANIFEST.md")
 
 
 def status_icon(s: str) -> str:

@@ -6,13 +6,18 @@ For each model revision directory (manifest.json or archiver layout), run local
 SHA verify then rclone copy --checksum --transfers 1. No post-upload download
 from GDrive.
 
-If registry includes path "d5", after all model dirs are processed, rclone copy
-the full d5 tree (excludes .tmp) so logs, archive, etc. sync; model files skip
-via checksum match.
+If registry includes path ``d5`` with ``tree_upload_min_depth`` (default 3), each
+sync unit (folder at least that many levels below ``d5/``, plus shallow top-level
+branches that never reach that depth) is copied and logged as ``registry-tree``.
+Set ``tree_upload_min_depth: 0`` on the ``d5`` root for a single full-tree
+``registry-d5`` copy (legacy). Per-model ``registry-model`` uploads still run for
+revision dirs; tree units skip paths excluded by ``d5_exclude`` / ``tree_upload_exclude``
+and skip subtrees that contain a model revision dir.
 """
 from __future__ import annotations
 
 import argparse
+import fnmatch
 import json
 import sys
 from datetime import datetime, timezone
@@ -20,6 +25,9 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set, Tuple
 
 import yaml
+
+# Logged to uploaded.log after each subtree rclone (relpath from models_mount).
+TREE_UPLOAD_KIND = "registry-tree"
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 CONFIG_PATH = SCRIPT_DIR / "config.yaml"
@@ -88,13 +96,171 @@ def discover_model_dirs(mount: Path, root_relpath: str) -> Set[Path]:
   return found
 
 
-def collect_all_model_dirs(mount: Path, roots: List[dict]) -> List[Path]:
+def _under_discovery_exclude_relpaths(mount: Path, model_dir: Path, prefixes: List[str]) -> bool:
+  if not prefixes:
+    return False
+  try:
+    rel = model_dir.relative_to(mount).as_posix()
+  except ValueError:
+    return False
+  for pref in prefixes:
+    p = pref.strip().strip("/")
+    if not p:
+      continue
+    if rel == p or rel.startswith(p + "/"):
+      return True
+  return False
+
+
+def _matches_tree_exclude(rel_from_root: str, patterns: List[str]) -> bool:
+  """True if *rel_from_root* (relative to registry root, posix) matches an exclude pattern."""
+  r = rel_from_root.strip().strip("/")
+  if not r:
+    return False
+  for pat in patterns:
+    p = (pat or "").strip().strip("/")
+    if not p:
+      continue
+    if p.endswith("/**"):
+      base = p[:-3].rstrip("/")
+      if r == base or r.startswith(base + "/"):
+        return True
+      continue
+    if any(ch in p for ch in "*?["):
+      if fnmatch.fnmatch(r, p):
+        return True
+      continue
+    if r == p or r.startswith(p + "/"):
+      return True
+  return False
+
+
+def _tree_exclude_patterns_for_root(reg: Dict, root_relpath: str) -> List[str]:
+  """Patterns are relative to the registry root directory (e.g. d5/)."""
+  extra: List[str] = []
+  for x in reg.get("tree_upload_exclude") or []:
+    s = str(x).strip()
+    if s:
+      extra.append(s)
+  r = root_relpath.strip().strip("/")
+  if r == "d5" or r.startswith("d5/"):
+    base = list(reg.get("d5_exclude") or [".tmp/**", "raw/**"])
+    for q in ("quantized/**", "uncensored/**"):
+      if q not in base:
+        base.append(q)
+    return base + extra
+  return extra
+
+
+def _tree_unit_conflicts_with_models(unit_rel: str, model_rels: Set[str]) -> bool:
+  """True if any model revision path lies under this tree unit (per-model upload owns it)."""
+  for m in model_rels:
+    if m == unit_rel or m.startswith(unit_rel + "/"):
+      return True
+  return False
+
+
+def discover_tree_upload_units(
+  mount: Path,
+  root_relpath: str,
+  min_depth: int,
+  exclude_patterns: List[str],
+  model_rels: Set[str],
+) -> List[Path]:
+  """
+  Non-overlapping directories to rclone as one job each.
+
+  * Every directory exactly *min_depth* components below *root_relpath* becomes a unit,
+    unless excluded or conflicting with a model revision path.
+  * For each immediate child of the registry root with no such unit inside it,
+    the child directory itself becomes one unit (covers e.g. d5/logs/).
+  """
+  root = (mount / root_relpath).resolve()
+  if not root.is_dir() or min_depth < 1:
+    return []
+
+  deep: List[Path] = []
+  try:
+    for p in root.rglob("*"):
+      if not p.is_dir():
+        continue
+      if _tmp_in_path(p):
+        continue
+      try:
+        rel_from_root = p.relative_to(root).as_posix()
+      except ValueError:
+        continue
+      if _matches_tree_exclude(rel_from_root, exclude_patterns):
+        continue
+      if len(p.relative_to(root).parts) != min_depth:
+        continue
+      rel_mount = p.relative_to(mount).as_posix()
+      if _tree_unit_conflicts_with_models(rel_mount, model_rels):
+        continue
+      deep.append(p)
+  except OSError:
+    return []
+
+  deep = sorted(set(deep))
+
+  shallow: List[Path] = []
+  try:
+    children = sorted(x for x in root.iterdir() if x.is_dir() and not x.name.startswith("."))
+  except OSError:
+    children = []
+  for c in children:
+    if _tmp_in_path(c):
+      continue
+    try:
+      crelp = c.relative_to(root).as_posix()
+    except ValueError:
+      continue
+    if _matches_tree_exclude(crelp, exclude_patterns):
+      continue
+    rel_mount = c.relative_to(mount).as_posix()
+    if _tree_unit_conflicts_with_models(rel_mount, model_rels):
+      continue
+    has_deep = any(c in d.parents or d == c for d in deep)
+    if not has_deep:
+      shallow.append(c)
+
+  return sorted(set(deep + shallow))
+
+
+def _d5_root_entry(roots: List[dict]) -> Optional[dict]:
+  for r in roots:
+    p = (r.get("path") or "").strip().strip("/")
+    if p == "d5":
+      return r
+  return None
+
+
+def _tree_min_depth_for_root(entry: dict) -> int:
+  """0 = use legacy single full-tree sync for d5 only when caller handles it."""
+  raw = entry.get("tree_upload_min_depth")
+  if raw is None:
+    return 3
+  try:
+    return max(0, int(raw))
+  except (TypeError, ValueError):
+    return 3
+
+
+def collect_all_model_dirs(mount: Path, roots: List[dict], reg: Optional[Dict] = None) -> List[Path]:
   combined: Set[Path] = set()
   for item in roots:
     rel = (item.get("path") or "").strip().strip("/")
     if not rel:
       continue
     combined |= discover_model_dirs(mount, rel)
+  prefixes: List[str] = []
+  if reg:
+    for ent in reg.get("d5_discovery_exclude_relpaths") or []:
+      s = str(ent).strip().strip("/")
+      if s:
+        prefixes.append(s)
+  if prefixes:
+    combined = {p for p in combined if not _under_discovery_exclude_relpaths(mount, p, prefixes)}
   return sorted(combined)
 
 
@@ -132,8 +298,8 @@ def _estimate_model_dir_size_bytes(model_dir: Path) -> int:
 
 def parse_upload_log_for_registry(log_path: Path) -> Tuple[Set[str], Optional[str]]:
   """
-  From uploaded.log: set of relpaths logged as registry-model, and latest UTC timestamp
-  among those lines (for “last model upload” hint).
+  From uploaded.log: relpaths logged as registry-model or registry-tree, and latest
+  UTC timestamp among those lines.
   """
   uploaded: Set[str] = set()
   last_ts: Optional[str] = None
@@ -144,7 +310,7 @@ def parse_upload_log_for_registry(log_path: Path) -> Tuple[Set[str], Optional[st
     if len(parts) < 4:
       continue
     ts, kind, ident = parts[0], parts[1], parts[2]
-    if kind == "registry-model":
+    if kind in ("registry-model", TREE_UPLOAD_KIND):
       uploaded.add(ident)
       if last_ts is None or ts > last_ts:
         last_ts = ts
@@ -184,7 +350,7 @@ def load_registry_upload_state() -> dict:
   """
   Persistent tracker: model relpaths that finished verify + rclone OK.
   Later runs skip them entirely (no rclone / remote comparison) unless --resync-all.
-  On first use, seed from uploaded.log (registry-model / registry-d5).
+  On first use, seed from uploaded.log (registry-model / registry-tree / registry-d5).
   """
   data: dict = {
     "version": STATE_VERSION,
@@ -206,6 +372,7 @@ def load_registry_upload_state() -> dict:
 
   uploaded, _ = parse_upload_log_for_registry(UPLOADED_LOG_PATH)
   data["completed_models"] = sorted(uploaded)
+  # Legacy monolithic d5 line does not list per-folder paths; keep d5_complete for gate compat.
   d5_ts = parse_upload_log_last_d5_sync(UPLOADED_LOG_PATH)
   if d5_ts:
     data["d5_complete"] = True
@@ -234,7 +401,7 @@ def write_registry_upload_status(cfg: Dict, reg: Dict) -> Path:
   """
   mount = Path(cfg.get("models_mount", "/mnt/models")).resolve()
   roots = reg.get("roots") or []
-  model_dirs = collect_all_model_dirs(mount, roots)
+  model_dirs = collect_all_model_dirs(mount, roots, reg)
   discovered: Set[str] = set()
   for md in model_dirs:
     try:
@@ -268,7 +435,8 @@ def write_registry_upload_status(cfg: Dict, reg: Dict) -> Path:
   lines: List[str] = [
     "# GDrive registry upload status\n",
     "\n",
-    f"_Generated: {now} (UTC) — discovery under `models_mount` + [`logs/uploaded.log`](uploaded.log) (`registry-model` / `registry-d5`)._\n",
+    f"_Generated: {now} (UTC) — discovery under `models_mount` + [`logs/uploaded.log`](uploaded.log) "
+    f"(`registry-model` / `{TREE_UPLOAD_KIND}` / `registry-d5`)._\n",
     "\n",
     "## Summary\n",
     "\n",
@@ -348,7 +516,7 @@ def write_uploaded_models_catalog(cfg: Dict, reg: Dict) -> Tuple[Path, Path]:
       if len(parts) < 4:
         continue
       ts, kind, rel = parts[0], parts[1], parts[2]
-      if kind != "registry-model":
+      if kind not in ("registry-model", TREE_UPLOAD_KIND):
         continue
       prev = ts_by_rel.get(rel)
       if prev is None or ts > prev:
@@ -425,7 +593,7 @@ def print_registry_plan(cfg: Dict, reg: Dict) -> None:
   print(f"roots ({len(roots)}):")
   for r in roots:
     print(f"  - {r.get('path')}")
-  model_dirs = collect_all_model_dirs(mount, roots)
+  model_dirs = collect_all_model_dirs(mount, roots, reg)
   print(f"\nmodel revision dirs discovered: {len(model_dirs)}")
   for p in model_dirs:
     try:
@@ -434,7 +602,25 @@ def print_registry_plan(cfg: Dict, reg: Dict) -> None:
       print(f"  {p}")
   has_d5 = any((r.get("path") or "").strip().strip("/") == "d5" for r in roots)
   if has_d5:
-    print("\n(after models: full rclone copy of d5/ → models/d5/ with d5_exclude)")
+    de = _d5_root_entry(roots)
+    td = _tree_min_depth_for_root(de) if de else 0
+    excl = _tree_exclude_patterns_for_root(reg, "d5") if de else []
+    mrels: Set[str] = set()
+    for md in model_dirs:
+      try:
+        mrels.add(md.relative_to(mount).as_posix())
+      except ValueError:
+        pass
+    if td > 0:
+      tus = discover_tree_upload_units(mount, "d5", td, excl, mrels)
+      print(f"\nd5 tree upload units (min_depth={td}): {len(tus)}")
+      for p in tus:
+        try:
+          print(f"  {p.relative_to(mount).as_posix()}")
+        except ValueError:
+          print(f"  {p}")
+    else:
+      print("\n(d5 in registry: legacy full d5/ copy first, then per-model uploads)")
 
 
 def _ensure_verify_report_header() -> None:
@@ -627,6 +813,15 @@ def run_rclone_check_dir(
   return subprocess.run(cmd).returncode == 0
 
 
+def _drive_upload_priority(mount: Path, model_dir: Path) -> int:
+  """0 = under d5/ (upload first); 1 = other drives."""
+  try:
+    rel = model_dir.relative_to(mount).as_posix()
+  except ValueError:
+    return 1
+  return 0 if rel == "d5" or rel.startswith("d5/") else 1
+
+
 def run_registry_upload(
   cfg: Dict,
   reg: Dict,
@@ -665,19 +860,174 @@ def run_registry_upload(
     print(f"error: cannot import backup helpers: {e}", file=sys.stderr)
     return 2
 
-  model_dirs = collect_all_model_dirs(mount, roots)
+  state = load_registry_upload_state()
+  completed: Set[str] = set(state.get("completed_models") or [])
+
+  rclone_failures = 0
+  verify_skipped = 0
+  tracker_skipped = 0
+  remote_check_ok = 0
+  remote_check_fail = 0
+
+  has_d5_root = any((r.get("path") or "").strip().strip("/") == "d5" for r in roots)
+  d5_entry = _d5_root_entry(roots)
+  d5_tree_depth = _tree_min_depth_for_root(d5_entry) if d5_entry else 0
+
+  model_dirs = collect_all_model_dirs(mount, roots, reg)
+  model_rels: Set[str] = set()
+  for md in model_dirs:
+    try:
+      model_rels.add(md.relative_to(mount).as_posix())
+    except ValueError:
+      pass
+
+  print(f"models_mount={mount}")
+  print(f"remote_models={models_prefix}")
+  if has_d5_root:
+    if d5_tree_depth > 0:
+      print(
+        f"(policy) `d5/`: upload subtree units (tree_upload_min_depth={d5_tree_depth}) logged as "
+        f"`{TREE_UPLOAD_KIND}`, full `d5/` gate check, then per-model + other roots."
+      )
+    else:
+      print(
+        "(policy) Sync full `d5/` tree to Drive first (legacy), verify on Drive, then upload "
+        "other registry roots (per-model `d5/` dirs under raw/quantized use `registry-model`)."
+      )
+
+  # d5/ first: granular tree units OR single monolithic copy when tree_upload_min_depth: 0
+  d5_full_tree_verified = False
+  if has_d5_root:
+    d5_src = mount / "d5"
+    d5_dst = f"{models_prefix}/d5"
+    excludes = reg.get("d5_exclude") or [".tmp/**"]
+    if not d5_src.is_dir():
+      print(f"error: registry includes `path: d5` but not a directory: {d5_src}", file=sys.stderr)
+      return 2
+
+    if d5_tree_depth > 0:
+      excl = _tree_exclude_patterns_for_root(reg, "d5")
+      tree_units = discover_tree_upload_units(mount, "d5", d5_tree_depth, excl, model_rels)
+      print(f"\n--- d5 granular: {len(tree_units)} subtree unit(s) (excludes + model-dir overlap applied) ---")
+      unit_excludes = [".tmp/**"]
+      for i, unit in enumerate(tree_units, 1):
+        try:
+          rel_pos = unit.relative_to(mount).as_posix()
+        except ValueError:
+          print(f"[skip] tree unit not under mount: {unit}")
+          continue
+        dst = f"{models_prefix}/{rel_pos}"
+        print(f"\n[d5-tree {i}/{len(tree_units)}] {rel_pos}")
+
+        if not resync_all and rel_pos in completed:
+          if verify_remote:
+            tag = "[dry-run] " if dry_run else ""
+            ok_chk = run_rclone_check_dir(
+              unit, dst, transfers, checkers, bwlimit, unit_excludes, dry_run
+            )
+            if ok_chk:
+              print(f"{tag}[ok] remote check passed — tree unit skip: {rel_pos}")
+              remote_check_ok += 1
+              tracker_skipped += 1
+              continue
+            print(f"{tag}[warn] remote check failed — re-upload tree unit: {rel_pos}")
+            remote_check_fail += 1
+          else:
+            tag = "[dry-run] " if dry_run else ""
+            print(f"{tag}[skip] tracker: tree unit already logged — {rel_pos}")
+            tracker_skipped += 1
+            continue
+
+        ok = run_rclone_copy_dir(
+          unit, dst, transfers, checkers, bwlimit, unit_excludes, dry_run
+        )
+        if not ok:
+          print(f"[fail] rclone tree unit: {rel_pos}")
+          rclone_failures += 1
+        elif not dry_run:
+          log_upload_success(rel_pos, str(unit.resolve()), kind=TREE_UPLOAD_KIND)
+          mark_registry_model_complete(state, rel_pos)
+          completed.add(rel_pos)
+
+      print("\n--- verify full d5/ on Drive before other registry roots ---")
+      tag = "[dry-run] " if dry_run else ""
+      ok_gate = run_rclone_check_dir(
+        d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run
+      )
+      if not ok_gate:
+        print(
+          f"{tag}[abort] d5/ one-way checksum check failed — not uploading d1/d2/d3 registry paths",
+          file=sys.stderr,
+        )
+        return 1
+      d5_full_tree_verified = True
+      print(f"{tag}[ok] d5/ tree verified on Drive — proceeding with remaining registry roots")
+      if not dry_run:
+        mark_registry_d5_complete(state)
+    else:
+      print(f"\n--- (1/2) full d5 tree → {d5_dst} (excludes: {excludes}) ---")
+      if not resync_all and state.get("d5_complete"):
+        if verify_remote:
+          tag = "[dry-run] " if dry_run else ""
+          ok_chk = run_rclone_check_dir(
+            d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run
+          )
+          if ok_chk:
+            print(f"{tag}[ok] remote check passed — d5/ tracker skip confirmed")
+            remote_check_ok += 1
+            tracker_skipped += 1
+          else:
+            print(f"{tag}[warn] remote check failed — re-syncing d5/")
+            remote_check_fail += 1
+            ok = run_rclone_copy_dir(
+              d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run
+            )
+            if not ok:
+              rclone_failures += 1
+            elif not dry_run:
+              log_upload_success("d5/", str(d5_src.resolve()), kind="registry-d5")
+              mark_registry_d5_complete(state)
+        else:
+          tag = "[dry-run] " if dry_run else ""
+          print(
+            f"{tag}[skip] tracker: d5/ already marked complete — no rclone (gate still verifies below)"
+          )
+          tracker_skipped += 1
+      else:
+        ok = run_rclone_copy_dir(
+          d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run
+        )
+        if not ok:
+          rclone_failures += 1
+        elif not dry_run:
+          log_upload_success("d5/", str(d5_src.resolve()), kind="registry-d5")
+          mark_registry_d5_complete(state)
+
+      print("\n--- (2/2) verify d5/ on Drive before other registry roots ---")
+      tag = "[dry-run] " if dry_run else ""
+      ok_gate = run_rclone_check_dir(
+        d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run
+      )
+      if not ok_gate:
+        print(
+          f"{tag}[abort] d5/ one-way checksum check failed — not uploading d1/d2/d3 registry paths",
+          file=sys.stderr,
+        )
+        return 1
+      d5_full_tree_verified = True
+      print(f"{tag}[ok] d5/ tree verified on Drive — proceeding with remaining registry roots")
+
   model_dirs = sorted(
     model_dirs,
-    key=lambda p: (_estimate_model_dir_size_bytes(p), p.relative_to(mount).as_posix() if p.is_relative_to(mount) else str(p)),
+    key=lambda p: (
+      _drive_upload_priority(mount, p),
+      _estimate_model_dir_size_bytes(p),
+      p.relative_to(mount).as_posix() if p.is_relative_to(mount) else str(p),
+    ),
   )
   if limit is not None:
     model_dirs = model_dirs[:limit]
 
-  state = load_registry_upload_state()
-  completed: Set[str] = set(state.get("completed_models") or [])
-
-  print(f"models_mount={mount}")
-  print(f"remote_models={models_prefix}")
   print(f"model revision dirs to process: {len(model_dirs)}")
   if resync_all:
     print("resync-all: tracker ignored — every dir will verify + rclone (or dry-run)")
@@ -694,11 +1044,6 @@ def run_registry_upload(
   if dry_run and not model_dirs:
     print("(dry-run: no model dirs found — check paths)")
 
-  rclone_failures = 0
-  verify_skipped = 0
-  tracker_skipped = 0
-  remote_check_ok = 0
-  remote_check_fail = 0
   for i, md in enumerate(model_dirs, 1):
     try:
       rel = md.relative_to(mount)
@@ -740,46 +1085,6 @@ def run_registry_upload(
       log_upload_success(rel_pos, str(md), kind="registry-model")
       mark_registry_model_complete(state, rel_pos)
       completed.add(rel_pos)
-
-  has_d5_root = any((r.get("path") or "").strip().strip("/") == "d5" for r in roots)
-  if has_d5_root:
-    d5_src = mount / "d5"
-    d5_dst = f"{models_prefix}/d5"
-    excludes = reg.get("d5_exclude") or [".tmp/**"]
-    print(f"\n--- full d5 tree → {d5_dst} (excludes: {excludes}) ---")
-    if d5_src.is_dir():
-      if not resync_all and state.get("d5_complete"):
-        if verify_remote:
-          tag = "[dry-run] " if dry_run else ""
-          ok_chk = run_rclone_check_dir(
-            d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run
-          )
-          if ok_chk:
-            print(f"{tag}[ok] remote check passed — d5/ tracker skip confirmed")
-            remote_check_ok += 1
-            tracker_skipped += 1
-          else:
-            print(f"{tag}[warn] remote check failed — re-syncing d5/")
-            remote_check_fail += 1
-            ok = run_rclone_copy_dir(d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run)
-            if not ok:
-              rclone_failures += 1
-            elif not dry_run:
-              log_upload_success("d5/", str(d5_src.resolve()), kind="registry-d5")
-              mark_registry_d5_complete(state)
-        else:
-          tag = "[dry-run] " if dry_run else ""
-          print(f"{tag}[skip] tracker: d5/ already marked complete — no rclone")
-          tracker_skipped += 1
-      else:
-        ok = run_rclone_copy_dir(d5_src, d5_dst, transfers, checkers, bwlimit, excludes, dry_run)
-        if not ok:
-          rclone_failures += 1
-        elif not dry_run:
-          log_upload_success("d5/", str(d5_src.resolve()), kind="registry-d5")
-          mark_registry_d5_complete(state)
-    else:
-      print(f"[warn] d5 not found at {d5_src}")
 
   try:
     path = write_registry_upload_status(cfg, reg)

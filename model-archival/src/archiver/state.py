@@ -22,8 +22,8 @@ STATUS_SKIPPED = "skipped"      # auth required but no token
 
 class RunState:
     """
-    Manages run_state.json — a JSON file persisted on D5 that records the
-    status of every model across all runs.
+    Manages run_state.json — persisted on the infra drive (D3 by default) and
+    records the status of every model across all runs.
     """
 
     def __init__(
