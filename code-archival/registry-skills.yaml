@@ -244,10 +244,13 @@ repos:
       Self-evolving skills: learn from execution, reflect on failures, improve.
       Claude Code oriented; offline capable.
 
-  # Repo may be private/renamed/deleted — API returns no data; leave in list for retry
-  - id: jthack/threat-hunting-with-sigma-rules-skill
-    github: jthack/threat-hunting-with-sigma-rules-skill
+  # Replaces jthack/threat-hunting-with-sigma-rules-skill (repo 404 on public API, 2026-03).
+  - id: SigmaHQ/sigma
+    github: SigmaHQ/sigma
     category: agent-skills
-    risk: high
+    risk: medium
     licence: NOASSERTION
-    notes: Sigma detection rules for threat hunting. Archive failed (repo not accessible).
+    notes: >
+      Canonical Sigma detection-rule corpus (YAML rules + tooling). Use as the
+      upstream source for threat-hunting workflows; not a single SKILL.md but
+      what the removed jthack skill wrapped.

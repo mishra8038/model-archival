@@ -131,6 +131,102 @@ models:
   notes: '[discipline:strategic_reasoning][math] Qwen reasoning line (QwQ); strong
     for logic, math-heavy game theory, verifier-style CoT. Uncensored: use abliterated
     Qwen2.5-32B-class community builds if refusal is an issue — not QwQ-specific.'
+# --- Qwen3.5 (dense + MoE) — HF collection https://huggingface.co/collections/Qwen/qwen35 ---
+# Image-text-to-text on HF; archive BF16/safetensors for run + fine-tune. Revisit drive: if disks full.
+- id: Qwen/Qwen3.5-4B-Base
+  hf_repo: Qwen/Qwen3.5-4B-Base
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Dense pre-trained base (4B); SFT/DPO anchor.'
+- id: Qwen/Qwen3.5-4B
+  hf_repo: Qwen/Qwen3.5-4B
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Dense instruct/chat (4B); small workhorse.'
+- id: Qwen/Qwen3.5-9B-Base
+  hf_repo: Qwen/Qwen3.5-9B-Base
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Dense pre-trained base (9B); SFT/DPO anchor.'
+- id: Qwen/Qwen3.5-9B
+  hf_repo: Qwen/Qwen3.5-9B
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Dense instruct/chat (9B); mid workhorse.'
+- id: Qwen/Qwen3.5-27B
+  hf_repo: Qwen/Qwen3.5-27B
+  tier: G
+  drive: d2
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Dense ~27B checkpoint; larger run/fine-tune target.'
+- id: Qwen/Qwen3.5-35B-A3B-Base
+  hf_repo: Qwen/Qwen3.5-35B-A3B-Base
+  tier: G
+  drive: d5
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] MoE base (~35B, ~3B active); needs D5+ space.'
+- id: Qwen/Qwen3.5-35B-A3B
+  hf_repo: Qwen/Qwen3.5-35B-A3B
+  tier: G
+  drive: d5
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] MoE instruct/chat (~35B, ~3B active).'
+- id: Qwen/Qwen3.5-122B-A10B
+  hf_repo: Qwen/Qwen3.5-122B-A10B
+  tier: G
+  drive: d1
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Large MoE (~122B, ~10B active); D1-scale weights.'
+- id: Qwen/Qwen3.5-397B-A17B
+  hf_repo: Qwen/Qwen3.5-397B-A17B
+  tier: G
+  drive: d1
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][qwen3.5] Flagship MoE (~397B, ~17B active); largest tier — ensure D1 free.'
+# --- MiniMax M2.7 (PinchBench: minimax/minimax-m2.7) ---
+# Licence-gated on HF (unauthenticated hub/API returns 401). Accept terms on the model card, then
+# `archiver tokens check`. If MiniMax publishes BF16/FP8/NVFP4 as separate hf_repo ids, add rows here.
+- id: MiniMaxAI/MiniMax-M2.7
+  hf_repo: MiniMaxAI/MiniMax-M2.7
+  tier: G
+  drive: d1
+  priority: 2
+  licence: other
+  requires_auth: true
+  commit_sha: null
+  notes: '[discipline:frontier][minimax] MiniMax M2.7 MoE open weights; agent/coding line. Large
+    shard count — D1. PinchBench slug minimax/minimax-m2.7.'
 - id: dmis-lab/biobert-base-cased-v1.2
   hf_repo: dmis-lab/biobert-base-cased-v1.2
   tier: G
@@ -160,6 +256,30 @@ models:
   requires_auth: true
   commit_sha: null
   notes: Gemma-3 4B multimodal — smallest capable open VLM
+# --- Google Gemini 3 (HF; licence-gated — hub pages 401 until terms accepted + token) ---
+# PinchBench uses google/gemini-3-flash-preview; Gemini API model id for lite line is
+# gemini-3.1-flash-lite-preview (HF repo id assumed parallel — fix hf_repo if Google renames).
+- id: google/gemini-3-flash-preview
+  hf_repo: google/gemini-3-flash-preview
+  tier: F
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: true
+  commit_sha: null
+  notes: '[discipline:frontier][google] Gemini 3 Flash Preview on Hugging Face (gated).
+    Multimodal flash tier; accept terms on model card. PinchBench: google/gemini-3-flash-preview.'
+- id: google/gemini-3.1-flash-lite-preview
+  hf_repo: google/gemini-3.1-flash-lite-preview
+  tier: F
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: true
+  commit_sha: null
+  notes: '[discipline:frontier][google] Gemini 3.1 Flash-Lite Preview on Hugging Face
+    (gated). Lower-cost / lower-latency flash line per Google AI model docs; verify
+    hf_repo matches the card if download fails.'
 - id: jinaai/jina-embeddings-v3
   hf_repo: jinaai/jina-embeddings-v3
   tier: B
@@ -599,14 +719,15 @@ models:
 - id: failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
   hf_repo: failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
   tier: D
-  drive: d5
+  drive: d3
   priority: 4
   licence: llama3
   requires_auth: false
   commit_sha: null
   parent_model: meta-llama/Meta-Llama-3-70B-Instruct
   method: abliteration
-  notes: failspy v3 series — the original widely-used abliteration method
+  notes: 'failspy v3 series — weights live on D3 uncensored/ (moved from D5 2026-03-29).
+    Stale .tmp stubs on d3/d5 are safe to remove.'
 - id: meta-llama/Llama-3.2-90B-Vision-Instruct
   hf_repo: meta-llama/Llama-3.2-90B-Vision-Instruct
   tier: F
@@ -717,7 +838,7 @@ models:
 - id: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   tier: D
-  drive: d5
+  drive: d3
   priority: 4
   licence: MIT
   requires_auth: false
@@ -726,7 +847,8 @@ models:
   - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
   method: abliteration
-  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
+  notes: 'tensorblock Q2_K/Q3_K_M; partial Q3_K_M + aria2 resume lives under d3/.tmp/
+    (d5 .tmp empty). Schedule on D3.'
 - id: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   hf_repo: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   tier: D
@@ -739,7 +861,8 @@ models:
   - Q3_K_M
   parent_model: meta-llama/Llama-3.3-70B-Instruct
   method: abliteration
-  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
+  notes: 'tensorblock Q2_K/Q3_K_M; partial Q3_K_M + aria2 under d5/.tmp/ (d3 .tmp empty
+    for this id). Schedule on D5.'
 - id: unsloth/DeepSeek-R1-GGUF
   hf_repo: unsloth/DeepSeek-R1-GGUF
   tier: C

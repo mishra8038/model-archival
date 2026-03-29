@@ -1,0 +1,3803 @@
+{
+  "count": 474,
+  "d5_complete": false,
+  "d5_completed_at": null,
+  "generated_at_utc": "2026-03-28T09:27:40Z",
+  "models": [
+    {
+      "estimated_size_bytes": 9940255871,
+      "model_relpath": "d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b",
+      "remote_path": "models/d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b",
+      "source_exists": true,
+      "source_path": "/mnt/models/d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b",
+      "uploaded_at_latest_utc": "2026-03-25T10:14:00Z"
+    },
+    {
+      "estimated_size_bytes": 8540775840,
+      "model_relpath": "d3/quantized/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "remote_path": "models/d3/quantized/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/quantized/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "uploaded_at_latest_utc": "2026-03-25T09:27:09Z"
+    },
+    {
+      "estimated_size_bytes": 8098525888,
+      "model_relpath": "d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+      "remote_path": "models/d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+      "uploaded_at_latest_utc": "2026-03-25T08:16:31Z"
+    },
+    {
+      "estimated_size_bytes": 4084613579,
+      "model_relpath": "d3/quantized/unsloth/Phi-4-mini-instruct-GGUF/78eb92a46fc37e6b524df991ed9aca9bc6aa7b80",
+      "remote_path": "models/d3/quantized/unsloth/Phi-4-mini-instruct-GGUF/78eb92a46fc37e6b524df991ed9aca9bc6aa7b80",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/quantized/unsloth/Phi-4-mini-instruct-GGUF/78eb92a46fc37e6b524df991ed9aca9bc6aa7b80",
+      "uploaded_at_latest_utc": "2026-03-25T08:15:36Z"
+    },
+    {
+      "estimated_size_bytes": 178825603,
+      "model_relpath": "d3/specialist/chemistry/raw/seyonec/ChemBERTa-zinc-base-v1/761d6a18cf99db371e0b43baf3e2d21b3e865a20",
+      "remote_path": "models/d3/specialist/chemistry/raw/seyonec/ChemBERTa-zinc-base-v1/761d6a18cf99db371e0b43baf3e2d21b3e865a20",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/chemistry/raw/seyonec/ChemBERTa-zinc-base-v1/761d6a18cf99db371e0b43baf3e2d21b3e865a20",
+      "uploaded_at_latest_utc": "2026-03-25T07:39:26Z"
+    },
+    {
+      "estimated_size_bytes": 2306628319,
+      "model_relpath": "d3/specialist/embeddings/raw/jinaai/jina-embeddings-v3/f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9",
+      "remote_path": "models/d3/specialist/embeddings/raw/jinaai/jina-embeddings-v3/f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/embeddings/raw/jinaai/jina-embeddings-v3/f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9",
+      "uploaded_at_latest_utc": "2026-03-25T07:40:45Z"
+    },
+    {
+      "estimated_size_bytes": 3098971881,
+      "model_relpath": "d3/specialist/math/raw/Qwen/Qwen2.5-Math-1.5B/4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2",
+      "remote_path": "models/d3/specialist/math/raw/Qwen/Qwen2.5-Math-1.5B/4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/math/raw/Qwen/Qwen2.5-Math-1.5B/4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2",
+      "uploaded_at_latest_utc": "2026-03-25T07:41:02Z"
+    },
+    {
+      "estimated_size_bytes": 1752326667,
+      "model_relpath": "d3/specialist/medicine/raw/cambridgeltl/SapBERT-from-PubMedBERT-fulltext/090663c3ae57bf35ffe4d0d468a2a88d03051a4d",
+      "remote_path": "models/d3/specialist/medicine/raw/cambridgeltl/SapBERT-from-PubMedBERT-fulltext/090663c3ae57bf35ffe4d0d468a2a88d03051a4d",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/medicine/raw/cambridgeltl/SapBERT-from-PubMedBERT-fulltext/090663c3ae57bf35ffe4d0d468a2a88d03051a4d",
+      "uploaded_at_latest_utc": "2026-03-25T07:40:31Z"
+    },
+    {
+      "estimated_size_bytes": 435998755,
+      "model_relpath": "d3/specialist/medicine/raw/dmis-lab/biobert-base-cased-v1.2/67c9c25b46986521ca33df05d8540da1210b3256",
+      "remote_path": "models/d3/specialist/medicine/raw/dmis-lab/biobert-base-cased-v1.2/67c9c25b46986521ca33df05d8540da1210b3256",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/medicine/raw/dmis-lab/biobert-base-cased-v1.2/67c9c25b46986521ca33df05d8540da1210b3256",
+      "uploaded_at_latest_utc": "2026-03-25T07:39:37Z"
+    },
+    {
+      "estimated_size_bytes": 435992605,
+      "model_relpath": "d3/specialist/medicine/raw/emilyalsentzer/Bio_ClinicalBERT/d5892b39a4adaed74b92212a44081509db72f87b",
+      "remote_path": "models/d3/specialist/medicine/raw/emilyalsentzer/Bio_ClinicalBERT/d5892b39a4adaed74b92212a44081509db72f87b",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/medicine/raw/emilyalsentzer/Bio_ClinicalBERT/d5892b39a4adaed74b92212a44081509db72f87b",
+      "uploaded_at_latest_utc": "2026-03-25T07:39:31Z"
+    },
+    {
+      "estimated_size_bytes": 878641005,
+      "model_relpath": "d3/specialist/medicine/raw/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/e1354b7a3a09615f6aba48dfad4b7a613eef7062",
+      "remote_path": "models/d3/specialist/medicine/raw/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/e1354b7a3a09615f6aba48dfad4b7a613eef7062",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/medicine/raw/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/e1354b7a3a09615f6aba48dfad4b7a613eef7062",
+      "uploaded_at_latest_utc": "2026-03-25T07:39:51Z"
+    },
+    {
+      "estimated_size_bytes": 10708777433,
+      "model_relpath": "d3/specialist/medicine/raw/stanford-crfm/BioMedLM/3e1a0abb814b8398bc34b4b6680ecf2c26d6a66f",
+      "remote_path": "models/d3/specialist/medicine/raw/stanford-crfm/BioMedLM/3e1a0abb814b8398bc34b4b6680ecf2c26d6a66f",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/medicine/raw/stanford-crfm/BioMedLM/3e1a0abb814b8398bc34b4b6680ecf2c26d6a66f",
+      "uploaded_at_latest_utc": "2026-03-25T21:40:16Z"
+    },
+    {
+      "estimated_size_bytes": 1687159072,
+      "model_relpath": "d3/specialist/science/quantized/tensorblock/Llama-3.2-3B-Instruct-GGUF/a95b197289958265f8eb95fc455b5766aed89b02",
+      "remote_path": "models/d3/specialist/science/quantized/tensorblock/Llama-3.2-3B-Instruct-GGUF/a95b197289958265f8eb95fc455b5766aed89b02",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/specialist/science/quantized/tensorblock/Llama-3.2-3B-Instruct-GGUF/a95b197289958265f8eb95fc455b5766aed89b02",
+      "uploaded_at_latest_utc": "2026-03-25T07:40:13Z"
+    },
+    {
+      "estimated_size_bytes": 8540770176,
+      "model_relpath": "d3/uncensored/mlabonne/NeuralDaredevil-8B-abliterated-GGUF/1b757b9c39eb38b8d12a7c0f71c6e48b5cc23053",
+      "remote_path": "models/d3/uncensored/mlabonne/NeuralDaredevil-8B-abliterated-GGUF/1b757b9c39eb38b8d12a7c0f71c6e48b5cc23053",
+      "source_exists": true,
+      "source_path": "/mnt/models/d3/uncensored/mlabonne/NeuralDaredevil-8B-abliterated-GGUF/1b757b9c39eb38b8d12a7c0f71c6e48b5cc23053",
+      "uploaded_at_latest_utc": "2026-03-25T09:25:50Z"
+    },
+    {
+      "estimated_size_bytes": 469607,
+      "model_relpath": "d5/archive",
+      "remote_path": "models/d5/archive",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/archive",
+      "uploaded_at_latest_utc": "2026-03-26T14:14:47Z"
+    },
+    {
+      "estimated_size_bytes": 8876,
+      "model_relpath": "d5/code-archives/1NickPappas__move-code-quality-skill/release",
+      "remote_path": "models/d5/code-archives/1NickPappas__move-code-quality-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/1NickPappas__move-code-quality-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:14:48Z"
+    },
+    {
+      "estimated_size_bytes": 69958002,
+      "model_relpath": "d5/code-archives/567-labs__instructor/release",
+      "remote_path": "models/d5/code-archives/567-labs__instructor/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/567-labs__instructor/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:14:50Z"
+    },
+    {
+      "estimated_size_bytes": 1841263,
+      "model_relpath": "d5/code-archives/AUTOMATIC1111__stable-diffusion-webui/release",
+      "remote_path": "models/d5/code-archives/AUTOMATIC1111__stable-diffusion-webui/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/AUTOMATIC1111__stable-diffusion-webui/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:14:51Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/AbanteAI__mentat/release",
+      "remote_path": "models/d5/code-archives/AbanteAI__mentat/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/AbanteAI__mentat/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:14:53Z"
+    },
+    {
+      "estimated_size_bytes": 67553328,
+      "model_relpath": "d5/code-archives/Aider-AI__aider/release",
+      "remote_path": "models/d5/code-archives/Aider-AI__aider/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Aider-AI__aider/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:15:28Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/All-Hands-AI__OpenHands/release",
+      "remote_path": "models/d5/code-archives/All-Hands-AI__OpenHands/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/All-Hands-AI__OpenHands/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:15:30Z"
+    },
+    {
+      "estimated_size_bytes": 15924369,
+      "model_relpath": "d5/code-archives/AntonOsika__gpt-engineer/release",
+      "remote_path": "models/d5/code-archives/AntonOsika__gpt-engineer/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/AntonOsika__gpt-engineer/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:15:31Z"
+    },
+    {
+      "estimated_size_bytes": 12089747,
+      "model_relpath": "d5/code-archives/Arize-ai__phoenix/release",
+      "remote_path": "models/d5/code-archives/Arize-ai__phoenix/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Arize-ai__phoenix/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:15:40Z"
+    },
+    {
+      "estimated_size_bytes": 7461798,
+      "model_relpath": "d5/code-archives/AutoGPTQ__AutoGPTQ/release",
+      "remote_path": "models/d5/code-archives/AutoGPTQ__AutoGPTQ/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/AutoGPTQ__AutoGPTQ/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:15:46Z"
+    },
+    {
+      "estimated_size_bytes": 302221895,
+      "model_relpath": "d5/code-archives/BerriAI__litellm/release",
+      "remote_path": "models/d5/code-archives/BerriAI__litellm/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/BerriAI__litellm/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:18:14Z"
+    },
+    {
+      "estimated_size_bytes": 7235809,
+      "model_relpath": "d5/code-archives/Comfy-Org__ComfyUI/release",
+      "remote_path": "models/d5/code-archives/Comfy-Org__ComfyUI/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Comfy-Org__ComfyUI/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:18:21Z"
+    },
+    {
+      "estimated_size_bytes": 44528369,
+      "model_relpath": "d5/code-archives/CompVis__stable-diffusion/release",
+      "remote_path": "models/d5/code-archives/CompVis__stable-diffusion/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/CompVis__stable-diffusion/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:18:44Z"
+    },
+    {
+      "estimated_size_bytes": 3603873,
+      "model_relpath": "d5/code-archives/ComposioHQ__awesome-claude-skills/release",
+      "remote_path": "models/d5/code-archives/ComposioHQ__awesome-claude-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ComposioHQ__awesome-claude-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:18:50Z"
+    },
+    {
+      "estimated_size_bytes": 14036850,
+      "model_relpath": "d5/code-archives/Dao-AILab__flash-attention/release",
+      "remote_path": "models/d5/code-archives/Dao-AILab__flash-attention/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Dao-AILab__flash-attention/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:00Z"
+    },
+    {
+      "estimated_size_bytes": 17680339,
+      "model_relpath": "d5/code-archives/Data-Centric-AI-Community__ydata-profiling/release",
+      "remote_path": "models/d5/code-archives/Data-Centric-AI-Community__ydata-profiling/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Data-Centric-AI-Community__ydata-profiling/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:12Z"
+    },
+    {
+      "estimated_size_bytes": 286698,
+      "model_relpath": "d5/code-archives/EleutherAI__elk/release",
+      "remote_path": "models/d5/code-archives/EleutherAI__elk/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/EleutherAI__elk/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:16Z"
+    },
+    {
+      "estimated_size_bytes": 3432370,
+      "model_relpath": "d5/code-archives/EleutherAI__lm-evaluation-harness/release",
+      "remote_path": "models/d5/code-archives/EleutherAI__lm-evaluation-harness/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/EleutherAI__lm-evaluation-harness/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:21Z"
+    },
+    {
+      "estimated_size_bytes": 562001,
+      "model_relpath": "d5/code-archives/EleutherAI__lm_perplexity/release",
+      "remote_path": "models/d5/code-archives/EleutherAI__lm_perplexity/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/EleutherAI__lm_perplexity/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:25Z"
+    },
+    {
+      "estimated_size_bytes": 25466,
+      "model_relpath": "d5/code-archives/EleutherAI__the-pile/release",
+      "remote_path": "models/d5/code-archives/EleutherAI__the-pile/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/EleutherAI__the-pile/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:29Z"
+    },
+    {
+      "estimated_size_bytes": 2773846,
+      "model_relpath": "d5/code-archives/EvolvingLMMs-Lab__lmms-eval/release",
+      "remote_path": "models/d5/code-archives/EvolvingLMMs-Lab__lmms-eval/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/EvolvingLMMs-Lab__lmms-eval/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:34Z"
+    },
+    {
+      "estimated_size_bytes": 12819,
+      "model_relpath": "d5/code-archives/FailSpy__abliterator/release",
+      "remote_path": "models/d5/code-archives/FailSpy__abliterator/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/FailSpy__abliterator/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:38Z"
+    },
+    {
+      "estimated_size_bytes": 14968,
+      "model_relpath": "d5/code-archives/IST-DASLab__sparsegpt/release",
+      "remote_path": "models/d5/code-archives/IST-DASLab__sparsegpt/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/IST-DASLab__sparsegpt/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:42Z"
+    },
+    {
+      "estimated_size_bytes": 1458227,
+      "model_relpath": "d5/code-archives/InternLM__lmdeploy/release",
+      "remote_path": "models/d5/code-archives/InternLM__lmdeploy/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/InternLM__lmdeploy/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:19:47Z"
+    },
+    {
+      "estimated_size_bytes": 62710022,
+      "model_relpath": "d5/code-archives/LostRuins__koboldcpp/release",
+      "remote_path": "models/d5/code-archives/LostRuins__koboldcpp/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/LostRuins__koboldcpp/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:19Z"
+    },
+    {
+      "estimated_size_bytes": 44327,
+      "model_relpath": "d5/code-archives/MLNLP-World__Awesome-LLM/release",
+      "remote_path": "models/d5/code-archives/MLNLP-World__Awesome-LLM/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/MLNLP-World__Awesome-LLM/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:23Z"
+    },
+    {
+      "estimated_size_bytes": 7233441,
+      "model_relpath": "d5/code-archives/MaartenGr__BERTopic/release",
+      "remote_path": "models/d5/code-archives/MaartenGr__BERTopic/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/MaartenGr__BERTopic/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:29Z"
+    },
+    {
+      "estimated_size_bytes": 4623945,
+      "model_relpath": "d5/code-archives/ModelTC__LightCompress/release",
+      "remote_path": "models/d5/code-archives/ModelTC__LightCompress/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ModelTC__LightCompress/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:33Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/ModelTC__llmc/release",
+      "remote_path": "models/d5/code-archives/ModelTC__llmc/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ModelTC__llmc/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:36Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/Mozilla-Ocho__llamafile/release",
+      "remote_path": "models/d5/code-archives/Mozilla-Ocho__llamafile/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Mozilla-Ocho__llamafile/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:39Z"
+    },
+    {
+      "estimated_size_bytes": 3549830,
+      "model_relpath": "d5/code-archives/NVIDIA-NeMo__Curator/release",
+      "remote_path": "models/d5/code-archives/NVIDIA-NeMo__Curator/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/NVIDIA-NeMo__Curator/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:43Z"
+    },
+    {
+      "estimated_size_bytes": 8419903,
+      "model_relpath": "d5/code-archives/NVIDIA__Megatron-LM/release",
+      "remote_path": "models/d5/code-archives/NVIDIA__Megatron-LM/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/NVIDIA__Megatron-LM/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:49Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/NVIDIA__NeMo-Curator/release",
+      "remote_path": "models/d5/code-archives/NVIDIA__NeMo-Curator/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/NVIDIA__NeMo-Curator/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:20:51Z"
+    },
+    {
+      "estimated_size_bytes": 179564544,
+      "model_relpath": "d5/code-archives/NVIDIA__TensorRT-LLM/release",
+      "remote_path": "models/d5/code-archives/NVIDIA__TensorRT-LLM/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/NVIDIA__TensorRT-LLM/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:22Z"
+    },
+    {
+      "estimated_size_bytes": 2831563,
+      "model_relpath": "d5/code-archives/Netflix__metaflow/release",
+      "remote_path": "models/d5/code-archives/Netflix__metaflow/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Netflix__metaflow/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:27Z"
+    },
+    {
+      "estimated_size_bytes": 3994890,
+      "model_relpath": "d5/code-archives/Novartis__torchsurv/release",
+      "remote_path": "models/d5/code-archives/Novartis__torchsurv/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Novartis__torchsurv/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:32Z"
+    },
+    {
+      "estimated_size_bytes": 4048073,
+      "model_relpath": "d5/code-archives/OpenHands__OpenHands/release",
+      "remote_path": "models/d5/code-archives/OpenHands__OpenHands/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/OpenHands__OpenHands/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:38Z"
+    },
+    {
+      "estimated_size_bytes": 4862627,
+      "model_relpath": "d5/code-archives/OpenPipe__OpenPipe/release",
+      "remote_path": "models/d5/code-archives/OpenPipe__OpenPipe/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/OpenPipe__OpenPipe/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:43Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/OpenPipe__openpipe/release",
+      "remote_path": "models/d5/code-archives/OpenPipe__openpipe/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/OpenPipe__openpipe/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:45Z"
+    },
+    {
+      "estimated_size_bytes": 390000,
+      "model_relpath": "d5/code-archives/OpenRLHF__OpenRLHF/release",
+      "remote_path": "models/d5/code-archives/OpenRLHF__OpenRLHF/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/OpenRLHF__OpenRLHF/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:48Z"
+    },
+    {
+      "estimated_size_bytes": 1241963,
+      "model_relpath": "d5/code-archives/Pavelevich__llm-checker/release",
+      "remote_path": "models/d5/code-archives/Pavelevich__llm-checker/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Pavelevich__llm-checker/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:53Z"
+    },
+    {
+      "estimated_size_bytes": 173565,
+      "model_relpath": "d5/code-archives/PleasePrompto__notebooklm-skill/release",
+      "remote_path": "models/d5/code-archives/PleasePrompto__notebooklm-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/PleasePrompto__notebooklm-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:22:57Z"
+    },
+    {
+      "estimated_size_bytes": 3397873,
+      "model_relpath": "d5/code-archives/Prat011__awesome-llm-skills/release",
+      "remote_path": "models/d5/code-archives/Prat011__awesome-llm-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Prat011__awesome-llm-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:23:03Z"
+    },
+    {
+      "estimated_size_bytes": 38923343,
+      "model_relpath": "d5/code-archives/PrefectHQ__prefect/release",
+      "remote_path": "models/d5/code-archives/PrefectHQ__prefect/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/PrefectHQ__prefect/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:23:25Z"
+    },
+    {
+      "estimated_size_bytes": 2052128,
+      "model_relpath": "d5/code-archives/PriorLabs__TabPFN/release",
+      "remote_path": "models/d5/code-archives/PriorLabs__TabPFN/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/PriorLabs__TabPFN/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:23:36Z"
+    },
+    {
+      "estimated_size_bytes": 26958018,
+      "model_relpath": "d5/code-archives/QwenLM__Qwen-VL/release",
+      "remote_path": "models/d5/code-archives/QwenLM__Qwen-VL/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/QwenLM__Qwen-VL/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:23:52Z"
+    },
+    {
+      "estimated_size_bytes": 23385492,
+      "model_relpath": "d5/code-archives/RasaHQ__rasa/release",
+      "remote_path": "models/d5/code-archives/RasaHQ__rasa/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/RasaHQ__rasa/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:24:05Z"
+    },
+    {
+      "estimated_size_bytes": 126182286,
+      "model_relpath": "d5/code-archives/RooCodeInc__Roo-Code/release",
+      "remote_path": "models/d5/code-archives/RooCodeInc__Roo-Code/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/RooCodeInc__Roo-Code/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:25:08Z"
+    },
+    {
+      "estimated_size_bytes": 26489956,
+      "model_relpath": "d5/code-archives/SWE-agent__SWE-agent/release",
+      "remote_path": "models/d5/code-archives/SWE-agent__SWE-agent/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/SWE-agent__SWE-agent/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:25:23Z"
+    },
+    {
+      "estimated_size_bytes": 21407900,
+      "model_relpath": "d5/code-archives/SYSTRAN__faster-whisper/release",
+      "remote_path": "models/d5/code-archives/SYSTRAN__faster-whisper/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/SYSTRAN__faster-whisper/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:25:36Z"
+    },
+    {
+      "estimated_size_bytes": 159259654,
+      "model_relpath": "d5/code-archives/Significant-Gravitas__AutoGPT/release",
+      "remote_path": "models/d5/code-archives/Significant-Gravitas__AutoGPT/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Significant-Gravitas__AutoGPT/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:26:59Z"
+    },
+    {
+      "estimated_size_bytes": 424395222,
+      "model_relpath": "d5/code-archives/Skyvern-AI__skyvern/release",
+      "remote_path": "models/d5/code-archives/Skyvern-AI__skyvern/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Skyvern-AI__skyvern/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:30:30Z"
+    },
+    {
+      "estimated_size_bytes": 5394786,
+      "model_relpath": "d5/code-archives/Stability-AI__generative-models/release",
+      "remote_path": "models/d5/code-archives/Stability-AI__generative-models/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Stability-AI__generative-models/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:30:36Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/Stability-AI__stablediffusion/release",
+      "remote_path": "models/d5/code-archives/Stability-AI__stablediffusion/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Stability-AI__stablediffusion/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:30:38Z"
+    },
+    {
+      "estimated_size_bytes": 316591,
+      "model_relpath": "d5/code-archives/Syllo__nvtop/release",
+      "remote_path": "models/d5/code-archives/Syllo__nvtop/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Syllo__nvtop/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:30:43Z"
+    },
+    {
+      "estimated_size_bytes": 66205,
+      "model_relpath": "d5/code-archives/TRI-ML__prismatic-vlms/release",
+      "remote_path": "models/d5/code-archives/TRI-ML__prismatic-vlms/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/TRI-ML__prismatic-vlms/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:30:48Z"
+    },
+    {
+      "estimated_size_bytes": 15213282,
+      "model_relpath": "d5/code-archives/TabbyML__tabby/release",
+      "remote_path": "models/d5/code-archives/TabbyML__tabby/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/TabbyML__tabby/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:30:57Z"
+    },
+    {
+      "estimated_size_bytes": 448620,
+      "model_relpath": "d5/code-archives/TimDettmers__bitsandbytes/release",
+      "remote_path": "models/d5/code-archives/TimDettmers__bitsandbytes/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/TimDettmers__bitsandbytes/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:03Z"
+    },
+    {
+      "estimated_size_bytes": 8503903,
+      "model_relpath": "d5/code-archives/TransformerLensOrg__TransformerLens/release",
+      "remote_path": "models/d5/code-archives/TransformerLensOrg__TransformerLens/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/TransformerLensOrg__TransformerLens/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:09Z"
+    },
+    {
+      "estimated_size_bytes": 688683,
+      "model_relpath": "d5/code-archives/Tsadoq__ErisForge/release",
+      "remote_path": "models/d5/code-archives/Tsadoq__ErisForge/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Tsadoq__ErisForge/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:13Z"
+    },
+    {
+      "estimated_size_bytes": 3178952,
+      "model_relpath": "d5/code-archives/Umio-Yasuno__amdgpu_top/release",
+      "remote_path": "models/d5/code-archives/Umio-Yasuno__amdgpu_top/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/Umio-Yasuno__amdgpu_top/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:19Z"
+    },
+    {
+      "estimated_size_bytes": 10987359,
+      "model_relpath": "d5/code-archives/VSCodium__vscodium/release",
+      "remote_path": "models/d5/code-archives/VSCodium__vscodium/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/VSCodium__vscodium/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:27Z"
+    },
+    {
+      "estimated_size_bytes": 8240171,
+      "model_relpath": "d5/code-archives/WhisperSpeech__WhisperSpeech/release",
+      "remote_path": "models/d5/code-archives/WhisperSpeech__WhisperSpeech/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/WhisperSpeech__WhisperSpeech/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:33Z"
+    },
+    {
+      "estimated_size_bytes": 245449,
+      "model_relpath": "d5/code-archives/XuehaiPan__nvitop/release",
+      "remote_path": "models/d5/code-archives/XuehaiPan__nvitop/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/XuehaiPan__nvitop/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:37Z"
+    },
+    {
+      "estimated_size_bytes": 279595,
+      "model_relpath": "d5/code-archives/abetlen__llama-cpp-python/release",
+      "remote_path": "models/d5/code-archives/abetlen__llama-cpp-python/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/abetlen__llama-cpp-python/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:42Z"
+    },
+    {
+      "estimated_size_bytes": 293267,
+      "model_relpath": "d5/code-archives/agentskills__agentskills/release",
+      "remote_path": "models/d5/code-archives/agentskills__agentskills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/agentskills__agentskills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:46Z"
+    },
+    {
+      "estimated_size_bytes": 44070,
+      "model_relpath": "d5/code-archives/akullpp__awesome-java/release",
+      "remote_path": "models/d5/code-archives/akullpp__awesome-java/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/akullpp__awesome-java/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:50Z"
+    },
+    {
+      "estimated_size_bytes": 3159472,
+      "model_relpath": "d5/code-archives/alirezarezvani__claude-skills/release",
+      "remote_path": "models/d5/code-archives/alirezarezvani__claude-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/alirezarezvani__claude-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:31:55Z"
+    },
+    {
+      "estimated_size_bytes": 17060220,
+      "model_relpath": "d5/code-archives/allenai__dolma/release",
+      "remote_path": "models/d5/code-archives/allenai__dolma/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/allenai__dolma/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:32:05Z"
+    },
+    {
+      "estimated_size_bytes": 33058333,
+      "model_relpath": "d5/code-archives/allenai__open-instruct/release",
+      "remote_path": "models/d5/code-archives/allenai__open-instruct/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/allenai__open-instruct/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:32:23Z"
+    },
+    {
+      "estimated_size_bytes": 6714,
+      "model_relpath": "d5/code-archives/amusi__awesome-ai-awesomeness/release",
+      "remote_path": "models/d5/code-archives/amusi__awesome-ai-awesomeness/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/amusi__awesome-ai-awesomeness/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:32:27Z"
+    },
+    {
+      "estimated_size_bytes": 1722915,
+      "model_relpath": "d5/code-archives/andrewgcodes__repo2prompt/release",
+      "remote_path": "models/d5/code-archives/andrewgcodes__repo2prompt/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/andrewgcodes__repo2prompt/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:32:31Z"
+    },
+    {
+      "estimated_size_bytes": 3451760,
+      "model_relpath": "d5/code-archives/anthropics__skills/release",
+      "remote_path": "models/d5/code-archives/anthropics__skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/anthropics__skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:32:35Z"
+    },
+    {
+      "estimated_size_bytes": 161609,
+      "model_relpath": "d5/code-archives/arcee-ai__mergekit/release",
+      "remote_path": "models/d5/code-archives/arcee-ai__mergekit/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/arcee-ai__mergekit/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:32:40Z"
+    },
+    {
+      "estimated_size_bytes": 317705631,
+      "model_relpath": "d5/code-archives/argilla-io__argilla/release",
+      "remote_path": "models/d5/code-archives/argilla-io__argilla/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/argilla-io__argilla/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:36:36Z"
+    },
+    {
+      "estimated_size_bytes": 6766718,
+      "model_relpath": "d5/code-archives/argilla-io__distilabel/release",
+      "remote_path": "models/d5/code-archives/argilla-io__distilabel/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/argilla-io__distilabel/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:36:50Z"
+    },
+    {
+      "estimated_size_bytes": 1261873,
+      "model_relpath": "d5/code-archives/aristocratos__btop/release",
+      "remote_path": "models/d5/code-archives/aristocratos__btop/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/aristocratos__btop/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:36:54Z"
+    },
+    {
+      "estimated_size_bytes": 9431,
+      "model_relpath": "d5/code-archives/atveit__repo2prompt/release",
+      "remote_path": "models/d5/code-archives/atveit__repo2prompt/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/atveit__repo2prompt/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:36:58Z"
+    },
+    {
+      "estimated_size_bytes": 6907470,
+      "model_relpath": "d5/code-archives/automl__auto-sklearn/release",
+      "remote_path": "models/d5/code-archives/automl__auto-sklearn/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/automl__auto-sklearn/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:04Z"
+    },
+    {
+      "estimated_size_bytes": 2832085,
+      "model_relpath": "d5/code-archives/axolotl-ai-cloud__axolotl/release",
+      "remote_path": "models/d5/code-archives/axolotl-ai-cloud__axolotl/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/axolotl-ai-cloud__axolotl/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:08Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/axolotl-ai-co__axolotl/release",
+      "remote_path": "models/d5/code-archives/axolotl-ai-co__axolotl/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/axolotl-ai-co__axolotl/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:09Z"
+    },
+    {
+      "estimated_size_bytes": 8071738,
+      "model_relpath": "d5/code-archives/bakks__butterfish/release",
+      "remote_path": "models/d5/code-archives/bakks__butterfish/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/bakks__butterfish/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:15Z"
+    },
+    {
+      "estimated_size_bytes": 1052325,
+      "model_relpath": "d5/code-archives/benfred__py-spy/release",
+      "remote_path": "models/d5/code-archives/benfred__py-spy/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/benfred__py-spy/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:19Z"
+    },
+    {
+      "estimated_size_bytes": 34397832,
+      "model_relpath": "d5/code-archives/bentoml__BentoML/release",
+      "remote_path": "models/d5/code-archives/bentoml__BentoML/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/bentoml__BentoML/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:38Z"
+    },
+    {
+      "estimated_size_bytes": 6193391,
+      "model_relpath": "d5/code-archives/bigcode-project__bigcode-dataset/release",
+      "remote_path": "models/d5/code-archives/bigcode-project__bigcode-dataset/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/bigcode-project__bigcode-dataset/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:44Z"
+    },
+    {
+      "estimated_size_bytes": 448620,
+      "model_relpath": "d5/code-archives/bitsandbytes-foundation__bitsandbytes/release",
+      "remote_path": "models/d5/code-archives/bitsandbytes-foundation__bitsandbytes/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/bitsandbytes-foundation__bitsandbytes/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:37:48Z"
+    },
+    {
+      "estimated_size_bytes": 38307101,
+      "model_relpath": "d5/code-archives/black-forest-labs__flux/release",
+      "remote_path": "models/d5/code-archives/black-forest-labs__flux/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/black-forest-labs__flux/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:38:09Z"
+    },
+    {
+      "estimated_size_bytes": 26044,
+      "model_relpath": "d5/code-archives/brexhq__prompt-engineering/release",
+      "remote_path": "models/d5/code-archives/brexhq__prompt-engineering/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/brexhq__prompt-engineering/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:38:13Z"
+    },
+    {
+      "estimated_size_bytes": 5039388,
+      "model_relpath": "d5/code-archives/browser-use__browser-use/release",
+      "remote_path": "models/d5/code-archives/browser-use__browser-use/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/browser-use__browser-use/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:38:18Z"
+    },
+    {
+      "estimated_size_bytes": 86793,
+      "model_relpath": "d5/code-archives/casper-hansen__AutoAWQ/release",
+      "remote_path": "models/d5/code-archives/casper-hansen__AutoAWQ/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/casper-hansen__AutoAWQ/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:38:22Z"
+    },
+    {
+      "estimated_size_bytes": 107036516,
+      "model_relpath": "d5/code-archives/centerforaisafety__HarmBench/release",
+      "remote_path": "models/d5/code-archives/centerforaisafety__HarmBench/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/centerforaisafety__HarmBench/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:39:16Z"
+    },
+    {
+      "estimated_size_bytes": 21125,
+      "model_relpath": "d5/code-archives/chrisvoncsefalvay__claude-d3js-skill/release",
+      "remote_path": "models/d5/code-archives/chrisvoncsefalvay__claude-d3js-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/chrisvoncsefalvay__claude-d3js-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:39:21Z"
+    },
+    {
+      "estimated_size_bytes": 21822936,
+      "model_relpath": "d5/code-archives/chroma-core__chroma/release",
+      "remote_path": "models/d5/code-archives/chroma-core__chroma/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/chroma-core__chroma/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:39:33Z"
+    },
+    {
+      "estimated_size_bytes": 2449856,
+      "model_relpath": "d5/code-archives/cipher982__llm-benchmarks/release",
+      "remote_path": "models/d5/code-archives/cipher982__llm-benchmarks/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/cipher982__llm-benchmarks/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:39:38Z"
+    },
+    {
+      "estimated_size_bytes": 45316,
+      "model_relpath": "d5/code-archives/clbr__radeontop/release",
+      "remote_path": "models/d5/code-archives/clbr__radeontop/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/clbr__radeontop/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:39:43Z"
+    },
+    {
+      "estimated_size_bytes": 23466900,
+      "model_relpath": "d5/code-archives/cline__cline/release",
+      "remote_path": "models/d5/code-archives/cline__cline/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/cline__cline/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:39:57Z"
+    },
+    {
+      "estimated_size_bytes": 777020,
+      "model_relpath": "d5/code-archives/coder__code-server/release",
+      "remote_path": "models/d5/code-archives/coder__code-server/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/coder__code-server/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:40:02Z"
+    },
+    {
+      "estimated_size_bytes": 19956,
+      "model_relpath": "d5/code-archives/coffeefuelbump__csv-data-summarizer-claude-skill/release",
+      "remote_path": "models/d5/code-archives/coffeefuelbump__csv-data-summarizer-claude-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/coffeefuelbump__csv-data-summarizer-claude-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:40:06Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/collabora__WhisperSpeech/release",
+      "remote_path": "models/d5/code-archives/collabora__WhisperSpeech/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/collabora__WhisperSpeech/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:40:08Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/comfyanonymous__ComfyUI/release",
+      "remote_path": "models/d5/code-archives/comfyanonymous__ComfyUI/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/comfyanonymous__ComfyUI/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:40:09Z"
+    },
+    {
+      "estimated_size_bytes": 14822879,
+      "model_relpath": "d5/code-archives/confident-ai__deepeval/release",
+      "remote_path": "models/d5/code-archives/confident-ai__deepeval/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/confident-ai__deepeval/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:40:19Z"
+    },
+    {
+      "estimated_size_bytes": 90992,
+      "model_relpath": "d5/code-archives/conorluddy__ios-simulator-skill/release",
+      "remote_path": "models/d5/code-archives/conorluddy__ios-simulator-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/conorluddy__ios-simulator-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:40:24Z"
+    },
+    {
+      "estimated_size_bytes": 251433014,
+      "model_relpath": "d5/code-archives/continuedev__continue/release",
+      "remote_path": "models/d5/code-archives/continuedev__continue/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/continuedev__continue/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:42:26Z"
+    },
+    {
+      "estimated_size_bytes": 15286419,
+      "model_relpath": "d5/code-archives/coqui-ai__TTS/release",
+      "remote_path": "models/d5/code-archives/coqui-ai__TTS/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/coqui-ai__TTS/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:42:36Z"
+    },
+    {
+      "estimated_size_bytes": 1150189,
+      "model_relpath": "d5/code-archives/crewAIInc__crewAI-tools/release",
+      "remote_path": "models/d5/code-archives/crewAIInc__crewAI-tools/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/crewAIInc__crewAI-tools/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:43:56Z"
+    },
+    {
+      "estimated_size_bytes": 152401319,
+      "model_relpath": "d5/code-archives/crewAIInc__crewAI/release",
+      "remote_path": "models/d5/code-archives/crewAIInc__crewAI/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/crewAIInc__crewAI/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:43:52Z"
+    },
+    {
+      "estimated_size_bytes": 1104,
+      "model_relpath": "d5/code-archives/cursor__cursor/release",
+      "remote_path": "models/d5/code-archives/cursor__cursor/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/cursor__cursor/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:43:59Z"
+    },
+    {
+      "estimated_size_bytes": 82012761,
+      "model_relpath": "d5/code-archives/dair-ai__Prompt-Engineering-Guide/release",
+      "remote_path": "models/d5/code-archives/dair-ai__Prompt-Engineering-Guide/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/dair-ai__Prompt-Engineering-Guide/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:44:42Z"
+    },
+    {
+      "estimated_size_bytes": 20672958,
+      "model_relpath": "d5/code-archives/danielmiessler__fabric/release",
+      "remote_path": "models/d5/code-archives/danielmiessler__fabric/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/danielmiessler__fabric/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:44:54Z"
+    },
+    {
+      "estimated_size_bytes": 336997,
+      "model_relpath": "d5/code-archives/dav-ell__repoprompt/release",
+      "remote_path": "models/d5/code-archives/dav-ell__repoprompt/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/dav-ell__repoprompt/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:44:58Z"
+    },
+    {
+      "estimated_size_bytes": 13212,
+      "model_relpath": "d5/code-archives/declare-lab__flan-alpaca/release",
+      "remote_path": "models/d5/code-archives/declare-lab__flan-alpaca/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/declare-lab__flan-alpaca/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:03Z"
+    },
+    {
+      "estimated_size_bytes": 1690984,
+      "model_relpath": "d5/code-archives/decoderesearch__SAELens/release",
+      "remote_path": "models/d5/code-archives/decoderesearch__SAELens/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/decoderesearch__SAELens/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:08Z"
+    },
+    {
+      "estimated_size_bytes": 1505874,
+      "model_relpath": "d5/code-archives/deepseek-ai__DeepSeek-R1/release",
+      "remote_path": "models/d5/code-archives/deepseek-ai__DeepSeek-R1/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/deepseek-ai__DeepSeek-R1/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:12Z"
+    },
+    {
+      "estimated_size_bytes": 263407,
+      "model_relpath": "d5/code-archives/deepseek-ai__DeepSeek-V3/release",
+      "remote_path": "models/d5/code-archives/deepseek-ai__DeepSeek-V3/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/deepseek-ai__DeepSeek-V3/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:16Z"
+    },
+    {
+      "estimated_size_bytes": 2934444,
+      "model_relpath": "d5/code-archives/dottxt-ai__outlines/release",
+      "remote_path": "models/d5/code-archives/dottxt-ai__outlines/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/dottxt-ai__outlines/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:20Z"
+    },
+    {
+      "estimated_size_bytes": 10984534,
+      "model_relpath": "d5/code-archives/eclipse-theia__theia/release",
+      "remote_path": "models/d5/code-archives/eclipse-theia__theia/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/eclipse-theia__theia/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:28Z"
+    },
+    {
+      "estimated_size_bytes": 691958,
+      "model_relpath": "d5/code-archives/elder-plinius__OBLITERATUS/release",
+      "remote_path": "models/d5/code-archives/elder-plinius__OBLITERATUS/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/elder-plinius__OBLITERATUS/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:33Z"
+    },
+    {
+      "estimated_size_bytes": 48296,
+      "model_relpath": "d5/code-archives/emaynard__claude-family-history-research-skill/release",
+      "remote_path": "models/d5/code-archives/emaynard__claude-family-history-research-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/emaynard__claude-family-history-research-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:37Z"
+    },
+    {
+      "estimated_size_bytes": 33276,
+      "model_relpath": "d5/code-archives/eugeneyan__applied-ml/release",
+      "remote_path": "models/d5/code-archives/eugeneyan__applied-ml/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/eugeneyan__applied-ml/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:43Z"
+    },
+    {
+      "estimated_size_bytes": 15632207,
+      "model_relpath": "d5/code-archives/evidentlyai__evidently/release",
+      "remote_path": "models/d5/code-archives/evidentlyai__evidently/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/evidentlyai__evidently/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:53Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/explodinggradients__ragas/release",
+      "remote_path": "models/d5/code-archives/explodinggradients__ragas/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/explodinggradients__ragas/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:45:54Z"
+    },
+    {
+      "estimated_size_bytes": 82937644,
+      "model_relpath": "d5/code-archives/f__prompts.chat/release",
+      "remote_path": "models/d5/code-archives/f__prompts.chat/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/f__prompts.chat/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:46:37Z"
+    },
+    {
+      "estimated_size_bytes": 8020123,
+      "model_relpath": "d5/code-archives/facebookresearch__audiocraft/release",
+      "remote_path": "models/d5/code-archives/facebookresearch__audiocraft/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/facebookresearch__audiocraft/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:46:43Z"
+    },
+    {
+      "estimated_size_bytes": 1377324,
+      "model_relpath": "d5/code-archives/facebookresearch__faiss/release",
+      "remote_path": "models/d5/code-archives/facebookresearch__faiss/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/facebookresearch__faiss/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:46:47Z"
+    },
+    {
+      "estimated_size_bytes": 3397240,
+      "model_relpath": "d5/code-archives/facebookresearch__xformers/release",
+      "remote_path": "models/d5/code-archives/facebookresearch__xformers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/facebookresearch__xformers/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:46:52Z"
+    },
+    {
+      "estimated_size_bytes": 260,
+      "model_relpath": "d5/code-archives/finetunedb__finetunedb/release",
+      "remote_path": "models/d5/code-archives/finetunedb__finetunedb/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/finetunedb__finetunedb/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:46:55Z"
+    },
+    {
+      "estimated_size_bytes": 823543,
+      "model_relpath": "d5/code-archives/fishaudio__fish-speech/release",
+      "remote_path": "models/d5/code-archives/fishaudio__fish-speech/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/fishaudio__fish-speech/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:00Z"
+    },
+    {
+      "estimated_size_bytes": 7104013,
+      "model_relpath": "d5/code-archives/getzep__zep/release",
+      "remote_path": "models/d5/code-archives/getzep__zep/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/getzep__zep/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:06Z"
+    },
+    {
+      "estimated_size_bytes": 2569901,
+      "model_relpath": "d5/code-archives/ggml-org__ggml/release",
+      "remote_path": "models/d5/code-archives/ggml-org__ggml/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ggml-org__ggml/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:10Z"
+    },
+    {
+      "estimated_size_bytes": 29495218,
+      "model_relpath": "d5/code-archives/ggml-org__llama.cpp/release",
+      "remote_path": "models/d5/code-archives/ggml-org__llama.cpp/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ggml-org__llama.cpp/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:27Z"
+    },
+    {
+      "estimated_size_bytes": 7898461,
+      "model_relpath": "d5/code-archives/ggml-org__whisper.cpp/release",
+      "remote_path": "models/d5/code-archives/ggml-org__whisper.cpp/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ggml-org__whisper.cpp/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:32Z"
+    },
+    {
+      "estimated_size_bytes": 7212781,
+      "model_relpath": "d5/code-archives/google-research__t5x/release",
+      "remote_path": "models/d5/code-archives/google-research__t5x/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/google-research__t5x/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:38Z"
+    },
+    {
+      "estimated_size_bytes": 11485847,
+      "model_relpath": "d5/code-archives/google__adk-python/release",
+      "remote_path": "models/d5/code-archives/google__adk-python/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/google__adk-python/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:46Z"
+    },
+    {
+      "estimated_size_bytes": 323333,
+      "model_relpath": "d5/code-archives/google__flaxformer/release",
+      "remote_path": "models/d5/code-archives/google__flaxformer/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/google__flaxformer/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:49Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/google__jax/release",
+      "remote_path": "models/d5/code-archives/google__jax/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/google__jax/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:52Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/gpt-engineer-org__gpt-engineer/release",
+      "remote_path": "models/d5/code-archives/gpt-engineer-org__gpt-engineer/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/gpt-engineer-org__gpt-engineer/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:54Z"
+    },
+    {
+      "estimated_size_bytes": 2923072,
+      "model_relpath": "d5/code-archives/gptscript-ai__gptscript/release",
+      "remote_path": "models/d5/code-archives/gptscript-ai__gptscript/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/gptscript-ai__gptscript/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:47:59Z"
+    },
+    {
+      "estimated_size_bytes": 42619300,
+      "model_relpath": "d5/code-archives/grafana__grafana/release",
+      "remote_path": "models/d5/code-archives/grafana__grafana/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/grafana__grafana/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:48:22Z"
+    },
+    {
+      "estimated_size_bytes": 13180541,
+      "model_relpath": "d5/code-archives/haotian-liu__LLaVA/release",
+      "remote_path": "models/d5/code-archives/haotian-liu__LLaVA/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/haotian-liu__LLaVA/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:48:31Z"
+    },
+    {
+      "estimated_size_bytes": 38525326,
+      "model_relpath": "d5/code-archives/hashicorp__nomad/release",
+      "remote_path": "models/d5/code-archives/hashicorp__nomad/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/hashicorp__nomad/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:48:53Z"
+    },
+    {
+      "estimated_size_bytes": 39204,
+      "model_relpath": "d5/code-archives/heilcheng__awesome-agent-skills/release",
+      "remote_path": "models/d5/code-archives/heilcheng__awesome-agent-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/heilcheng__awesome-agent-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:48:56Z"
+    },
+    {
+      "estimated_size_bytes": 5108696,
+      "model_relpath": "d5/code-archives/hiyouga__LLaMA-Factory/release",
+      "remote_path": "models/d5/code-archives/hiyouga__LLaMA-Factory/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/hiyouga__LLaMA-Factory/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:02Z"
+    },
+    {
+      "estimated_size_bytes": 5108696,
+      "model_relpath": "d5/code-archives/hiyouga__LlamaFactory/release",
+      "remote_path": "models/d5/code-archives/hiyouga__LlamaFactory/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/hiyouga__LlamaFactory/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:07Z"
+    },
+    {
+      "estimated_size_bytes": 3132044,
+      "model_relpath": "d5/code-archives/hpcaitech__ColossalAI/release",
+      "remote_path": "models/d5/code-archives/hpcaitech__ColossalAI/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/hpcaitech__ColossalAI/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:12Z"
+    },
+    {
+      "estimated_size_bytes": 1363635,
+      "model_relpath": "d5/code-archives/huggingface__accelerate/release",
+      "remote_path": "models/d5/code-archives/huggingface__accelerate/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__accelerate/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:16Z"
+    },
+    {
+      "estimated_size_bytes": 2807140,
+      "model_relpath": "d5/code-archives/huggingface__chat-ui/release",
+      "remote_path": "models/d5/code-archives/huggingface__chat-ui/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__chat-ui/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:21Z"
+    },
+    {
+      "estimated_size_bytes": 17394291,
+      "model_relpath": "d5/code-archives/huggingface__datatrove/release",
+      "remote_path": "models/d5/code-archives/huggingface__datatrove/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__datatrove/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:32Z"
+    },
+    {
+      "estimated_size_bytes": 1147200,
+      "model_relpath": "d5/code-archives/huggingface__huggingface_hub/release",
+      "remote_path": "models/d5/code-archives/huggingface__huggingface_hub/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__huggingface_hub/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:35Z"
+    },
+    {
+      "estimated_size_bytes": 439553,
+      "model_relpath": "d5/code-archives/huggingface__open-r1/release",
+      "remote_path": "models/d5/code-archives/huggingface__open-r1/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__open-r1/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:39Z"
+    },
+    {
+      "estimated_size_bytes": 346238,
+      "model_relpath": "d5/code-archives/huggingface__optimum-quanto/release",
+      "remote_path": "models/d5/code-archives/huggingface__optimum-quanto/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__optimum-quanto/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:47Z"
+    },
+    {
+      "estimated_size_bytes": 171143,
+      "model_relpath": "d5/code-archives/huggingface__optimum/release",
+      "remote_path": "models/d5/code-archives/huggingface__optimum/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__optimum/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:43Z"
+    },
+    {
+      "estimated_size_bytes": 9930028,
+      "model_relpath": "d5/code-archives/huggingface__peft/release",
+      "remote_path": "models/d5/code-archives/huggingface__peft/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__peft/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:55Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/huggingface__quanto/release",
+      "remote_path": "models/d5/code-archives/huggingface__quanto/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__quanto/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:49:57Z"
+    },
+    {
+      "estimated_size_bytes": 219476,
+      "model_relpath": "d5/code-archives/huggingface__safetensors/release",
+      "remote_path": "models/d5/code-archives/huggingface__safetensors/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__safetensors/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:01Z"
+    },
+    {
+      "estimated_size_bytes": 1178679,
+      "model_relpath": "d5/code-archives/huggingface__smolagents/release",
+      "remote_path": "models/d5/code-archives/huggingface__smolagents/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__smolagents/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:05Z"
+    },
+    {
+      "estimated_size_bytes": 3154108,
+      "model_relpath": "d5/code-archives/huggingface__text-generation-inference/release",
+      "remote_path": "models/d5/code-archives/huggingface__text-generation-inference/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__text-generation-inference/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:10Z"
+    },
+    {
+      "estimated_size_bytes": 1568453,
+      "model_relpath": "d5/code-archives/huggingface__tokenizers/release",
+      "remote_path": "models/d5/code-archives/huggingface__tokenizers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__tokenizers/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:15Z"
+    },
+    {
+      "estimated_size_bytes": 17931790,
+      "model_relpath": "d5/code-archives/huggingface__transformers/release",
+      "remote_path": "models/d5/code-archives/huggingface__transformers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__transformers/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:25Z"
+    },
+    {
+      "estimated_size_bytes": 2343650,
+      "model_relpath": "d5/code-archives/huggingface__trl/release",
+      "remote_path": "models/d5/code-archives/huggingface__trl/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/huggingface__trl/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:30Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/instructor-ai__instructor/release",
+      "remote_path": "models/d5/code-archives/instructor-ai__instructor/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/instructor-ai__instructor/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:50:32Z"
+    },
+    {
+      "estimated_size_bytes": 111296697,
+      "model_relpath": "d5/code-archives/invoke-ai__InvokeAI/release",
+      "remote_path": "models/d5/code-archives/invoke-ai__InvokeAI/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/invoke-ai__InvokeAI/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:51:27Z"
+    },
+    {
+      "estimated_size_bytes": 140710,
+      "model_relpath": "d5/code-archives/iterative__cml/release",
+      "remote_path": "models/d5/code-archives/iterative__cml/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/iterative__cml/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:51:31Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/iterative__dvc/release",
+      "remote_path": "models/d5/code-archives/iterative__dvc/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/iterative__dvc/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:51:33Z"
+    },
+    {
+      "estimated_size_bytes": 14609,
+      "model_relpath": "d5/code-archives/jamesmurdza__awesome-ai-devtools/release",
+      "remote_path": "models/d5/code-archives/jamesmurdza__awesome-ai-devtools/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jamesmurdza__awesome-ai-devtools/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:51:37Z"
+    },
+    {
+      "estimated_size_bytes": 39495642,
+      "model_relpath": "d5/code-archives/jax-ml__jax/release",
+      "remote_path": "models/d5/code-archives/jax-ml__jax/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jax-ml__jax/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:51:59Z"
+    },
+    {
+      "estimated_size_bytes": 8334,
+      "model_relpath": "d5/code-archives/jaymody__picoGPT/release",
+      "remote_path": "models/d5/code-archives/jaymody__picoGPT/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jaymody__picoGPT/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:03Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/jbloomAUS__SAELens/release",
+      "remote_path": "models/d5/code-archives/jbloomAUS__SAELens/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jbloomAUS__SAELens/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:05Z"
+    },
+    {
+      "estimated_size_bytes": 12342,
+      "model_relpath": "d5/code-archives/jthack__ffuf_claude_skill/release",
+      "remote_path": "models/d5/code-archives/jthack__ffuf_claude_skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jthack__ffuf_claude_skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:09Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/jthack__threat-hunting-with-sigma-rules-skill/release",
+      "remote_path": "models/d5/code-archives/jthack__threat-hunting-with-sigma-rules-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jthack__threat-hunting-with-sigma-rules-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:11Z"
+    },
+    {
+      "estimated_size_bytes": 6190972,
+      "model_relpath": "d5/code-archives/jupyterlab__jupyter-ai/release",
+      "remote_path": "models/d5/code-archives/jupyterlab__jupyter-ai/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jupyterlab__jupyter-ai/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:16Z"
+    },
+    {
+      "estimated_size_bytes": 25468291,
+      "model_relpath": "d5/code-archives/jupyterlab__jupyterlab/release",
+      "remote_path": "models/d5/code-archives/jupyterlab__jupyterlab/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/jupyterlab__jupyterlab/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:31Z"
+    },
+    {
+      "estimated_size_bytes": 13712337,
+      "model_relpath": "d5/code-archives/kantord__SeaGOAT/release",
+      "remote_path": "models/d5/code-archives/kantord__SeaGOAT/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/kantord__SeaGOAT/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:39Z"
+    },
+    {
+      "estimated_size_bytes": 289043,
+      "model_relpath": "d5/code-archives/karpathy__llm.c/release",
+      "remote_path": "models/d5/code-archives/karpathy__llm.c/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/karpathy__llm.c/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:43Z"
+    },
+    {
+      "estimated_size_bytes": 142321,
+      "model_relpath": "d5/code-archives/karpathy__minGPT/release",
+      "remote_path": "models/d5/code-archives/karpathy__minGPT/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/karpathy__minGPT/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:46Z"
+    },
+    {
+      "estimated_size_bytes": 435279,
+      "model_relpath": "d5/code-archives/karpathy__nanoGPT/release",
+      "remote_path": "models/d5/code-archives/karpathy__nanoGPT/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/karpathy__nanoGPT/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:50Z"
+    },
+    {
+      "estimated_size_bytes": 369469,
+      "model_relpath": "d5/code-archives/keras-team__autokeras/release",
+      "remote_path": "models/d5/code-archives/keras-team__autokeras/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/keras-team__autokeras/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:52:54Z"
+    },
+    {
+      "estimated_size_bytes": 74320106,
+      "model_relpath": "d5/code-archives/khoj-ai__khoj/release",
+      "remote_path": "models/d5/code-archives/khoj-ai__khoj/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/khoj-ai__khoj/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:53:31Z"
+    },
+    {
+      "estimated_size_bytes": 3528277,
+      "model_relpath": "d5/code-archives/kubeflow__kubeflow/release",
+      "remote_path": "models/d5/code-archives/kubeflow__kubeflow/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/kubeflow__kubeflow/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:53:37Z"
+    },
+    {
+      "estimated_size_bytes": 20451,
+      "model_relpath": "d5/code-archives/lackeyjb__playwright-skill/release",
+      "remote_path": "models/d5/code-archives/lackeyjb__playwright-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lackeyjb__playwright-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:53:40Z"
+    },
+    {
+      "estimated_size_bytes": 8699718,
+      "model_relpath": "d5/code-archives/lamini-ai__lamini-examples/release",
+      "remote_path": "models/d5/code-archives/lamini-ai__lamini-examples/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lamini-ai__lamini-examples/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:53:46Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/lamini-ai__lamini-sdk/release",
+      "remote_path": "models/d5/code-archives/lamini-ai__lamini-sdk/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lamini-ai__lamini-sdk/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:53:48Z"
+    },
+    {
+      "estimated_size_bytes": 16418644,
+      "model_relpath": "d5/code-archives/langchain-ai__langchain/release",
+      "remote_path": "models/d5/code-archives/langchain-ai__langchain/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/langchain-ai__langchain/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:53:58Z"
+    },
+    {
+      "estimated_size_bytes": 3497795,
+      "model_relpath": "d5/code-archives/langchain-ai__langgraph/release",
+      "remote_path": "models/d5/code-archives/langchain-ai__langgraph/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/langchain-ai__langgraph/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:54:03Z"
+    },
+    {
+      "estimated_size_bytes": 5006870,
+      "model_relpath": "d5/code-archives/langfuse__langfuse/release",
+      "remote_path": "models/d5/code-archives/langfuse__langfuse/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/langfuse__langfuse/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:54:07Z"
+    },
+    {
+      "estimated_size_bytes": 20557901,
+      "model_relpath": "d5/code-archives/langgenius__dify/release",
+      "remote_path": "models/d5/code-archives/langgenius__dify/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/langgenius__dify/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:54:20Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/langwatch__langwatch/release",
+      "remote_path": "models/d5/code-archives/langwatch__langwatch/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/langwatch__langwatch/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:54:21Z"
+    },
+    {
+      "estimated_size_bytes": 6177521,
+      "model_relpath": "d5/code-archives/lightgbm-org__LightGBM/release",
+      "remote_path": "models/d5/code-archives/lightgbm-org__LightGBM/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lightgbm-org__LightGBM/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:54:27Z"
+    },
+    {
+      "estimated_size_bytes": 101453599,
+      "model_relpath": "d5/code-archives/lllyasviel__ControlNet/release",
+      "remote_path": "models/d5/code-archives/lllyasviel__ControlNet/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lllyasviel__ControlNet/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:17Z"
+    },
+    {
+      "estimated_size_bytes": 5336449,
+      "model_relpath": "d5/code-archives/lllyasviel__stable-diffusion-webui-forge/release",
+      "remote_path": "models/d5/code-archives/lllyasviel__stable-diffusion-webui-forge/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lllyasviel__stable-diffusion-webui-forge/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:22Z"
+    },
+    {
+      "estimated_size_bytes": 90739,
+      "model_relpath": "d5/code-archives/llm-attacks__llm-attacks/release",
+      "remote_path": "models/d5/code-archives/llm-attacks__llm-attacks/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/llm-attacks__llm-attacks/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:25Z"
+    },
+    {
+      "estimated_size_bytes": 13242183,
+      "model_relpath": "d5/code-archives/lm-sys__FastChat/release",
+      "remote_path": "models/d5/code-archives/lm-sys__FastChat/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lm-sys__FastChat/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:34Z"
+    },
+    {
+      "estimated_size_bytes": 108088,
+      "model_relpath": "d5/code-archives/lmstudio-ai__lms/release",
+      "remote_path": "models/d5/code-archives/lmstudio-ai__lms/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/lmstudio-ai__lms/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:38Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/louisfb01__best_AI_papers_2024/release",
+      "remote_path": "models/d5/code-archives/louisfb01__best_AI_papers_2024/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/louisfb01__best_AI_papers_2024/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:40Z"
+    },
+    {
+      "estimated_size_bytes": 25973,
+      "model_relpath": "d5/code-archives/markodenic__web-development-resources/release",
+      "remote_path": "models/d5/code-archives/markodenic__web-development-resources/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/markodenic__web-development-resources/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:44Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/mattzcarey__code-review-gpt/release",
+      "remote_path": "models/d5/code-archives/mattzcarey__code-review-gpt/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mattzcarey__code-review-gpt/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:46Z"
+    },
+    {
+      "estimated_size_bytes": 104225,
+      "model_relpath": "d5/code-archives/mattzcarey__shippie/release",
+      "remote_path": "models/d5/code-archives/mattzcarey__shippie/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mattzcarey__shippie/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:55:50Z"
+    },
+    {
+      "estimated_size_bytes": 20751881,
+      "model_relpath": "d5/code-archives/mem0ai__mem0/release",
+      "remote_path": "models/d5/code-archives/mem0ai__mem0/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mem0ai__mem0/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:56:02Z"
+    },
+    {
+      "estimated_size_bytes": 6234707,
+      "model_relpath": "d5/code-archives/meta-pytorch__torchtune/release",
+      "remote_path": "models/d5/code-archives/meta-pytorch__torchtune/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/meta-pytorch__torchtune/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:56:07Z"
+    },
+    {
+      "estimated_size_bytes": 1149165,
+      "model_relpath": "d5/code-archives/mhattingpete__claude-skills-marketplace/release",
+      "remote_path": "models/d5/code-archives/mhattingpete__claude-skills-marketplace/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mhattingpete__claude-skills-marketplace/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:56:12Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/michalparkola__tapestry-skills-for-claude-code/release",
+      "remote_path": "models/d5/code-archives/michalparkola__tapestry-skills-for-claude-code/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/michalparkola__tapestry-skills-for-claude-code/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:56:18Z"
+    },
+    {
+      "estimated_size_bytes": 26861,
+      "model_relpath": "d5/code-archives/michalparkola__tapestry-skills/release",
+      "remote_path": "models/d5/code-archives/michalparkola__tapestry-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/michalparkola__tapestry-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:56:16Z"
+    },
+    {
+      "estimated_size_bytes": 110555136,
+      "model_relpath": "d5/code-archives/microsoft__DeepSpeed/release",
+      "remote_path": "models/d5/code-archives/microsoft__DeepSpeed/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/microsoft__DeepSpeed/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:57:13Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/microsoft__Florence-2/release",
+      "remote_path": "models/d5/code-archives/microsoft__Florence-2/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/microsoft__Florence-2/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:57:14Z"
+    },
+    {
+      "estimated_size_bytes": 23013449,
+      "model_relpath": "d5/code-archives/microsoft__autogen/release",
+      "remote_path": "models/d5/code-archives/microsoft__autogen/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/microsoft__autogen/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:57:28Z"
+    },
+    {
+      "estimated_size_bytes": 11914225,
+      "model_relpath": "d5/code-archives/microsoft__graphrag/release",
+      "remote_path": "models/d5/code-archives/microsoft__graphrag/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/microsoft__graphrag/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:57:35Z"
+    },
+    {
+      "estimated_size_bytes": 283631211,
+      "model_relpath": "d5/code-archives/microsoft__onnxruntime/release",
+      "remote_path": "models/d5/code-archives/microsoft__onnxruntime/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/microsoft__onnxruntime/release",
+      "uploaded_at_latest_utc": "2026-03-26T14:59:54Z"
+    },
+    {
+      "estimated_size_bytes": 21907027,
+      "model_relpath": "d5/code-archives/microsoft__semantic-kernel/release",
+      "remote_path": "models/d5/code-archives/microsoft__semantic-kernel/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/microsoft__semantic-kernel/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:00:08Z"
+    },
+    {
+      "estimated_size_bytes": 29791622,
+      "model_relpath": "d5/code-archives/milvus-io__milvus/release",
+      "remote_path": "models/d5/code-archives/milvus-io__milvus/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/milvus-io__milvus/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:00:26Z"
+    },
+    {
+      "estimated_size_bytes": 100788177,
+      "model_relpath": "d5/code-archives/mindsdb__mindsdb/release",
+      "remote_path": "models/d5/code-archives/mindsdb__mindsdb/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mindsdb__mindsdb/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:01:16Z"
+    },
+    {
+      "estimated_size_bytes": 761999,
+      "model_relpath": "d5/code-archives/mlabonne__llm-course/release",
+      "remote_path": "models/d5/code-archives/mlabonne__llm-course/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mlabonne__llm-course/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:01:21Z"
+    },
+    {
+      "estimated_size_bytes": 206286479,
+      "model_relpath": "d5/code-archives/mlflow__mlflow/release",
+      "remote_path": "models/d5/code-archives/mlflow__mlflow/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mlflow__mlflow/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:02Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/mlfoundations__open-clip/release",
+      "remote_path": "models/d5/code-archives/mlfoundations__open-clip/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mlfoundations__open-clip/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:04Z"
+    },
+    {
+      "estimated_size_bytes": 11119094,
+      "model_relpath": "d5/code-archives/mlfoundations__open_clip/release",
+      "remote_path": "models/d5/code-archives/mlfoundations__open_clip/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mlfoundations__open_clip/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:13Z"
+    },
+    {
+      "estimated_size_bytes": 1323761,
+      "model_relpath": "d5/code-archives/modal-labs__modal-client/release",
+      "remote_path": "models/d5/code-archives/modal-labs__modal-client/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/modal-labs__modal-client/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:18Z"
+    },
+    {
+      "estimated_size_bytes": 452295,
+      "model_relpath": "d5/code-archives/modelcontextprotocol__servers/release",
+      "remote_path": "models/d5/code-archives/modelcontextprotocol__servers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/modelcontextprotocol__servers/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:23Z"
+    },
+    {
+      "estimated_size_bytes": 8306796,
+      "model_relpath": "d5/code-archives/mosaicml__composer/release",
+      "remote_path": "models/d5/code-archives/mosaicml__composer/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mosaicml__composer/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:29Z"
+    },
+    {
+      "estimated_size_bytes": 17592250,
+      "model_relpath": "d5/code-archives/mozilla-ai__llamafile/release",
+      "remote_path": "models/d5/code-archives/mozilla-ai__llamafile/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mozilla-ai__llamafile/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:41Z"
+    },
+    {
+      "estimated_size_bytes": 10750051,
+      "model_relpath": "d5/code-archives/mudler__LocalAI/release",
+      "remote_path": "models/d5/code-archives/mudler__LocalAI/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/mudler__LocalAI/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:49Z"
+    },
+    {
+      "estimated_size_bytes": 3192826,
+      "model_relpath": "d5/code-archives/myshell-ai__OpenVoice/release",
+      "remote_path": "models/d5/code-archives/myshell-ai__OpenVoice/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/myshell-ai__OpenVoice/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:03:53Z"
+    },
+    {
+      "estimated_size_bytes": 26491508,
+      "model_relpath": "d5/code-archives/n8n-io__n8n/release",
+      "remote_path": "models/d5/code-archives/n8n-io__n8n/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/n8n-io__n8n/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:04:09Z"
+    },
+    {
+      "estimated_size_bytes": 1841136,
+      "model_relpath": "d5/code-archives/neelnanda-io__CircuitsVis/release",
+      "remote_path": "models/d5/code-archives/neelnanda-io__CircuitsVis/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/neelnanda-io__CircuitsVis/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:04:15Z"
+    },
+    {
+      "estimated_size_bytes": 34375763,
+      "model_relpath": "d5/code-archives/nomic-ai__gpt4all/release",
+      "remote_path": "models/d5/code-archives/nomic-ai__gpt4all/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/nomic-ai__gpt4all/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:04:37Z"
+    },
+    {
+      "estimated_size_bytes": 14443826,
+      "model_relpath": "d5/code-archives/nomic-ai__nomic/release",
+      "remote_path": "models/d5/code-archives/nomic-ai__nomic/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/nomic-ai__nomic/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:04:46Z"
+    },
+    {
+      "estimated_size_bytes": 208907,
+      "model_relpath": "d5/code-archives/obra__superpowers/release",
+      "remote_path": "models/d5/code-archives/obra__superpowers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/obra__superpowers/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:04:50Z"
+    },
+    {
+      "estimated_size_bytes": 23221312,
+      "model_relpath": "d5/code-archives/ollama__ollama/release",
+      "remote_path": "models/d5/code-archives/ollama__ollama/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ollama__ollama/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:05:06Z"
+    },
+    {
+      "estimated_size_bytes": 50674,
+      "model_relpath": "d5/code-archives/omkamal__pypict-claude-skill/release",
+      "remote_path": "models/d5/code-archives/omkamal__pypict-claude-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/omkamal__pypict-claude-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:05:10Z"
+    },
+    {
+      "estimated_size_bytes": 49744947,
+      "model_relpath": "d5/code-archives/oobabooga__text-generation-webui/release",
+      "remote_path": "models/d5/code-archives/oobabooga__text-generation-webui/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/oobabooga__text-generation-webui/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:05:36Z"
+    },
+    {
+      "estimated_size_bytes": 51827904,
+      "model_relpath": "d5/code-archives/open-webui__open-webui/release",
+      "remote_path": "models/d5/code-archives/open-webui__open-webui/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/open-webui__open-webui/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:06:04Z"
+    },
+    {
+      "estimated_size_bytes": 3602129,
+      "model_relpath": "d5/code-archives/openai__evals/release",
+      "remote_path": "models/d5/code-archives/openai__evals/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__evals/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:06:09Z"
+    },
+    {
+      "estimated_size_bytes": 32294073,
+      "model_relpath": "d5/code-archives/openai__gpt-oss/release",
+      "remote_path": "models/d5/code-archives/openai__gpt-oss/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__gpt-oss/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:06:28Z"
+    },
+    {
+      "estimated_size_bytes": 54146,
+      "model_relpath": "d5/code-archives/openai__human-eval/release",
+      "remote_path": "models/d5/code-archives/openai__human-eval/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__human-eval/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:06:32Z"
+    },
+    {
+      "estimated_size_bytes": 1901952,
+      "model_relpath": "d5/code-archives/openai__model_spec/release",
+      "remote_path": "models/d5/code-archives/openai__model_spec/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__model_spec/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:06:36Z"
+    },
+    {
+      "estimated_size_bytes": 2534961,
+      "model_relpath": "d5/code-archives/openai__openai-agents-python/release",
+      "remote_path": "models/d5/code-archives/openai__openai-agents-python/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__openai-agents-python/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:06:41Z"
+    },
+    {
+      "estimated_size_bytes": 257548288,
+      "model_relpath": "d5/code-archives/openai__openai-cookbook/release",
+      "remote_path": "models/d5/code-archives/openai__openai-cookbook/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__openai-cookbook/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:08:46Z"
+    },
+    {
+      "estimated_size_bytes": 63242,
+      "model_relpath": "d5/code-archives/openai__simple-evals/release",
+      "remote_path": "models/d5/code-archives/openai__simple-evals/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__simple-evals/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:08:51Z"
+    },
+    {
+      "estimated_size_bytes": 539124,
+      "model_relpath": "d5/code-archives/openai__swarm/release",
+      "remote_path": "models/d5/code-archives/openai__swarm/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__swarm/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:08:55Z"
+    },
+    {
+      "estimated_size_bytes": 34308,
+      "model_relpath": "d5/code-archives/openai__tiktoken/release",
+      "remote_path": "models/d5/code-archives/openai__tiktoken/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__tiktoken/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:08:59Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/openai__triton/release",
+      "remote_path": "models/d5/code-archives/openai__triton/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__triton/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:00Z"
+    },
+    {
+      "estimated_size_bytes": 7262903,
+      "model_relpath": "d5/code-archives/openai__whisper/release",
+      "remote_path": "models/d5/code-archives/openai__whisper/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openai__whisper/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:06Z"
+    },
+    {
+      "estimated_size_bytes": 286128,
+      "model_relpath": "d5/code-archives/opencode-ai__opencode/release",
+      "remote_path": "models/d5/code-archives/opencode-ai__opencode/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/opencode-ai__opencode/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:10Z"
+    },
+    {
+      "estimated_size_bytes": 64653000,
+      "model_relpath": "d5/code-archives/openlit__openlit/release",
+      "remote_path": "models/d5/code-archives/openlit__openlit/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/openlit__openlit/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:44Z"
+    },
+    {
+      "estimated_size_bytes": 749735,
+      "model_relpath": "d5/code-archives/optuna__optuna/release",
+      "remote_path": "models/d5/code-archives/optuna__optuna/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/optuna__optuna/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:48Z"
+    },
+    {
+      "estimated_size_bytes": 2871502,
+      "model_relpath": "d5/code-archives/oumi-ai__oumi/release",
+      "remote_path": "models/d5/code-archives/oumi-ai__oumi/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/oumi-ai__oumi/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:55Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/outlines-dev__outlines/release",
+      "remote_path": "models/d5/code-archives/outlines-dev__outlines/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/outlines-dev__outlines/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:09:56Z"
+    },
+    {
+      "estimated_size_bytes": 300816,
+      "model_relpath": "d5/code-archives/p-e-w__heretic/release",
+      "remote_path": "models/d5/code-archives/p-e-w__heretic/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/p-e-w__heretic/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:10:01Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/paul-gauthier__aider/release",
+      "remote_path": "models/d5/code-archives/paul-gauthier__aider/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/paul-gauthier__aider/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:10:03Z"
+    },
+    {
+      "estimated_size_bytes": 8920824,
+      "model_relpath": "d5/code-archives/plasma-umass__scalene/release",
+      "remote_path": "models/d5/code-archives/plasma-umass__scalene/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/plasma-umass__scalene/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:10:09Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/princeton-nlp__SWE-agent/release",
+      "remote_path": "models/d5/code-archives/princeton-nlp__SWE-agent/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/princeton-nlp__SWE-agent/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:10:10Z"
+    },
+    {
+      "estimated_size_bytes": 5683507,
+      "model_relpath": "d5/code-archives/prometheus__prometheus/release",
+      "remote_path": "models/d5/code-archives/prometheus__prometheus/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/prometheus__prometheus/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:10:16Z"
+    },
+    {
+      "estimated_size_bytes": 177278141,
+      "model_relpath": "d5/code-archives/promptfoo__promptfoo/release",
+      "remote_path": "models/d5/code-archives/promptfoo__promptfoo/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/promptfoo__promptfoo/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:11:42Z"
+    },
+    {
+      "estimated_size_bytes": 387124,
+      "model_relpath": "d5/code-archives/punkpeye__awesome-mcp-servers/release",
+      "remote_path": "models/d5/code-archives/punkpeye__awesome-mcp-servers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/punkpeye__awesome-mcp-servers/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:11:46Z"
+    },
+    {
+      "estimated_size_bytes": 4197387,
+      "model_relpath": "d5/code-archives/pyg-team__pytorch_geometric/release",
+      "remote_path": "models/d5/code-archives/pyg-team__pytorch_geometric/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/pyg-team__pytorch_geometric/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:11:51Z"
+    },
+    {
+      "estimated_size_bytes": 360749078,
+      "model_relpath": "d5/code-archives/pymc-labs__pymc-marketing/release",
+      "remote_path": "models/d5/code-archives/pymc-labs__pymc-marketing/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/pymc-labs__pymc-marketing/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:14:46Z"
+    },
+    {
+      "estimated_size_bytes": 62555251,
+      "model_relpath": "d5/code-archives/pytorch__pytorch/release",
+      "remote_path": "models/d5/code-archives/pytorch__pytorch/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/pytorch__pytorch/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:15:18Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/pytorch__torchtune/release",
+      "remote_path": "models/d5/code-archives/pytorch__torchtune/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/pytorch__torchtune/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:15:19Z"
+    },
+    {
+      "estimated_size_bytes": 4569377,
+      "model_relpath": "d5/code-archives/qdrant__qdrant/release",
+      "remote_path": "models/d5/code-archives/qdrant__qdrant/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/qdrant__qdrant/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:15:26Z"
+    },
+    {
+      "estimated_size_bytes": 205468327,
+      "model_relpath": "d5/code-archives/ray-project__ray/release",
+      "remote_path": "models/d5/code-archives/ray-project__ray/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ray-project__ray/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:17:07Z"
+    },
+    {
+      "estimated_size_bytes": 41014161,
+      "model_relpath": "d5/code-archives/reworkd__AgentGPT/release",
+      "remote_path": "models/d5/code-archives/reworkd__AgentGPT/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/reworkd__AgentGPT/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:17:29Z"
+    },
+    {
+      "estimated_size_bytes": 25602353,
+      "model_relpath": "d5/code-archives/rhasspy__piper/release",
+      "remote_path": "models/d5/code-archives/rhasspy__piper/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/rhasspy__piper/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:17:44Z"
+    },
+    {
+      "estimated_size_bytes": 91856,
+      "model_relpath": "d5/code-archives/rsaryev__talk-codebase/release",
+      "remote_path": "models/d5/code-archives/rsaryev__talk-codebase/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/rsaryev__talk-codebase/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:17:48Z"
+    },
+    {
+      "estimated_size_bytes": 266566624,
+      "model_relpath": "d5/code-archives/run-llama__llama_index/release",
+      "remote_path": "models/d5/code-archives/run-llama__llama_index/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/run-llama__llama_index/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:19:58Z"
+    },
+    {
+      "estimated_size_bytes": 203448,
+      "model_relpath": "d5/code-archives/sanjay3290__ai-skills/release",
+      "remote_path": "models/d5/code-archives/sanjay3290__ai-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/sanjay3290__ai-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:20:04Z"
+    },
+    {
+      "estimated_size_bytes": 47885806,
+      "model_relpath": "d5/code-archives/saprmarks__geometry-of-truth/release",
+      "remote_path": "models/d5/code-archives/saprmarks__geometry-of-truth/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/saprmarks__geometry-of-truth/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:20:29Z"
+    },
+    {
+      "estimated_size_bytes": 235401,
+      "model_relpath": "d5/code-archives/simonw__llm/release",
+      "remote_path": "models/d5/code-archives/simonw__llm/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/simonw__llm/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:20:34Z"
+    },
+    {
+      "estimated_size_bytes": 6715371,
+      "model_relpath": "d5/code-archives/sktime__pytorch-forecasting/release",
+      "remote_path": "models/d5/code-archives/sktime__pytorch-forecasting/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/sktime__pytorch-forecasting/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:20:39Z"
+    },
+    {
+      "estimated_size_bytes": 88586343,
+      "model_relpath": "d5/code-archives/smallcloudai__refact/release",
+      "remote_path": "models/d5/code-archives/smallcloudai__refact/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/smallcloudai__refact/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:25Z"
+    },
+    {
+      "estimated_size_bytes": 67465,
+      "model_relpath": "d5/code-archives/smerchek__claude-epub-skill/release",
+      "remote_path": "models/d5/code-archives/smerchek__claude-epub-skill/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/smerchek__claude-epub-skill/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:31Z"
+    },
+    {
+      "estimated_size_bytes": 128008,
+      "model_relpath": "d5/code-archives/smol-ai__developer/release",
+      "remote_path": "models/d5/code-archives/smol-ai__developer/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/smol-ai__developer/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:35Z"
+    },
+    {
+      "estimated_size_bytes": 785436,
+      "model_relpath": "d5/code-archives/snakers4__silero-models/release",
+      "remote_path": "models/d5/code-archives/snakers4__silero-models/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/snakers4__silero-models/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:39Z"
+    },
+    {
+      "estimated_size_bytes": 34912,
+      "model_relpath": "d5/code-archives/sorrycc__awesome-javascript/release",
+      "remote_path": "models/d5/code-archives/sorrycc__awesome-javascript/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/sorrycc__awesome-javascript/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:45Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/sourcegraph__sourcegraph/release",
+      "remote_path": "models/d5/code-archives/sourcegraph__sourcegraph/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/sourcegraph__sourcegraph/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:47Z"
+    },
+    {
+      "estimated_size_bytes": 2015599,
+      "model_relpath": "d5/code-archives/stackblitz-labs__bolt.diy/release",
+      "remote_path": "models/d5/code-archives/stackblitz-labs__bolt.diy/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/stackblitz-labs__bolt.diy/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:21:53Z"
+    },
+    {
+      "estimated_size_bytes": 16416515,
+      "model_relpath": "d5/code-archives/stanfordnlp__dspy/release",
+      "remote_path": "models/d5/code-archives/stanfordnlp__dspy/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/stanfordnlp__dspy/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:22:05Z"
+    },
+    {
+      "estimated_size_bytes": 7721568,
+      "model_relpath": "d5/code-archives/stitionai__devika/release",
+      "remote_path": "models/d5/code-archives/stitionai__devika/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/stitionai__devika/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:22:10Z"
+    },
+    {
+      "estimated_size_bytes": 2505070,
+      "model_relpath": "d5/code-archives/suno-ai__bark/release",
+      "remote_path": "models/d5/code-archives/suno-ai__bark/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/suno-ai__bark/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:22:15Z"
+    },
+    {
+      "estimated_size_bytes": 9039412,
+      "model_relpath": "d5/code-archives/sweepai__sweep/release",
+      "remote_path": "models/d5/code-archives/sweepai__sweep/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/sweepai__sweep/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:22:21Z"
+    },
+    {
+      "estimated_size_bytes": 1054266,
+      "model_relpath": "d5/code-archives/taowen__repo-to-prompt/release",
+      "remote_path": "models/d5/code-archives/taowen__repo-to-prompt/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/taowen__repo-to-prompt/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:22:25Z"
+    },
+    {
+      "estimated_size_bytes": 439886959,
+      "model_relpath": "d5/code-archives/tatsu-lab__alpaca_eval/release",
+      "remote_path": "models/d5/code-archives/tatsu-lab__alpaca_eval/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/tatsu-lab__alpaca_eval/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:25:57Z"
+    },
+    {
+      "estimated_size_bytes": 9545692,
+      "model_relpath": "d5/code-archives/tatsu-lab__stanford_alpaca/release",
+      "remote_path": "models/d5/code-archives/tatsu-lab__stanford_alpaca/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/tatsu-lab__stanford_alpaca/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:26:04Z"
+    },
+    {
+      "estimated_size_bytes": 9098,
+      "model_relpath": "d5/code-archives/tawandakembo__code-collator/release",
+      "remote_path": "models/d5/code-archives/tawandakembo__code-collator/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/tawandakembo__code-collator/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:26:08Z"
+    },
+    {
+      "estimated_size_bytes": 63232346,
+      "model_relpath": "d5/code-archives/tencent-ailab__persona-hub/release",
+      "remote_path": "models/d5/code-archives/tencent-ailab__persona-hub/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/tencent-ailab__persona-hub/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:26:41Z"
+    },
+    {
+      "estimated_size_bytes": 1080640,
+      "model_relpath": "d5/code-archives/togethercomputer__RedPajama-Data/release",
+      "remote_path": "models/d5/code-archives/togethercomputer__RedPajama-Data/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/togethercomputer__RedPajama-Data/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:26:45Z"
+    },
+    {
+      "estimated_size_bytes": 11138,
+      "model_relpath": "d5/code-archives/travisvn__awesome-claude-skills/release",
+      "remote_path": "models/d5/code-archives/travisvn__awesome-claude-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/travisvn__awesome-claude-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:26:49Z"
+    },
+    {
+      "estimated_size_bytes": 1309976,
+      "model_relpath": "d5/code-archives/treeverse__dvc/release",
+      "remote_path": "models/d5/code-archives/treeverse__dvc/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/treeverse__dvc/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:26:55Z"
+    },
+    {
+      "estimated_size_bytes": 49686497,
+      "model_relpath": "d5/code-archives/treeverse__lakeFS/release",
+      "remote_path": "models/d5/code-archives/treeverse__lakeFS/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/treeverse__lakeFS/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:27:23Z"
+    },
+    {
+      "estimated_size_bytes": 8329605,
+      "model_relpath": "d5/code-archives/triton-inference-server__server/release",
+      "remote_path": "models/d5/code-archives/triton-inference-server__server/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/triton-inference-server__server/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:27:30Z"
+    },
+    {
+      "estimated_size_bytes": 6611778,
+      "model_relpath": "d5/code-archives/triton-lang__triton/release",
+      "remote_path": "models/d5/code-archives/triton-lang__triton/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/triton-lang__triton/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:27:36Z"
+    },
+    {
+      "estimated_size_bytes": 20629346,
+      "model_relpath": "d5/code-archives/turboderp__exllamav2/release",
+      "remote_path": "models/d5/code-archives/turboderp__exllamav2/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/turboderp__exllamav2/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:27:48Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/unsloth__unsloth/release",
+      "remote_path": "models/d5/code-archives/unsloth__unsloth/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/unsloth__unsloth/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:27:49Z"
+    },
+    {
+      "estimated_size_bytes": 4808881,
+      "model_relpath": "d5/code-archives/unslothai__unsloth/release",
+      "remote_path": "models/d5/code-archives/unslothai__unsloth/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/unslothai__unsloth/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:27:54Z"
+    },
+    {
+      "estimated_size_bytes": 2600997,
+      "model_relpath": "d5/code-archives/verl-project__verl/release",
+      "remote_path": "models/d5/code-archives/verl-project__verl/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/verl-project__verl/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:28:00Z"
+    },
+    {
+      "estimated_size_bytes": 43984550,
+      "model_relpath": "d5/code-archives/vibrantlabsai__ragas/release",
+      "remote_path": "models/d5/code-archives/vibrantlabsai__ragas/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/vibrantlabsai__ragas/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:28:23Z"
+    },
+    {
+      "estimated_size_bytes": 4546560,
+      "model_relpath": "d5/code-archives/vllm-project__vllm/release",
+      "remote_path": "models/d5/code-archives/vllm-project__vllm/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/vllm-project__vllm/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:28:27Z"
+    },
+    {
+      "estimated_size_bytes": 32757447,
+      "model_relpath": "d5/code-archives/voideditor__void/release",
+      "remote_path": "models/d5/code-archives/voideditor__void/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/voideditor__void/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:28:50Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/volcengine__verl/release",
+      "remote_path": "models/d5/code-archives/volcengine__verl/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/volcengine__verl/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:28:51Z"
+    },
+    {
+      "estimated_size_bytes": 47252875,
+      "model_relpath": "d5/code-archives/wandb__wandb/release",
+      "remote_path": "models/d5/code-archives/wandb__wandb/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/wandb__wandb/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:18Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/warp-dev__warp/release",
+      "remote_path": "models/d5/code-archives/warp-dev__warp/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/warp-dev__warp/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:19Z"
+    },
+    {
+      "estimated_size_bytes": 5725099,
+      "model_relpath": "d5/code-archives/weaviate__weaviate/release",
+      "remote_path": "models/d5/code-archives/weaviate__weaviate/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/weaviate__weaviate/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:26Z"
+    },
+    {
+      "estimated_size_bytes": 6690873,
+      "model_relpath": "d5/code-archives/williamleif__GraphSAGE/release",
+      "remote_path": "models/d5/code-archives/williamleif__GraphSAGE/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/williamleif__GraphSAGE/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:32Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/code-archives/ydataai__ydata-profiling/release",
+      "remote_path": "models/d5/code-archives/ydataai__ydata-profiling/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/ydataai__ydata-profiling/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:34Z"
+    },
+    {
+      "estimated_size_bytes": 3780606,
+      "model_relpath": "d5/code-archives/yusufkaraaslan__Skill_Seekers/release",
+      "remote_path": "models/d5/code-archives/yusufkaraaslan__Skill_Seekers/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/yusufkaraaslan__Skill_Seekers/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:38Z"
+    },
+    {
+      "estimated_size_bytes": 24875507,
+      "model_relpath": "d5/code-archives/zed-industries__zed/release",
+      "remote_path": "models/d5/code-archives/zed-industries__zed/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/zed-industries__zed/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:54Z"
+    },
+    {
+      "estimated_size_bytes": 95581,
+      "model_relpath": "d5/code-archives/zxkane__aws-skills/release",
+      "remote_path": "models/d5/code-archives/zxkane__aws-skills/release",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/code-archives/zxkane__aws-skills/release",
+      "uploaded_at_latest_utc": "2026-03-26T15:29:59Z"
+    },
+    {
+      "estimated_size_bytes": 50705,
+      "model_relpath": "d5/full-stack-archive/manifests/source",
+      "remote_path": "models/d5/full-stack-archive/manifests/source",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/manifests/source",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:00Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/nvidia/cuda",
+      "remote_path": "models/d5/full-stack-archive/nvidia/cuda",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/nvidia/cuda",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:02Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/nvidia/cudnn",
+      "remote_path": "models/d5/full-stack-archive/nvidia/cudnn",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/nvidia/cudnn",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:03Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/nvidia/drivers",
+      "remote_path": "models/d5/full-stack-archive/nvidia/drivers",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/nvidia/drivers",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:05Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/nvidia/nccl",
+      "remote_path": "models/d5/full-stack-archive/nvidia/nccl",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/nvidia/nccl",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:06Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/nvidia/tensorrt",
+      "remote_path": "models/d5/full-stack-archive/nvidia/tensorrt",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/nvidia/tensorrt",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:08Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/os/ubuntu",
+      "remote_path": "models/d5/full-stack-archive/os/ubuntu",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/os/ubuntu",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:09Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/toolchains/gcc",
+      "remote_path": "models/d5/full-stack-archive/toolchains/gcc",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/toolchains/gcc",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:11Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archive/toolchains/python",
+      "remote_path": "models/d5/full-stack-archive/toolchains/python",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archive/toolchains/python",
+      "uploaded_at_latest_utc": "2026-03-26T15:30:12Z"
+    },
+    {
+      "estimated_size_bytes": 196885181,
+      "model_relpath": "d5/full-stack-archives/compilers/cpp",
+      "remote_path": "models/d5/full-stack-archives/compilers/cpp",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/compilers/cpp",
+      "uploaded_at_latest_utc": "2026-03-26T15:31:56Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/compilers/gcc",
+      "remote_path": "models/d5/full-stack-archives/compilers/gcc",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/compilers/gcc",
+      "uploaded_at_latest_utc": "2026-03-26T15:31:58Z"
+    },
+    {
+      "estimated_size_bytes": 209299398,
+      "model_relpath": "d5/full-stack-archives/compilers/go",
+      "remote_path": "models/d5/full-stack-archives/compilers/go",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/compilers/go",
+      "uploaded_at_latest_utc": "2026-03-26T15:33:42Z"
+    },
+    {
+      "estimated_size_bytes": 536309812,
+      "model_relpath": "d5/full-stack-archives/compilers/java",
+      "remote_path": "models/d5/full-stack-archives/compilers/java",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/compilers/java",
+      "uploaded_at_latest_utc": "2026-03-26T15:38:09Z"
+    },
+    {
+      "estimated_size_bytes": 339561939,
+      "model_relpath": "d5/full-stack-archives/compilers/rust",
+      "remote_path": "models/d5/full-stack-archives/compilers/rust",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/compilers/rust",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:00Z"
+    },
+    {
+      "estimated_size_bytes": 194003858,
+      "model_relpath": "d5/full-stack-archives/containers/containerd",
+      "remote_path": "models/d5/full-stack-archives/containers/containerd",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/containers/containerd",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:02Z"
+    },
+    {
+      "estimated_size_bytes": 17492771,
+      "model_relpath": "d5/full-stack-archives/containers/helm",
+      "remote_path": "models/d5/full-stack-archives/containers/helm",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/containers/helm",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:04Z"
+    },
+    {
+      "estimated_size_bytes": 215434509,
+      "model_relpath": "d5/full-stack-archives/containers/k3s",
+      "remote_path": "models/d5/full-stack-archives/containers/k3s",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/containers/k3s",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:07Z"
+    },
+    {
+      "estimated_size_bytes": 9973380,
+      "model_relpath": "d5/full-stack-archives/containers/nerdctl",
+      "remote_path": "models/d5/full-stack-archives/containers/nerdctl",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/containers/nerdctl",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:08Z"
+    },
+    {
+      "estimated_size_bytes": 10465,
+      "model_relpath": "d5/full-stack-archives/docs/catalog",
+      "remote_path": "models/d5/full-stack-archives/docs/catalog",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/docs/catalog",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:09Z"
+    },
+    {
+      "estimated_size_bytes": 9372,
+      "model_relpath": "d5/full-stack-archives/docs/compatibility",
+      "remote_path": "models/d5/full-stack-archives/docs/compatibility",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/docs/compatibility",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:11Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/docs/rebuild-guides",
+      "remote_path": "models/d5/full-stack-archives/docs/rebuild-guides",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/docs/rebuild-guides",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:13Z"
+    },
+    {
+      "estimated_size_bytes": 15928,
+      "model_relpath": "d5/full-stack-archives/manifests/checksums",
+      "remote_path": "models/d5/full-stack-archives/manifests/checksums",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/manifests/checksums",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:15Z"
+    },
+    {
+      "estimated_size_bytes": 93347,
+      "model_relpath": "d5/full-stack-archives/manifests/source",
+      "remote_path": "models/d5/full-stack-archives/manifests/source",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/manifests/source",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:16Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/nvidia/cuda",
+      "remote_path": "models/d5/full-stack-archives/nvidia/cuda",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/nvidia/cuda",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:18Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/nvidia/cudnn",
+      "remote_path": "models/d5/full-stack-archives/nvidia/cudnn",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/nvidia/cudnn",
+      "uploaded_at_latest_utc": "2026-03-26T15:41:20Z"
+    },
+    {
+      "estimated_size_bytes": 4380659008,
+      "model_relpath": "d5/full-stack-archives/nvidia/drivers",
+      "remote_path": "models/d5/full-stack-archives/nvidia/drivers",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/nvidia/drivers",
+      "uploaded_at_latest_utc": "2026-03-26T16:17:15Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/nvidia/nccl",
+      "remote_path": "models/d5/full-stack-archives/nvidia/nccl",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/nvidia/nccl",
+      "uploaded_at_latest_utc": "2026-03-26T16:17:18Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/nvidia/tensorrt",
+      "remote_path": "models/d5/full-stack-archives/nvidia/tensorrt",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/nvidia/tensorrt",
+      "uploaded_at_latest_utc": "2026-03-26T16:17:20Z"
+    },
+    {
+      "estimated_size_bytes": 990910196,
+      "model_relpath": "d5/full-stack-archives/os/ubuntu-18.04.6",
+      "remote_path": "models/d5/full-stack-archives/os/ubuntu-18.04.6",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/os/ubuntu-18.04.6",
+      "uploaded_at_latest_utc": "2026-03-26T16:17:27Z"
+    },
+    {
+      "estimated_size_bytes": 1406539139,
+      "model_relpath": "d5/full-stack-archives/os/ubuntu-20.04.6",
+      "remote_path": "models/d5/full-stack-archives/os/ubuntu-20.04.6",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/os/ubuntu-20.04.6",
+      "uploaded_at_latest_utc": "2026-03-26T16:17:37Z"
+    },
+    {
+      "estimated_size_bytes": 2104416166,
+      "model_relpath": "d5/full-stack-archives/os/ubuntu-22.04.4",
+      "remote_path": "models/d5/full-stack-archives/os/ubuntu-22.04.4",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/os/ubuntu-22.04.4",
+      "uploaded_at_latest_utc": "2026-03-26T16:17:51Z"
+    },
+    {
+      "estimated_size_bytes": 2773883077,
+      "model_relpath": "d5/full-stack-archives/os/ubuntu-24.04.1",
+      "remote_path": "models/d5/full-stack-archives/os/ubuntu-24.04.1",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/os/ubuntu-24.04.1",
+      "uploaded_at_latest_utc": "2026-03-26T16:18:09Z"
+    },
+    {
+      "estimated_size_bytes": 3213072581,
+      "model_relpath": "d5/full-stack-archives/os/ubuntu-24.04.2",
+      "remote_path": "models/d5/full-stack-archives/os/ubuntu-24.04.2",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/os/ubuntu-24.04.2",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:01Z"
+    },
+    {
+      "estimated_size_bytes": 4362,
+      "model_relpath": "d5/full-stack-archives/packages/arch",
+      "remote_path": "models/d5/full-stack-archives/packages/arch",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/packages/arch",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:02Z"
+    },
+    {
+      "estimated_size_bytes": 5296,
+      "model_relpath": "d5/full-stack-archives/packages/debs",
+      "remote_path": "models/d5/full-stack-archives/packages/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/packages/debs",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:03Z"
+    },
+    {
+      "estimated_size_bytes": 4482,
+      "model_relpath": "d5/full-stack-archives/packages/rpms",
+      "remote_path": "models/d5/full-stack-archives/packages/rpms",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/packages/rpms",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:05Z"
+    },
+    {
+      "estimated_size_bytes": 19617275,
+      "model_relpath": "d5/full-stack-archives/python/3.10",
+      "remote_path": "models/d5/full-stack-archives/python/3.10",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/python/3.10",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:07Z"
+    },
+    {
+      "estimated_size_bytes": 20092723,
+      "model_relpath": "d5/full-stack-archives/python/3.11",
+      "remote_path": "models/d5/full-stack-archives/python/3.11",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/python/3.11",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:09Z"
+    },
+    {
+      "estimated_size_bytes": 20509630,
+      "model_relpath": "d5/full-stack-archives/python/3.12",
+      "remote_path": "models/d5/full-stack-archives/python/3.12",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/python/3.12",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:10Z"
+    },
+    {
+      "estimated_size_bytes": 18969700,
+      "model_relpath": "d5/full-stack-archives/python/3.8",
+      "remote_path": "models/d5/full-stack-archives/python/3.8",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/python/3.8",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:12Z"
+    },
+    {
+      "estimated_size_bytes": 19654056,
+      "model_relpath": "d5/full-stack-archives/python/3.9",
+      "remote_path": "models/d5/full-stack-archives/python/3.9",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/python/3.9",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:29Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/wheels/e0-cu102-py38",
+      "remote_path": "models/d5/full-stack-archives/wheels/e0-cu102-py38",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/wheels/e0-cu102-py38",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:31Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/wheels/e1-cu113-py39",
+      "remote_path": "models/d5/full-stack-archives/wheels/e1-cu113-py39",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/wheels/e1-cu113-py39",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:33Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/full-stack-archives/wheels/e2-cu118-py310",
+      "remote_path": "models/d5/full-stack-archives/wheels/e2-cu118-py310",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/wheels/e2-cu118-py310",
+      "uploaded_at_latest_utc": "2026-03-26T16:45:35Z"
+    },
+    {
+      "estimated_size_bytes": 8476911311,
+      "model_relpath": "d5/full-stack-archives/wheels/e3-cu121-py311",
+      "remote_path": "models/d5/full-stack-archives/wheels/e3-cu121-py311",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/wheels/e3-cu121-py311",
+      "uploaded_at_latest_utc": "2026-03-26T17:54:54Z"
+    },
+    {
+      "estimated_size_bytes": 3041186919,
+      "model_relpath": "d5/full-stack-archives/wheels/e4-cu124-py311",
+      "remote_path": "models/d5/full-stack-archives/wheels/e4-cu124-py311",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/wheels/e4-cu124-py311",
+      "uploaded_at_latest_utc": "2026-03-26T18:19:20Z"
+    },
+    {
+      "estimated_size_bytes": 10957169,
+      "model_relpath": "d5/full-stack-archives/wheels/e4-cu128-py312",
+      "remote_path": "models/d5/full-stack-archives/wheels/e4-cu128-py312",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/full-stack-archives/wheels/e4-cu128-py312",
+      "uploaded_at_latest_utc": "2026-03-26T18:19:53Z"
+    },
+    {
+      "estimated_size_bytes": 3557,
+      "model_relpath": "d5/graphcore-archive/docs/install-guides",
+      "remote_path": "models/d5/graphcore-archive/docs/install-guides",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/docs/install-guides",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:50Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/docs/monitoring",
+      "remote_path": "models/d5/graphcore-archive/docs/monitoring",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/docs/monitoring",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:53Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/docs/popvision",
+      "remote_path": "models/d5/graphcore-archive/docs/popvision",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/docs/popvision",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:55Z"
+    },
+    {
+      "estimated_size_bytes": 2697,
+      "model_relpath": "d5/graphcore-archive/docs/release-notes",
+      "remote_path": "models/d5/graphcore-archive/docs/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/docs/release-notes",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:59Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/drivers/ipu-driver-and-utilities",
+      "remote_path": "models/d5/graphcore-archive/drivers/ipu-driver-and-utilities",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/drivers/ipu-driver-and-utilities",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:01Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/drivers/ipu-kernel-module",
+      "remote_path": "models/d5/graphcore-archive/drivers/ipu-kernel-module",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/drivers/ipu-kernel-module",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:03Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/firmware/icuflash",
+      "remote_path": "models/d5/graphcore-archive/firmware/icuflash",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/firmware/icuflash",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:05Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/frameworks/poptorch",
+      "remote_path": "models/d5/graphcore-archive/frameworks/poptorch",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/frameworks/poptorch",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:07Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/frameworks/tensorflow-for-ipu",
+      "remote_path": "models/d5/graphcore-archive/frameworks/tensorflow-for-ipu",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/frameworks/tensorflow-for-ipu",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:08Z"
+    },
+    {
+      "estimated_size_bytes": 315,
+      "model_relpath": "d5/graphcore-archive/manifests/checksums",
+      "remote_path": "models/d5/graphcore-archive/manifests/checksums",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/manifests/checksums",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:12Z"
+    },
+    {
+      "estimated_size_bytes": 26036,
+      "model_relpath": "d5/graphcore-archive/manifests/source",
+      "remote_path": "models/d5/graphcore-archive/manifests/source",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/manifests/source",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:21Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/manual-drop/portal-downloads",
+      "remote_path": "models/d5/graphcore-archive/manual-drop/portal-downloads",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/manual-drop/portal-downloads",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:23Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/manual-drop/sdk-bundles",
+      "remote_path": "models/d5/graphcore-archive/manual-drop/sdk-bundles",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/manual-drop/sdk-bundles",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:25Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/manual-drop/wheels",
+      "remote_path": "models/d5/graphcore-archive/manual-drop/wheels",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/manual-drop/wheels",
+      "uploaded_at_latest_utc": "2026-03-27T00:27:27Z"
+    },
+    {
+      "estimated_size_bytes": 990910196,
+      "model_relpath": "d5/graphcore-archive/os/ubuntu-18.04.6",
+      "remote_path": "models/d5/graphcore-archive/os/ubuntu-18.04.6",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/os/ubuntu-18.04.6",
+      "uploaded_at_latest_utc": "2026-03-27T00:35:25Z"
+    },
+    {
+      "estimated_size_bytes": 1406533858,
+      "model_relpath": "d5/graphcore-archive/os/ubuntu-20.04.6",
+      "remote_path": "models/d5/graphcore-archive/os/ubuntu-20.04.6",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/os/ubuntu-20.04.6",
+      "uploaded_at_latest_utc": "2026-03-27T00:46:41Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/sdk/popart",
+      "remote_path": "models/d5/graphcore-archive/sdk/popart",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/sdk/popart",
+      "uploaded_at_latest_utc": "2026-03-27T00:46:43Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/sdk/popdist",
+      "remote_path": "models/d5/graphcore-archive/sdk/popdist",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/sdk/popdist",
+      "uploaded_at_latest_utc": "2026-03-27T00:46:45Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/sdk/poplar",
+      "remote_path": "models/d5/graphcore-archive/sdk/poplar",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/sdk/poplar",
+      "uploaded_at_latest_utc": "2026-03-27T00:46:48Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/sdk/poplibs",
+      "remote_path": "models/d5/graphcore-archive/sdk/poplibs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/sdk/poplibs",
+      "uploaded_at_latest_utc": "2026-03-27T00:46:50Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-archive/visualisation/popvision",
+      "remote_path": "models/d5/graphcore-archive/visualisation/popvision",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-archive/visualisation/popvision",
+      "uploaded_at_latest_utc": "2026-03-27T00:46:52Z"
+    },
+    {
+      "estimated_size_bytes": 3969370172,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/.git",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/.git",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/.git",
+      "uploaded_at_latest_utc": "2026-03-27T01:22:50Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/.vscode",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/.vscode",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/.vscode",
+      "uploaded_at_latest_utc": "2026-03-27T01:22:55Z"
+    },
+    {
+      "estimated_size_bytes": 24096,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/archives",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/archives",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/archives",
+      "uploaded_at_latest_utc": "2026-03-27T01:23:01Z"
+    },
+    {
+      "estimated_size_bytes": 8291,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/benchmarks",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/benchmarks",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/benchmarks",
+      "uploaded_at_latest_utc": "2026-03-27T01:23:15Z"
+    },
+    {
+      "estimated_size_bytes": 15521,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/chat",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/chat",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/chat",
+      "uploaded_at_latest_utc": "2026-03-27T01:23:35Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/dockervm-image-search",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/dockervm-image-search",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/dockervm-image-search",
+      "uploaded_at_latest_utc": "2026-03-27T01:23:37Z"
+    },
+    {
+      "estimated_size_bytes": 10107,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/docs",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/docs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/docs",
+      "uploaded_at_latest_utc": "2026-03-27T01:23:47Z"
+    },
+    {
+      "estimated_size_bytes": 2205819,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/firmware",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/firmware",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/firmware",
+      "uploaded_at_latest_utc": "2026-03-27T01:23:59Z"
+    },
+    {
+      "estimated_size_bytes": 3971302123,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/repro-archive",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/repro-archive",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/repro-archive",
+      "uploaded_at_latest_utc": "2026-03-27T01:56:55Z"
+    },
+    {
+      "estimated_size_bytes": 2509,
+      "model_relpath": "d5/graphcore-downloads/graphcore-setup/results",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-setup/results",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-setup/results",
+      "uploaded_at_latest_utc": "2026-03-27T01:57:01Z"
+    },
+    {
+      "estimated_size_bytes": 1199102715,
+      "model_relpath": "d5/graphcore-downloads/graphcore-vm/denizbgraphcore-tf24-extracted",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-vm/denizbgraphcore-tf24-extracted",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-vm/denizbgraphcore-tf24-extracted",
+      "uploaded_at_latest_utc": "2026-03-27T08:43:17Z"
+    },
+    {
+      "estimated_size_bytes": 650390817,
+      "model_relpath": "d5/graphcore-downloads/graphcore-vm/poplar-sdk-2.4.0-from-deniz-tf24",
+      "remote_path": "models/d5/graphcore-downloads/graphcore-vm/poplar-sdk-2.4.0-from-deniz-tf24",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-downloads/graphcore-vm/poplar-sdk-2.4.0-from-deniz-tf24",
+      "uploaded_at_latest_utc": "2026-03-27T12:19:53Z"
+    },
+    {
+      "estimated_size_bytes": 20096972,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__examples",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__examples",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__examples",
+      "uploaded_at_latest_utc": "2026-03-27T12:20:06Z"
+    },
+    {
+      "estimated_size_bytes": 325908,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__ipu_tensorflow_addons",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__ipu_tensorflow_addons",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__ipu_tensorflow_addons",
+      "uploaded_at_latest_utc": "2026-03-27T12:20:13Z"
+    },
+    {
+      "estimated_size_bytes": 2672296,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__keras",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__keras",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__keras",
+      "uploaded_at_latest_utc": "2026-03-27T12:20:19Z"
+    },
+    {
+      "estimated_size_bytes": 9395659,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__popart",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__popart",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__popart",
+      "uploaded_at_latest_utc": "2026-03-27T12:20:29Z"
+    },
+    {
+      "estimated_size_bytes": 4163685,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__poplibs",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__poplibs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__poplibs",
+      "uploaded_at_latest_utc": "2026-03-27T12:20:36Z"
+    },
+    {
+      "estimated_size_bytes": 17119660,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__poprithms",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__poprithms",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__poprithms",
+      "uploaded_at_latest_utc": "2026-03-27T12:20:49Z"
+    },
+    {
+      "estimated_size_bytes": 27571363,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__poptorch",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__poptorch",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__poptorch",
+      "uploaded_at_latest_utc": "2026-03-27T12:21:16Z"
+    },
+    {
+      "estimated_size_bytes": 38136,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__popvision_graph_analyser",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__popvision_graph_analyser",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__popvision_graph_analyser",
+      "uploaded_at_latest_utc": "2026-03-27T12:21:53Z"
+    },
+    {
+      "estimated_size_bytes": 38121,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__popvision_system_analyser",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__popvision_system_analyser",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__popvision_system_analyser",
+      "uploaded_at_latest_utc": "2026-03-27T12:22:31Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__popxl-addons",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__popxl-addons",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__popxl-addons",
+      "uploaded_at_latest_utc": "2026-03-27T12:22:34Z"
+    },
+    {
+      "estimated_size_bytes": 273133518,
+      "model_relpath": "d5/graphcore-projects/releases-by-sdk/graphcore__tensorflow",
+      "remote_path": "models/d5/graphcore-projects/releases-by-sdk/graphcore__tensorflow",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore-projects/releases-by-sdk/graphcore__tensorflow",
+      "uploaded_at_latest_utc": "2026-03-27T12:24:51Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-1.4.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-1.4.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-1.4.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:19:54Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-1.4.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-1.4.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-1.4.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:19:56Z"
+    },
+    {
+      "estimated_size_bytes": 156,
+      "model_relpath": "d5/graphcore/E-poplar-1.4.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-1.4.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-1.4.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:19:58Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.0.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.0.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.0.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:00Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.0.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.0.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.0.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:01Z"
+    },
+    {
+      "estimated_size_bytes": 2079,
+      "model_relpath": "d5/graphcore/E-poplar-2.0.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.0.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.0.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:03Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.1.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.1.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.1.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:04Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.1.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.1.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.1.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:07Z"
+    },
+    {
+      "estimated_size_bytes": 4267,
+      "model_relpath": "d5/graphcore/E-poplar-2.1.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.1.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.1.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:08Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.2.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.2.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.2.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:10Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.2.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.2.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.2.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:11Z"
+    },
+    {
+      "estimated_size_bytes": 4815,
+      "model_relpath": "d5/graphcore/E-poplar-2.2.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.2.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.2.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:12Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.3.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.3.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.3.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:15Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.3.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.3.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.3.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:16Z"
+    },
+    {
+      "estimated_size_bytes": 5009,
+      "model_relpath": "d5/graphcore/E-poplar-2.3.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.3.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.3.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:18Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.4.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.4.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.4.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:21Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.4.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.4.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.4.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:23Z"
+    },
+    {
+      "estimated_size_bytes": 5358,
+      "model_relpath": "d5/graphcore/E-poplar-2.4.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.4.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.4.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:24Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.5.1/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.5.1/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.5.1/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:26Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.5.1/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.5.1/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.5.1/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:27Z"
+    },
+    {
+      "estimated_size_bytes": 5725,
+      "model_relpath": "d5/graphcore/E-poplar-2.5.1/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.5.1/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.5.1/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:29Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-2.6.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-2.6.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.6.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:31Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-2.6.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-2.6.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.6.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:32Z"
+    },
+    {
+      "estimated_size_bytes": 4826,
+      "model_relpath": "d5/graphcore/E-poplar-2.6.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-2.6.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-2.6.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:34Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-3.0.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-3.0.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.0.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:35Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-3.0.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-3.0.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.0.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:37Z"
+    },
+    {
+      "estimated_size_bytes": 3825,
+      "model_relpath": "d5/graphcore/E-poplar-3.0.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-3.0.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.0.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:39Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-3.1.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-3.1.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.1.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:41Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-3.1.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-3.1.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.1.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:42Z"
+    },
+    {
+      "estimated_size_bytes": 5050,
+      "model_relpath": "d5/graphcore/E-poplar-3.1.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-3.1.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.1.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:43Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-3.2.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-3.2.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.2.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:45Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-3.2.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-3.2.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.2.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:47Z"
+    },
+    {
+      "estimated_size_bytes": 5095,
+      "model_relpath": "d5/graphcore/E-poplar-3.2.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-3.2.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.2.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:48Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-3.3.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-3.3.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.3.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:50Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-3.3.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-3.3.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.3.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:51Z"
+    },
+    {
+      "estimated_size_bytes": 6274,
+      "model_relpath": "d5/graphcore/E-poplar-3.3.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-3.3.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.3.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:52Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/E-poplar-3.4.0/debs",
+      "remote_path": "models/d5/graphcore/E-poplar-3.4.0/debs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.4.0/debs",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:53Z"
+    },
+    {
+      "estimated_size_bytes": 464,
+      "model_relpath": "d5/graphcore/E-poplar-3.4.0/dependencies",
+      "remote_path": "models/d5/graphcore/E-poplar-3.4.0/dependencies",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.4.0/dependencies",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:54Z"
+    },
+    {
+      "estimated_size_bytes": 6189,
+      "model_relpath": "d5/graphcore/E-poplar-3.4.0/release-notes",
+      "remote_path": "models/d5/graphcore/E-poplar-3.4.0/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/E-poplar-3.4.0/release-notes",
+      "uploaded_at_latest_utc": "2026-03-26T18:20:56Z"
+    },
+    {
+      "estimated_size_bytes": 1286261219,
+      "model_relpath": "d5/graphcore/containers/extracted",
+      "remote_path": "models/d5/graphcore/containers/extracted",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/containers/extracted",
+      "uploaded_at_latest_utc": "2026-03-27T00:25:18Z"
+    },
+    {
+      "estimated_size_bytes": 5802520451,
+      "model_relpath": "d5/graphcore/containers/images",
+      "remote_path": "models/d5/graphcore/containers/images",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/containers/images",
+      "uploaded_at_latest_utc": "2026-03-27T00:25:57Z"
+    },
+    {
+      "estimated_size_bytes": 1435,
+      "model_relpath": "d5/graphcore/containers/manifests",
+      "remote_path": "models/d5/graphcore/containers/manifests",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/containers/manifests",
+      "uploaded_at_latest_utc": "2026-03-27T00:25:58Z"
+    },
+    {
+      "estimated_size_bytes": 241361,
+      "model_relpath": "d5/graphcore/docs/install-guides",
+      "remote_path": "models/d5/graphcore/docs/install-guides",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/docs/install-guides",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:00Z"
+    },
+    {
+      "estimated_size_bytes": 33281,
+      "model_relpath": "d5/graphcore/docs/monitoring",
+      "remote_path": "models/d5/graphcore/docs/monitoring",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/docs/monitoring",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:01Z"
+    },
+    {
+      "estimated_size_bytes": 177259,
+      "model_relpath": "d5/graphcore/docs/popvision",
+      "remote_path": "models/d5/graphcore/docs/popvision",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/docs/popvision",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:03Z"
+    },
+    {
+      "estimated_size_bytes": 263470,
+      "model_relpath": "d5/graphcore/docs/release-notes",
+      "remote_path": "models/d5/graphcore/docs/release-notes",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/docs/release-notes",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:04Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/drivers/ipu-driver-and-utilities",
+      "remote_path": "models/d5/graphcore/drivers/ipu-driver-and-utilities",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/drivers/ipu-driver-and-utilities",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:06Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/drivers/ipu-kernel-module",
+      "remote_path": "models/d5/graphcore/drivers/ipu-kernel-module",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/drivers/ipu-kernel-module",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:08Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/firmware/icuflash",
+      "remote_path": "models/d5/graphcore/firmware/icuflash",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/firmware/icuflash",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:10Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/frameworks/poptorch",
+      "remote_path": "models/d5/graphcore/frameworks/poptorch",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/frameworks/poptorch",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:12Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/frameworks/tensorflow-for-ipu",
+      "remote_path": "models/d5/graphcore/frameworks/tensorflow-for-ipu",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/frameworks/tensorflow-for-ipu",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:14Z"
+    },
+    {
+      "estimated_size_bytes": 1751,
+      "model_relpath": "d5/graphcore/manifests/checksums",
+      "remote_path": "models/d5/graphcore/manifests/checksums",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/manifests/checksums",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:15Z"
+    },
+    {
+      "estimated_size_bytes": 26894,
+      "model_relpath": "d5/graphcore/manifests/source",
+      "remote_path": "models/d5/graphcore/manifests/source",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/manifests/source",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:17Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/manual-drop/portal-downloads",
+      "remote_path": "models/d5/graphcore/manual-drop/portal-downloads",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/manual-drop/portal-downloads",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:18Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/manual-drop/sdk-bundles",
+      "remote_path": "models/d5/graphcore/manual-drop/sdk-bundles",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/manual-drop/sdk-bundles",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:20Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/manual-drop/wheels",
+      "remote_path": "models/d5/graphcore/manual-drop/wheels",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/manual-drop/wheels",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:22Z"
+    },
+    {
+      "estimated_size_bytes": 990910196,
+      "model_relpath": "d5/graphcore/os/ubuntu-18.04.6",
+      "remote_path": "models/d5/graphcore/os/ubuntu-18.04.6",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/os/ubuntu-18.04.6",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:32Z"
+    },
+    {
+      "estimated_size_bytes": 1406539139,
+      "model_relpath": "d5/graphcore/os/ubuntu-20.04.6",
+      "remote_path": "models/d5/graphcore/os/ubuntu-20.04.6",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/os/ubuntu-20.04.6",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:41Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/sdk/popart",
+      "remote_path": "models/d5/graphcore/sdk/popart",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/sdk/popart",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:43Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/sdk/poplar",
+      "remote_path": "models/d5/graphcore/sdk/poplar",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/sdk/poplar",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:45Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/sdk/poplibs",
+      "remote_path": "models/d5/graphcore/sdk/poplibs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/sdk/poplibs",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:47Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/graphcore/visualisation/popvision",
+      "remote_path": "models/d5/graphcore/visualisation/popvision",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/graphcore/visualisation/popvision",
+      "uploaded_at_latest_utc": "2026-03-27T00:26:49Z"
+    },
+    {
+      "estimated_size_bytes": 5432879,
+      "model_relpath": "d5/logs",
+      "remote_path": "models/d5/logs",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/logs",
+      "uploaded_at_latest_utc": "2026-03-27T12:27:23Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/lost+found",
+      "remote_path": "models/d5/lost+found",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/lost+found",
+      "uploaded_at_latest_utc": "2026-03-27T12:27:25Z"
+    },
+    {
+      "estimated_size_bytes": 0,
+      "model_relpath": "d5/model-checksums",
+      "remote_path": "models/d5/model-checksums",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/model-checksums",
+      "uploaded_at_latest_utc": "2026-03-27T12:27:26Z"
+    },
+    {
+      "estimated_size_bytes": 4295011758,
+      "model_relpath": "d5/specialist/science/raw",
+      "remote_path": "models/d5/specialist/science/raw",
+      "source_exists": true,
+      "source_path": "/mnt/models/d5/specialist/science/raw",
+      "uploaded_at_latest_utc": "2026-03-27T13:03:11Z"
+    }
+  ],
+  "models_mount": "/mnt/models",
+  "total_estimated_size_bytes": 122575166832,
+  "total_estimated_size_gib": 114.157
+}

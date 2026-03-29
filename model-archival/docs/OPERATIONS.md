@@ -29,6 +29,7 @@ bash run.sh --tier A                # Tier A only
 bash run.sh --tier B                # Tier B (code models) only
 bash run.sh --bandwidth-cap 0.75    # cap at 0.75 MB/s = 6 Mbps
 bash run.sh --queue-mode adaptive   # opt back into adaptive parallel downloads
+bash run.sh --registry config/registry-specialists.yaml --drive d3   # only models with drive: d3
 bash run.sh --rehash                # full SHA-256 re-hash of all files after download
 bash run.sh --skip-env-check        # skip environment verification (faster restart)
 ```
@@ -48,6 +49,36 @@ BANDWIDTH_CAP_MBPS=0.125 screen -S specialist bash scripts/download-specialist-o
 ```
 
 `archiver download` matches the positional argument to the registry **`id`** field (same string as on Hugging Face, e.g. `seyonec/ChemBERTa-zinc-base-v1`). Re-run the same command to **continue** a partial download.
+
+### Specialist registry + GDrive upload (phased drives)
+
+**Goal:** Pull specialist weights to **D3** while `rclone` upload runs against **D5** (separate `screen` sessions). Later you can **copy raw trees from D1/D2 → D5** for consolidation (those paths are **not** in the default GDrive “pending” set until you choose to sync them). After D5 work, run the same specialist registry limited to **D1/D2** (and **d5** rows) so large BF16 lands on the right spindles.
+
+1. **Uploader (existing):** e.g. `screen -S gdrive-upload bash run-registry-upload.sh` from `gdrive-archival/` (see `gdrive-archival/docs/GDRIVE-UPLOAD-RUNBOOK.md`).
+2. **Archiver — D3-only slice** (does not touch registry `drive: d5` rows):
+
+```bash
+screen -S archiver-specialists-d3 bash run.sh --all \
+  --registry config/registry-specialists.yaml \
+  --drive d3 \
+  --bandwidth-cap 2 \
+  --queue-mode serial
+```
+
+Use `--skip-drive-space-check` if preflight aborts on a full drive you are not writing to this run.
+
+3. **After moving raw D1/D2 → D5:** run the remaining specialist entries on their assigned drives, e.g.:
+
+```bash
+screen -S archiver-specialists-rest bash run.sh --all \
+  --registry config/registry-specialists.yaml \
+  --drive d1 --drive d2 --drive d5 \
+  --bandwidth-cap 2
+```
+
+(`--drive` may be passed multiple times in `run.sh`.)
+
+**Do not** use `--storage-drive d3` for the whole specialist list unless you intentionally want every model file on D3 — large `drive: d5` rows belong on D5 when you are ready.
 
 ---
 
@@ -252,6 +283,35 @@ sudo smartctl -a /dev/sdX
 
 ```bash
 df -h /mnt/models/d1 /mnt/models/d2 /mnt/models/d3 /mnt/models/d5
+```
+
+### Scratch audit (`.tmp` trees vs `run_state` + verified installs)
+
+Large partial downloads live under ``<drive>/.tmp/<org_ModelName>/`` (same path the downloader uses for aria2 resume). To see **what is already verified on disk** (``manifest.json`` + ``.sha256`` sidecars), **``run_state.json`` status**, and whether scratch is **reclaimable** after a complete install:
+
+```bash
+cd model-archival
+uv run archiver audit-tmp
+```
+
+Outputs (on **D3** infra, same tree as ``run_state.json``):
+
+- ``logs/TMP-SCRATCH-AUDIT.json`` — full structured snapshot for scripts
+- ``logs/TMP-SCRATCH-AUDIT.md`` — human-readable tables
+
+Optional: remove only rows classified ``reclaimable_tmp`` (after you confirm the listed manifest paths):
+
+```bash
+uv run archiver audit-tmp --delete-reclaimable        # dry-run list
+uv run archiver audit-tmp --delete-reclaimable --apply
+```
+
+The audit merges ``config/registry.yaml``, ``registry-specialists.yaml``, ``registry-legacy.yaml``, and ``registry_high_risk.yaml`` for **id → drive** lookup.
+
+On a machine **without** ``/mnt/models/d3`` mounted, pass a writable output root (JSON/MD still reflect whatever drives exist):
+
+```bash
+uv run archiver audit-tmp --infra /tmp/archiver-audit-out
 ```
 
 ### Re-mount after reboot

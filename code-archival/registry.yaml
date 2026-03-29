@@ -921,18 +921,54 @@ repos:
       base used by privacy-conscious developers to run Cline, Continue,
       Tabby and other open-source AI extensions locally.
 
+  - id: garrytan/gstack
+    github: garrytan/gstack
+    category: coding-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      gstack — Garry Tan's published Claude Code setup: opinionated slash-command
+      tools (planning, review, QA, ship). Bun/SQLite; high-signal reference for
+      multi-agent CLI workflows.
+
+  - id: NousResearch/hermes-agent
+    github: NousResearch/hermes-agent
+    category: coding-agents
+    risk: medium
+    licence: MIT
+    notes: >
+      Hermes Agent — Nous Research’s self-improving agent (CLI + gateway, skills,
+      memory, MCP). See https://github.com/NousResearch/hermes-agent
+
+  - id: paperclipai/paperclip
+    github: paperclipai/paperclip
+    category: agents
+    risk: medium
+    licence: MIT
+    notes: >
+      Paperclip — open-source orchestration for multi-agent “company” workflows
+      (dashboard, budgets, governance). TypeScript/Node.
+
+  - id: obra/superpowers
+    github: obra/superpowers
+    category: coding-agents
+    risk: medium
+    licence: NOASSERTION
+    notes: >
+      Obra Superpowers — Claude/agent skills pack (TDD, git worktrees, finishing
+      branches, etc.). Also listed in registry-skills.yaml for skills-only runs.
+
   # From awesome-ai-devtools — additional coding agents & code-gen tools
 
-  - id: AbanteAI/mentat
-    github: AbanteAI/mentat
+  - id: AbanteAI/archive-old-cli-mentat
+    github: AbanteAI/archive-old-cli-mentat
     category: coding-agents
     risk: high
     licence: Apache-2.0
     notes: >
-      Mentat — AI coding assistant (CLI + VS Code). Makes changes to repos
-      from natural language; integrates with GitHub. Single org; high link-rot risk.
-      Note: GitHub API has returned no data (repo may be private or renamed); consider
-      removing or updating id/github if a public fork is found.
+      Archived legacy Mentat CLI (AbanteAI). Replaces AbanteAI/mentat — the main
+      repo returns 404 on the public GitHub API as of 2026-03; this is the org’s
+      preserved CLI snapshot. Current product may be VS Code–only (marketplace).
 
   - id: AntonOsika/gpt-engineer
     github: AntonOsika/gpt-engineer

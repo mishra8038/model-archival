@@ -974,14 +974,14 @@ models:
 - id: failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
   hf_repo: failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
   tier: D
-  drive: d5
+  drive: d3
   priority: 4
   licence: llama3
   requires_auth: false
   commit_sha: null
   parent_model: meta-llama/Meta-Llama-3-70B-Instruct
   method: abliteration
-  notes: failspy v3 series — the original widely-used abliteration method
+  notes: 'failspy v3 series; weights on D3 uncensored/ (moved from D5 2026-03-29).'
 - id: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   hf_repo: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   tier: D
@@ -994,11 +994,11 @@ models:
   - Q3_K_M
   parent_model: meta-llama/Llama-3.3-70B-Instruct
   method: abliteration
-  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
+  notes: 'tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d5/.tmp/ — schedule on D5.'
 - id: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   tier: D
-  drive: d5
+  drive: d3
   priority: 4
   licence: MIT
   requires_auth: false
@@ -1007,7 +1007,7 @@ models:
   - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
   method: abliteration
-  notes: tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated
+  notes: 'tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d3/.tmp/ — schedule on D3.'
 - id: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   tier: D

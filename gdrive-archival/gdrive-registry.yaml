@@ -10,17 +10,28 @@
 
 version: 1
 
+# Per-root `final_checksum_verify` (default when omitted: true): after all uploads, run
+# `rclone check --checksum --one-way` for that path vs Drive. Set false when the local tree
+# still contains paths not uploaded (typical for quantized/uncensored roots).
+
 roots:
   # D5 first (metadata + archive + any models on D5)
   - path: d5
     tree_upload_min_depth: 3
+    final_checksum_verify: true
   - path: d5/specialist
-  # Then other drives
+    final_checksum_verify: false   # set true when whole subtree is mirrored on Drive
+  # Then other drives (false = local may contain revision dirs not yet uploaded)
   - path: d3/specialist
+    final_checksum_verify: false
   - path: d1/uncensored
+    final_checksum_verify: false
   - path: d2/uncensored
+    final_checksum_verify: false
   - path: d3/uncensored
+    final_checksum_verify: false
   - path: d3/quantized
+    final_checksum_verify: false
 
 # Uploader should exclude under d5 (rclone patterns relative to d5/ root):
 d5_exclude:

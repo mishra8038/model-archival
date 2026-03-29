@@ -18,7 +18,10 @@ from __future__ import annotations
 
 import argparse
 import fnmatch
+import hashlib
 import json
+import os
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +42,9 @@ REGISTRY_UPLOAD_STATE_PATH = SCRIPT_DIR / "logs" / "registry-upload-state.json"
 REGISTRY_UPLOAD_STATUS_MD = SCRIPT_DIR / "logs" / "GDRIVE-REGISTRY-UPLOAD-STATUS.md"
 UPLOADED_MODELS_JSON = SCRIPT_DIR / "logs" / "registry-uploaded-models.json"
 UPLOADED_MODELS_MD = SCRIPT_DIR / "logs" / "registry-uploaded-models.md"
+REMOTE_TREE_CACHE_JSON = SCRIPT_DIR / "logs" / "gdrive-remote-tree-cache.json"
+REMOTE_TREE_CACHE_MD = SCRIPT_DIR / "logs" / "GDRIVE-REMOTE-TREE-CACHE.md"
+REMOTE_TREE_CACHE_BG_LOG = SCRIPT_DIR / "logs" / "remote-tree-cache-refresh.log"
 STATE_VERSION = 1
 
 
@@ -665,6 +671,13 @@ def _append_verify_failure_report(mount: Path, model_dir: Path, results: List[di
     mf.write("\n")
 
 
+def _is_archiver_model_manifest(manifest: dict) -> bool:
+  """True only for archiver-written model manifests (HF repo + per-file SHA list)."""
+  if not isinstance(manifest.get("files"), list):
+    return False
+  return bool(str(manifest.get("hf_repo") or "").strip())
+
+
 def _local_verify_or_skip(
   archiver_root: Path,
   mount: Path,
@@ -697,10 +710,22 @@ def _local_verify_or_skip(
   if str(src) not in sys.path:
     sys.path.insert(0, str(src))
   try:
-    from archiver.verifier import verify_model_dir
+    from archiver.verifier import load_manifest, verify_model_dir
   except ImportError as e:
     print(f"[skip] cannot import verifier ({e}) — refusing upload without integrity check", file=sys.stderr)
     return (False, "verifier_import_failed")
+
+  mf = load_manifest(model_dir)
+  if mf is not None and not _is_archiver_model_manifest(mf):
+    try:
+      rel_dbg = model_dir.relative_to(mount).as_posix()
+    except ValueError:
+      rel_dbg = str(model_dir)
+    print(
+      f"[info] skip archiver SHA verify (manifest.json is not a model archive — no hf_repo+files): {rel_dbg}",
+      file=sys.stderr,
+    )
+    return (True, "non_archiver_manifest")
 
   try:
     results = verify_model_dir(model_dir)
@@ -813,6 +838,149 @@ def run_rclone_check_dir(
   return subprocess.run(cmd).returncode == 0
 
 
+def _remote_tree_cache_cfg(cfg: Dict) -> Dict:
+  return cfg.get("remote_tree_cache") or {}
+
+
+def _remote_tree_cache_enabled(cfg: Dict) -> bool:
+  return bool(_remote_tree_cache_cfg(cfg).get("enabled", True))
+
+
+def _remote_tree_cache_interval_hours(cfg: Dict) -> int:
+  raw = _remote_tree_cache_cfg(cfg).get("refresh_interval_hours", 6)
+  try:
+    return max(1, int(raw))
+  except (TypeError, ValueError):
+    return 6
+
+
+def _remote_tree_cache_due(cfg: Dict) -> bool:
+  if not REMOTE_TREE_CACHE_JSON.is_file():
+    return True
+  try:
+    payload = json.loads(REMOTE_TREE_CACHE_JSON.read_text(encoding="utf-8"))
+    ts = str(payload.get("generated_at_utc") or "").strip()
+    if not ts:
+      return True
+    updated = datetime.strptime(ts, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=timezone.utc)
+  except Exception:
+    return True
+  age_s = (datetime.now(timezone.utc) - updated).total_seconds()
+  return age_s >= (_remote_tree_cache_interval_hours(cfg) * 3600)
+
+
+def _rclone_lsf_digest(remote_path: str, *, dirs_only: bool) -> Tuple[int, str]:
+  cmd = ["rclone", "lsf", remote_path, "-R", "--fast-list"]
+  cmd.append("--dirs-only" if dirs_only else "--files-only")
+  proc = subprocess.run(cmd, capture_output=True, text=True)
+  if proc.returncode != 0:
+    raise RuntimeError(proc.stderr.strip() or f"rclone lsf failed ({proc.returncode})")
+  h = hashlib.sha256()
+  n = 0
+  for ln in proc.stdout.splitlines():
+    s = ln.strip()
+    if not s:
+      continue
+    n += 1
+    h.update(s.encode("utf-8", errors="ignore"))
+    h.update(b"\n")
+  return (n, h.hexdigest())
+
+
+def refresh_remote_tree_cache(cfg: Dict, reg: Dict) -> int:
+  """
+  Snapshot remote tree metadata for each registry root (counts + digest of listed paths).
+  This reads directory/file listings and hash metadata only; it does not download file bodies.
+  """
+  roots = reg.get("roots") or []
+  if not roots:
+    print("error: gdrive-registry.yaml has no roots", file=sys.stderr)
+    return 2
+  g = cfg.get("gdrive") or {}
+  remote = g.get("remote", "").rstrip("/")
+  base_path = (g.get("base_path") or "").strip().strip("/")
+  remote_base = f"{remote}/{base_path}" if base_path else remote
+  models_prefix = f"{remote_base.rstrip('/')}/models"
+  now = _state_now_iso()
+
+  rows: List[dict] = []
+  for ent in roots:
+    rel = (ent.get("path") or "").strip().strip("/")
+    if not rel:
+      continue
+    dst = f"{models_prefix}/{rel}"
+    try:
+      dcnt, ddig = _rclone_lsf_digest(dst, dirs_only=True)
+      fcnt, fdig = _rclone_lsf_digest(dst, dirs_only=False)
+      rows.append(
+        {
+          "root": rel,
+          "remote_path": dst,
+          "ok": True,
+          "dir_count": dcnt,
+          "file_count": fcnt,
+          "dirs_digest_sha256": ddig,
+          "files_digest_sha256": fdig,
+        }
+      )
+    except Exception as exc:
+      rows.append({"root": rel, "remote_path": dst, "ok": False, "error": str(exc)})
+
+  payload = {
+    "generated_at_utc": now,
+    "note": "listing/hash-metadata snapshot (no Drive file-body download)",
+    "roots": rows,
+  }
+  REMOTE_TREE_CACHE_JSON.parent.mkdir(parents=True, exist_ok=True)
+  tmp_json = REMOTE_TREE_CACHE_JSON.with_suffix(".json.tmp")
+  with tmp_json.open("w", encoding="utf-8") as f:
+    json.dump(payload, f, indent=2, sort_keys=True)
+    f.write("\n")
+  tmp_json.replace(REMOTE_TREE_CACHE_JSON)
+
+  lines: List[str] = [
+    "# GDrive Remote Tree Cache\n\n",
+    f"_Generated: {now} (UTC)_\n\n",
+    "| Root | Directories | Files | dirs digest | files digest | Status |\n",
+    "|------|------------:|------:|-------------|--------------|--------|\n",
+  ]
+  for r in rows:
+    if r.get("ok"):
+      lines.append(
+        f"| `{r['root']}` | {r['dir_count']} | {r['file_count']} | "
+        f"`{str(r['dirs_digest_sha256'])[:16]}...` | `{str(r['files_digest_sha256'])[:16]}...` | ok |\n"
+      )
+    else:
+      lines.append(f"| `{r['root']}` | — | — | — | — | error: {r.get('error', 'unknown')} |\n")
+  tmp_md = REMOTE_TREE_CACHE_MD.with_suffix(".md.tmp")
+  tmp_md.write_text("".join(lines), encoding="utf-8")
+  tmp_md.replace(REMOTE_TREE_CACHE_MD)
+  print(f"[remote-tree-cache] {REMOTE_TREE_CACHE_JSON.relative_to(SCRIPT_DIR)}")
+  print(f"[remote-tree-cache] {REMOTE_TREE_CACHE_MD.relative_to(SCRIPT_DIR)}")
+  return 0
+
+
+def maybe_start_remote_tree_cache_refresh_bg(cfg: Dict) -> None:
+  if not _remote_tree_cache_enabled(cfg):
+    return
+  if not _remote_tree_cache_due(cfg):
+    return
+  if os.environ.get("GDRIVE_REMOTE_TREE_CACHE_BG") == "1":
+    return
+  REMOTE_TREE_CACHE_BG_LOG.parent.mkdir(parents=True, exist_ok=True)
+  cmd = [sys.executable, str(__file__), "--refresh-remote-tree-cache"]
+  with REMOTE_TREE_CACHE_BG_LOG.open("a", encoding="utf-8") as logf:
+    logf.write(f"{_state_now_iso()}\tspawn\t{' '.join(cmd)}\n")
+    subprocess.Popen(
+      cmd,
+      cwd=str(SCRIPT_DIR),
+      stdout=logf,
+      stderr=logf,
+      env={**os.environ, "GDRIVE_REMOTE_TREE_CACHE_BG": "1"},
+      start_new_session=True,
+    )
+
+
 def _drive_upload_priority(mount: Path, model_dir: Path) -> int:
   """0 = under d5/ (upload first); 1 = other drives."""
   try:
@@ -833,6 +1001,7 @@ def run_registry_upload(
   resync_all: bool = False,
   verify_remote: bool = False,
 ) -> int:
+  maybe_start_remote_tree_cache_refresh_bg(cfg)
   mount = Path(cfg.get("models_mount", "/mnt/models")).resolve()
   if not mount.is_dir():
     print(f"error: models_mount not found or not a directory: {mount}", file=sys.stderr)
@@ -1086,6 +1255,44 @@ def run_registry_upload(
       mark_registry_model_complete(state, rel_pos)
       completed.add(rel_pos)
 
+  # Per registry root: one-way checksum check vs Drive (remote uses stored hashes; no file download).
+  if not rclone_failures:
+    print("\n--- Final per-root verify (rclone check --checksum --one-way) ---")
+    tag = "[dry-run] " if dry_run else ""
+    for root_ent in roots:
+      rel = (root_ent.get("path") or "").strip().strip("/")
+      if not rel:
+        continue
+      if root_ent.get("final_checksum_verify") is False:
+        print(f"{tag}[skip] final verify: disabled for `{rel}` (registry final_checksum_verify: false)")
+        continue
+      if rel == "d5" and d5_full_tree_verified:
+        print(f"{tag}[skip] final verify: `d5/` already checked before model loop")
+        continue
+      src = mount / rel
+      if not src.is_dir():
+        print(f"{tag}[skip] final verify: not a directory — `{rel}`")
+        continue
+      dst = f"{models_prefix}/{rel}"
+      if rel == "d5" or rel.startswith("d5/"):
+        root_excludes = list(reg.get("d5_exclude") or [".tmp/**"])
+      else:
+        root_excludes = [".tmp/**"]
+      print(f"{tag}final verify: `{rel}` → `{dst}` (excludes: {root_excludes})")
+      ok_root = run_rclone_check_dir(
+        src, dst, transfers, checkers, bwlimit, root_excludes, dry_run
+      )
+      if not ok_root:
+        print(
+          f"{tag}[fail] final verify failed for registry root `{rel}` — "
+          "local tree not matched on Drive (missing/extra/mismatch). "
+          "If this root is only partially uploaded, disable with "
+          "`final_checksum_verify: false` on that root in gdrive-registry.yaml.",
+          file=sys.stderr,
+        )
+        rclone_failures += 1
+        break
+
   try:
     path = write_registry_upload_status(cfg, reg)
     print(f"[status] {path.relative_to(SCRIPT_DIR)}")
@@ -1152,6 +1359,11 @@ def main() -> int:
     action="store_true",
     help="Disable remote check even if gdrive.registry_verify_remote is true in config.",
   )
+  parser.add_argument(
+    "--refresh-remote-tree-cache",
+    action="store_true",
+    help="Only refresh remote tree metadata cache (listings/hash metadata), then exit.",
+  )
   args = parser.parse_args()
 
   cfg = load_yaml(args.config)
@@ -1160,6 +1372,9 @@ def main() -> int:
   g = cfg.get("gdrive") or {}
   want_remote = bool(args.verify_remote or g.get("registry_verify_remote") or cfg.get("registry_verify_remote"))
   verify_remote = want_remote and not args.no_verify_remote
+
+  if args.refresh_remote_tree_cache:
+    return refresh_remote_tree_cache(cfg, reg)
 
   return run_registry_upload(
     cfg,

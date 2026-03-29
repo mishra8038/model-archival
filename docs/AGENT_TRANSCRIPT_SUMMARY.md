@@ -10,10 +10,23 @@
 
 ---
 
+## 2026-03-29 — Archiver: `.tmp` scratch audit (JSON + MD on D3)
+
+- **`model-archival/src/archiver/tmp_audit.py`:** Scans ``<mount>/.tmp/*`` for every drive in ``drives.yaml``; merges the four registry YAMLs for **id → drive**; reads ``run_state.json`` (read-only JSON); classifies each folder vs verified installs (**``manifest.json`` + ``.sha256`` sidecars**, same rule as ``downloader._check_manifest_complete``). Writes ``logs/TMP-SCRATCH-AUDIT.json`` and ``logs/TMP-SCRATCH-AUDIT.md`` under D3 infra.
+- **`uv run archiver audit-tmp`:** CLI (optional ``--infra`` for hosts without mounts; ``--delete-reclaimable --apply`` removes only ``reclaimable_tmp`` rows). **`scripts/audit_tmp_status.sh`** wrapper.
+- **`model-archival/docs/OPERATIONS.md`:** “Scratch audit” subsection under disk maintenance.
+
+## 2026-03-28 — GDrive: pre-upload verify repair script + non-model `manifest.json`
+
+- **`gdrive-archival/repair_preupload_failures.py`:** Reads `logs/gdrive-preupload-verify-failures.jsonl`; re-fetches only files that still fail SHA vs `manifest.json` via `hf_hub_download` (pinned `commit_sha`); optional `rclone copy` + `uploaded.log` / tracker update; independent logs `logs/preupload-verify-repair.log`, `logs/preupload-verify-repair-state.json`; reconcile runs `python3 backup.py upload-registry-status` and appends `logs/PREUPLOAD-REPAIR-RECONCILE.md` (skipped on `--dry-run`).
+- **`gdrive-archival/upload_registry.py`:** `_is_archiver_model_manifest` — if `manifest.json` exists but lacks archiver shape (`hf_repo` + `files` list), **skip archiver SHA verify** and allow upload (fixes `d5/code-archives` code-archival index vs model-manifest confusion).
+- **`gdrive-archival/AGENTS.md`:** Entry point for the repair script.
+
 ## 2026-03-25 — GDrive: granular `registry-tree` tracking for d5/
 
 - **`gdrive-archival/upload_registry.py`:** For `path: d5` with `tree_upload_min_depth` (default **3** in yaml), discover non-overlapping subtree units (depth‑3 dirs + shallow top-level branches), skip units overlapping `d5_exclude` / `tree_upload_exclude` / `quantized/**` / `uncensored/**` / model revision paths; each successful `rclone copy` appends **`registry-tree`** to `logs/uploaded.log` and the relpath to `registry-upload-state.json` `completed_models`. **`tree_upload_min_depth: 0`** on the d5 root restores legacy single `registry-d5` full-tree copy.
 - **`gdrive-archival/gdrive-registry.yaml`:** d5 root documents `tree_upload_min_depth: 3`.
+- **Remote metadata cache:** `upload_registry.py` can now refresh Drive tree metadata snapshot via `--refresh-remote-tree-cache` (writes `logs/gdrive-remote-tree-cache.json` + `logs/GDRIVE-REMOTE-TREE-CACHE.md` with per-root dir/file counts + listing digests). Normal runs auto-spawn this in background on a cooldown (`config.yaml` → `remote_tree_cache.enabled`, `refresh_interval_hours`).
 
 ---
 
@@ -86,4 +99,4 @@
 
 ---
 
-_Last curated: 2026-03-25. Append new sessions at the top (below the “Purpose” block)._
+_Last curated: 2026-03-28. Append new sessions at the top (below the “Purpose” block)._

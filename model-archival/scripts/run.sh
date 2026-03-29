@@ -23,7 +23,7 @@
 #   --rehash              After download, do full SHA-256 re-hash (slow)
 #   --skip-env-check      Skip the environment pre-check step
 #   --skip-verify         Skip the post-download integrity verification step
-#   --bandwidth-cap N     Cap bandwidth at N MB/s 24/7 (0.75 ≈ 6 Mbps; disables schedule)
+#   --bandwidth-cap N     Cap bandwidth at N MB/s 24/7 (default 4; disables schedule)
 #   --no-scheduled-bandwidth-cap  Disable schedule (no cap unless --bandwidth-cap set)
 #   --scheduled-bandwidth-cap N   Cap in MB/s **during** the window below (default: 0.75)
 #   --scheduled-bandwidth-window W  Local time HH:MM-HH:MM when cap applies; **outside** = unlimited
@@ -33,6 +33,7 @@
 #   --skip-network        Pass --skip-network to environment check
 #   --registry PATH       Use alternate registry (default: config/registry.yaml)
 #   --storage-drive LABEL Write all models under this mount (e.g. d3); registry drive: unchanged
+#   --drive LABEL         Only models with registry drive: LABEL (repeat option for several)
 #   --help                Show this message
 #
 # Examples:
@@ -50,6 +51,9 @@
 #
 #   # Flat 2 MB/s 24/7 (e.g. specialists queue); scheduled day/night vars are ignored when cap is set:
 #   bash run.sh --all --registry config/registry-specialists.yaml --bandwidth-cap 2
+#
+#   # Specialists whose registry drive: is d3 only (parallel with GDrive upload hitting d5):
+#   bash run.sh --all --registry config/registry-specialists.yaml --drive d3 --bandwidth-cap 2
 #
 #   # Tier A only, dry-run:
 #   bash run.sh --tier A --dry-run
@@ -101,8 +105,9 @@ DOWNLOAD_ALL=true      # default: download everything
 REHASH=false
 SKIP_ENV_CHECK=false
 SKIP_VERIFY=false
-# Empty = use scheduled cap/window below (late night unlimited). Set --bandwidth-cap for 24/7 cap.
-BANDWIDTH_CAP=""
+# Default flat cap (MB/s), 24/7; clears scheduled day/night cap below. Override: `--bandwidth-cap N`.
+# To use scheduled cap instead, set `BANDWIDTH_CAP=""` here and tune SCHEDULED_* below.
+BANDWIDTH_CAP="4"
 # Neighbor-friendly daytime cap; outside this local-time window aria2 is unlimited.
 SCHEDULED_BANDWIDTH_CAP="0.75"       # ~6 Mbps during the window
 SCHEDULED_BANDWIDTH_WINDOW="07:00-23:00"
@@ -111,6 +116,7 @@ MAX_PARALLEL=1
 SKIP_NETWORK=false
 REGISTRY_FILE="config/registry.yaml"
 STORAGE_DRIVE=""       # optional: e.g. d3 — passed through to archiver download --storage-drive
+DRIVE_FILTERS=()       # optional: repeat --drive d3 — only those registry drive: labels
 
 # ---------------------------------------------------------------------------
 # Argument parsing
@@ -139,6 +145,7 @@ while [[ $# -gt 0 ]]; do
         --skip-network)     SKIP_NETWORK=true;         shift ;;
         --registry)         REGISTRY_FILE="$2";        shift 2 ;;
         --storage-drive)    STORAGE_DRIVE="$2";        shift 2 ;;
+        --drive)            DRIVE_FILTERS+=("$2");      shift 2 ;;
         --help|-h)          usage ;;
         *) echo "Unknown option: $1  (run with --help)"; exit 1 ;;
     esac
@@ -185,6 +192,7 @@ _rpt "| Scheduled cap window (local) | ${SCHEDULED_BANDWIDTH_WINDOW:-disabled} (
 _rpt "| Queue mode | $QUEUE_MODE |"
 _rpt "| Max parallel | $MAX_PARALLEL |"
 _rpt "| Storage drive override | ${STORAGE_DRIVE:-(none — use registry)} |"
+_rpt "| Drive filter | ${DRIVE_FILTERS[*]:-(all registry drives)} |"
 _rpt ""
 _rpt "---"
 _rpt ""
@@ -214,6 +222,7 @@ else
 fi
 info "Report:       $_REPORT_FILE"
 [[ -n "$STORAGE_DRIVE" ]] && info "Storage:      all models → $STORAGE_DRIVE (paths only; registry unchanged)"
+[[ ${#DRIVE_FILTERS[@]} -gt 0 ]] && info "Drive filter: ${DRIVE_FILTERS[*]} (registry drive: field)"
 echo ""
 
 if $DRY_RUN; then
@@ -434,6 +443,9 @@ fi
 DOWNLOAD_ARGS+=("--queue-mode" "$QUEUE_MODE")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
 [[ -n "$STORAGE_DRIVE" ]] && DOWNLOAD_ARGS+=("--storage-drive" "$STORAGE_DRIVE")
+for _d in "${DRIVE_FILTERS[@]}"; do
+    [[ -n "$_d" ]] && DOWNLOAD_ARGS+=("--drive" "$_d")
+done
 
 info "Running dry-run to capture download plan…"
 PLAN_RC=0

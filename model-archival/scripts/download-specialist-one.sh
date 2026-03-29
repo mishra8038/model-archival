@@ -10,7 +10,7 @@
 #   bash scripts/download-specialist-one.sh 'AI4Chem/ChemLLM-7B-Chat'
 #
 # Env:
-#   BANDWIDTH_CAP_MBPS   Total cap in MB/s (mebibytes/s). Default: 1
+#   BANDWIDTH_CAP_MBPS   Total cap in MB/s (mebibytes/s). Default: 4
 #                        For ~1 megabit/s line rate use:  export BANDWIDTH_CAP_MBPS=0.125
 #   REGISTRY             Registry path (default: config/registry-specialists.yaml)
 #
@@ -20,7 +20,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO"
 
 REG="${REGISTRY:-config/registry-specialists.yaml}"
-CAP="${BANDWIDTH_CAP_MBPS:-1}"
+CAP="${BANDWIDTH_CAP_MBPS:-4}"
 
 if [[ $# -lt 1 ]]; then
     echo "Usage: $0 '<model-id>'"

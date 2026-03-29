@@ -27,6 +27,10 @@ alwaysApply: true
 ```bash
 cd gdrive-archival
 
+# Repair local checksum mismatches logged in logs/gdrive-preupload-verify-failures.jsonl
+# (per-file HF re-fetch, optional rclone + tracker update; logs/preupload-verify-repair.log)
+python3 repair_preupload_failures.py [--dry-run] [--no-upload] [--no-reconcile]
+
 # Registry-driven upload (preferred)
 bash run-registry-upload.sh [--dry-run] [--limit N] [--resync-all]
 

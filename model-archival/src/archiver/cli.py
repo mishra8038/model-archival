@@ -265,6 +265,14 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
     help="Write all selected models under this drive mount (raw/quantized/uncensored trees); "
          "ignores registry drive for paths only — YAML drive: is unchanged on save.",
 )
+@click.option(
+    "--drive",
+    "drive_only",
+    type=str,
+    multiple=True,
+    metavar="LABEL",
+    help="Only models whose registry drive: matches (repeatable, e.g. --drive d3 --drive d1).",
+)
 @click.pass_context
 def cmd_download(
     ctx: click.Context,
@@ -285,6 +293,7 @@ def cmd_download(
     status_out: Optional[str],
     skip_drive_space_check: bool,
     storage_drive: Optional[str],
+    drive_only: tuple[str, ...],
 ) -> None:
     """Download model weights. Use --all, --tier X, or specify a model ID."""
     from archiver.aria2_manager import Aria2Manager, BandwidthSchedule
@@ -406,6 +415,16 @@ def cmd_download(
     if priority_only:
         models = [m for m in models if m.priority == priority_only]
 
+    if drive_only:
+        labels = {d.strip().lower() for d in drive_only if d.strip()}
+        unknown = labels - set(reg.drives.keys())
+        if unknown:
+            raise click.BadParameter(
+                f"--drive unknown label(s): {', '.join(sorted(unknown))} "
+                f"(known: {', '.join(sorted(reg.drives))})"
+            )
+        models = [m for m in models if m.drive in labels]
+
     models = sorted(models, key=lambda m: (m.priority, m.drive, m.id))
 
     if storage_drive:
@@ -433,6 +452,7 @@ def cmd_download(
         "tmp_dir": str(tmp_dir),
         "status_md": str(status_path),
         "storage_drive": storage_drive or "(registry)",
+        "drive_only": ",".join(drive_only) if drive_only else "(all)",
     }
     run_report.open(
         hf_token_set=bool(hf_token),
@@ -1052,6 +1072,89 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
     tmp.replace(out_path)
 
     console.print(f"[green]Archive snapshot report written → {out_path}[/]")
+
+
+# ------------------------------------------------------------------
+# audit-tmp — scratch .tmp cross-drive report
+# ------------------------------------------------------------------
+
+
+@cli.command("audit-tmp")
+@click.option(
+    "--config-dir",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Directory containing registry YAMLs [default: parent of --registry]",
+)
+@click.option(
+    "--infra",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Infra root (D3) for logs + run_state [default: from drives.yaml]",
+)
+@click.option(
+    "--delete-reclaimable",
+    is_flag=True,
+    default=False,
+    help="Remove `.tmp` dirs classified reclaimable_tmp (requires --apply)",
+)
+@click.option(
+    "--apply",
+    is_flag=True,
+    default=False,
+    help="Actually delete when used with --delete-reclaimable (otherwise audit-only)",
+)
+@click.pass_context
+def cmd_audit_tmp(
+    ctx: click.Context,
+    config_dir: Optional[Path],
+    infra: Optional[Path],
+    delete_reclaimable: bool,
+    apply: bool,
+) -> None:
+    """
+    Scan ``<mount>/.tmp/*`` on every drive, merge registries, correlate ``run_state.json``,
+    and detect verified installs via ``manifest.json`` + sidecars.
+
+    Writes ``logs/TMP-SCRATCH-AUDIT.json`` and ``logs/TMP-SCRATCH-AUDIT.md`` under D3 infra.
+    """
+    from archiver.tmp_audit import (
+        delete_reclaimable_tmp,
+        run_tmp_audit,
+        write_tmp_audit_artifacts,
+    )
+
+    registry_path: Path = ctx.obj["registry_path"]
+    drives_path: Path = ctx.obj["drives_path"]
+    cfg_dir = Path(config_dir).resolve() if config_dir else registry_path.parent.resolve()
+    # Do not use _load() here — it mkdirs infra on D3 and fails on dev hosts without mounts.
+    reg0 = load_registry(registry_path, drives_path if drives_path.exists() else None)
+    infra_root = Path(infra).resolve() if infra else _infra_root(reg0)
+
+    payload, records = run_tmp_audit(
+        config_dir=cfg_dir,
+        registry_path=registry_path,
+        drives_path=drives_path,
+        infra=infra_root,
+    )
+    json_path, md_path = write_tmp_audit_artifacts(infra_root, payload, records)
+    console.print(f"[green]TMP audit JSON → {json_path}[/]")
+    console.print(f"[green]TMP audit MD   → {md_path}[/]")
+
+    if delete_reclaimable:
+        if not apply:
+            preview = delete_reclaimable_tmp(records, apply=False)
+            for line in preview[:50]:
+                console.print(f"[dim]{line}[/]")
+            if len(preview) > 50:
+                console.print(f"[dim]… {len(preview) - 50} more[/]")
+            console.print("[yellow]Re-run with --apply to delete.[/]")
+        else:
+            deleted = delete_reclaimable_tmp(records, apply=True)
+            for line in deleted:
+                console.print(f"[green]{line}[/]")
+            if not deleted:
+                console.print("[dim]No reclaimable_tmp paths to remove.[/]")
 
 
 # ------------------------------------------------------------------

@@ -13,11 +13,19 @@ gdrive:
   base_path: ""
   transfers: 1
   checkers: 1
-  # rclone bwlimit is bytes/s; cap uploads globally at ~2 MB/s.
+  # rclone bwlimit (suffix M = MiB/s). No %-of-link mode — set explicitly.
+  # ~50% of upload: measure uplink (Mbps) with VPN as used for GDrive, then
+  #   target_Mbps = 0.5 * measured_upload_Mbps
+  #   bwlimit ≈ (target_Mbps / 8) as "NM" (e.g. 100 Mbps up → 50 Mbps → ~6M)
   bwlimit: "2M"
   # Tracker-skipped dirs: run `rclone check --checksum --one-way` vs Drive before skipping (no full download).
   # Disable for a run: `backup-registry --no-verify-remote`
   registry_verify_remote: true
+
+# Background remote metadata cache (very low bandwidth; listing/hash metadata only).
+remote_tree_cache:
+  enabled: true
+  refresh_interval_hours: 6
 
 # --- Legacy: registry-driven upload + full extra_paths (use run.sh, not run-staging.sh) ---
 # extra_paths:

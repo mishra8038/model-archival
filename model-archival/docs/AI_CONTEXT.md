@@ -62,7 +62,7 @@ Python CLI + bash orchestration that downloads Hugging Face model weights to **m
 
 ```bash
 # From repo root of this subproject (where pyproject.toml lives):
-bash scripts/run.sh --all [--registry config/registry-specialists.yaml] [--bandwidth-cap 2] [--queue-mode adaptive|serial]
+bash scripts/run.sh --all [--registry config/registry-specialists.yaml] [--drive d3] [--bandwidth-cap 2] [--queue-mode adaptive|serial]
 
 bash scripts/stop.sh
 
