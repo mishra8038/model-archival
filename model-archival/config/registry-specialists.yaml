@@ -214,9 +214,20 @@ models:
   requires_auth: false
   commit_sha: null
   notes: '[discipline:frontier][qwen3.5] Flagship MoE (~397B, ~17B active); largest tier — ensure D1 free.'
-# --- MiniMax M2.7 (PinchBench: minimax/minimax-m2.7) ---
-# Licence-gated on HF (unauthenticated hub/API returns 401). Accept terms on the model card, then
-# `archiver tokens check`. If MiniMax publishes BF16/FP8/NVFP4 as separate hf_repo ids, add rows here.
+# --- MiniMax M2.5 (public HF; PinchBench: minimax/minimax-m2.5) ---
+- id: MiniMaxAI/MiniMax-M2.5
+  hf_repo: MiniMaxAI/MiniMax-M2.5
+  tier: G
+  drive: d1
+  priority: 2
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:frontier][minimax] MiniMax M2.5 MoE open weights; agent/coding line. Very
+    large multi-shard tree — D1; ensure free space before run. HF: MiniMaxAI/MiniMax-M2.5.'
+# --- MiniMax M2.7 (PinchBench: minimax/minimax-m2.7) — keep for future downloads ---
+# Hub visibility TBD (404/logged-out vs gated). When live: accept terms on model card, then
+# `archiver tokens check`. Add BF16/FP8/NVFP4 sibling hf_repo rows here if MiniMax splits them.
 - id: MiniMaxAI/MiniMax-M2.7
   hf_repo: MiniMaxAI/MiniMax-M2.7
   tier: G
@@ -225,8 +236,8 @@ models:
   licence: other
   requires_auth: true
   commit_sha: null
-  notes: '[discipline:frontier][minimax] MiniMax M2.7 MoE open weights; agent/coding line. Large
-    shard count — D1. PinchBench slug minimax/minimax-m2.7.'
+  notes: '[discipline:frontier][minimax] MiniMax M2.7 — registry slot kept for future pull when HF
+    repo is available; verify card + token before run. Large shards — D1. PinchBench: minimax/minimax-m2.7.'
 - id: dmis-lab/biobert-base-cased-v1.2
   hf_repo: dmis-lab/biobert-base-cased-v1.2
   tier: G

@@ -9,6 +9,8 @@ Optional: point at your archive host’s state and mounts:
 
 `ARCHIVER_RUN_STATE=/mnt/models/d5/run_state.json ARCHIVER_MODELS_MOUNT=/mnt/models uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py`
 
+**Machine-readable inventory (per-drive JSON, manifest digests, disk scan, code-archival list):** [`docs/archive-inventory/`](archive-inventory/README.md) — regenerate with `uv run --directory model-archival python3 ../scripts/generate-archive-inventory.py`.
+
 **Last regenerated:** 2026-03-24
 
 ---

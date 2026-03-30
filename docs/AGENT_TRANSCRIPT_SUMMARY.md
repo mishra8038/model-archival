@@ -10,6 +10,11 @@
 
 ---
 
+## 2026-03-29 — GitHub-facing archive inventory (`docs/archive-inventory/`)
+
+- **`scripts/generate-archive-inventory.py`:** Writes JSON + Markdown under **`docs/archive-inventory/`**: merged master+legacy+specialist models with per-drive paths, optional `run_state.json` status, manifest summary + **`manifest_sha256`** when `manifest.json` is readable, full disk scan for orphan manifest trees, tail of **`global_index.jsonl`**, **`code-archival/registry.yaml`** as JSON/MD, **`gdrive-registry.yaml`** roots, monorepo scope summary. **`--include-file-checksums`** embeds per-file SHA-256 from manifests (large).
+- **Docs:** **`docs/archive-inventory/README.md`**; pointers in **`docs/ARCHIVED-MODELS.md`**, **`model-archival/docs/AI_CONTEXT.md`**.
+
 ## 2026-03-29 — Archiver: `.tmp` scratch audit (JSON + MD on D3)
 
 - **`model-archival/src/archiver/tmp_audit.py`:** Scans ``<mount>/.tmp/*`` for every drive in ``drives.yaml``; merges the four registry YAMLs for **id → drive**; reads ``run_state.json`` (read-only JSON); classifies each folder vs verified installs (**``manifest.json`` + ``.sha256`` sidecars**, same rule as ``downloader._check_manifest_complete``). Writes ``logs/TMP-SCRATCH-AUDIT.json`` and ``logs/TMP-SCRATCH-AUDIT.md`` under D3 infra.

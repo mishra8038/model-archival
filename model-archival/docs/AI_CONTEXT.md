@@ -94,5 +94,6 @@ HF token: `deploy/sethfToken.sh` → `~/.hf_token`.
 - `HF-TOKEN-GUIDE.md` — gated access  
 - `REQUIREMENTS.md` — large requirement / model matrix  
 - Repo root `docs/ARCHIVED-MODELS.md` — consolidated inventory  
+- Repo root `docs/archive-inventory/` — JSON/MD per-drive maps, manifest digests, code-archival list (`scripts/generate-archive-inventory.py`)  
 
 _Last curated for agent bootstrap; extend sparingly._

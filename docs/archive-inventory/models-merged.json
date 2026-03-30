@@ -1,0 +1,5399 @@
+{
+  "header": {
+    "generated_at_utc": "2026-03-29T23:58:33.654301+00:00",
+    "models_mount": "/mnt/models",
+    "run_state_json": "/mnt/models/d3/run_state.json",
+    "run_state_loaded": false,
+    "global_index": {
+      "path": "/mnt/models/d3/archive/checksums/global_index.jsonl",
+      "exists": false,
+      "line_count": 0,
+      "tail_records": []
+    }
+  },
+  "models": [
+    {
+      "id": "01-ai/Yi-34B-Chat",
+      "hf_repo": "01-ai/Yi-34B-Chat",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Yi",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Chinese ecosystem — 34B chat; fragile to geopolitical restriction",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d2/raw/01-ai/Yi-34B-Chat/main",
+      "path_absolute": "/mnt/models/d2/raw/01-ai/Yi-34B-Chat/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "AI4Chem/ChemLLM-7B-Chat",
+      "hf_repo": "AI4Chem/ChemLLM-7B-Chat",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:chemistry] Chemistry specialist chat model from LLM_ARCHIVE_v2; small-first anchor.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/AI4Chem/ChemLLM-7B-Chat/main",
+      "path_absolute": "/mnt/models/d3/raw/AI4Chem/ChemLLM-7B-Chat/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Alibaba-NLP/gte-Qwen2-7B-instruct",
+      "hf_repo": "Alibaba-NLP/gte-Qwen2-7B-instruct",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Embedding model — strong multilingual; RAG ecosystem utility",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Alibaba-NLP/gte-Qwen2-7B-instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/Alibaba-NLP/gte-Qwen2-7B-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "BAAI/bge-en-icl",
+      "hf_repo": "BAAI/bge-en-icl",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Embedding model — English ICL retrieval; essential for RAG if labs go offline",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/BAAI/bge-en-icl/main",
+      "path_absolute": "/mnt/models/d3/raw/BAAI/bge-en-icl/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "BAAI/bge-large-en-v1.5",
+      "hf_repo": "BAAI/bge-large-en-v1.5",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Embedding — backbone of many local retrieval systems; English",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/BAAI/bge-large-en-v1.5/main",
+      "path_absolute": "/mnt/models/d3/raw/BAAI/bge-large-en-v1.5/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "BAAI/bge-m3",
+      "hf_repo": "BAAI/bge-m3",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Embedding — multilingual; state-of-the-art retrieval",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/BAAI/bge-m3/main",
+      "path_absolute": "/mnt/models/d3/raw/BAAI/bge-m3/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "CohereForAI/c4ai-command-r-plus",
+      "hf_repo": "CohereForAI/c4ai-command-r-plus",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "CC-BY-NC",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "CC-BY-NC — non-commercial only; requires HF access and token; excluded from default.",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d1/raw/CohereForAI/c4ai-command-r-plus/main",
+      "path_absolute": "/mnt/models/d1/raw/CohereForAI/c4ai-command-r-plus/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "CohereLabs/c4ai-command-r-plus-08-2024",
+      "hf_repo": "CohereLabs/c4ai-command-r-plus-08-2024",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "CC-BY-NC",
+      "requires_auth": true,
+      "commit_sha_registry": "e808c1a2249354ca211c9f08d1338e5039f633f8",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "August 2024 update to Command R+. Accept at huggingface.co/CohereLabs/c4ai-command-r-plus-08-2024",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/CohereLabs/c4ai-command-r-plus-08-2024/e808c1a2249354ca211c9f08d1338e5039f633f8",
+      "path_absolute": "/mnt/models/d2/raw/CohereLabs/c4ai-command-r-plus-08-2024/e808c1a2249354ca211c9f08d1338e5039f633f8",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES",
+      "hf_repo": "CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES",
+      "tier": "D",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "d976a5d6768d54c5e59a88fe63238a055c30c06a",
+      "quant_levels": [],
+      "parent_model": "Qwen/Qwen2.5-32B-Instruct",
+      "method": "abliteration+merge",
+      "notes": "High-performing uncensored Qwen2.5-32B merge from HF best-models collection",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/uncensored/CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES/d976a5d6768d54c5e59a88fe63238a055c30c06a",
+      "path_absolute": "/mnt/models/d1/uncensored/CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES/d976a5d6768d54c5e59a88fe63238a055c30c06a",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "EleutherAI/llemma_7b",
+      "hf_repo": "EleutherAI/llemma_7b",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:math][science] Lemma/proof-oriented continued pretrain; strong for formal-adjacent STEM text.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/EleutherAI/llemma_7b/main",
+      "path_absolute": "/mnt/models/d3/raw/EleutherAI/llemma_7b/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Equall/Saul-7B-Instruct-v1",
+      "hf_repo": "Equall/Saul-7B-Instruct-v1",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:legal][classification] Specialist legal instruct model from LLM_ARCHIVE_v2; small-first anchor.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Equall/Saul-7B-Instruct-v1/main",
+      "path_absolute": "/mnt/models/d3/raw/Equall/Saul-7B-Instruct-v1/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "FINGU-AI/Chocolatine-Fusion-14B",
+      "hf_repo": "FINGU-AI/Chocolatine-Fusion-14B",
+      "tier": "D",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "49b7b720ddd40ccdca303922037a4bb34b1ca33b",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": "merge",
+      "notes": "14B fusion/merge chat model — uncensored-leaning; strong single-GPU option",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b",
+      "path_absolute": "/mnt/models/d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "FINGU-AI/RomboUltima-32B",
+      "hf_repo": "FINGU-AI/RomboUltima-32B",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "98a732a32e2366a2ab8f08fdc3d668892e7c1f7f",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": "merge",
+      "notes": "32B merge model — uncensored / experimental; complements other Qwen2.5/Llama merges",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/uncensored/FINGU-AI/RomboUltima-32B/98a732a32e2366a2ab8f08fdc3d668892e7c1f7f",
+      "path_absolute": "/mnt/models/d3/uncensored/FINGU-AI/RomboUltima-32B/98a732a32e2366a2ab8f08fdc3d668892e7c1f7f",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "FreedomIntelligence/HuatuoGPT2-7B",
+      "hf_repo": "FreedomIntelligence/HuatuoGPT2-7B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:medicine] Bilingual medical dialogue / clinical QA oriented 7B instruct.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/FreedomIntelligence/HuatuoGPT2-7B/main",
+      "path_absolute": "/mnt/models/d3/raw/FreedomIntelligence/HuatuoGPT2-7B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "HuggingFaceH4/zephyr-7b-beta",
+      "hf_repo": "HuggingFaceH4/zephyr-7b-beta",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Canonical 7B DPO-tuned chat model — reference for preference optimization behaviour",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/HuggingFaceH4/zephyr-7b-beta/main",
+      "path_absolute": "/mnt/models/d3/raw/HuggingFaceH4/zephyr-7b-beta/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "hf_repo": "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+      "tier": "A",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "HF SmolLM2 flagship; no SmolLM3",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/HuggingFaceTB/SmolLM2-1.7B-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/HuggingFaceTB/SmolLM2-1.7B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Intel/neural-chat-7b-v3-1",
+      "hf_repo": "Intel/neural-chat-7b-v3-1",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Intel 7B chat model with preference-style tuning; useful DPO-style alignment baseline",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Intel/neural-chat-7b-v3-1/main",
+      "path_absolute": "/mnt/models/d3/raw/Intel/neural-chat-7b-v3-1/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "IntervitensInc/internlm2_5-20b-llamafied",
+      "hf_repo": "IntervitensInc/internlm2_5-20b-llamafied",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Top ~20B pretrained model on HF Open LLM leaderboard; llamafied InternLM2.5 base",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/IntervitensInc/internlm2_5-20b-llamafied/main",
+      "path_absolute": "/mnt/models/d1/raw/IntervitensInc/internlm2_5-20b-llamafied/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.5",
+      "hf_repo": "MiniMaxAI/MiniMax-M2.5",
+      "tier": "G",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][minimax] MiniMax M2.5 MoE open weights; agent/coding line. Very large multi-shard tree — D1; ensure free space before run. HF: MiniMaxAI/MiniMax-M2.5.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d1/raw/MiniMaxAI/MiniMax-M2.5/main",
+      "path_absolute": "/mnt/models/d1/raw/MiniMaxAI/MiniMax-M2.5/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "MiniMaxAI/MiniMax-M2.7",
+      "hf_repo": "MiniMaxAI/MiniMax-M2.7",
+      "tier": "G",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][minimax] MiniMax M2.7 — registry slot kept for future pull when HF repo is available; verify card + token before run. Large shards — D1. PinchBench: minimax/minimax-m2.7.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d1/raw/MiniMaxAI/MiniMax-M2.7/main",
+      "path_absolute": "/mnt/models/d1/raw/MiniMaxAI/MiniMax-M2.7/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "NovaSky-Berkeley/Sky-T1-32B-Preview",
+      "hf_repo": "NovaSky-Berkeley/Sky-T1-32B-Preview",
+      "tier": "E",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Repo 404 / unavailable; kept here as historical reference only.",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d3/raw/NovaSky-Berkeley/Sky-T1-32B-Preview/main",
+      "path_absolute": "/mnt/models/d3/raw/NovaSky-Berkeley/Sky-T1-32B-Preview/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "OpenDFM/ChemDFM-v1.5-8B",
+      "hf_repo": "OpenDFM/ChemDFM-v1.5-8B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 0,
+      "licence": "llama3.1",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:chemistry] ChemDFM on LLaMA-3-8B; complements ChemLLM in specialists registry",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/OpenDFM/ChemDFM-v1.5-8B/main",
+      "path_absolute": "/mnt/models/d3/raw/OpenDFM/ChemDFM-v1.5-8B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "OpenDFM/ChemDFM-v2.0-14B",
+      "hf_repo": "OpenDFM/ChemDFM-v2.0-14B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 0,
+      "licence": "Qwen",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:chemistry] ChemDFM v2 on Qwen2.5-14B (newer OpenDFM chemistry dialogue model)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/OpenDFM/ChemDFM-v2.0-14B/main",
+      "path_absolute": "/mnt/models/d3/raw/OpenDFM/ChemDFM-v2.0-14B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "OpenDFM/RetroDFM-R-v0-8B",
+      "hf_repo": "OpenDFM/RetroDFM-R-v0-8B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 0,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:chemistry][retrosynthesis] OpenDFM RetroDFM-R checkpoint; DeepRetro (Deep Forest Sciences) is a software framework — no standalone HF weight repo — use this for archival alongside ChemDFM",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/OpenDFM/RetroDFM-R-v0-8B/main",
+      "path_absolute": "/mnt/models/d3/raw/OpenDFM/RetroDFM-R-v0-8B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Prior-Labs/TabPFN-v2-clf",
+      "hf_repo": "Prior-Labs/TabPFN-v2-clf",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:marketing][stp:B] Tabular foundation model classifier for structured marketing prediction tasks.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/Prior-Labs/TabPFN-v2-clf/main",
+      "path_absolute": "/mnt/models/d3/raw/Prior-Labs/TabPFN-v2-clf/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/QwQ-32B",
+      "hf_repo": "Qwen/QwQ-32B",
+      "tier": "E",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "976055f8c83f394f35dbd3ab09a285a984907bd0",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Qwen reasoning model — 61k downloads, strong math/coding CoT",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/QwQ-32B/976055f8c83f394f35dbd3ab09a285a984907bd0",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/QwQ-32B/976055f8c83f394f35dbd3ab09a285a984907bd0",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/QwQ-32B-GGUF",
+      "hf_repo": "Qwen/QwQ-32B-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "8728e66249190b78dee8404869827328527f6b3b",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "Qwen reasoning model GGUF",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/Qwen/QwQ-32B-GGUF/8728e66249190b78dee8404869827328527f6b3b",
+      "path_absolute": "/mnt/models/d3/quantized/Qwen/QwQ-32B-GGUF/8728e66249190b78dee8404869827328527f6b3b",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen1.5-110B",
+      "hf_repo": "Qwen/Qwen1.5-110B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained 110B base (Qwen1.5 gen); superseded by Qwen2.5/3 — preservation only.",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen1.5-110B/main",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen1.5-110B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-14B",
+      "hf_repo": "Qwen/Qwen2.5-14B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "97e1e76335b7017d8f67c08a19d103c0504298c9",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained 14B base for Qwen2.5 — complements existing 14B instruct",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen2.5-14B/97e1e76335b7017d8f67c08a19d103c0504298c9",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-14B/97e1e76335b7017d8f67c08a19d103c0504298c9",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-14B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-14B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "2M downloads — glaring gap between 7B and 32B, lb=41.3",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-14B-Instruct/cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-14B-Instruct/cf98f3b3bbb457ad9e2bb7baf9a0125b6b88caa8",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-14B-Instruct-1M",
+      "hf_repo": "Qwen/Qwen2.5-14B-Instruct-1M",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "620fad32de7bdd2293b3d99b39eba2fe63e97438",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Long-context (1M token) variant — 55k downloads",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-14B-Instruct-1M/620fad32de7bdd2293b3d99b39eba2fe63e97438",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-14B-Instruct-1M/620fad32de7bdd2293b3d99b39eba2fe63e97438",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-32B",
+      "hf_repo": "Qwen/Qwen2.5-32B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "1818d35814b8319459f4bd55ed1ac8709630f003",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained 32B base for Qwen2.5 — large dense base; pairs with 32B instruct",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen2.5-32B/1818d35814b8319459f4bd55ed1ac8709630f003",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-32B/1818d35814b8319459f4bd55ed1ac8709630f003",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-32B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-32B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-32B-Instruct/5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-32B-Instruct/5ede1c97bbab6ce5cda5812749b4c0bdf79b18dd",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-3B",
+      "hf_repo": "Qwen/Qwen2.5-3B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained 3B base for Qwen2.5 — small, future-facing anchor",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen2.5-3B/main",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-3B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-72B",
+      "hf_repo": "Qwen/Qwen2.5-72B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "Qwen",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained base (no instruct) — foundation for fine-tunes; preservation priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-72B/main",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-72B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-72B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-72B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "Qwen",
+      "requires_auth": false,
+      "commit_sha_registry": "495f39366efef23836d0cfae4fbe635880d2be31",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-72B-Instruct/495f39366efef23836d0cfae4fbe635880d2be31",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-72B-Instruct/495f39366efef23836d0cfae4fbe635880d2be31",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B",
+      "hf_repo": "Qwen/Qwen2.5-7B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained 7B base for Qwen2.5 — canonical mid-size base",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen2.5-7B/main",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-7B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-7B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-7B-Instruct/a09a35458c702b33eeacc393d103063234e8bc28",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-7B-Instruct/a09a35458c702b33eeacc393d103063234e8bc28",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-Coder-32B-Instruct",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "lb=39.9 — top open code model (previously requires_auth was wrong)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen2.5-Coder-32B-Instruct/main",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-Coder-32B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-1.5B",
+      "hf_repo": "Qwen/Qwen2.5-Math-1.5B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:math] Tiny math-specialised instruct; fast sanity checks and edge deployment.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen2.5-Math-1.5B/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen2.5-Math-1.5B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-72B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-Math-72B-Instruct",
+      "tier": "G",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "State-of-the-art open math model at 72B",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/Qwen/Qwen2.5-Math-72B-Instruct/main",
+      "path_absolute": "/mnt/models/d5/raw/Qwen/Qwen2.5-Math-72B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-Math-7B-Instruct",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen2.5-Math-7B-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen2.5-Math-7B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-VL-72B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-VL-72B-Instruct",
+      "tier": "F",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Qwen",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Best open VLM at 72B — image/video understanding",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/Qwen/Qwen2.5-VL-72B-Instruct/main",
+      "path_absolute": "/mnt/models/d5/raw/Qwen/Qwen2.5-VL-72B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "hf_repo": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen2.5-VL-7B-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen2.5-VL-7B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-14B",
+      "hf_repo": "Qwen/Qwen3-14B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen3-14B/40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-14B/40c069824f4251a91eefaf281ebe4c544efd3e18",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-235B-A22B",
+      "hf_repo": "Qwen/Qwen3-235B-A22B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Qwen3 MoE — 235B total, 22B active. 680k downloads",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen3-235B-A22B/main",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen3-235B-A22B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-30B-A3B",
+      "hf_repo": "Qwen/Qwen3-30B-A3B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "ad44e777bcd18fa416d9da3bd8f70d33ebb85d39",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Smaller Qwen3 MoE — 1.2M downloads",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen3-30B-A3B/ad44e777bcd18fa416d9da3bd8f70d33ebb85d39",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-30B-A3B/ad44e777bcd18fa416d9da3bd8f70d33ebb85d39",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-32B",
+      "hf_repo": "Qwen/Qwen3-32B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "9216db5781bf21249d130ec9da846c4624c16137",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Qwen3 flagship dense model",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen3-32B/9216db5781bf21249d130ec9da846c4624c16137",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen3-32B/9216db5781bf21249d130ec9da846c4624c16137",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-32B-GGUF",
+      "hf_repo": "Qwen/Qwen3-32B-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "938a7432affaec9157f883a87164e2646ae17555",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "Official Qwen3-32B GGUF from Qwen team",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/Qwen/Qwen3-32B-GGUF/938a7432affaec9157f883a87164e2646ae17555",
+      "path_absolute": "/mnt/models/d3/quantized/Qwen/Qwen3-32B-GGUF/938a7432affaec9157f883a87164e2646ae17555",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-4B-Instruct-2507",
+      "hf_repo": "Qwen/Qwen3-4B-Instruct-2507",
+      "tier": "A",
+      "drive": "d5",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "4B Qwen3 instruct; leaderboard-strong small model",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d5/raw/Qwen/Qwen3-4B-Instruct-2507/main",
+      "path_absolute": "/mnt/models/d5/raw/Qwen/Qwen3-4B-Instruct-2507/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-8B",
+      "hf_repo": "Qwen/Qwen3-8B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "b968826d9c46dd6066d109eabc6255188de91218",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "hf_repo": "Qwen/Qwen3-Coder-30B-A3B-Instruct",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "b2cff646eb4bb1d68355c01b18ae02e7cf42d120",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Qwen3 MoE code model — 1M downloads",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen3-Coder-30B-A3B-Instruct/b2cff646eb4bb1d68355c01b18ae02e7cf42d120",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-Coder-30B-A3B-Instruct/b2cff646eb4bb1d68355c01b18ae02e7cf42d120",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-122B-A10B",
+      "hf_repo": "Qwen/Qwen3.5-122B-A10B",
+      "tier": "G",
+      "drive": "d1",
+      "priority": 3,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Large MoE (~122B, ~10B active); D1-scale weights.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen3.5-122B-A10B/main",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen3.5-122B-A10B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-27B",
+      "hf_repo": "Qwen/Qwen3.5-27B",
+      "tier": "G",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Dense ~27B checkpoint; larger run/fine-tune target.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/Qwen/Qwen3.5-27B/main",
+      "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3.5-27B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-35B-A3B",
+      "hf_repo": "Qwen/Qwen3.5-35B-A3B",
+      "tier": "G",
+      "drive": "d5",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] MoE instruct/chat (~35B, ~3B active).",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/Qwen/Qwen3.5-35B-A3B/main",
+      "path_absolute": "/mnt/models/d5/raw/Qwen/Qwen3.5-35B-A3B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-35B-A3B-Base",
+      "hf_repo": "Qwen/Qwen3.5-35B-A3B-Base",
+      "tier": "G",
+      "drive": "d5",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] MoE base (~35B, ~3B active); needs D5+ space.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/Qwen/Qwen3.5-35B-A3B-Base/main",
+      "path_absolute": "/mnt/models/d5/raw/Qwen/Qwen3.5-35B-A3B-Base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-397B-A17B",
+      "hf_repo": "Qwen/Qwen3.5-397B-A17B",
+      "tier": "G",
+      "drive": "d1",
+      "priority": 3,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Flagship MoE (~397B, ~17B active); largest tier — ensure D1 free.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d1/raw/Qwen/Qwen3.5-397B-A17B/main",
+      "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen3.5-397B-A17B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-4B",
+      "hf_repo": "Qwen/Qwen3.5-4B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Dense instruct/chat (4B); small workhorse.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen3.5-4B/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen3.5-4B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-4B-Base",
+      "hf_repo": "Qwen/Qwen3.5-4B-Base",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Dense pre-trained base (4B); SFT/DPO anchor.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen3.5-4B-Base/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen3.5-4B-Base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-9B",
+      "hf_repo": "Qwen/Qwen3.5-9B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Dense instruct/chat (9B); mid workhorse.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen3.5-9B/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen3.5-9B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Qwen/Qwen3.5-9B-Base",
+      "hf_repo": "Qwen/Qwen3.5-9B-Base",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][qwen3.5] Dense pre-trained base (9B); SFT/DPO anchor.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Qwen/Qwen3.5-9B-Base/main",
+      "path_absolute": "/mnt/models/d3/raw/Qwen/Qwen3.5-9B-Base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Salesforce/CoDA-1.7B-Base",
+      "hf_repo": "Salesforce/CoDA-1.7B-Base",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "CC-BY-NC-4.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Salesforce CoDA 1.7B diffusion code model (base); research / diffusion coding",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Salesforce/CoDA-1.7B-Base/main",
+      "path_absolute": "/mnt/models/d3/raw/Salesforce/CoDA-1.7B-Base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Salesforce/CoDA-1.7B-Instruct",
+      "hf_repo": "Salesforce/CoDA-1.7B-Instruct",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "CC-BY-NC-4.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Salesforce CoDA 1.7B diffusion code model (instruct); research / diffusion coding",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/Salesforce/CoDA-1.7B-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/Salesforce/CoDA-1.7B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "SinclairSchneider/dbrx-base-quantization-fixed",
+      "hf_repo": "SinclairSchneider/dbrx-base-quantization-fixed",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Community fixed quantized DBRX base variant",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/SinclairSchneider/dbrx-base-quantization-fixed/main",
+      "path_absolute": "/mnt/models/d3/quantized/SinclairSchneider/dbrx-base-quantization-fixed/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "SinclairSchneider/dbrx-instruct-quantization-fixed",
+      "hf_repo": "SinclairSchneider/dbrx-instruct-quantization-fixed",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Community fixed quantized DBRX instruct variant",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/SinclairSchneider/dbrx-instruct-quantization-fixed/main",
+      "path_absolute": "/mnt/models/d3/quantized/SinclairSchneider/dbrx-instruct-quantization-fixed/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Skywork/Skywork-Reward-Llama-3.1-70B",
+      "hf_repo": "Skywork/Skywork-Reward-Llama-3.1-70B",
+      "tier": "B",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Reward model — critical for DIY RLHF/DPO if upstream disappears",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/Skywork/Skywork-Reward-Llama-3.1-70B/main",
+      "path_absolute": "/mnt/models/d5/raw/Skywork/Skywork-Reward-Llama-3.1-70B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "THUDM/glm-4-9b-chat",
+      "hf_repo": "THUDM/glm-4-9b-chat",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "GLM-4",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Tsinghua GLM-4 9B — strong CN/EN; 128K context; regulatory-risk hedge",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d2/raw/THUDM/glm-4-9b-chat/main",
+      "path_absolute": "/mnt/models/d2/raw/THUDM/glm-4-9b-chat/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "hf_repo": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "tier": "A",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Ultra-small 1.1B — valuable if GPU access becomes restricted; runs on CPU/low memory",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d3/raw/TinyLlama/TinyLlama-1.1B-Chat-v1.0/main",
+      "path_absolute": "/mnt/models/d3/raw/TinyLlama/TinyLlama-1.1B-Chat-v1.0/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "Undi95/dbrx-base",
+      "hf_repo": "Undi95/dbrx-base",
+      "tier": "A",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Community mirror of DBRX base (Databricks Open Model License metadata); use when databricks/dbrx-base gated access is unavailable",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/Undi95/dbrx-base/main",
+      "path_absolute": "/mnt/models/d5/raw/Undi95/dbrx-base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "aaditya/Llama3-OpenBioLLM-8B",
+      "hf_repo": "aaditya/Llama3-OpenBioLLM-8B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical] Biomedical specialist 8B model from LLM_ARCHIVE_v2.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/aaditya/Llama3-OpenBioLLM-8B/main",
+      "path_absolute": "/mnt/models/d3/raw/aaditya/Llama3-OpenBioLLM-8B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "allenai/Llama-3.1-Tulu-3-70B",
+      "hf_repo": "allenai/Llama-3.1-Tulu-3-70B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": "cfc1d855e534a0b9b82a9cea6bf9e8dda30b10d7",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "lb=42.3 — AllenAI RLVR alignment research flagship; scientifically significant",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/allenai/Llama-3.1-Tulu-3-70B/cfc1d855e534a0b9b82a9cea6bf9e8dda30b10d7",
+      "path_absolute": "/mnt/models/d2/raw/allenai/Llama-3.1-Tulu-3-70B/cfc1d855e534a0b9b82a9cea6bf9e8dda30b10d7",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "allenai/OLMo-2-1124-7B",
+      "hf_repo": "allenai/OLMo-2-1124-7B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:science] Open 7B LM for reproducible science / NLP research workflows.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/allenai/OLMo-2-1124-7B/main",
+      "path_absolute": "/mnt/models/d3/raw/allenai/OLMo-2-1124-7B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "alpindale/dbrx-instruct",
+      "hf_repo": "alpindale/dbrx-instruct",
+      "tier": "A",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Community DBRX instruct conversion; ungated fallback when databricks/dbrx-instruct is inaccessible",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/alpindale/dbrx-instruct/main",
+      "path_absolute": "/mnt/models/d5/raw/alpindale/dbrx-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "apple/DiffuCoder-7B-Base",
+      "hf_repo": "apple/DiffuCoder-7B-Base",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Apple DiffuCoder 7B base diffusion code model; 130B code tokens; research",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/apple/DiffuCoder-7B-Base/main",
+      "path_absolute": "/mnt/models/d3/raw/apple/DiffuCoder-7B-Base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "apple/DiffuCoder-7B-Instruct",
+      "hf_repo": "apple/DiffuCoder-7B-Instruct",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Apple DiffuCoder 7B instruct diffusion code model; research / diffusion coding",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/apple/DiffuCoder-7B-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/apple/DiffuCoder-7B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "apple/DiffuCoder-7B-cpGRPO",
+      "hf_repo": "apple/DiffuCoder-7B-cpGRPO",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "DiffuCoder 7B cpGRPO post-trained variant; RL for diffusion LMs; research",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/apple/DiffuCoder-7B-cpGRPO/main",
+      "path_absolute": "/mnt/models/d3/raw/apple/DiffuCoder-7B-cpGRPO/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Codestral-22B-v0.1-GGUF",
+      "hf_repo": "bartowski/Codestral-22B-v0.1-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Mistral-MNPL",
+      "requires_auth": false,
+      "commit_sha_registry": "0e6abe14d6aeaf2c99d5dc9973205e8e38692d90",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Codestral-22B-v0.1-GGUF/0e6abe14d6aeaf2c99d5dc9973205e8e38692d90",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Codestral-22B-v0.1-GGUF/0e6abe14d6aeaf2c99d5dc9973205e8e38692d90",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF",
+      "hf_repo": "bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "DeepSeek",
+      "requires_auth": false,
+      "commit_sha_registry": "8f248fa2072348f77a8bc37754e470de1f61866e",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF/8f248fa2072348f77a8bc37754e470de1f61866e",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF/8f248fa2072348f77a8bc37754e470de1f61866e",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF",
+      "hf_repo": "bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "1842c5f7280f933ead58adf8afd078672c9f6cd0",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF/1842c5f7280f933ead58adf8afd078672c9f6cd0",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF/1842c5f7280f933ead58adf8afd078672c9f6cd0",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF",
+      "hf_repo": "bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "1dc8cf9ffa5dd333057ea1b09ccf4772d8726dec",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF/1dc8cf9ffa5dd333057ea1b09ccf4772d8726dec",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF/1dc8cf9ffa5dd333057ea1b09ccf4772d8726dec",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Llama-3.3-70B-Instruct-GGUF",
+      "hf_repo": "bartowski/Llama-3.3-70B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "llama3.3",
+      "requires_auth": false,
+      "commit_sha_registry": "b6c5c9f176f3279204034e1d16d393105e95cb88",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Llama-3.3-70B-Instruct-GGUF/b6c5c9f176f3279204034e1d16d393105e95cb88",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Llama-3.3-70B-Instruct-GGUF/b6c5c9f176f3279204034e1d16d393105e95cb88",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+      "hf_repo": "bartowski/Meta-Llama-3.1-8B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "llama3.1",
+      "requires_auth": false,
+      "commit_sha_registry": "bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/bf5b95e96dac0462e2a09145ec66cae9a3f12067",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Mistral-Small-24B-Instruct-2501-GGUF",
+      "hf_repo": "bartowski/Mistral-Small-24B-Instruct-2501-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "62a613c92d5a5f73bba6d348b51433b232c4640c",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Mistral-Small-24B-Instruct-2501-GGUF/62a613c92d5a5f73bba6d348b51433b232c4640c",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Mistral-Small-24B-Instruct-2501-GGUF/62a613c92d5a5f73bba6d348b51433b232c4640c",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Qwen2.5-14B-Instruct-GGUF",
+      "hf_repo": "bartowski/Qwen2.5-14B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "05244aa5d871c661c80082a15d3bce44714d068d",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Qwen2.5-14B-Instruct-GGUF/05244aa5d871c661c80082a15d3bce44714d068d",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Qwen2.5-14B-Instruct-GGUF/05244aa5d871c661c80082a15d3bce44714d068d",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Qwen2.5-32B-Instruct-GGUF",
+      "hf_repo": "bartowski/Qwen2.5-32B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "2116cbb385b8ce3a4d28cf3bf1cd2039a55821a6",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Qwen2.5-32B-Instruct-GGUF/2116cbb385b8ce3a4d28cf3bf1cd2039a55821a6",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Qwen2.5-32B-Instruct-GGUF/2116cbb385b8ce3a4d28cf3bf1cd2039a55821a6",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Qwen2.5-72B-Instruct-GGUF",
+      "hf_repo": "bartowski/Qwen2.5-72B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "Qwen",
+      "requires_auth": false,
+      "commit_sha_registry": "d43fd973131bce821f41e2df3c78c6fe15c5627a",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Qwen2.5-72B-Instruct-GGUF/d43fd973131bce821f41e2df3c78c6fe15c5627a",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Qwen2.5-72B-Instruct-GGUF/d43fd973131bce821f41e2df3c78c6fe15c5627a",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+      "hf_repo": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/Qwen2.5-Coder-32B-Instruct-GGUF",
+      "hf_repo": "bartowski/Qwen2.5-Coder-32B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "40b525506a4f98ed425882fa6dfc90cc8139065e",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/Qwen2.5-Coder-32B-Instruct-GGUF/40b525506a4f98ed425882fa6dfc90cc8139065e",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/Qwen2.5-Coder-32B-Instruct-GGUF/40b525506a4f98ed425882fa6dfc90cc8139065e",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/google_gemma-3-27b-it-GGUF",
+      "hf_repo": "bartowski/google_gemma-3-27b-it-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Gemma-ToU",
+      "requires_auth": false,
+      "commit_sha_registry": "4a05c54413bd0d87d77a97af403266f69cec0ee6",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "Replacement for 404 bartowski/gemma-3-27b-it-GGUF (same publisher, renamed repo)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/google_gemma-3-27b-it-GGUF/4a05c54413bd0d87d77a97af403266f69cec0ee6",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/google_gemma-3-27b-it-GGUF/4a05c54413bd0d87d77a97af403266f69cec0ee6",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bartowski/phi-4-GGUF",
+      "hf_repo": "bartowski/phi-4-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "19cd65f97c2f1712a81c506611d3f9c94b16a1e1",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/bartowski/phi-4-GGUF/19cd65f97c2f1712a81c506611d3f9c94b16a1e1",
+      "path_absolute": "/mnt/models/d3/quantized/bartowski/phi-4-GGUF/19cd65f97c2f1712a81c506611d3f9c94b16a1e1",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "bigcode/starcoder2-15b",
+      "hf_repo": "bigcode/starcoder2-15b",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "BigCode-OpenRAIL-M",
+      "requires_auth": false,
+      "commit_sha_registry": "46d44742909c03ac8cee08eb03fdebce02e193ec",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Best pure code-completion model; historically significant",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d2/raw/bigcode/starcoder2-15b/46d44742909c03ac8cee08eb03fdebce02e193ec",
+      "path_absolute": "/mnt/models/d2/raw/bigcode/starcoder2-15b/46d44742909c03ac8cee08eb03fdebce02e193ec",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "cambridgeltl/SapBERT-from-PubMedBERT-fulltext",
+      "hf_repo": "cambridgeltl/SapBERT-from-PubMedBERT-fulltext",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical][classification] SapBERT entity-linking/classification model from LLM_ARCHIVE_v2.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/cambridgeltl/SapBERT-from-PubMedBERT-fulltext/main",
+      "path_absolute": "/mnt/models/d3/raw/cambridgeltl/SapBERT-from-PubMedBERT-fulltext/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "cognitivecomputations/Dolphin3.0-Llama3.1-8B",
+      "hf_repo": "cognitivecomputations/Dolphin3.0-Llama3.1-8B",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "llama3.1",
+      "requires_auth": false,
+      "commit_sha_registry": "f065677950dfc7e708d518d64cf1f5041ee007a0",
+      "quant_levels": [],
+      "parent_model": "meta-llama/Llama-3.1-8B",
+      "method": "supervised-finetune",
+      "notes": "Dolphin — long-running uncensored series, historically significant",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/cognitivecomputations/Dolphin3.0-Llama3.1-8B/f065677950dfc7e708d518d64cf1f5041ee007a0",
+      "path_absolute": "/mnt/models/d2/uncensored/cognitivecomputations/Dolphin3.0-Llama3.1-8B/f065677950dfc7e708d518d64cf1f5041ee007a0",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "cognitivecomputations/dolphin-2.9.2-qwen2-72b",
+      "hf_repo": "cognitivecomputations/dolphin-2.9.2-qwen2-72b",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": "Qwen/Qwen2-72B",
+      "method": "supervised-finetune",
+      "notes": "Dolphin 72B — popular uncensored 72B",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/cognitivecomputations/dolphin-2.9.2-qwen2-72b/main",
+      "path_absolute": "/mnt/models/d5/uncensored/cognitivecomputations/dolphin-2.9.2-qwen2-72b/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-Coder-V2-Instruct",
+      "hf_repo": "deepseek-ai/DeepSeek-Coder-V2-Instruct",
+      "tier": "B",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "DeepSeek",
+      "requires_auth": false,
+      "commit_sha_registry": "2453c79a2a0947968a054947b53daa598cb3be52",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/DeepSeek-Coder-V2-Instruct/2453c79a2a0947968a054947b53daa598cb3be52",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/DeepSeek-Coder-V2-Instruct/2453c79a2a0947968a054947b53daa598cb3be52",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+      "hf_repo": "deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "DeepSeek",
+      "requires_auth": false,
+      "commit_sha_registry": "e434a23f91ba5b4923cf6c9d9a238eb4a08e3a11",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct/e434a23f91ba5b4923cf6c9d9a238eb4a08e3a11",
+      "path_absolute": "/mnt/models/d2/raw/deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct/e434a23f91ba5b4923cf6c9d9a238eb4a08e3a11",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1",
+      "hf_repo": "deepseek-ai/DeepSeek-R1",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "56d4cbbb4d29f4355bab4b9a39ccb717a14ad5ad",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/DeepSeek-R1/56d4cbbb4d29f4355bab4b9a39ccb717a14ad5ad",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/DeepSeek-R1/56d4cbbb4d29f4355bab4b9a39ccb717a14ad5ad",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-0528",
+      "hf_repo": "deepseek-ai/DeepSeek-R1-0528",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "4236a6af538feda4548eca9ab308586007567f52",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "May 2025 improved R1 checkpoint — 1.1M downloads",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/DeepSeek-R1-0528/4236a6af538feda4548eca9ab308586007567f52",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/DeepSeek-R1-0528/4236a6af538feda4548eca9ab308586007567f52",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "hf_repo": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "b1c0b44b4369b597ad119a196caf79a9c40e141e",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/deepseek-ai/DeepSeek-R1-Distill-Llama-70B/b1c0b44b4369b597ad119a196caf79a9c40e141e",
+      "path_absolute": "/mnt/models/d2/raw/deepseek-ai/DeepSeek-R1-Distill-Llama-70B/b1c0b44b4369b597ad119a196caf79a9c40e141e",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "hf_repo": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "6a6f4aa4197940add57724a7707d069478df56b1",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:strategic_reasoning][game_theory] R1-distill on Llama-8B; strong small self-hostable strategic / math-game baseline. Uncensored: community abliterated Llama-8B + same CoT prompts, or larger tensorblock R1-distill GGUFs.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/deepseek-ai/DeepSeek-R1-Distill-Llama-8B/6a6f4aa4197940add57724a7707d069478df56b1",
+      "path_absolute": "/mnt/models/d2/raw/deepseek-ai/DeepSeek-R1-Distill-Llama-8B/6a6f4aa4197940add57724a7707d069478df56b1",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+      "hf_repo": "deepseek-ai/DeepSeek-R1-Distill-Qwen-14B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "1df8507178afcc1bef68cd8c393f61a886323761",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Smaller distill — fits single consumer GPU",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B/1df8507178afcc1bef68cd8c393f61a886323761",
+      "path_absolute": "/mnt/models/d2/raw/deepseek-ai/DeepSeek-R1-Distill-Qwen-14B/1df8507178afcc1bef68cd8c393f61a886323761",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "hf_repo": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "711ad2ea6aa40cfca18895e8aca02ab92df1a746",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:strategic_reasoning][game_theory] Full-precision parent of tensorblock DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF; archive for non-quant workflows.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B/711ad2ea6aa40cfca18895e8aca02ab92df1a746",
+      "path_absolute": "/mnt/models/d2/raw/deepseek-ai/DeepSeek-R1-Distill-Qwen-32B/711ad2ea6aa40cfca18895e8aca02ab92df1a746",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "hf_repo": "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Smallest reasoning distill — fits in 8 GB VRAM",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B/main",
+      "path_absolute": "/mnt/models/d3/raw/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3",
+      "hf_repo": "deepseek-ai/DeepSeek-V3",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "e815299b0bcbac849fa540c768ef21845365c9eb",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/DeepSeek-V3/e815299b0bcbac849fa540c768ef21845365c9eb",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/DeepSeek-V3/e815299b0bcbac849fa540c768ef21845365c9eb",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3-0324",
+      "hf_repo": "deepseek-ai/DeepSeek-V3-0324",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "March 2024 checkpoint — improved over original V3",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/DeepSeek-V3-0324/main",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/DeepSeek-V3-0324/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V3-Base",
+      "hf_repo": "deepseek-ai/DeepSeek-V3-Base",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained 671B MoE base (no SFT/RLHF) — foundation for future fine-tunes; preservation priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/DeepSeek-V3-Base/main",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/DeepSeek-V3-Base/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-33b-instruct",
+      "hf_repo": "deepseek-ai/deepseek-coder-33b-instruct",
+      "tier": "B",
+      "drive": "d1",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "61dc97b922b13995e7f83b7c8397701dbf9cfd4c",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "DeepSeek Coder v1 33B — extremely strong code model; beats GPT-3.5-turbo on HumanEval",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/deepseek-ai/deepseek-coder-33b-instruct/61dc97b922b13995e7f83b7c8397701dbf9cfd4c",
+      "path_absolute": "/mnt/models/d1/raw/deepseek-ai/deepseek-coder-33b-instruct/61dc97b922b13995e7f83b7c8397701dbf9cfd4c",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/deepseek-coder-6.7b-instruct",
+      "hf_repo": "deepseek-ai/deepseek-coder-6.7b-instruct",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "e5d64addd26a6a1db0f9b863abf6ee3141936807",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "DeepSeek Coder v1 6.7B — strong small code model; 16K context",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/deepseek-ai/deepseek-coder-6.7b-instruct/e5d64addd26a6a1db0f9b863abf6ee3141936807",
+      "path_absolute": "/mnt/models/d3/raw/deepseek-ai/deepseek-coder-6.7b-instruct/e5d64addd26a6a1db0f9b863abf6ee3141936807",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/deepseek-math-7b-instruct",
+      "hf_repo": "deepseek-ai/deepseek-math-7b-instruct",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:math] DeepSeek Math 7B instruct — distinct from Mathstral/Qwen2.5-Math line; RL-tuned math reasoning.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/deepseek-ai/deepseek-math-7b-instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/deepseek-ai/deepseek-math-7b-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "deepseek-ai/deepseek-vl2",
+      "hf_repo": "deepseek-ai/deepseek-vl2",
+      "tier": "F",
+      "drive": "d5",
+      "priority": 2,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "DeepSeek MoE vision model — high-end open VLM; regulatory-risk preservation",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/deepseek-ai/deepseek-vl2/main",
+      "path_absolute": "/mnt/models/d5/raw/deepseek-ai/deepseek-vl2/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "dmis-lab/biobert-base-cased-v1.2",
+      "hf_repo": "dmis-lab/biobert-base-cased-v1.2",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical][classification] BioBERT classification baseline from LLM_ARCHIVE_v2.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/dmis-lab/biobert-base-cased-v1.2/main",
+      "path_absolute": "/mnt/models/d3/raw/dmis-lab/biobert-base-cased-v1.2/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "emilyalsentzer/Bio_ClinicalBERT",
+      "hf_repo": "emilyalsentzer/Bio_ClinicalBERT",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:medicine][classification] Clinical BERT for EHR/notes classification and NER baselines.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/emilyalsentzer/Bio_ClinicalBERT/main",
+      "path_absolute": "/mnt/models/d3/raw/emilyalsentzer/Bio_ClinicalBERT/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5",
+      "hf_repo": "failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "llama3",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": "meta-llama/Meta-Llama-3-70B-Instruct",
+      "method": "abliteration",
+      "notes": "failspy v3 series; weights on D3 uncensored/ (moved from D5 2026-03-29).",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/uncensored/failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5/main",
+      "path_absolute": "/mnt/models/d3/uncensored/failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/gemini-3-flash-preview",
+      "hf_repo": "google/gemini-3-flash-preview",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][google] Gemini 3 Flash Preview on Hugging Face (gated). Multimodal flash tier; accept terms on model card. PinchBench: google/gemini-3-flash-preview.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/google/gemini-3-flash-preview/main",
+      "path_absolute": "/mnt/models/d3/raw/google/gemini-3-flash-preview/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/gemini-3.1-flash-lite-preview",
+      "hf_repo": "google/gemini-3.1-flash-lite-preview",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "other",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:frontier][google] Gemini 3.1 Flash-Lite Preview on Hugging Face (gated). Lower-cost / lower-latency flash line per Google AI model docs; verify hf_repo matches the card if download fails.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/google/gemini-3.1-flash-lite-preview/main",
+      "path_absolute": "/mnt/models/d3/raw/google/gemini-3.1-flash-lite-preview/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/gemma-3-12b-it",
+      "hf_repo": "google/gemma-3-12b-it",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/google/gemma-3-12b-it/main",
+      "path_absolute": "/mnt/models/d2/raw/google/gemma-3-12b-it/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/gemma-3-27b-it",
+      "hf_repo": "google/gemma-3-27b-it",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Accept licence at huggingface.co/google/gemma-3-27b-it",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/google/gemma-3-27b-it/main",
+      "path_absolute": "/mnt/models/d2/raw/google/gemma-3-27b-it/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/gemma-3-27b-pt",
+      "hf_repo": "google/gemma-3-27b-pt",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/google/gemma-3-27b-pt/main",
+      "path_absolute": "/mnt/models/d2/raw/google/gemma-3-27b-pt/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/gemma-3-4b-it",
+      "hf_repo": "google/gemma-3-4b-it",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Gemma-3 4B multimodal — smallest capable open VLM",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/google/gemma-3-4b-it/main",
+      "path_absolute": "/mnt/models/d3/raw/google/gemma-3-4b-it/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/medgemma-27b-it",
+      "hf_repo": "google/medgemma-27b-it",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 0,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical][vision] MedGemma 27B multimodal",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/google/medgemma-27b-it/main",
+      "path_absolute": "/mnt/models/d3/raw/google/medgemma-27b-it/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/medgemma-27b-text-it",
+      "hf_repo": "google/medgemma-27b-text-it",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 0,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical] MedGemma 27B text — accept Health AI Developer Foundation ToU on HF (same gating flow as Gemma)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/google/medgemma-27b-text-it/main",
+      "path_absolute": "/mnt/models/d3/raw/google/medgemma-27b-text-it/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "google/medgemma-4b-it",
+      "hf_repo": "google/medgemma-4b-it",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 0,
+      "licence": "Gemma-ToU",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical][vision] MedGemma 4B multimodal (medical text + imaging)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/google/medgemma-4b-it/main",
+      "path_absolute": "/mnt/models/d3/raw/google/medgemma-4b-it/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated",
+      "hf_repo": "huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "116ff0fa55425b094a38a6bbf6faf2f5cafea335",
+      "quant_levels": [],
+      "parent_model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "method": "abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated/116ff0fa55425b094a38a6bbf6faf2f5cafea335",
+      "path_absolute": "/mnt/models/d2/uncensored/huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated/116ff0fa55425b094a38a6bbf6faf2f5cafea335",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated",
+      "hf_repo": "huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "939b7e288235a393e2aac8a16ddc3d48f9406f03",
+      "quant_levels": [],
+      "parent_model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "method": "abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated/939b7e288235a393e2aac8a16ddc3d48f9406f03",
+      "path_absolute": "/mnt/models/d2/uncensored/huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated/939b7e288235a393e2aac8a16ddc3d48f9406f03",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "huihui-ai/Llama-3.3-70B-Instruct-abliterated",
+      "hf_repo": "huihui-ai/Llama-3.3-70B-Instruct-abliterated",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama3.3",
+      "requires_auth": false,
+      "commit_sha_registry": "fa13334669544bab573e0e5313cad629a9c02e2c",
+      "quant_levels": [],
+      "parent_model": "meta-llama/Llama-3.3-70B-Instruct",
+      "method": "abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/huihui-ai/Llama-3.3-70B-Instruct-abliterated/fa13334669544bab573e0e5313cad629a9c02e2c",
+      "path_absolute": "/mnt/models/d2/uncensored/huihui-ai/Llama-3.3-70B-Instruct-abliterated/fa13334669544bab573e0e5313cad629a9c02e2c",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated",
+      "hf_repo": "huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": "mistralai/Mistral-Small-24B",
+      "method": "abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated/main",
+      "path_absolute": "/mnt/models/d2/uncensored/huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "huihui-ai/Qwen2.5-72B-Instruct-abliterated",
+      "hf_repo": "huihui-ai/Qwen2.5-72B-Instruct-abliterated",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "Qwen",
+      "requires_auth": false,
+      "commit_sha_registry": "ff4f9fe269d95bad2bd741af23b805cd9f449a8b",
+      "quant_levels": [],
+      "parent_model": "Qwen/Qwen2.5-72B-Instruct",
+      "method": "abliteration",
+      "notes": "lb=48.1 — actually scores *above* base model on leaderboard",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/uncensored/huihui-ai/Qwen2.5-72B-Instruct-abliterated/ff4f9fe269d95bad2bd741af23b805cd9f449a8b",
+      "path_absolute": "/mnt/models/d3/uncensored/huihui-ai/Qwen2.5-72B-Instruct-abliterated/ff4f9fe269d95bad2bd741af23b805cd9f449a8b",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "ibm-granite/granite-20b-code-base-8k",
+      "hf_repo": "ibm-granite/granite-20b-code-base-8k",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "IBM Granite 20B base; foundation for code fine-tunes",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/ibm-granite/granite-20b-code-base-8k/main",
+      "path_absolute": "/mnt/models/d2/raw/ibm-granite/granite-20b-code-base-8k/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "ibm-granite/granite-20b-code-instruct-r1.1",
+      "hf_repo": "ibm-granite/granite-20b-code-instruct-r1.1",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "IBM Granite 20B instruct; flagship open code model from IBM",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/ibm-granite/granite-20b-code-instruct-r1.1/main",
+      "path_absolute": "/mnt/models/d2/raw/ibm-granite/granite-20b-code-instruct-r1.1/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "internlm/internlm2_5-20b-chat",
+      "hf_repo": "internlm/internlm2_5-20b-chat",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "InternLM",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "InternLM2.5 20B — Chinese ecosystem; realistic candidate for access restriction",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d2/raw/internlm/internlm2_5-20b-chat/main",
+      "path_absolute": "/mnt/models/d2/raw/internlm/internlm2_5-20b-chat/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "intfloat/e5-large-v2",
+      "hf_repo": "intfloat/e5-large-v2",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:marketing][stp:A] General-purpose embedding model for segmentation and retrieval pipelines.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/intfloat/e5-large-v2/main",
+      "path_absolute": "/mnt/models/d3/raw/intfloat/e5-large-v2/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "intfloat/e5-mistral-7b-instruct",
+      "hf_repo": "intfloat/e5-mistral-7b-instruct",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Embedding — 7B instruct; strong for local RAG",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/intfloat/e5-mistral-7b-instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/intfloat/e5-mistral-7b-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "jinaai/jina-embeddings-v3",
+      "hf_repo": "jinaai/jina-embeddings-v3",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:classification][embeddings] 570M embedding model from LLM_ARCHIVE_v2 for categorization and routing.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/jinaai/jina-embeddings-v3/main",
+      "path_absolute": "/mnt/models/d3/raw/jinaai/jina-embeddings-v3/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.1-405B",
+      "hf_repo": "meta-llama/Llama-3.1-405B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": "b906e4dc842aa489c962f9db26554dcfdde901fe",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Pre-trained base (no instruct) — foundation for fine-tunes; accept licence on HF",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe",
+      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.1-405B-Instruct",
+      "hf_repo": "meta-llama/Llama-3.1-405B-Instruct",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Accept licence at huggingface.co/meta-llama/Llama-3.1-405B-Instruct",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/meta-llama/Llama-3.1-405B-Instruct/main",
+      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-3.1-405B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.1-70B-Instruct",
+      "hf_repo": "meta-llama/Llama-3.1-70B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": "1605565b47bb9346c5515c34102e054115b4f98b",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b",
+      "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.1-8B-Instruct",
+      "hf_repo": "meta-llama/Llama-3.1-8B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": "0e9e39f249a16976918f6564b8830bc894c89659",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/meta-llama/Llama-3.1-8B-Instruct/0e9e39f249a16976918f6564b8830bc894c89659",
+      "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-3.1-8B-Instruct/0e9e39f249a16976918f6564b8830bc894c89659",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "hf_repo": "meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "tier": "F",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "llama3.2",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Meta's open vision model — accept at huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/meta-llama/Llama-3.2-11B-Vision-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-3.2-11B-Vision-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.2-1B",
+      "hf_repo": "meta-llama/Llama-3.2-1B",
+      "tier": "A",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "llama3.2",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Meta 1B base; still current (no 3.3-1B)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/meta-llama/Llama-3.2-1B/main",
+      "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-3.2-1B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.2-1B-Instruct",
+      "hf_repo": "meta-llama/Llama-3.2-1B-Instruct",
+      "tier": "A",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "llama3.2",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Meta 1B instruct; still current",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/meta-llama/Llama-3.2-1B-Instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-3.2-1B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.2-3B-Instruct",
+      "hf_repo": "meta-llama/Llama-3.2-3B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "llama3.2",
+      "requires_auth": true,
+      "commit_sha_registry": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "3B Llama 3.2 instruct; 128K context; good for constrained GPUs",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/meta-llama/Llama-3.2-3B-Instruct/0cb88a4f764b7a12671c53f0838cd831a0843b95",
+      "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-3.2-3B-Instruct/0cb88a4f764b7a12671c53f0838cd831a0843b95",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.2-90B-Vision-Instruct",
+      "hf_repo": "meta-llama/Llama-3.2-90B-Vision-Instruct",
+      "tier": "F",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "llama3.2",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Meta's large open vision model — accept licence on HF",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/meta-llama/Llama-3.2-90B-Vision-Instruct/main",
+      "path_absolute": "/mnt/models/d5/raw/meta-llama/Llama-3.2-90B-Vision-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-3.3-70B-Instruct",
+      "hf_repo": "meta-llama/Llama-3.3-70B-Instruct",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "llama3.3",
+      "requires_auth": true,
+      "commit_sha_registry": "6f6073b423013f6a7d4d9f39144961bfbfbc386b",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/meta-llama/Llama-3.3-70B-Instruct/6f6073b423013f6a7d4d9f39144961bfbfbc386b",
+      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-3.3-70B-Instruct/6f6073b423013f6a7d4d9f39144961bfbfbc386b",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-4-Maverick-17B-128E",
+      "hf_repo": "meta-llama/Llama-4-Maverick-17B-128E",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": "10751cb97a4d7c90f7ed89196b98eb8220cfa1c2",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Llama 4 Maverick base MoE (17B params, 128 experts); high-capability foundation model",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2",
+      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "hf_repo": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Llama 4 Maverick instruct chat model; frontier open assistant; heavier than Scout",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/meta-llama/Llama-4-Maverick-17B-128E-Instruct/main",
+      "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-4-Maverick-17B-128E-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-4-Scout-17B-16E",
+      "hf_repo": "meta-llama/Llama-4-Scout-17B-16E",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Llama 4 Scout base MoE (17B params, 16 experts); core pre-trained checkpoint for future fine-tunes",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/meta-llama/Llama-4-Scout-17B-16E/main",
+      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-4-Scout-17B-16E/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "hf_repo": "meta-llama/Llama-4-Scout-17B-16E-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Llama 4 Scout instruct chat model; smaller of the Llama 4 family; general-purpose open assistant",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/meta-llama/Llama-4-Scout-17B-16E-Instruct/main",
+      "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-4-Scout-17B-16E-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-Guard-4-12B",
+      "hf_repo": "meta-llama/Llama-Guard-4-12B",
+      "tier": "E",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": "87acb4b94e930c3d679e6e7ee9d57e2feab9ea71",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "12B multimodal safety classifier pruned from Llama 4 Scout; input/output content moderation for text+images",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/meta-llama/Llama-Guard-4-12B/87acb4b94e930c3d679e6e7ee9d57e2feab9ea71",
+      "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-Guard-4-12B/87acb4b94e930c3d679e6e7ee9d57e2feab9ea71",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-Prompt-Guard-2-22M",
+      "hf_repo": "meta-llama/Llama-Prompt-Guard-2-22M",
+      "tier": "E",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": "11614a155199674a0a95e6602d6ab0417b790ed0",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Lightweight prompt safety model (22M); detects jailbreaks/malicious prompts for Llama 3/4 and other LLMs",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/meta-llama/Llama-Prompt-Guard-2-22M/11614a155199674a0a95e6602d6ab0417b790ed0",
+      "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-Prompt-Guard-2-22M/11614a155199674a0a95e6602d6ab0417b790ed0",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "meta-llama/Llama-Prompt-Guard-2-86M",
+      "hf_repo": "meta-llama/Llama-Prompt-Guard-2-86M",
+      "tier": "E",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "llama4",
+      "requires_auth": true,
+      "commit_sha_registry": "a8ded8e697ce7c355e395a0df51f94adb4a2fd27",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Larger Prompt Guard 2 model (86M); broader language support and higher accuracy for prompt-safety classification",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/meta-llama/Llama-Prompt-Guard-2-86M/a8ded8e697ce7c355e395a0df51f94adb4a2fd27",
+      "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-Prompt-Guard-2-86M/a8ded8e697ce7c355e395a0df51f94adb4a2fd27",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext",
+      "hf_repo": "microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:biomedical][classification] PubMedBERT baseline from LLM_ARCHIVE_v2.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/main",
+      "path_absolute": "/mnt/models/d3/raw/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "microsoft/Phi-3-mini-128k-instruct",
+      "hf_repo": "microsoft/Phi-3-mini-128k-instruct",
+      "tier": "A",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Very capable tiny model; 128K context — strong fallback when GPU is scarce",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d3/raw/microsoft/Phi-3-mini-128k-instruct/main",
+      "path_absolute": "/mnt/models/d3/raw/microsoft/Phi-3-mini-128k-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "microsoft/Phi-4-mini-instruct",
+      "hf_repo": "microsoft/Phi-4-mini-instruct",
+      "tier": "A",
+      "drive": "d5",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "3.8B compact instruct; 128K context — strong small CPU/GPU model",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d5/raw/microsoft/Phi-4-mini-instruct/main",
+      "path_absolute": "/mnt/models/d5/raw/microsoft/Phi-4-mini-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "microsoft/phi-4",
+      "hf_repo": "microsoft/phi-4",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/microsoft/phi-4/main",
+      "path_absolute": "/mnt/models/d2/raw/microsoft/phi-4/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Codestral-22B-v0.1",
+      "hf_repo": "mistralai/Codestral-22B-v0.1",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Mistral-MNPL",
+      "requires_auth": true,
+      "commit_sha_registry": "28b1c1a51dabe9d86ca8c41420ada1984632498f",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Non-production licence. Accept at huggingface.co/mistralai/Codestral-22B-v0.1",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mistralai/Codestral-22B-v0.1/28b1c1a51dabe9d86ca8c41420ada1984632498f",
+      "path_absolute": "/mnt/models/d2/raw/mistralai/Codestral-22B-v0.1/28b1c1a51dabe9d86ca8c41420ada1984632498f",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Devstral-Small-2507",
+      "hf_repo": "mistralai/Devstral-Small-2507",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mistralai/Devstral-Small-2507/main",
+      "path_absolute": "/mnt/models/d2/raw/mistralai/Devstral-Small-2507/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Devstral-Small-2507_gguf",
+      "hf_repo": "mistralai/Devstral-Small-2507_gguf",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "ee2f0c00c5c86862f471fbf533268cf01b80d4a6",
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/mistralai/Devstral-Small-2507_gguf/ee2f0c00c5c86862f471fbf533268cf01b80d4a6",
+      "path_absolute": "/mnt/models/d3/quantized/mistralai/Devstral-Small-2507_gguf/ee2f0c00c5c86862f471fbf533268cf01b80d4a6",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Leanstral-120B-A6B",
+      "hf_repo": "mistralai/Leanstral-120B-A6B",
+      "tier": "E",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Leanstral 120B-A6B sparse code/proof agent for Lean 4; Apache-2.0; see https://mistral.ai/news/leanstral",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/mistralai/Leanstral-120B-A6B/main",
+      "path_absolute": "/mnt/models/d5/raw/mistralai/Leanstral-120B-A6B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Mathstral-7B-v0.1",
+      "hf_repo": "mistralai/Mathstral-7B-v0.1",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:math] Specialist 7B math model from LLM_ARCHIVE_v2; small-first.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/mistralai/Mathstral-7B-v0.1/main",
+      "path_absolute": "/mnt/models/d3/raw/mistralai/Mathstral-7B-v0.1/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Mistral-Large-Instruct-2411",
+      "hf_repo": "mistralai/Mistral-Large-Instruct-2411",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "Mistral-Research",
+      "requires_auth": true,
+      "commit_sha_registry": "ba78820945ae22361b0274cf0ae6d696c967c1a4",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "lb=46.5 — supersedes 2407; accept at huggingface.co/mistralai/Mistral-Large-Instruct-2411",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/mistralai/Mistral-Large-Instruct-2411/ba78820945ae22361b0274cf0ae6d696c967c1a4",
+      "path_absolute": "/mnt/models/d1/raw/mistralai/Mistral-Large-Instruct-2411/ba78820945ae22361b0274cf0ae6d696c967c1a4",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "hf_repo": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "9527884be6e5616bdd54de542f9ae13384489724",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "24B Apache-2.0 — supersedes Mistral-7B as the practical open Mistral",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/mistralai/Mistral-Small-24B-Instruct-2501/9527884be6e5616bdd54de542f9ae13384489724",
+      "path_absolute": "/mnt/models/d2/raw/mistralai/Mistral-Small-24B-Instruct-2501/9527884be6e5616bdd54de542f9ae13384489724",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Mixtral-8x22B-Instruct-v0.1",
+      "hf_repo": "mistralai/Mixtral-8x22B-Instruct-v0.1",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "8x22B MoE — larger open MoE; capability type not fully covered elsewhere",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mistralai/Mixtral-8x22B-Instruct-v0.1/cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d",
+      "path_absolute": "/mnt/models/d2/raw/mistralai/Mixtral-8x22B-Instruct-v0.1/cc88a6cc19fbd17d9f1c0ee0b0d70a748dce698d",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "hf_repo": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "eba92302a2861cdc0098cc54bc9f17cb2c47eb61",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "8x7B MoE (~47B total) — flagship open MoE; runs well locally",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mistralai/Mixtral-8x7B-Instruct-v0.1/eba92302a2861cdc0098cc54bc9f17cb2c47eb61",
+      "path_absolute": "/mnt/models/d2/raw/mistralai/Mixtral-8x7B-Instruct-v0.1/eba92302a2861cdc0098cc54bc9f17cb2c47eb61",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mlabonne/Llama-3.1-70B-Instruct-lorablated",
+      "hf_repo": "mlabonne/Llama-3.1-70B-Instruct-lorablated",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": "meta-llama/Llama-3.1-70B-Instruct",
+      "method": "LoRA abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/mlabonne/Llama-3.1-70B-Instruct-lorablated/main",
+      "path_absolute": "/mnt/models/d2/uncensored/mlabonne/Llama-3.1-70B-Instruct-lorablated/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mlabonne/NeuralDaredevil-8B-abliterated",
+      "hf_repo": "mlabonne/NeuralDaredevil-8B-abliterated",
+      "tier": "D",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "llama3.1",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": "meta-llama/Llama-3.1-8B",
+      "method": "DPO+abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/uncensored/mlabonne/NeuralDaredevil-8B-abliterated/main",
+      "path_absolute": "/mnt/models/d2/uncensored/mlabonne/NeuralDaredevil-8B-abliterated/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mlabonne/NeuralDaredevil-8B-abliterated-GGUF",
+      "hf_repo": "mlabonne/NeuralDaredevil-8B-abliterated-GGUF",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "llama3.1",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": "meta-llama/Llama-3.1-8B",
+      "method": "DPO+abliteration",
+      "notes": null,
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/uncensored/mlabonne/NeuralDaredevil-8B-abliterated-GGUF/main",
+      "path_absolute": "/mnt/models/d3/uncensored/mlabonne/NeuralDaredevil-8B-abliterated-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mlx-community/dbrx-instruct-4bit",
+      "hf_repo": "mlx-community/dbrx-instruct-4bit",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "other",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "4-bit DBRX instruct quantization (MLX-focused) for compact local inference",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/mlx-community/dbrx-instruct-4bit/main",
+      "path_absolute": "/mnt/models/d3/quantized/mlx-community/dbrx-instruct-4bit/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mosaicml/mpt-30b",
+      "hf_repo": "mosaicml/mpt-30b",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "MPT base 30B; no successor",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mosaicml/mpt-30b/main",
+      "path_absolute": "/mnt/models/d2/raw/mosaicml/mpt-30b/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mosaicml/mpt-30b-instruct",
+      "hf_repo": "mosaicml/mpt-30b-instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "MPT instruct 30B; family frozen",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mosaicml/mpt-30b-instruct/main",
+      "path_absolute": "/mnt/models/d2/raw/mosaicml/mpt-30b-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mosaicml/mpt-7b",
+      "hf_repo": "mosaicml/mpt-7b",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "MPT base 7B; no MPT-2 successor line",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mosaicml/mpt-7b/main",
+      "path_absolute": "/mnt/models/d2/raw/mosaicml/mpt-7b/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "mosaicml/mpt-7b-instruct",
+      "hf_repo": "mosaicml/mpt-7b-instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "MPT instruct 7B; family frozen",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/mosaicml/mpt-7b-instruct/main",
+      "path_absolute": "/mnt/models/d2/raw/mosaicml/mpt-7b-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/Llama-3.1-Nemotron-70B-Instruct",
+      "hf_repo": "nvidia/Llama-3.1-Nemotron-70B-Instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": "a83af1f4968437064635f6726fb745e5b615e863",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "NVIDIA's best-in-class fine-tune; dominated HF open leaderboard on release",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/nvidia/Llama-3.1-Nemotron-70B-Instruct/a83af1f4968437064635f6726fb745e5b615e863",
+      "path_absolute": "/mnt/models/d2/raw/nvidia/Llama-3.1-Nemotron-70B-Instruct/a83af1f4968437064635f6726fb745e5b615e863",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1",
+      "hf_repo": "nvidia/Llama-3_1-Nemotron-Ultra-253B-v1",
+      "tier": "D",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "llama3.1",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron Ultra 253B; Llama-3.1-based flagship; lowest priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d1/uncensored/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1/main",
+      "path_absolute": "/mnt/models/d1/uncensored/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 3,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Nano instruct; NemoClaw agent platform model; 1M ctx, reasoning ON/OFF",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16/main",
+      "path_absolute": "/mnt/models/d2/raw/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 1,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": "97ab8012882a655dc38df4fee47422aca9caca07",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Nano base (pre-trained); 31.6B MoE, 1M ctx; foundation for NemoClaw agent",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d2/raw/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16/97ab8012882a655dc38df4fee47422aca9caca07",
+      "path_absolute": "/mnt/models/d2/raw/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16/97ab8012882a655dc38df4fee47422aca9caca07",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Nano FP8 quant; efficient inference for agent workloads",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8/main",
+      "path_absolute": "/mnt/models/d3/quantized/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-FP8/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 2,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Nano NVFP4 quant; smallest runnable for NemoClaw-style agents",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/quantized/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4/main",
+      "path_absolute": "/mnt/models/d3/quantized/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Super instruct; 124B MoE, 1M ctx; lowest priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/main",
+      "path_absolute": "/mnt/models/d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16/main",
+      "path_absolute": "/mnt/models/d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Super FP8 quant; lowest priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8/main",
+      "path_absolute": "/mnt/models/d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "nvidia-open-model-license",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Nemotron 3 Super NVFP4 quant; lowest priority",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4/main",
+      "path_absolute": "/mnt/models/d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "open-r1/OlympicCoder-32B",
+      "hf_repo": "open-r1/OlympicCoder-32B",
+      "tier": "B",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": "34113aee9d255591a1fa75b60d1e3422e82c3b1f",
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Olympiad-level coding reasoning (open-r1); strong competition-style code / CoT",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/open-r1/OlympicCoder-32B/34113aee9d255591a1fa75b60d1e3422e82c3b1f",
+      "path_absolute": "/mnt/models/d2/raw/open-r1/OlympicCoder-32B/34113aee9d255591a1fa75b60d1e3422e82c3b1f",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "rombodawg/Rombos-LLM-V2.5-Qwen-72b",
+      "hf_repo": "rombodawg/Rombos-LLM-V2.5-Qwen-72b",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": "Qwen/Qwen2.5-72B-Instruct",
+      "method": "merge",
+      "notes": "Large uncensored Qwen2.5-72B merge; popular power-user model",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/rombodawg/Rombos-LLM-V2.5-Qwen-72b/main",
+      "path_absolute": "/mnt/models/d5/uncensored/rombodawg/Rombos-LLM-V2.5-Qwen-72b/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "sentence-transformers/all-mpnet-base-v2",
+      "hf_repo": "sentence-transformers/all-mpnet-base-v2",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 3,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:marketing][stp:C] Strong sentence embedding baseline for audience similarity and semantic matching.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d3/raw/sentence-transformers/all-mpnet-base-v2/main",
+      "path_absolute": "/mnt/models/d3/raw/sentence-transformers/all-mpnet-base-v2/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "seyonec/ChemBERTa-zinc-base-v1",
+      "hf_repo": "seyonec/ChemBERTa-zinc-base-v1",
+      "tier": "B",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:chemistry][classification] SMILES/ChemBERTa encoder for molecular property / chemistry NLP baselines; complements ChemLLM.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/seyonec/ChemBERTa-zinc-base-v1/main",
+      "path_absolute": "/mnt/models/d3/raw/seyonec/ChemBERTa-zinc-base-v1/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "stanford-crfm/BioMedLM",
+      "hf_repo": "stanford-crfm/BioMedLM",
+      "tier": "G",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "[discipline:medicine][biomedical] PubMed-trained generative biomedical LM; complements OpenBioLLM and encoder-only clinical BERTs.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/raw/stanford-crfm/BioMedLM/main",
+      "path_absolute": "/mnt/models/d3/raw/stanford-crfm/BioMedLM/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF",
+      "hf_repo": "tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "89b48f9faec5188e7a05011676538aaf0889ad9a",
+      "quant_levels": [
+        "Q3_K_M"
+      ],
+      "parent_model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
+      "method": "abliteration",
+      "notes": "tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d3/.tmp/ — schedule on D3.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/uncensored/tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF/89b48f9faec5188e7a05011676538aaf0889ad9a",
+      "path_absolute": "/mnt/models/d3/uncensored/tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF/89b48f9faec5188e7a05011676538aaf0889ad9a",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF",
+      "hf_repo": "tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": "de00cb261ea6fea79a45ffbb6e583befed7be954",
+      "quant_levels": [
+        "Q3_K_M"
+      ],
+      "parent_model": "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B",
+      "method": "abliteration",
+      "notes": "tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/uncensored/tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF/de00cb261ea6fea79a45ffbb6e583befed7be954",
+      "path_absolute": "/mnt/models/d3/uncensored/tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF/de00cb261ea6fea79a45ffbb6e583befed7be954",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tensorblock/Llama-3.2-3B-Instruct-GGUF",
+      "hf_repo": "tensorblock/Llama-3.2-3B-Instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "llama3.2",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q3_K_M"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "Llama 3.2 3B GGUF; tensorblock only hosts Q2_K/Q3_K_M",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/tensorblock/Llama-3.2-3B-Instruct-GGUF/main",
+      "path_absolute": "/mnt/models/d3/quantized/tensorblock/Llama-3.2-3B-Instruct-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF",
+      "hf_repo": "tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF",
+      "tier": "D",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "llama3.3",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q3_K_M"
+      ],
+      "parent_model": "meta-llama/Llama-3.3-70B-Instruct",
+      "method": "abliteration",
+      "notes": "tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d5/.tmp/ — schedule on D5.",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/uncensored/tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF/main",
+      "path_absolute": "/mnt/models/d5/uncensored/tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF",
+      "hf_repo": "tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF",
+      "tier": "D",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q3_K_M"
+      ],
+      "parent_model": "mistralai/Mistral-Small-24B-Instruct-2501",
+      "method": "abliteration",
+      "notes": "tensorblock only hosts Q2_K/Q3_K_M; huihui-ai has BF16 abliterated",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/uncensored/tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF/main",
+      "path_absolute": "/mnt/models/d3/uncensored/tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tiiuae/Falcon3-10B-Instruct",
+      "hf_repo": "tiiuae/Falcon3-10B-Instruct",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "10B Falcon3 instruct model — strong open chat baseline",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d1/raw/tiiuae/Falcon3-10B-Instruct/main",
+      "path_absolute": "/mnt/models/d1/raw/tiiuae/Falcon3-10B-Instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tiiuae/falcon-180B",
+      "hf_repo": "tiiuae/falcon-180B",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "Falcon-180B-TII",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/tiiuae/falcon-180B/main",
+      "path_absolute": "/mnt/models/d1/raw/tiiuae/falcon-180B/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tiiuae/falcon-180B-chat",
+      "hf_repo": "tiiuae/falcon-180B-chat",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 4,
+      "licence": "Falcon-180B-TII",
+      "requires_auth": true,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "TII Falcon 180B instruct; no direct replacement",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d1/raw/tiiuae/falcon-180B-chat/main",
+      "path_absolute": "/mnt/models/d1/raw/tiiuae/falcon-180B-chat/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "tiiuae/falcon-40b-instruct",
+      "hf_repo": "tiiuae/falcon-40b-instruct",
+      "tier": "A",
+      "drive": "d2",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "TII Falcon 40B instruct; no Falcon3 at this scale",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml"
+      ],
+      "path_relative": "d2/raw/tiiuae/falcon-40b-instruct/main",
+      "path_absolute": "/mnt/models/d2/raw/tiiuae/falcon-40b-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "unsloth/DeepSeek-R1-GGUF",
+      "hf_repo": "unsloth/DeepSeek-R1-GGUF",
+      "tier": "C",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q4_K_M"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "671B — Q4_K_M only (~340 GB)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/quantized/unsloth/DeepSeek-R1-GGUF/main",
+      "path_absolute": "/mnt/models/d5/quantized/unsloth/DeepSeek-R1-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "unsloth/DeepSeek-V3-GGUF",
+      "hf_repo": "unsloth/DeepSeek-V3-GGUF",
+      "tier": "C",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q4_K_M"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "671B — Q4_K_M only (~340 GB)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/quantized/unsloth/DeepSeek-V3-GGUF/main",
+      "path_absolute": "/mnt/models/d5/quantized/unsloth/DeepSeek-V3-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "unsloth/Phi-4-mini-instruct-GGUF",
+      "hf_repo": "unsloth/Phi-4-mini-instruct-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "Compact Phi-4-mini GGUF; good fit for 8–16 GB machines",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/unsloth/Phi-4-mini-instruct-GGUF/main",
+      "path_absolute": "/mnt/models/d3/quantized/unsloth/Phi-4-mini-instruct-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+      "hf_repo": "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [
+        "Q8_0"
+      ],
+      "parent_model": null,
+      "method": null,
+      "notes": "Qwen3 4B GGUF; small but high quality",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/unsloth/Qwen3-4B-Instruct-2507-GGUF/main",
+      "path_absolute": "/mnt/models/d3/quantized/unsloth/Qwen3-4B-Instruct-2507-GGUF/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "unsloth/phi-4-unsloth-bnb-4bit",
+      "hf_repo": "unsloth/phi-4-unsloth-bnb-4bit",
+      "tier": "C",
+      "drive": "d3",
+      "priority": 1,
+      "licence": "MIT",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "Space-efficient 4-bit Phi-4 variant — practical small chat model for limited hardware",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d3/quantized/unsloth/phi-4-unsloth-bnb-4bit/main",
+      "path_absolute": "/mnt/models/d3/quantized/unsloth/phi-4-unsloth-bnb-4bit/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "upstage/solar-pro-preview-instruct",
+      "hf_repo": "upstage/solar-pro-preview-instruct",
+      "tier": "A",
+      "drive": "d1",
+      "priority": 2,
+      "licence": "Apache-2.0",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "High-ranking ~20B chat/instruct model from Open LLM leaderboard best-models collection",
+      "legacy": true,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-legacy.yaml"
+      ],
+      "path_relative": "d1/raw/upstage/solar-pro-preview-instruct/main",
+      "path_absolute": "/mnt/models/d1/raw/upstage/solar-pro-preview-instruct/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    },
+    {
+      "id": "xai-org/grok-2",
+      "hf_repo": "xai-org/grok-2",
+      "tier": "G",
+      "drive": "d5",
+      "priority": 4,
+      "licence": "Grok-2-Community",
+      "requires_auth": false,
+      "commit_sha_registry": null,
+      "quant_levels": [],
+      "parent_model": null,
+      "method": null,
+      "notes": "~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License)",
+      "legacy": false,
+      "registry_sources": [
+        "model-archival/config/registry.yaml",
+        "model-archival/config/registry-specialists.yaml"
+      ],
+      "path_relative": "d5/raw/xai-org/grok-2/main",
+      "path_absolute": "/mnt/models/d5/raw/xai-org/grok-2/main",
+      "on_disk": {
+        "revision_dir_exists": false,
+        "manifest_present": false
+      },
+      "download_status": null,
+      "manifest": null
+    }
+  ]
+}
