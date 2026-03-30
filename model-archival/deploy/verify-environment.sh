@@ -134,6 +134,8 @@ echo ""
 echo -e "  ${_C_DIM}[Disk management tools — required on VM, not on dev machine]${_C_RESET}"
 for tool_entry in \
     "screen:apt install screen  / pacman -S screen" \
+    "tmux:apt install tmux      / pacman -S tmux" \
+    "fish:apt install fish      / pacman -S fish" \
     "sgdisk:apt install gdisk   / pacman -S gptfdisk" \
     "wipefs:apt install util-linux" \
     "lsblk:apt install util-linux" \

@@ -10,6 +10,16 @@
 
 ---
 
+## 2026-03-29 — Deploy: tmux + powerline + fonts + tmux-powerline
+
+- **`deploy/setup-mxlinux.sh`:** `tmux`, `python3-powerline`, `fonts-powerline` in `PACKAGES`; step **1b** clones [erikw/tmux-powerline](https://github.com/erikw/tmux-powerline) → `~/.tmux-powerline`.
+- **`deploy/setup-artix.sh`:** `tmux`, `python-powerline`, `powerline-fonts`; same **1b** clone.
+- **`deploy/_common.sh`:** `install_tmux_powerline_repo` (override with `TMUX_POWERLINE_URL`). **`deploy/verify-environment.sh`:** optional `tmux` check. Docs: **`model-archival/docs/DEPLOYMENT.md`**, **`PROJECT_PROMPT.md`**; **`.cursor/rules/vm-operations.mdc`**.
+
+## 2026-03-29 — Deploy: fish + Oh My Fish
+
+- **`deploy/setup-mxlinux.sh` / `setup-artix.sh`:** `fish` in `PACKAGES`; step **1c** runs **`install_oh_my_fish`** in **`deploy/_common.sh`** (curl official installer → `fish … --noninteractive --yes`). Skip: **`OMF_SKIP=1`**. Override installer URL: **`OMF_INSTALL_URL`**. **`deploy/verify-environment.sh`:** optional **`fish`** check.
+
 ## 2026-03-29 — GitHub-facing archive inventory (`docs/archive-inventory/`)
 
 - **`scripts/generate-archive-inventory.py`:** Writes JSON + Markdown under **`docs/archive-inventory/`**: merged master+legacy+specialist models with per-drive paths, optional `run_state.json` status, manifest summary + **`manifest_sha256`** when `manifest.json` is readable, full disk scan for orphan manifest trees, tail of **`global_index.jsonl`**, **`code-archival/registry.yaml`** as JSON/MD, **`gdrive-registry.yaml`** roots, monorepo scope summary. **`--include-file-checksums`** embeds per-file SHA-256 from manifests (large).

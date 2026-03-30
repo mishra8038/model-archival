@@ -10,7 +10,7 @@ alwaysApply: true
 - **VM IP**: 192.168.8.65, user: `x`
 - **OS**: Artix Linux, init: dinit (not systemd — use `dinitctl`, not `systemctl`)
 - **Project path**: `/home/x/dev/model-archival/model-archival/`
-- **Screen session**: `archiver` (`screen -S archiver bash run.sh --all`)
+- **Screen session**: `archiver` (`screen -S archiver bash run.sh --all`). **`deploy/setup-artix.sh`** / **`deploy/setup-mxlinux.sh`** also install **tmux**, **powerline** (`python-powerline` / `python3-powerline`), **powerline-fonts** (`fonts-powerline` on Debian), clone **tmux-powerline** to `~/.tmux-powerline` (configure `~/.tmux.conf` per [erikw/tmux-powerline](https://github.com/erikw/tmux-powerline)), **fish**, and **Oh My Fish** (non-interactive; skip with `OMF_SKIP=1`).
 
 ## Disk layout
 

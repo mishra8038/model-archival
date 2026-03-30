@@ -201,7 +201,7 @@ models:
 - id: meta-llama/Llama-3.1-70B-Instruct
   hf_repo: meta-llama/Llama-3.1-70B-Instruct
   tier: A
-  drive: d2
+  drive: d3
   priority: 4
   licence: llama3.1
   requires_auth: true

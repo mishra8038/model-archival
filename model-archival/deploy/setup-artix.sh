@@ -12,7 +12,9 @@
 #   3. Pin Python 3.11 and sync the virtual environment
 #   4. Smoke-test the archiver CLI
 #   5. Create /mnt/models/dN mount point directories
-#   6. Add archiver-screen shell alias
+#   6. tmux + powerline + fonts + tmux-powerline (git)
+#   7. fish + Oh My Fish
+#   8. Add archiver-screen shell alias
 #
 # Run as a normal user WITH sudo privileges (not as root).
 # =============================================================================
@@ -71,6 +73,10 @@ PACKAGES=(
     aria2
     git
     screen
+    tmux
+    python-powerline
+    powerline-fonts
+    fish
     rsync
     curl
     wget
@@ -117,7 +123,7 @@ _rpt "Summary: ${#INSTALLED[@]} newly installed, ${#ALREADY[@]} already present"
 
 echo ""
 info "Verifying key binaries…"
-for bin in aria2c python3 python git screen rsync sgdisk; do
+for bin in aria2c python3 python git screen tmux fish rsync sgdisk; do
     if command -v "$bin" &>/dev/null; then
         ver=$("$bin" --version 2>&1 | head -1 || true)
         ok "$bin — $ver"
@@ -129,6 +135,18 @@ for bin in aria2c python3 python git screen rsync sgdisk; do
         _rpt "  - \`$bin\` ⚠ not found"
     fi
 done
+
+# ---------------------------------------------------------------------------
+# 1b — tmux-powerline (git; not in official repos)
+# ---------------------------------------------------------------------------
+step "1b — tmux-powerline (git clone)"
+install_tmux_powerline_repo
+
+# ---------------------------------------------------------------------------
+# 1c — Oh My Fish (fish framework; requires fish + git + curl)
+# ---------------------------------------------------------------------------
+step "1c — Oh My Fish"
+install_oh_my_fish
 
 # ---------------------------------------------------------------------------
 # 2. Install uv

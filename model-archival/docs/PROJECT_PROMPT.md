@@ -121,8 +121,8 @@ archiver/
 ```
 run.sh                              Root orchestrator — entry point for all operations
 deploy/_common.sh                   Shared bash library (logging, reporting, run_cmd, step/banner)
-deploy/setup-mxlinux.sh             OS setup: apt packages + uv + project sync (MX Linux / Debian)
-deploy/setup-artix.sh               OS setup: pacman packages + uv + project sync (Artix / Arch)
+deploy/setup-mxlinux.sh             OS setup: apt + uv + tmux/powerline/fonts + tmux-powerline + fish/Oh My Fish (MX Linux / Debian)
+deploy/setup-artix.sh               OS setup: pacman + uv + tmux/powerline/fonts + tmux-powerline + fish/Oh My Fish (Artix / Arch)
 deploy/proxmox-attach-disks.sh      Run on Proxmox HOST: discover HDDs, attach to VM 106 via qm
 deploy/vm-mount-disks.sh            Run in VM: identify, partition (GPT), format (ext4), mount disks
 deploy/verify-environment.sh        Pre-execution environment check with timestamped report

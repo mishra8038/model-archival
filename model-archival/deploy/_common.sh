@@ -163,6 +163,90 @@ run_interactive() {
 }
 
 # ---------------------------------------------------------------------------
+# tmux-powerline (no stable Debian/Arch package — upstream git)
+# ---------------------------------------------------------------------------
+# After installing tmux + powerline + fonts via the distro, call this to clone
+# https://github.com/erikw/tmux-powerline into ~/.tmux-powerline.
+# Override URL: TMUX_POWERLINE_URL=https://github.com/...
+install_tmux_powerline_repo() {
+    local dest="${HOME}/.tmux-powerline"
+    local url="${TMUX_POWERLINE_URL:-https://github.com/erikw/tmux-powerline.git}"
+    if [[ -d "$dest/.git" ]]; then
+        ok "tmux-powerline repo already present at $dest"
+        _rpt "tmux-powerline: already at \`$dest\`"
+        return 0
+    fi
+    if ! command -v git &>/dev/null; then
+        warn "git not available — skipping tmux-powerline clone"
+        _rpt "tmux-powerline: skipped (no git)"
+        return 0
+    fi
+    info "Cloning tmux-powerline → $dest …"
+    if git clone --depth 1 "$url" "$dest" &>/dev/null; then
+        ok "tmux-powerline cloned — wire ~/.tmux.conf per upstream README"
+        _rpt "tmux-powerline: cloned \`$dest\`"
+    else
+        warn "tmux-powerline clone failed"
+        _rpt "tmux-powerline: clone ⚠ FAILED"
+    fi
+}
+
+# ---------------------------------------------------------------------------
+# Oh My Fish (requires fish + git; curl installer from upstream)
+# ---------------------------------------------------------------------------
+# Set OMF_SKIP=1 to skip. Uses ~/.local/share/omf (or $XDG_DATA_HOME/omf).
+install_oh_my_fish() {
+    if [[ "${OMF_SKIP:-}" == "1" ]]; then
+        info "Skipping Oh My Fish (OMF_SKIP=1)"
+        _rpt "omf: skipped (OMF_SKIP=1)"
+        return 0
+    fi
+    if ! command -v fish &>/dev/null; then
+        warn "fish not in PATH — skipping Oh My Fish"
+        _rpt "omf: skipped (no fish)"
+        return 0
+    fi
+    if ! command -v git &>/dev/null; then
+        warn "git not available — skipping Oh My Fish"
+        _rpt "omf: skipped (no git)"
+        return 0
+    fi
+    local omf_base="${XDG_DATA_HOME:-$HOME/.local/share}/omf"
+    if [[ -d "$omf_base/pkg/omf" ]]; then
+        ok "Oh My Fish already present at $omf_base"
+        _rpt "omf: already at \`$omf_base\`"
+        return 0
+    fi
+    if fish -c 'omf --version' &>/dev/null; then
+        ok "Oh My Fish already available (\`omf --version\`)"
+        _rpt "omf: already installed"
+        return 0
+    fi
+    local url="${OMF_INSTALL_URL:-https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install}"
+    local tmp
+    tmp=$(mktemp) || {
+        warn "mktemp failed — skipping Oh My Fish"
+        return 0
+    }
+    info "Downloading Oh My Fish installer…"
+    if ! curl -fsSL "$url" -o "$tmp"; then
+        warn "Could not download Oh My Fish installer"
+        rm -f "$tmp"
+        _rpt "omf: download ⚠ FAILED"
+        return 0
+    fi
+    info "Running Oh My Fish install (non-interactive)…"
+    if fish "$tmp" --noninteractive --yes; then
+        ok "Oh My Fish installed — open fish and run \`omf theme\` / \`omf install\` as needed"
+        _rpt "omf: installed"
+    else
+        warn "Oh My Fish install failed (try: fish, then re-run installer with --verbose)"
+        _rpt "omf: install ⚠ FAILED"
+    fi
+    rm -f "$tmp"
+}
+
+# ---------------------------------------------------------------------------
 # Final report footer
 # ---------------------------------------------------------------------------
 finish_report() {

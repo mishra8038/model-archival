@@ -49,18 +49,6 @@ Verify in Proxmox UI (VM → Hardware) that the disks appear.
 
 SSH into the **VM** and run the appropriate setup script.
 
-<<<<<<< HEAD:model-archival/docs/DEPLOYMENT.md
-### MX Linux / Debian / Ubuntu
-
-```bash
-cd /opt/model-archival/local
-bash deploy/setup-mxlinux.sh
-```
-
-Installs: `aria2`, `uv`, `python3`, `screen`, `git`, `smartmontools`, `gdisk`, `rsync`, `curl`, `wget`
-
-=======
->>>>>>> 31a9d82 (refinements. bug fixes.):docs/DEPLOYMENT.md
 ### Artix Linux (dinit) / Arch Linux
 
 ```bash
@@ -68,15 +56,16 @@ cd /opt/model-archival/local
 bash deploy/setup-artix.sh
 ```
 
-Installs: `aria2`, `uv`, `python3`, `screen`, `git`, `smartmontools`, `gdisk`, `rsync`, `curl`, `openvpn`
+Installs (among others): `aria2`, `uv`, `python`, `screen`, `tmux`, `fish`, `python-powerline`, `powerline-fonts`, `git`, `gptfdisk`, `rsync`, `curl`, `wget`, `htop`, `nvme-cli`. Clones [erikw/tmux-powerline](https://github.com/erikw/tmux-powerline) to `~/.tmux-powerline` when `git` is available (configure `~/.tmux.conf` per upstream). Installs [Oh My Fish](https://github.com/oh-my-fish/oh-my-fish) non-interactively (`~/.local/share/omf` or `$XDG_DATA_HOME/omf`); skip with `OMF_SKIP=1`.
 
 ### MX Linux / Debian / Ubuntu
 
 ```bash
+cd /opt/model-archival/local
 bash deploy/setup-mxlinux.sh
 ```
 
-Installs equivalent packages via `apt`.
+Installs (among others): `aria2`, `uv`, `python3`, `screen`, `tmux`, `fish`, `python3-powerline`, `fonts-powerline`, `git`, `gdisk`, `rsync`, `curl`, `wget`, `htop`, `nvme-cli`. Same `~/.tmux-powerline` git clone as Artix; same Oh My Fish step (`OMF_SKIP=1` to skip).
 
 Both scripts generate a timestamped Markdown report in `deploy/`.
 
