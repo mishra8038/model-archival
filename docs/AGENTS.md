@@ -3,6 +3,7 @@ description: Monorepo agent entrypoint — directs agents to per-subproject boot
 alwaysApply: true
 ---
 
+
 # Monorepo agents (read this first)
 
 ## Context compaction (default)
