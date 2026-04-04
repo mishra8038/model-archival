@@ -1,9 +1,22 @@
-# model-archival
+# model-archival — monorepo
 
-Insurance-first archival of open-source AI artifacts so model weights, checksums,
-and critical tooling code survive deletion, restriction, or takedown.
+This Git repository is a **monorepo**: one version-controlled tree that contains **several related projects**, each in its own top-level directory. They share a common mission—**preserving open AI artifacts**—but have separate codebases, dependencies, and entry points. You work inside **one subproject folder at a time** (for example `cd model-archival` or `cd fingerprints`), unless a task spans multiple areas.
 
-## Repository layout
+## Intent
+
+**Insurance-first archival:** keep model weights, integrity metadata, source/tooling snapshots, and selected cloud mirrors so they survive deletion, licensing changes, or takedowns. The monorepo groups everything an operator needs: download and verify HF weights, fingerprint without pulling tensors, snapshot GitHub projects, push to Drive, archive owned GitHub repos as tarballs, and operate **Ollama** on a local GPU host with an **additive** sync to the archival disk server.
+
+## Objectives
+
+- **Coverage:** Frontier and specialist models (registry-driven), plus uncensored and quantized lines where policy allows.
+- **Integrity:** SHA-256 verification and manifests for weights; LFS fingerprints where full downloads are optional.
+- **Resumability:** Long-running jobs are safe to stop and resume (archiver, crawls, uploads).
+- **Clarity:** Repository-level docs under [`docs/`](docs/) describe drives, configuration, and how subprojects fit together; each subproject has its own `README.md` and often `AGENTS.md` for automation-friendly context.
+- **Safe storage:** Model payloads live on the HDD pool, not the root SSD; control-plane state uses atomic writes where applicable (see [`docs/DISKS-AND-DISTRIBUTION.md`](docs/DISKS-AND-DISTRIBUTION.md)).
+
+**Single-page orientation:** [`docs/PROJECT-PROMPT-AND-REQUIREMENTS.md`](docs/PROJECT-PROMPT-AND-REQUIREMENTS.md) · **Per-folder map:** [`docs/PROJECTS.md`](docs/PROJECTS.md) · **Agents:** [`docs/AGENTS.md`](docs/AGENTS.md)
+
+## Repository layout (subprojects)
 
 | Folder | Purpose | Status |
 | ------ | ------- | ------ |
@@ -13,7 +26,12 @@ and critical tooling code survive deletion, restriction, or takedown.
 | [`gdrive-archival/`](gdrive-archival/) | **Cloud backup** — uploads selected archived trees to Google Drive via rclone | Active |
 | [`gh-archival/`](gh-archival/) | **GitHub tarball archiver** — owned repos → `git archive` + manifest + optional rclone | Active |
 | [`ollama-hosting/`](ollama-hosting/) | **Supermicro Ollama + VM sync** — rig scripts, `ollama-sync.sh`, rotation/inventory docs | Active |
-| [`multidisk-downloader/`](multidisk-downloader/) | **Design docs** — selector / downloader / uploader boundaries | Docs |
+| [`full-stack/`](full-stack/) | **Full-stack archive utilities** — helpers and tooling (see `full-stack/README.md`) | Active |
+| [`integrity_tools/`](integrity_tools/) | **Integrity helpers** — miscellaneous verification utilities | Active |
+| [`multidisk-downloader/`](multidisk-downloader/) | **Design docs** — selector / downloader / uploader boundaries (documentation-first) | Docs |
+| [`docs/`](docs/) | **Cross-project documentation** — mission, configuration, inventories, runbooks (not a Python package) | Active |
+
+Top-level [`scripts/`](scripts/) holds **cross-cutting generators** (e.g. archived-models and archive-inventory docs) used by more than one subproject.
 
 ---
 
