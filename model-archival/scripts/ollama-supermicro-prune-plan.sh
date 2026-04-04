@@ -3,8 +3,8 @@
 # Plan Ollama removals on supermicro AFTER blobs are synced to the archival VM.
 #
 # Policy (operator-approved): KEEP only
-#   - Gemma 4 **4-bit** (path contains gemma4/ and q4)
-#   - **Qwen-family 4-bit** tags (path contains q4, under qwen* or deepseek-r1 with q4 distill)
+#   - **Gemma 4** (all quants: MoE, dense, E2B/E4B edge — manifest path `gemma4/*`)
+#   - **Qwen Coder** line only (`qwen2.5-coder/*`, `qwen3*coder*/*` — not base Qwen chat / R1)
 #
 # Everything else is PRUNE (suggested `ollama rm`) once the same tag exists on the VM cache.
 #
@@ -30,9 +30,9 @@ DRY_RUN="${DRY_RUN:-1}"
 
 keep_tag() {
   local rel="$1"
-  [[ "$rel" == gemma4/* ]] && [[ "$rel" == *q4* ]] && return 0
-  [[ "$rel" == qwen*/* ]] && [[ "$rel" == *q4* ]] && return 0
-  [[ "$rel" == deepseek-r1/* ]] && [[ "$rel" == *q4* ]] && return 0
+  [[ "$rel" == gemma4/* ]] && return 0
+  [[ "$rel" == qwen2.5-coder/* ]] && return 0
+  [[ "$rel" == qwen3*coder*/* ]] && return 0
   return 1
 }
 
@@ -54,7 +54,7 @@ for t in "${vm_tags[@]}"; do
 done
 
 echo "# ollama-supermicro-prune-plan ($(date -u +%Y-%m-%dT%H:%MZ))"
-echo "## KEEP on supermicro (Gemma4 q4 + Qwen-family q4 + deepseek-r1 q4)"
+echo "## KEEP on supermicro (Gemma 4 full line + Qwen Coder line only)"
 echo
 while IFS= read -r rel || [[ -n "${rel:-}" ]]; do
   [[ -z "$rel" ]] && continue

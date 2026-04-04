@@ -1217,15 +1217,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Community fixed quantized DBRX instruct variant
-- id: xai-org/grok-2
-  hf_repo: xai-org/grok-2
-  tier: G
-  drive: d1
-  priority: 4
-  licence: Grok-2-Community
-  requires_auth: false
-  commit_sha: null
-  notes: ~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License). drive d1 — scratch/final tree on D1 after d5 space move (2026-03).
 - id: MiniMaxAI/MiniMax-M2.5
   hf_repo: MiniMaxAI/MiniMax-M2.5
   tier: G

@@ -38,9 +38,9 @@ transferred_ollama_cache:
 
 prune_policy:
   keep_on_supermicro_after_vm_sync:
-    - "gemma4/* containing q4 (4-bit Gemma 4; includes MoE 26B-A4B and edge E2B/E4B q4)"
-    - "qwen*/* containing q4"
-    - "deepseek-r1/* containing q4 (Qwen-distill quants)"
+    - "gemma4/* (full Gemma 4 line: MoE, dense, E2B/E4B; any quant retained on supermicro)"
+    - "qwen2.5-coder/* (Qwen Coder only — not base Qwen chat)"
+    - "qwen3*coder*/* (future Qwen Coder tags)"
   remove_after_verified_on_vm:
     - "All other tags once the same manifest path exists under transferred_ollama_cache (byte-complete sync)."
   script: scripts/ollama-supermicro-prune-plan.sh

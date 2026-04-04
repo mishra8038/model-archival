@@ -8,9 +8,10 @@
 #     removed. Re-runs are safe after you delete models on supermicro.
 #   Implemented by rsync without any --delete* options; RSYNC_EXTRA cannot add them.
 #
-# Default target is the archival VM (x@192.168.8.65:/mnt/models/d5/supermicro).
-# If D5 fills, point new syncs at D2 instead, e.g. ARCHIVAL_VM_DEST=/mnt/models/d2/supermicro
-# (same additive policy; old blobs under d5/supermicro stay until you move or prune them).
+# Default target rotates across disks on the archival VM (d5 → d2 → d3 → d1 → …) so each sync
+# lands on the next mount under /mnt/models/. Override any time with ARCHIVAL_VM_DEST=/path (rotation
+# index is not advanced when you set a fixed path).
+# Same additive policy everywhere; old blobs under prior paths stay until you move or prune them.
 # Idempotent: rsync transfers deltas; --partial resumes interrupted runs.
 #
 # Strategies (vm mode, in order):
@@ -23,7 +24,11 @@
 # Env:
 #   SUPER_OLLAMA_REMOTE   Ollama host (default: x@192.168.8.106)
 #   ARCHIVAL_VM           Archival VM (default: x@192.168.8.65)
-#   ARCHIVAL_VM_DEST      Path on VM (default: /mnt/models/d5/supermicro; use d2/... if D5 is full)
+#   ARCHIVAL_VM_DEST      Path on VM. If **unset or empty**, the next path from the rotation cycle
+#                           is chosen (see docs/OLLAMA-CACHE-POLICY.md). If **set**, that path is used
+#                           and the rotation counter is not advanced.
+#   ARCHIVAL_VM_SITE_CYCLE  Optional comma-separated cycle: LABEL=PATH pairs or bare paths under
+#                           /mnt/models/. Default: d5,d2,d3,d1 supermicro roots.
 #   OLLAMA_SYNC_DEST      vm | local (default: vm)
 #   OLLAMA_D5_DEST        local directory when OLLAMA_SYNC_DEST=local (default under D5; use a d2 path if D5 full)
 #   OLLAMA_REMOTE_DIR     path under ~ on supermicro (default: .ollama)
@@ -37,6 +42,7 @@
 #   OLLAMA_SYNC_UPDATE_INVENTORY  if not 0, after a successful sync run inventory refresh from REPO (non-fatal).
 #     vm mode: SSH to ARCHIVAL_VM. local mode: scan LOCAL_DEST with disk label OLLAMA_VM_LOCAL_DISK_LABEL (default: local).
 #     Set to 0 to skip. Extra args: OLLAMA_VM_INVENTORY_EXTRA (e.g. --infer-supermicro-cleared --supermicro-ssh x@host).
+#   After inventory, regenerates docs/OLLAMA-ARCHIVAL-MODEL-MAP.md (model → disk → path).
 #
 set -euo pipefail
 
@@ -47,7 +53,8 @@ REPO="$(cd "$SCRIPT_DIR/.." && pwd)"
 REMOTE="${SUPER_OLLAMA_REMOTE:-x@192.168.8.106}"
 REMOTE_REL="${OLLAMA_REMOTE_DIR:-.ollama}"
 ARCHIVAL_VM="${ARCHIVAL_VM:-x@192.168.8.65}"
-ARCHIVAL_VM_DEST="${ARCHIVAL_VM_DEST:-/mnt/models/d5/supermicro}"
+# Empty → rotation (see sync_vm). Non-empty → fixed destination for this run.
+ARCHIVAL_VM_DEST="${ARCHIVAL_VM_DEST:-}"
 SYNC_DEST="${OLLAMA_SYNC_DEST:-vm}"
 LOCAL_DEST="${OLLAMA_D5_DEST:-/mnt/models/d5/supermicro}"
 
@@ -215,6 +222,12 @@ bridge_via_sshfs() {
 }
 
 sync_vm() {
+  # Pick rotated destination unless ARCHIVAL_VM_DEST was already set; always emit full scan roots for inventory.
+  eval "$(python3 "$REPO/scripts/ollama_archival_rotation.py" prepare --repo "$REPO" \
+    ${ARCHIVAL_VM_DEST:+--dest "$ARCHIVAL_VM_DEST"} \
+    ${ARCHIVAL_VM_SITE_CYCLE:+--cycle "$ARCHIVAL_VM_SITE_CYCLE"})"
+  echo "ollama-sync: this run → disk ${OLLAMA_SYNC_DISK_LABEL:-?}  $ARCHIVAL_VM_DEST" >&2
+
   "${vm_ssh[@]}" "$ARCHIVAL_VM" "mkdir -p $(printf '%q' "$ARCHIVAL_VM_DEST")"
 
   if [[ "${OLLAMA_SKIP_VM_PULL:-0}" != 1 ]] && vm_pull; then
@@ -235,7 +248,16 @@ case "$SYNC_DEST" in
     ;;
 esac
 
-# Refresh docs/data/ollama-vm-models-inventory.yaml (Ollama-style descriptors, VM paths, sizes, supermicro_cleared).
+# Advance rotation only after a successful VM sync that used the rotated picker.
+if [[ "$SYNC_DEST" == "vm" ]]; then
+  python3 "$REPO/scripts/ollama_archival_rotation.py" advance-after-success --repo "$REPO" \
+    --used-dest "$ARCHIVAL_VM_DEST" \
+    --used-label "${OLLAMA_SYNC_DISK_LABEL:-}" \
+    --advance "${OLLAMA_SYNC_ROTATION_ADVANCE:-0}" \
+    ${ARCHIVAL_VM_SITE_CYCLE:+--cycle "$ARCHIVAL_VM_SITE_CYCLE"} || true
+fi
+
+# Refresh docs/data/ollama-vm-models-inventory.yaml (all archival roots → model → disk map).
 if [[ "${OLLAMA_SYNC_UPDATE_INVENTORY:-1}" != "0" ]] && command -v uv >/dev/null 2>&1 \
   && [[ -f "$REPO/scripts/update_ollama_vm_inventory.py" ]]; then
   _inv_label="${OLLAMA_VM_LOCAL_DISK_LABEL:-local}"
@@ -249,10 +271,20 @@ if [[ "${OLLAMA_SYNC_UPDATE_INVENTORY:-1}" != "0" ]] && command -v uv >/dev/null
     fi
   else
     # shellcheck disable=SC2086
-    if (cd "$REPO" && uv run python scripts/update_ollama_vm_inventory.py --ssh "$ARCHIVAL_VM" ${OLLAMA_VM_INVENTORY_EXTRA:-}); then
+    if (cd "$REPO" && uv run python scripts/update_ollama_vm_inventory.py --ssh "$ARCHIVAL_VM" \
+      ${OLLAMA_VM_INVENTORY_ROOT_FLAGS:-} ${OLLAMA_VM_INVENTORY_EXTRA:-}); then
       :
     else
       echo "ollama-sync: warning: Ollama VM inventory update failed (see update_ollama_vm_inventory.py)" >&2
     fi
+  fi
+fi
+
+if [[ "${OLLAMA_SYNC_UPDATE_INVENTORY:-1}" != "0" ]] && command -v uv >/dev/null 2>&1 \
+  && [[ -f "$REPO/scripts/generate_ollama_archival_map.py" ]]; then
+  if (cd "$REPO" && uv run python scripts/generate_ollama_archival_map.py); then
+    :
+  else
+    echo "ollama-sync: warning: generate_ollama_archival_map.py failed" >&2
   fi
 fi

@@ -3,7 +3,7 @@
 # Optional: --state PATH  --include-skipped  --no-historical
 #   --reports-dir /mnt/models/d3/logs  (repeatable; default: <state-dir>/logs)
 
-generated_at_utc: '2026-04-03T14:54:33.548767+00:00'
+generated_at_utc: '2026-04-04T00:57:08.148555+00:00'
 source_state: /mnt/models/d3/run_state.json
 historical:
   enabled: true
@@ -13,15 +13,14 @@ historical:
   distinct_models_from_reports: 35
   models_historical_only: 16
 summary:
-  total_failed: 26
-  total_skipped_included: 5
+  total_failed: 29
+  total_skipped_included: 0
   by_category:
     disk_space: 5
-    unavailable: 6
-    auth: 1
-    failed_shards: 30
-    skipped_gated: 5
-  total_rows: 47
+    unavailable: 7
+    auth: 2
+    failed_shards: 31
+  total_rows: 45
 categories:
   disk_space:
   - id: deepseek-ai/deepseek-vl2
@@ -89,7 +88,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00004-of-00050.safetensors after 5 attempts: aria2c error for model-00004-of-00050.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -108,7 +107,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00001-of-00061.safetensors after 5 attempts: aria2c error for model-00001-of-00061.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -269,15 +268,61 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00002-of-00012.safetensors after 5 attempts: aria2c error for model-00002-of-00012.safetensors:
         Authorization failed.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00039-of-00126.safetensors after 5 attempts: aria2c error for model-00039-of-00126.safetensors:
+        Download aborted.'
     hf_repo: Salesforce/CoDA-1.7B-Base
     tier: G
     registry_drive: d3
     requires_auth: false
+  - id: Salesforce/CoDA-1.7B-Instruct
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T16:36:38.792808+00:00'
+    error: 'Cannot resolve HF repo Salesforce/CoDA-1.7B-Instruct: 404 Client Error. (Request ID: Root=1-69cea576-527822174e4fa9831883984e;64055f95-ebaf-43bd-b540-32e13a277cb6)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/Salesforce/CoDA-1.7B-Instruct/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: Salesforce/CoDA-1.7B-Instruct
+    tier: G
+    registry_drive: d3
+    requires_auth: false
   auth:
+  - id: google/medgemma-4b-it
+    failure_category: auth
+    reason_kind: gated / access denied
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T16:53:59.877860+00:00'
+    error: 'Access denied (gated repo) for chat_template.jinja: 403 Client Error. (Request ID: Root=1-69cd8ded-6df26aa8222cfa5f378960c3;d5843ef7-5714-43d2-918b-8bebd4b86513)
+
+
+      Cannot access gated repo for url https://huggingface.co/google/medgemma-4b-it/resolve/290cda5eeccbee130f987c4ad74a59ae6f196408/chat_template.jinja.
+
+      Access to model google/medgemma-4b-it is restricted and you are not in the authorized list. Visit https://huggingface.co/google/medgemma-4b-it
+      to ask for access.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: google/medgemma-4b-it
+    tier: F
+    registry_drive: d3
+    requires_auth: true
   - id: Intel/neural-chat-7b-v3-1
     failure_category: auth
     reason_kind: gated / access denied
@@ -311,7 +356,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00002-of-00061.safetensors after 5 attempts: aria2c error for model-00002-of-00061.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -346,14 +391,19 @@ categories:
   - id: google/gemma-3-4b-it
     failure_category: failed_shards
     reason_kind: download retries exhausted
-    run_state_status: pending
+    run_state_status: failed
     drive: d3
-    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    updated_at: '2026-04-03T16:45:19.346282+00:00'
     error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
       SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
-    primary_source: run_report
-    historical_only: true
+    primary_source: run_state
+    historical_only: false
     historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+        Authorization failed.'
     - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
       report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
       kind: download_fail
@@ -375,7 +425,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00001-of-00002.safetensors after 5 attempts: aria2c error for model-00001-of-00002.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -395,7 +445,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -415,7 +465,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -435,7 +485,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00001-of-00002.safetensors after 5 attempts: aria2c error for model-00001-of-00002.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -455,7 +505,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model.safetensors after 5 attempts: aria2c error for model.safetensors: SSL/TLS handshake
         failure: The TLS connection was non-properly terminated.'
@@ -475,7 +525,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
         The TLS connection was non-properly terminated.'
@@ -495,7 +545,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
         The TLS connection was non-properly terminated.'
@@ -515,7 +565,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
         The TLS connection was non-properly terminated.'
@@ -562,6 +612,21 @@ categories:
     tier: G
     registry_drive: d3
     requires_auth: false
+  - id: MiniMaxAI/MiniMax-M2.5
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-03T16:36:38.703500+00:00'
+    error: 'Failed to download model-00039-of-00126.safetensors after 5 attempts: aria2c error for model-00039-of-00126.safetensors:
+      Download aborted.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: MiniMaxAI/MiniMax-M2.5
+    tier: G
+    registry_drive: d1
+    requires_auth: false
   - id: mlx-community/dbrx-instruct-4bit
     failure_category: failed_shards
     reason_kind: download retries exhausted
@@ -574,7 +639,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00002-of-00014.safetensors after 5 attempts: aria2c error for model-00002-of-00014.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -594,7 +659,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00007-of-00050.safetensors after 5 attempts: aria2c error for model-00007-of-00050.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -614,7 +679,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00001-of-00026.safetensors after 5 attempts: aria2c error for model-00001-of-00026.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -625,9 +690,9 @@ categories:
   - id: Qwen/Qwen2.5-Math-72B-Instruct
     failure_category: failed_shards
     reason_kind: download retries exhausted
-    run_state_status: pending
+    run_state_status: complete
     drive: d5
-    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    updated_at: '2026-04-03T17:35:29.604548+00:00'
     error: 'Failed to download model-00033-of-00037.safetensors after 5 attempts: aria2c error for model-00033-of-00037.safetensors:
       SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
     primary_source: run_report
@@ -649,9 +714,9 @@ categories:
   - id: Qwen/Qwen2.5-VL-72B-Instruct
     failure_category: failed_shards
     reason_kind: download retries exhausted
-    run_state_status: pending
+    run_state_status: in_progress
     drive: d5
-    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    updated_at: '2026-04-03T17:35:30.453892+00:00'
     error: 'Failed to download model-00006-of-00038.safetensors after 5 attempts: aria2c error for model-00006-of-00038.safetensors:
       SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
     primary_source: run_report
@@ -815,7 +880,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00001-of-00061.safetensors after 5 attempts: aria2c error for model-00001-of-00061.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -835,7 +900,7 @@ categories:
     historical_only: false
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download model-00003-of-00061.safetensors after 5 attempts: aria2c error for model-00003-of-00061.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
@@ -909,83 +974,16 @@ categories:
   - id: xai-org/grok-2
     failure_category: failed_shards
     reason_kind: download retries exhausted
-    run_state_status: failed
-    drive: d1
-    updated_at: '2026-04-03T02:44:21.397820+00:00'
+    run_state_status: —
+    drive: null
+    updated_at: null
     error: 'Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors:
       SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
-    primary_source: run_state
-    historical_only: false
+    primary_source: run_report
+    historical_only: true
     historical_incidents:
     - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
-      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      report_mtime_utc: '2026-04-03T17:35:30.458000+00:00'
       kind: download_fail
       error: 'Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
-    hf_repo: xai-org/grok-2
-    tier: G
-    registry_drive: d1
-    requires_auth: false
-  skipped_gated:
-  - id: databricks/dbrx-base
-    failure_category: skipped_gated
-    reason_kind: skipped
-    run_state_status: skipped
-    drive: null
-    updated_at: '2026-03-25T15:24:55.641643+00:00'
-    error: No HF token access
-    primary_source: run_state
-    historical_only: false
-    historical_incidents: []
-  - id: databricks/dbrx-instruct
-    failure_category: skipped_gated
-    reason_kind: skipped
-    run_state_status: skipped
-    drive: null
-    updated_at: '2026-03-25T15:24:55.645823+00:00'
-    error: No HF token access
-    primary_source: run_state
-    historical_only: false
-    historical_incidents: []
-  - id: google/gemini-3-flash-preview
-    failure_category: skipped_gated
-    reason_kind: skipped
-    run_state_status: skipped
-    drive: null
-    updated_at: '2026-04-01T07:22:55.297602+00:00'
-    error: No HF token access
-    primary_source: run_state
-    historical_only: false
-    historical_incidents: []
-    hf_repo: google/gemini-3-flash-preview
-    tier: F
-    registry_drive: d3
-    requires_auth: true
-  - id: google/gemini-3.1-flash-lite-preview
-    failure_category: skipped_gated
-    reason_kind: skipped
-    run_state_status: skipped
-    drive: null
-    updated_at: '2026-04-01T07:22:55.300837+00:00'
-    error: No HF token access
-    primary_source: run_state
-    historical_only: false
-    historical_incidents: []
-    hf_repo: google/gemini-3.1-flash-lite-preview
-    tier: F
-    registry_drive: d3
-    requires_auth: true
-  - id: MiniMaxAI/MiniMax-M2.7
-    failure_category: skipped_gated
-    reason_kind: skipped
-    run_state_status: skipped
-    drive: null
-    updated_at: '2026-04-01T07:22:55.292580+00:00'
-    error: No HF token access
-    primary_source: run_state
-    historical_only: false
-    historical_incidents: []
-    hf_repo: MiniMaxAI/MiniMax-M2.7
-    tier: G
-    registry_drive: d1
-    requires_auth: true

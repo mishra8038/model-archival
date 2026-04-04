@@ -1,6 +1,6 @@
 # Failed model registry
 
-_Generated (UTC): `2026-04-03T14:54:33.548767+00:00`_
+_Generated (UTC): `2026-04-04T00:57:08.148555+00:00`_
 
 **Source:** `/mnt/models/d3/run_state.json`
 
@@ -8,17 +8,15 @@ _Generated (UTC): `2026-04-03T14:54:33.548767+00:00`_
 
 | Metric | Count |
 |--------|------:|
-| Total failed (run_state) | 26 |
-| Skipped (included) | 5 |
-| Total rows (merged) | 47 |
+| Total failed (run_state) | 29 |
+| Total rows (merged) | 45 |
 
 | Category | Models |
 |----------|-------:|
-| `failed_shards` | 30 |
-| `unavailable` | 6 |
+| `failed_shards` | 31 |
+| `unavailable` | 7 |
 | `disk_space` | 5 |
-| `skipped_gated` | 5 |
-| `auth` | 1 |
+| `auth` | 2 |
 
 ### Historical run reports (`run-report-*.md`)
 
@@ -174,7 +172,8 @@ Failed to download DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00003-of-00009.gguf aft
 | `mosaicml/mpt-30b-instruct` | d2 | A | repository not found / cannot resolve | run_state | — | 0 | 2026-03-23T02:50:57 |
 | `mosaicml/mpt-7b` | d2 | A | repository not found / cannot resolve | run_state | — | 0 | 2026-03-23T02:50:57 |
 | `mosaicml/mpt-7b-instruct` | d2 | A | repository not found / cannot resolve | run_state | — | 0 | 2026-03-23T02:50:58 |
-| `Salesforce/CoDA-1.7B-Base` | d3 | G | repository not found / cannot resolve | run_state | — | 1 | 2026-04-03T09:37:51 |
+| `Salesforce/CoDA-1.7B-Base` | d3 | G | repository not found / cannot resolve | run_state | — | 2 | 2026-04-03T09:37:51 |
+| `Salesforce/CoDA-1.7B-Instruct` | d3 | G | repository not found / cannot resolve | run_state | — | 0 | 2026-04-03T16:36:38 |
 
 <details><summary>Error text + run-report history</summary>
 
@@ -258,15 +257,45 @@ If you are trying to access a private or gated repo, make sure you are authentic
 Failed to download model-00002-of-00012.safetensors after 5 attempts: aria2c error for model-00002-of-00012.safetensors: Authorization failed.
 ```
 
+- `download_fail` — `/mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md`
+
+```
+Failed to download model-00039-of-00126.safetensors after 5 attempts: aria2c error for model-00039-of-00126.safetensors: Download aborted.
+```
+
+### `Salesforce/CoDA-1.7B-Instruct`
+
+**Primary error:**
+
+```
+Cannot resolve HF repo Salesforce/CoDA-1.7B-Instruct: 404 Client Error. (Request ID: Root=1-69cea576-527822174e4fa9831883984e;64055f95-ebaf-43bd-b540-32e13a277cb6)
+
+Repository Not Found for url: https://huggingface.co/api/models/Salesforce/CoDA-1.7B-Instruct/revision/main?blobs=true.
+Please make sure you specified the correct `repo_id` and `repo_type`.
+If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication
+```
+
 </details>
 
 ## Auth / gated (`auth`)
 
 | Model id | Drive | Tier | Reason kind | Primary | Hist-only | #inc | Updated (UTC) |
 |----------|-------|------|-------------|---------|-----------|-----|---------------|
+| `google/medgemma-4b-it` | d3 | F | gated / access denied | run_state | — | 0 | 2026-04-03T16:53:59 |
 | `Intel/neural-chat-7b-v3-1` | d3 | G | gated / access denied | run_report | yes | 1 | 2026-03-30T02:01:22 |
 
 <details><summary>Error text + run-report history</summary>
+
+### `google/medgemma-4b-it`
+
+**Primary error:**
+
+```
+Access denied (gated repo) for chat_template.jinja: 403 Client Error. (Request ID: Root=1-69cd8ded-6df26aa8222cfa5f378960c3;d5843ef7-5714-43d2-918b-8bebd4b86513)
+
+Cannot access gated repo for url https://huggingface.co/google/medgemma-4b-it/resolve/290cda5eeccbee130f987c4ad74a59ae6f196408/chat_template.jinja.
+Access to model google/medgemma-4b-it is restricted and you are not in the authorized list. Visit https://huggingface.co/google/medgemma-4b-it to ask for access.
+```
 
 ### `Intel/neural-chat-7b-v3-1`
 
@@ -292,7 +321,7 @@ Access denied for pytorch_model-00001-of-00002.bin: aria2c error for pytorch_mod
 |----------|-------|------|-------------|---------|-----------|-----|---------------|
 | `alpindale/dbrx-instruct` | d5 | A | download retries exhausted | run_state | — | 1 | 2026-04-03T08:12:46 |
 | `cognitivecomputations/dolphin-2.9.2-qwen2-72b` | d5 | D | download retries exhausted | run_report | yes | 2 | 2026-04-02T22:24:01 |
-| `google/gemma-3-4b-it` | d3 | F | download retries exhausted | run_report | yes | 1 | 2026-04-02T22:24:01 |
+| `google/gemma-3-4b-it` | d3 | F | download retries exhausted | run_state | — | 2 | 2026-04-03T16:45:19 |
 | `google/gemma-4-26B-A4B` | d2 | F | download retries exhausted | run_state | — | 1 | 2026-04-02T23:12:02 |
 | `google/gemma-4-26B-A4B-it` | d2 | F | download retries exhausted | run_state | — | 1 | 2026-04-02T23:21:41 |
 | `google/gemma-4-31B` | d1 | F | download retries exhausted | run_state | — | 1 | 2026-04-02T23:31:21 |
@@ -303,11 +332,12 @@ Access denied for pytorch_model-00001-of-00002.bin: aria2c error for pytorch_mod
 | `google/gemma-4-E4B-it` | d3 | F | download retries exhausted | run_state | — | 1 | 2026-04-02T23:02:21 |
 | `google/medgemma-27b-it` | d3 | F | download retries exhausted | run_state | — | 0 | 2026-04-03T09:55:20 |
 | `HuggingFaceH4/zephyr-7b-beta` | d3 | G | download retries exhausted | run_report | yes | 1 | 2026-03-30T03:42:05 |
+| `MiniMaxAI/MiniMax-M2.5` | d1 | G | download retries exhausted | run_state | — | 0 | 2026-04-03T16:36:38 |
 | `mlx-community/dbrx-instruct-4bit` | d3 | C | download retries exhausted | run_state | — | 1 | 2026-04-03T06:55:29 |
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16` | d1 | D | download retries exhausted | run_state | — | 1 | 2026-04-03T01:56:00 |
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8` | d5 | D | download retries exhausted | run_state | — | 1 | 2026-04-03T09:14:29 |
-| `Qwen/Qwen2.5-Math-72B-Instruct` | d5 | G | download retries exhausted | run_report | yes | 2 | 2026-04-02T22:24:01 |
-| `Qwen/Qwen2.5-VL-72B-Instruct` | d5 | F | download retries exhausted | run_report | yes | 2 | 2026-04-02T22:24:01 |
+| `Qwen/Qwen2.5-Math-72B-Instruct` | d5 | G | download retries exhausted | run_report | yes | 2 | 2026-04-03T17:35:29 |
+| `Qwen/Qwen2.5-VL-72B-Instruct` | d5 | F | download retries exhausted | run_report | yes | 2 | 2026-04-03T17:35:30 |
 | `Qwen/Qwen3.5-122B-A10B` | d1 | G | download retries exhausted | run_report | yes | 2 | 2026-04-02T22:24:01 |
 | `Qwen/Qwen3.5-27B` | d2 | G | download retries exhausted | run_report | yes | 1 | 2026-04-01T16:13:42 |
 | `Qwen/Qwen3.5-35B-A3B` | d5 | G | download retries exhausted | run_report | yes | 1 | 2026-04-02T22:24:01 |
@@ -319,7 +349,7 @@ Access denied for pytorch_model-00001-of-00002.bin: aria2c error for pytorch_mod
 | `tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF` | d5 | D | download retries exhausted | run_report | yes | 1 | 2026-03-29T01:27:21 |
 | `tiiuae/falcon-180B` | d1 | A | download retries exhausted | run_state | — | 0 | 2026-03-25T15:24:52 |
 | `unsloth/DeepSeek-V3-GGUF` | d1 | C | download retries exhausted | run_report | yes | 3 | 2026-04-02T22:24:01 |
-| `xai-org/grok-2` | d1 | G | download retries exhausted | run_state | — | 1 | 2026-04-03T02:44:21 |
+| `xai-org/grok-2` | — | — | download retries exhausted | run_report | yes | 1 | — |
 
 <details><summary>Error text + run-report history</summary>
 
@@ -370,6 +400,12 @@ Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c err
 ```
 
 **Incidents from run reports (newest first):**
+
+- `download_fail` — `/mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md`
+
+```
+Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors: Authorization failed.
+```
 
 - `download_fail` — `/mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md`
 
@@ -527,6 +563,14 @@ Failed to download model-00005-of-00008.safetensors after 5 attempts: aria2c err
 
 ```
 Failed to download model-00005-of-00008.safetensors after 5 attempts: aria2c error for model-00005-of-00008.safetensors: File /mnt/models/d3/.tmp/HuggingFaceH4_zephyr-7b-beta/model-00005-of-00008.safetensors exists, but a control file(*.aria2) does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to download the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.
+```
+
+### `MiniMaxAI/MiniMax-M2.5`
+
+**Primary error:**
+
+```
+Failed to download model-00039-of-00126.safetensors after 5 attempts: aria2c error for model-00039-of-00126.safetensors: Download aborted.
 ```
 
 ### `mlx-community/dbrx-instruct-4bit`
@@ -833,60 +877,6 @@ Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: a
 
 ```
 Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors: SSL/TLS handshake failure: The TLS connection was non-properly terminated.
-```
-
-</details>
-
-## Skipped (gated / token) (`skipped_gated`)
-
-| Model id | Drive | Tier | Reason kind | Primary | Hist-only | #inc | Updated (UTC) |
-|----------|-------|------|-------------|---------|-----------|-----|---------------|
-| `databricks/dbrx-base` | — | — | skipped | run_state | — | 0 | 2026-03-25T15:24:55 |
-| `databricks/dbrx-instruct` | — | — | skipped | run_state | — | 0 | 2026-03-25T15:24:55 |
-| `google/gemini-3-flash-preview` | — | F | skipped | run_state | — | 0 | 2026-04-01T07:22:55 |
-| `google/gemini-3.1-flash-lite-preview` | — | F | skipped | run_state | — | 0 | 2026-04-01T07:22:55 |
-| `MiniMaxAI/MiniMax-M2.7` | — | G | skipped | run_state | — | 0 | 2026-04-01T07:22:55 |
-
-<details><summary>Error text + run-report history</summary>
-
-### `databricks/dbrx-base`
-
-**Primary error:**
-
-```
-No HF token access
-```
-
-### `databricks/dbrx-instruct`
-
-**Primary error:**
-
-```
-No HF token access
-```
-
-### `google/gemini-3-flash-preview`
-
-**Primary error:**
-
-```
-No HF token access
-```
-
-### `google/gemini-3.1-flash-lite-preview`
-
-**Primary error:**
-
-```
-No HF token access
-```
-
-### `MiniMaxAI/MiniMax-M2.7`
-
-**Primary error:**
-
-```
-No HF token access
 ```
 
 </details>

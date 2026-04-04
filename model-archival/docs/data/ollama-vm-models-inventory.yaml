@@ -12,4 +12,6 @@ roots_scanned:
   root_abs: /mnt/models/d2/supermicro
 - disk_label: d3
   root_abs: /mnt/models/d3/supermicro
+- disk_label: d1
+  root_abs: /mnt/models/d1/supermicro
 models: []

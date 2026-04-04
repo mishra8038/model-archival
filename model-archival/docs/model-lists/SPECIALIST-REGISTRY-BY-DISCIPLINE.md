@@ -196,7 +196,6 @@
 | Model | T | Drv | P |
 |-------|---|-----|---|
 | `unsloth/DeepSeek-V3-GGUF` | C | d5 | 4 |
-| `xai-org/grok-2` | G | d5 | 4 |
 
 ---
 

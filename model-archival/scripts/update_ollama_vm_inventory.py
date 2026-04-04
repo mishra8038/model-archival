@@ -281,6 +281,7 @@ def main() -> None:
         ("d5", "/mnt/models/d5/supermicro"),
         ("d2", "/mnt/models/d2/supermicro"),
         ("d3", "/mnt/models/d3/supermicro"),
+        ("d1", "/mnt/models/d1/supermicro"),
     ]
     roots: list[tuple[str, str]] = []
     if args.root:

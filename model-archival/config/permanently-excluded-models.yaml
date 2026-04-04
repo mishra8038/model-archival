@@ -3,6 +3,11 @@
 #
 # 2026-04: xai-org/grok-1 — ~7.6 GiB orphan partial under d1/.tmp removed; superseded by
 # newer xAI releases; scratch reclaimed on archival VM.
+#
+# 2026-04: xai-org/grok-2 — ~177 GiB partial under d1/.tmp removed; repeated TLS/aria2
+# failures and insufficient D1 headroom for ~500 GiB full tree; dropped from archival scope.
 permanently_excluded:
   - id: xai-org/grok-1
     reason: Orphan partial removed from d1/.tmp; permanently dropped from archival scope
+  - id: xai-org/grok-2
+    reason: Abandoned after persistent download failures; d1 scratch removed (~177 GiB partial)
