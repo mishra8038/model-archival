@@ -2,6 +2,8 @@
 
 Unattended, resumable, cryptographically-verified offline archival of open-source LLM and LRM weights from HuggingFace.
 
+This directory is the **Python archiver package** inside the [model-archival monorepo](https://github.com/mishra8038/model-archival). **Sibling subprojects** (fingerprints, gdrive-archival, ollama-hosting, etc.) live next to this folder at the repository root; see [`../docs/PROJECT-PROMPT-AND-REQUIREMENTS.md`](../docs/PROJECT-PROMPT-AND-REQUIREMENTS.md).
+
 Downloads raw BF16/FP16 weights, quantized GGUFs, and uncensored variants across a fleet of physical drives — verifying SHA-256 integrity at every stage, producing structured manifests and provenance descriptors, and running fully unattended inside a `screen` session.
 
 ---
@@ -22,9 +24,9 @@ Full model list: [`docs/REQUIREMENTS.md`](docs/REQUIREMENTS.md). We prioritise *
 ## Quick start (on the VM)
 
 ```bash
-# 1. Clone the project
+# 1. Clone the monorepo and enter this package
 git clone https://github.com/mishra8038/model-archival
-cd model-archival/local
+cd model-archival/model-archival
 
 # 2. Install OS dependencies
 bash deploy/setup-artix.sh      # Artix / Arch Linux

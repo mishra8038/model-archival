@@ -1,0 +1,15 @@
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+Type=simple
+User=x
+Group=x
+ExecStart=/usr/local/bin/ollama serve
+Restart=always
+RestartSec=3
+Environment=OLLAMA_HOST=0.0.0.0:11434
+
+[Install]
+WantedBy=multi-user.target

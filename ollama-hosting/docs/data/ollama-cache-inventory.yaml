@@ -1,0 +1,51 @@
+# Ollama cache inventory — extend as you sync. Paths are relative to
+# models/manifests/registry.ollama.ai/library/ on each host.
+#
+# Last VM snapshot: 2026-04-03 (x@192.168.8.65); re-run SSH find and paste updates.
+# Machine-readable descriptors + sizes + supermicro_cleared: docs/data/ollama-vm-models-inventory.yaml
+# (regenerate: scripts/update_ollama_vm_inventory.py, often via ollama-sync.sh).
+
+supermicro:
+  note: Populate from supermicro — find ~/.ollama/models/manifests/registry.ollama.ai/library -type f
+  complete_models: []
+  # Example: [ "gemma4/e2b-it-q4_K_M", "qwen2.5-coder/7b" ]
+
+transferred_ollama_cache:
+  d5_supermicro:
+    mount: /mnt/models/d5/supermicro
+    manifest_paths:
+      - deepseek-coder-v2/16b
+      - deepseek-coder/6.7b
+      - deepseek-r1/14b-qwen-distill-q4_K_M
+      - deepseek-r1/8b-0528-qwen3-q4_K_M
+      - dolphin-llama3/8b
+      - dolphin-mistral/latest
+      - gemma4/26b-a4b-it-q4_K_M
+      - gemma4/e2b-it-q4_K_M
+      - gemma4/e2b-it-q8_0
+      - gemma4/e4b-it-q4_K_M
+      - gemma4/e4b-it-q8_0
+      - llama3.1/8b-instruct-q4_K_M
+      - qwen2.5-coder/14b-instruct-q4_K_M
+      - qwen2.5-coder/7b
+  d2_supermicro:
+    mount: /mnt/models/d2/supermicro
+    manifest_paths: []
+  d3_ollama:
+    note: No second Ollama tree found on VM besides d5/supermicro (2026-04-03).
+    mount: null
+    manifest_paths: []
+
+prune_policy:
+  keep_on_supermicro_after_vm_sync:
+    - "gemma4/* (full Gemma 4 line: MoE, dense, E2B/E4B; any quant retained on supermicro)"
+    - "qwen2.5-coder/* (Qwen Coder only — not base Qwen chat)"
+    - "qwen3*coder*/* (future Qwen Coder tags)"
+  remove_after_verified_on_vm:
+    - "All other tags once the same manifest path exists under transferred_ollama_cache (byte-complete sync)."
+  script: scripts/ollama-supermicro-prune-plan.sh
+
+registry_duplicate_summary:
+  specialist_models: 103
+  specialist_ids_also_in_main_registry: 58
+  note: Same HF id in registry.yaml and registry-specialists.yaml can mean duplicate archiver work if both registries are run.

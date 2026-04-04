@@ -4,7 +4,7 @@
 # Run:
 #   cd model-archival && uv run archiver --registry config/final_downloads.yaml download --all
 #
-# Regenerate this file + docs/MODEL-ARCHIVE-FINAL-STATUS.md:
+# Regenerate this file + final_pending_registry.yaml + docs/MODEL-ARCHIVE-FINAL-STATUS.md:
 #   uv run python scripts/generate_final_archiver_artifacts.py --run-state /path/to/run_state.json
 
 models:

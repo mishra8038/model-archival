@@ -24,16 +24,18 @@ distribution.
 
 ## Operating model (canonical)
 
-Think of the repository as a 4-part pipeline:
+Think of the repository as a **multi-artifact preservation system** (not only HF downloads):
 
-1. **`model-archival/`** downloads and verifies model weight trees onto D1-D3, while D5
+1. **`model-archival/`** downloads and verifies model weight trees onto D1–D3, while D5
    holds state/reporting control-plane files. **AI/agent bootstrap:** [`model-archival/docs/AI_CONTEXT.md`](../model-archival/docs/AI_CONTEXT.md) · [`model-archival/AGENTS.md`](../model-archival/AGENTS.md).
 2. **`fingerprints/`** records upstream HF checksum metadata for independent
    verification without storing weights.
 3. **`code-archival/`** snapshots surrounding OSS tooling (inference/training/UI/agents).
 4. **`gdrive-archival/`** uploads selected local archive trees to Google Drive.
+5. **`gh-archival/`** snapshots **GitHub repos you own** (tarballs + manifest + optional rclone).
+6. **`ollama-hosting/`** holds **Supermicro Ollama** rig material (pull queues, scripts, systemd) and **rsync archival sync** of `~/.ollama` to the disk VM (rotation, inventory, prune planning). **Operator overview:** [`SUPERMICRO.md`](SUPERMICRO.md).
 
-**Agents:** Monorepo entrypoint [`AGENTS.md`](../AGENTS.md). Per-subproject bootstraps: `gdrive-archival/AGENTS.md`, `fingerprints/AGENTS.md`, `code-archival/AGENTS.md`, `full-stack/AGENTS.md`, `integrity_tools/AGENTS.md`.
+**Agents:** Monorepo entrypoint [`AGENTS.md`](../AGENTS.md). **Cross-project prompt + requirements:** [`PROJECT-PROMPT-AND-REQUIREMENTS.md`](PROJECT-PROMPT-AND-REQUIREMENTS.md). Per-subproject bootstraps: `gdrive-archival/AGENTS.md`, `fingerprints/AGENTS.md`, `code-archival/AGENTS.md`, `full-stack/AGENTS.md`, `integrity_tools/AGENTS.md`, `ollama-hosting/README.md`.
 
 `model-archival/config/registry.yaml` is the canonical model selection source; related
 registries in other subprojects mirror that intent for their own artifact types.
@@ -49,6 +51,10 @@ registries in other subprojects mirror that intent for their own artifact types.
 - **Status and reporting:** Implemented a single authoritative `STATUS.md` dashboard plus incremental Markdown run reports, both driven from scheduler statistics, so we can see at a glance which models are pending, in progress, complete, failed, or skipped and why.
 - **Checksum and code archival:** Brought up the fingerprints crawler and source-code archiver so that for many models we now have both SHA-256 fingerprints and snapshots of surrounding tooling (inference engines, trainers, agent frameworks) archived alongside weights.
 - **Cloud backup path:** GDrive uploads via rclone; default workflow uses **staging dirs** on D3/D5 (`gdrive-archival/README.md`), with optional legacy registry/extra_paths modes.
+- **GitHub-owned-repo snapshots:** `gh-archival/` produces versioned tarballs and can push runs to Google Drive via rclone.
+- **Ollama on Supermicro + VM archive:** `ollama-hosting/` consolidates pull scripts, service layout, **additive** rsync to the archival VM (disk rotation), inventory maps, and safe supermicro prune workflows (`docs/SUPERMICRO.md`, `ollama-hosting/docs/SYNC-JOB.md`).
+- **Published archive index:** `docs/archive-inventory/` JSON/MD snapshots for GitHub-facing navigation (regenerate via `generate-archive-inventory.py`; see `archive-inventory/README.md`).
+- **Final-queue artifacts:** `MODEL-ARCHIVE-FINAL-STATUS.md`, `final_downloads.yaml`, and `final_pending_registry.yaml` unify registry + run_state views for operational closure.
 
 ---
 
@@ -66,7 +72,10 @@ registries in other subprojects mirror that intent for their own artifact types.
 
 | Document | Contents |
 | -------- | -------- |
-| [PROJECTS.md](PROJECTS.md) | Summary of each project in its directory (local, fingerprints, code-archival, gdrive-archival). |
+| [PROJECT-PROMPT-AND-REQUIREMENTS.md](PROJECT-PROMPT-AND-REQUIREMENTS.md) | **Consolidated** mission, subprojects, cross-cutting requirements, accomplishments, agent read order, pasteable prompt. |
+| [SUPERMICRO.md](SUPERMICRO.md) | Supermicro GPU host role, network anchors, checklist; points to `ollama-hosting/`. |
+| [PROJECTS.md](PROJECTS.md) | Summary of each project in its directory (model-archival, fingerprints, code-archival, gdrive-archival, gh-archival, ollama-hosting, etc.). |
+| [DERIVED-REQUIREMENTS-ANALYSIS.md](DERIVED-REQUIREMENTS-ANALYSIS.md) | Requirements derived from monorepo structure, docs, and transcript sampling. |
 | [ARCHIVED-MODELS.md](ARCHIVED-MODELS.md) | Full inventory + **paths on disk**, optional **download** (`run_state.json`) and **GDrive** (`registry-upload-state.json`) columns when those files exist. Regenerate: `uv run --directory model-archival python3 ../scripts/generate-archived-models-doc.py` (optional `ARCHIVER_RUN_STATE`, `ARCHIVER_MODELS_MOUNT`). |
 | [CONFIGURATION.md](CONFIGURATION.md) | Decided configuration: registry layout, drives, tiers, priorities, tooling list. |
 | [ARTIFACTS.md](ARTIFACTS.md) | What we archive: model weights (tiers A–G), checksums, code snapshots, tooling mirrors. |
@@ -78,7 +87,8 @@ registries in other subprojects mirror that intent for their own artifact types.
 
 Start with:
 
-- **Project orientation:** `README.md` (repo root) then [PROJECTS.md](PROJECTS.md)
+- **Whole-repo orientation:** [PROJECT-PROMPT-AND-REQUIREMENTS.md](PROJECT-PROMPT-AND-REQUIREMENTS.md) then `README.md` (repo root) and [PROJECTS.md](PROJECTS.md)
+- **Supermicro / Ollama:** [SUPERMICRO.md](SUPERMICRO.md) and [`../ollama-hosting/README.md`](../ollama-hosting/README.md)
 - **Policy and constraints:** [CONFIGURATION.md](CONFIGURATION.md), [DISKS-AND-DISTRIBUTION.md](DISKS-AND-DISTRIBUTION.md)
 - **Artifact scope:** [ARTIFACTS.md](ARTIFACTS.md)
 
@@ -92,5 +102,8 @@ Start with:
 | `fingerprints/` | **Checksum crawler** — records SHA-256 LFS fingerprints and metadata for major model releases without downloading weights. |
 | `code-archival/` | **Source archiver** — snapshots open-source AI project releases (inference, training, agents, UIs) from GitHub. |
 | `gdrive-archival/` | **Cloud backup** — staging-folder uploads (and optional configs / registry-driven lists) to Google Drive via rclone. |
+| `gh-archival/` | **GitHub tarball archiver** — owned repos → `git archive` + manifest + optional rclone upload. |
+| `ollama-hosting/` | **Supermicro Ollama + VM sync** — rig mirror, `ollama-sync.sh`, rotation state, inventory, prune planner. |
+| `multidisk-downloader/` | **Design docs** — selector / downloader / uploader boundary contracts (documentation-first). |
 
 For per-project details, entry points, and file locations, see [PROJECTS.md](PROJECTS.md).

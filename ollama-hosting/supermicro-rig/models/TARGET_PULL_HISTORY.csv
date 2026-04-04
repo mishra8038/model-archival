@@ -1,0 +1,15 @@
+iso_utc,ollama_tag,approx_size_gb,status,notes
+2026-04-03T18:00:00Z,deepseek-coder:6.7b,3.8,completed,session pull before cache clear
+2026-04-03T18:00:00Z,qwen2.5-coder:7b,4.7,completed,
+2026-04-03T18:00:00Z,llama3.1:8b-instruct-q4_K_M,4.9,completed,
+2026-04-03T18:00:00Z,deepseek-r1:8b-0528-qwen3-q4_K_M,5.2,completed,
+2026-04-03T18:00:00Z,gemma4:e2b-it-q4_K_M,7.2,completed,
+2026-04-03T18:00:00Z,deepseek-coder-v2:16b,8.9,completed,
+2026-04-03T18:00:00Z,deepseek-r1:14b-qwen-distill-q4_K_M,9.0,completed,
+2026-04-03T18:00:00Z,qwen2.5-coder:14b-instruct-q4_K_M,9.0,completed,
+2026-04-03T18:00:00Z,gemma4:e2b-it-q8_0,8.1,completed,
+2026-04-03T18:00:00Z,gemma4:e4b-it-q4_K_M,9.6,completed,
+2026-04-03T18:00:00Z,gemma4:e4b-it-q8_0,11,completed,
+2026-04-03T18:00:00Z,gemma4:26b-a4b-it-q4_K_M,17,completed,
+2026-04-03T19:00:00Z,dolphin-mistral:latest,4.1,completed,uncensored batch
+2026-04-03T19:30:00Z,dolphin-llama3:8b,4.7,completed,uncensored batch

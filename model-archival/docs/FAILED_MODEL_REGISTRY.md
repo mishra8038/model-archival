@@ -349,7 +349,7 @@ Access denied for pytorch_model-00001-of-00002.bin: aria2c error for pytorch_mod
 | `tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF` | d5 | D | download retries exhausted | run_report | yes | 1 | 2026-03-29T01:27:21 |
 | `tiiuae/falcon-180B` | d1 | A | download retries exhausted | run_state | — | 0 | 2026-03-25T15:24:52 |
 | `unsloth/DeepSeek-V3-GGUF` | d1 | C | download retries exhausted | run_report | yes | 3 | 2026-04-02T22:24:01 |
-| `xai-org/grok-2` | — | — | download retries exhausted | run_report | yes | 1 | — |
+| `xai-org/grok-2` | d1 | G | download retries exhausted | run_report | yes | 1 | 2026-04-03T02:44:21 |
 
 <details><summary>Error text + run-report history</summary>
 
@@ -870,6 +870,8 @@ Failed to download DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf aft
 ```
 Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors: SSL/TLS handshake failure: The TLS connection was non-properly terminated.
 ```
+
+Also listed in **`permanently-excluded-models.yaml`** (scratch removed; no longer retried).
 
 **Incidents from run reports (newest first):**
 

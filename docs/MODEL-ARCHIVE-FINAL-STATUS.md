@@ -24,10 +24,28 @@ If still on D5, move: `mv /mnt/models/d5/.tmp/tiiuae_falcon-180B /mnt/models/d1/
 
 **run_state source:** `stdin`
 
+## Canonical final list
+
+Use these together; they describe the same archival program at different granularity.
+
+| Artifact | Purpose |
+|----------|---------|
+| This document (`MODEL-ARCHIVE-FINAL-STATUS.md`) | Human-readable **union** of all configured model IDs plus live `run_state` and expected paths. |
+| `model-archival/config/final_downloads.yaml` | **Active download queue** (specialists + tier D + small tier C from main/legacy + near-term completes). |
+| `model-archival/config/final_pending_registry.yaml` | **Machine-readable pending set**: union IDs that are not `complete` or `skipped` in `run_state` (includes `not_in_run_state` when absent from `run_state.json`). |
+
+## Pending registry (summary)
+
+Authoritative file: `model-archival/config/final_pending_registry.yaml` (regenerated with this doc via `model-archival/scripts/generate_final_archiver_artifacts.py`).
+
+- **Pending row count (this table snapshot):** 117 — union rows whose `run_state` column is not `complete` or `skipped`.
+- **By `run_state_status` in YAML:** `failed`=28, `in_progress`=1, `not_in_run_state`=56, `pending`=32.
+
 ## Summary
 
 - **Distinct model IDs (union):** 257
 - **final_downloads.yaml rows:** 137
+- **final_pending_registry.yaml rows (pending / incomplete):** 117
 
 **run_state status counts:** complete=156, failed=29, in_progress=1, pending=40, skipped=5
 

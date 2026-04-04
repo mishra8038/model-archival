@@ -4,6 +4,8 @@
 
 **Agents — start smaller:** [`docs/AI_CONTEXT.md`](AI_CONTEXT.md) (and repo [`AGENTS.md`](../AGENTS.md)) are the compact bootstrap; curated session history: repo [`docs/AGENT_TRANSCRIPT_SUMMARY.md`](../../docs/AGENT_TRANSCRIPT_SUMMARY.md) (ignore Cursor `agent-transcripts`). Use this file when you need full narrative, tier lists, and environment detail.
 
+**Whole monorepo** (fingerprints, code-archival, gdrive, gh-archival, ollama-hosting, etc.): repo [`docs/PROJECT-PROMPT-AND-REQUIREMENTS.md`](../../docs/PROJECT-PROMPT-AND-REQUIREMENTS.md) and [`docs/PROJECTS.md`](../../docs/PROJECTS.md).
+
 ---
 
 ## 1. Project Mission

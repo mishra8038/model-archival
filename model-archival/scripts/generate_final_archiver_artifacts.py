@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-"""Emit config/final_downloads.yaml and repo docs/MODEL-ARCHIVE-FINAL-STATUS.md.
+"""Emit config/final_downloads.yaml, config/final_pending_registry.yaml, and
+repo docs/MODEL-ARCHIVE-FINAL-STATUS.md.
 
 final_downloads.yaml — active archiver queue:
   - All models from registry-specialists.yaml
   - Main + legacy models with tier D OR (tier C and priority <= 2)  [small hostable + uncensored]
   - Plus explicit near-term completes: medgemma-27b-it, Qwen3-4B-Instruct-2507,
     Qwen2.5-VL-72B-Instruct, NVIDIA Nemotron-3-Super-120B-A12B-FP8
+
+final_pending_registry.yaml — same union scope as the status doc, but only models whose
+archiver run_state is not **complete** or **skipped** (includes **not_in_run_state** when
+the id has no entry in run_state.json). Regenerate together with the status doc.
 
 MODEL-ARCHIVE-FINAL-STATUS.md — union of registry.yaml, registry-specialists.yaml,
 registry-legacy.yaml, registry_high_risk.yaml, and final_downloads.yaml with
@@ -26,6 +31,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -36,6 +42,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 MA_ROOT = Path(__file__).resolve().parents[1]
 CONFIG = MA_ROOT / "config"
 OUT_FINAL = CONFIG / "final_downloads.yaml"
+OUT_PENDING = CONFIG / "final_pending_registry.yaml"
 OUT_STATUS = REPO_ROOT / "docs" / "MODEL-ARCHIVE-FINAL-STATUS.md"
 
 REG_MAIN = CONFIG / "registry.yaml"
@@ -169,6 +176,64 @@ def build_final_downloads_models() -> list[dict[str, Any]]:
     return out
 
 
+_PENDING_STATUS_ORDER: dict[str, int] = {
+    "in_progress": 0,
+    "pending": 1,
+    "failed": 2,
+    "not_in_run_state": 3,
+}
+
+
+def build_pending_registry_rows(
+    union: dict[str, dict[str, Any]],
+    rs_models: dict[str, Any],
+    *,
+    classify_missing: bool,
+) -> list[dict[str, Any]]:
+    """Rows for final_pending_registry: not complete and not skipped.
+
+    If classify_missing is False (no --run-state provided), omit ids with no run_state
+    entry so we do not mark the entire union as pending.
+    """
+    rows: list[dict[str, Any]] = []
+    for mid in sorted(union.keys()):
+        meta = rs_models.get(mid, {})
+        raw_st = meta.get("status")
+        if raw_st is None:
+            if not classify_missing:
+                continue
+            st_label = "not_in_run_state"
+        else:
+            st_label = str(raw_st)
+        if st_label in ("complete", "skipped"):
+            continue
+        e = union[mid]
+        rel = expected_rel_path(e)
+        rec: dict[str, Any] = {
+            "id": mid,
+            "hf_repo": str(e.get("hf_repo", mid)),
+            "run_state_status": st_label,
+            "tier": e.get("tier"),
+            "drive": e.get("drive"),
+            "priority": e.get("priority"),
+            "expected_path": rel,
+            "registry_sources": [
+                x.split("/")[-1] for x in (e.get("registry_sources") or [])
+            ],
+        }
+        tb = meta.get("total_bytes")
+        if isinstance(tb, int) and tb > 0:
+            rec["total_gib"] = round(tb / (1024**3), 2)
+        rows.append(rec)
+
+    def sort_key(r: dict[str, Any]) -> tuple[int, str]:
+        st = str(r.get("run_state_status", ""))
+        return (_PENDING_STATUS_ORDER.get(st, 99), str(r["id"]))
+
+    rows.sort(key=sort_key)
+    return rows
+
+
 def disk_probe(mount: Path, rel: str) -> tuple[bool, str]:
     full = mount / rel
     mf = full / "manifest.json"
@@ -207,6 +272,7 @@ def main() -> None:
         stdin_data,
     )
     rs_models: dict[str, Any] = rs_doc.get("models") or {}
+    run_state_explicit = stdin_data is not None or args.run_state is not None
 
     final_list = build_final_downloads_models()
     OUT_FINAL.parent.mkdir(parents=True, exist_ok=True)
@@ -218,7 +284,7 @@ def main() -> None:
         "# Run:\n"
         "#   cd model-archival && uv run archiver --registry config/final_downloads.yaml download --all\n"
         "#\n"
-        "# Regenerate this file + docs/MODEL-ARCHIVE-FINAL-STATUS.md:\n"
+        "# Regenerate this file + final_pending_registry.yaml + docs/MODEL-ARCHIVE-FINAL-STATUS.md:\n"
         "#   uv run python scripts/generate_final_archiver_artifacts.py --run-state /path/to/run_state.json\n"
     )
     OUT_FINAL.write_text(
@@ -227,6 +293,12 @@ def main() -> None:
     )
 
     union = merge_union_for_docs(final_list)
+    pending_rows = build_pending_registry_rows(
+        union, rs_models, classify_missing=run_state_explicit
+    )
+    pcounts = Counter(str(r["run_state_status"]) for r in pending_rows)
+    pend_by_status = ", ".join(f"`{k}`={v}" for k, v in sorted(pcounts.items()))
+
     mount = Path(args.models_mount)
     mount_ok = mount.is_dir()
 
@@ -258,6 +330,23 @@ def main() -> None:
         "",
         f"**run_state source:** `{rs_path_note}`",
         "",
+        "## Canonical final list",
+        "",
+        "Use these together; they describe the same archival program at different granularity.",
+        "",
+        "| Artifact | Purpose |",
+        "|----------|---------|",
+        "| This document (`MODEL-ARCHIVE-FINAL-STATUS.md`) | Human-readable **union** of all configured model IDs plus live `run_state` and expected paths. |",
+        "| `model-archival/config/final_downloads.yaml` | **Active download queue** (specialists + tier D + small tier C from main/legacy + near-term completes). |",
+        "| `model-archival/config/final_pending_registry.yaml` | **Machine-readable pending set**: union IDs that are not `complete` or `skipped` in `run_state` (includes `not_in_run_state` when absent from `run_state.json`). |",
+        "",
+        "## Pending registry (summary)",
+        "",
+        "Authoritative file: `model-archival/config/final_pending_registry.yaml` (regenerated with this doc).",
+        "",
+        f"- **Pending row count:** {len(pending_rows)} (union IDs whose `run_state` is not `complete` or `skipped`).",
+        f"- **By status (see YAML `metadata.counts_by_status`):** {pend_by_status or '—'}",
+        "",
         "## Summary",
         "",
         f"- **Distinct model IDs (union):** {len(union)}",
@@ -266,8 +355,6 @@ def main() -> None:
     ]
 
     if rs_models:
-        from collections import Counter
-
         c = Counter(str(m.get("status", "pending")) for m in rs_models.values())
         lines.append("**run_state status counts:** " + ", ".join(f"{k}={v}" for k, v in sorted(c.items())))
         lines.append("")
@@ -300,9 +387,43 @@ def main() -> None:
         )
 
     lines.append("")
+
+    pending_doc = {
+        "generated": now,
+        "run_state_source": rs_path_note,
+        "run_state_provided": run_state_explicit,
+        "description": (
+            "Union-scope models whose archiver status is not complete or skipped. "
+            "not_in_run_state means no entry for this id in run_state.json."
+        ),
+        "counts_by_status": dict(sorted(pcounts.items())),
+        "pending_model_count": len(pending_rows),
+    }
+    pending_header = (
+        "# Final pending registry — union IDs not complete/skipped in run_state.\n"
+        "# Regenerate with final_downloads.yaml + MODEL-ARCHIVE-FINAL-STATUS.md:\n"
+        "#   cd model-archival && uv run python scripts/generate_final_archiver_artifacts.py \\\n"
+        "#     --run-state /mnt/models/d3/run_state.json\n"
+        "#\n"
+        "# Without --run-state this file is written with an empty models list — always pass run_state\n"
+        "# when refreshing from the archiver host.\n"
+        "#\n"
+    )
+    OUT_PENDING.parent.mkdir(parents=True, exist_ok=True)
+    OUT_PENDING.write_text(
+        pending_header
+        + yaml.safe_dump(
+            {"metadata": pending_doc, "models": pending_rows},
+            sort_keys=False,
+            allow_unicode=True,
+        ),
+        encoding="utf-8",
+    )
+
     OUT_STATUS.parent.mkdir(parents=True, exist_ok=True)
     OUT_STATUS.write_text("\n".join(lines) + "\n", encoding="utf-8")
     print(f"Wrote {OUT_FINAL.relative_to(REPO_ROOT)} ({len(final_list)} models)")
+    print(f"Wrote {OUT_PENDING.relative_to(REPO_ROOT)} ({len(pending_rows)} pending rows)")
     print(f"Wrote {OUT_STATUS.relative_to(REPO_ROOT)} ({len(union)} rows)")
 
 

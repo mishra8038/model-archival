@@ -11,6 +11,9 @@ and critical tooling code survive deletion, restriction, or takedown.
 | [`fingerprints/`](fingerprints/) | **Checksum crawler** — records authoritative LFS SHA-256 fingerprints without downloading model weights | Active |
 | [`code-archival/`](code-archival/) | **Source archiver** — snapshots important AI tooling repos/releases from GitHub | Active |
 | [`gdrive-archival/`](gdrive-archival/) | **Cloud backup** — uploads selected archived trees to Google Drive via rclone | Active |
+| [`gh-archival/`](gh-archival/) | **GitHub tarball archiver** — owned repos → `git archive` + manifest + optional rclone | Active |
+| [`ollama-hosting/`](ollama-hosting/) | **Supermicro Ollama + VM sync** — rig scripts, `ollama-sync.sh`, rotation/inventory docs | Active |
+| [`multidisk-downloader/`](multidisk-downloader/) | **Design docs** — selector / downloader / uploader boundaries | Docs |
 
 ---
 
@@ -20,7 +23,7 @@ Self-contained Python package (`uv`). All code, config, docs, scripts, and
 deployment tools live under `model-archival/`.
 
 ```bash
-cd local
+cd model-archival
 uv sync
 bash run.sh --dry-run       # preview what will be downloaded
 bash run.sh --all           # full run (requires HF_TOKEN for gated models)
@@ -106,14 +109,41 @@ service/screen workflow.
 
 ---
 
+## gh-archival/ — Owned GitHub repos → tarballs
+
+```bash
+cd gh-archival
+uv sync
+uv run gh-archival check
+uv run gh-archival run    # optional: set GH_ARCHIVAL_RCLONE_REMOTE for upload
+```
+
+See [`gh-archival/README.md`](gh-archival/README.md).
+
+---
+
+## ollama-hosting/ — Supermicro Ollama + archival sync
+
+```bash
+cd ollama-hosting
+uv sync
+./scripts/ollama-sync.sh   # Supermicro ~/.ollama → archival VM (see docs/SYNC-JOB.md)
+```
+
+Rig mirror and pull scripts: `ollama-hosting/supermicro-rig/`. **Repo overview:** [docs/SUPERMICRO.md](docs/SUPERMICRO.md).
+
+---
+
 ## Documentation
 
 The central `docs/` folder is the repository-level source of truth for mission,
 architecture by subsystem, configuration policy, and storage layout:
 
 - [docs/README.md](docs/README.md) — Overview, mission, objectives, doc index
+- [docs/PROJECT-PROMPT-AND-REQUIREMENTS.md](docs/PROJECT-PROMPT-AND-REQUIREMENTS.md) — **Consolidated** prompt, subprojects, cross-cutting requirements
+- [docs/SUPERMICRO.md](docs/SUPERMICRO.md) — Supermicro GPU host role and pointers
 - [docs/ARCHIVED-MODELS.md](docs/ARCHIVED-MODELS.md) — Complete model inventory (master + legacy + specialists; uncensored and specialty sections)
-- [docs/PROJECTS.md](docs/PROJECTS.md) — Summary of each project (local, fingerprints, code-archival, gdrive-archival)
+- [docs/PROJECTS.md](docs/PROJECTS.md) — Summary of each project directory
 - [docs/CONFIGURATION.md](docs/CONFIGURATION.md) — Registry, drives, tiers, priorities
 - [docs/ARTIFACTS.md](docs/ARTIFACTS.md) — What we archive (weights, checksums, code, tooling)
 - [docs/DISKS-AND-DISTRIBUTION.md](docs/DISKS-AND-DISTRIBUTION.md) — Disk layout and artifact distribution per drive
@@ -124,7 +154,7 @@ architecture by subsystem, configuration policy, and storage layout:
 
 ```bash
 # Model weights
-cd local && uv run archiver status
+cd model-archival && uv run archiver status
 
 # Fingerprint crawl
 cd fingerprints && uv run fingerprints status

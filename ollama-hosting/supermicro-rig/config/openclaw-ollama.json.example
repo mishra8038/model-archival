@@ -1,0 +1,39 @@
+// Copy to ~/z/env/ai/openclaw/openclaw.json (JSON5; OpenClaw watches this file).
+// Replace the Ollama host if needed. Model id must match an `ollama list` name on that server.
+//
+// Docs: https://docs.openclaw.ai/configuration — custom providers use models.providers + openai-completions.
+
+{
+  agents: {
+    defaults: {
+      model: {
+        primary: "ollama-lan/gemma4:26b-a4b-it-q4_K_M",
+      },
+      models: {
+        "ollama-lan/gemma4:26b-a4b-it-q4_K_M": { alias: "Gemma4 (LAN Ollama)" },
+      },
+    },
+  },
+  models: {
+    mode: "merge",
+    providers: {
+      "ollama-lan": {
+        baseUrl: "http://192.168.8.106:11434/v1",
+        apiKey: "ollama",
+        api: "openai-completions",
+        injectNumCtxForOpenAICompat: true,
+        models: [
+          {
+            id: "gemma4:26b-a4b-it-q4_K_M",
+            name: "gemma4 26B MoE Q4",
+            reasoning: false,
+            input: ["text"],
+            cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+            contextWindow: 131072,
+            maxTokens: 8192,
+          },
+        ],
+      },
+    },
+  },
+}

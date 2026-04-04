@@ -974,9 +974,9 @@ categories:
   - id: xai-org/grok-2
     failure_category: failed_shards
     reason_kind: download retries exhausted
-    run_state_status: —
-    drive: null
-    updated_at: null
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-03T02:44:21.397820+00:00'
     error: 'Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors:
       SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
     primary_source: run_report
@@ -987,3 +987,7 @@ categories:
       kind: download_fail
       error: 'Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors:
         SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: xai-org/grok-2
+    tier: G
+    registry_drive: d1
+    requires_auth: false

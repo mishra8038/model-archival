@@ -123,3 +123,67 @@ This keeps a copy of the code for IDE assistants, agent platforms, and serving b
 **Purpose:** Misc integrity/verification tooling.
 
 **Agents:** `integrity_tools/AGENTS.md`
+
+---
+
+## ollama-hosting/ — Supermicro Ollama + archival VM sync
+
+**Purpose:** Durable home in git for **Ollama on the Supermicro GPU host** (pull queues, stack scripts, `ollama.service`, client env examples) and for **rsync** of Supermicro `~/.ollama` to the **archival VM** with **per-disk destination rotation**, post-sync **VM maintain** (partial cleanup + manifest integrity), **supermicro prune planning**, and **VM model inventory** / **archival model map**. Specialist HF↔Ollama reporting reads `model-archival/config/*.yaml` and writes under `ollama-hosting/docs/`.
+
+**Entry points:**
+
+- `cd ollama-hosting && uv sync` — Python deps for inventory / specialist report scripts.
+- `./scripts/ollama-sync.sh` — sync Ollama cache to VM (or local dest); see `docs/SYNC-JOB.md`.
+- `./scripts/ollama-archive-vm-maintain.sh` — VM-only maintain (no rsync).
+- `uv run python scripts/update_ollama_vm_inventory.py --ssh …` — refresh inventory YAML.
+- `uv run python scripts/generate_ollama_archival_map.py` — human map from inventory.
+- `supermicro-rig/scripts/pull-ollama-stack.sh` — bulk pulls on the host (copy to server as needed).
+
+**Authoritative files (in-repo):**
+
+- `ollama-hosting/docs/data/ollama-sync-rotation.state` — rotation cursor + sync history.
+- `ollama-hosting/docs/data/ollama-vm-models-inventory.yaml` — per `model:tag` disk placement (regenerated over SSH).
+- `ollama-hosting/supermicro-rig/` — mirror of `~/z/env/dev-environment/supermicro/` Ollama-related files; refresh when the live rig changes.
+
+**Docs:** `ollama-hosting/README.md`, `ollama-hosting/docs/SYNC-JOB.md`, `ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`. **Repo-level Supermicro overview:** [`docs/SUPERMICRO.md`](SUPERMICRO.md).
+
+**Note:** Legacy copies under `model-archival/docs/` and `model-archival/scripts/` for the same workflow may still exist; prefer **`ollama-hosting/`** for new work (see `model-archival/docs/OLLAMA-CACHE-POLICY.md` banner).
+
+---
+
+## gh-archival/ — Owned GitHub repository tarballs
+
+**Purpose:** List GitHub repos you **own**, shallow-clone default branch (typically `main`), export **`git archive` tar.gz** per repo (no `.git` inside), write a JSON manifest, optionally **`rclone copy`** to Google Drive or another remote.
+
+**Entry points:**
+
+- `cd gh-archival && uv sync && uv run gh-archival --help`
+- `uv run gh-archival check` / `uv run gh-archival run` — see `gh-archival/README.md`.
+
+**Authoritative files:** `gh-archival/pyproject.toml`, CLI package under `gh_archival/`.
+
+**Docs:** `gh-archival/README.md`
+
+---
+
+## multidisk-downloader/ — Transfer architecture (documentation)
+
+**Purpose:** Requirements and **boundary contracts** between model **selection**, **download**, and **upload** so selection logic does not leak into transfer workers. Documentation-first; no production downloader implementation required in this folder.
+
+**Docs:** `multidisk-downloader/REQUIREMENTS.md`, `multidisk-downloader/ARCHITECTURE-BOUNDARIES.md`
+
+---
+
+## docs/archive-inventory/ — Published index snapshots
+
+**Purpose:** Machine-readable **and** Markdown snapshots of registry unions, on-disk manifest metadata, code-archival and gdrive registry lists — for GitHub-facing navigation. Regenerated from the archive host when paths and `run_state.json` should resolve to real disks.
+
+**Regenerate:** See `docs/archive-inventory/README.md` (`generate-archive-inventory.py` from repo root / model-archival).
+
+---
+
+## scripts/ (repository root) — Cross-cutting generators
+
+**Purpose:** Helpers that span subprojects, e.g. **`generate-archived-models-doc.py`** → [`docs/ARCHIVED-MODELS.md`](ARCHIVED-MODELS.md), **`generate-archive-inventory.py`** → `docs/archive-inventory/`.
+
+**Convention:** Run from repo root or with `uv run --directory model-archival` as documented in each generator’s header and in `archive-inventory/README.md`.
