@@ -1,0 +1,1079 @@
+{
+  "schema_version": 2,
+  "updated_at_utc": "2026-04-04T06:30:13Z",
+  "queue": [
+    "deepseek-coder:6.7b",
+    "qwen2.5-coder:7b",
+    "llama3.1:8b-instruct-q4_K_M",
+    "deepseek-r1:8b-0528-qwen3-q4_K_M",
+    "gemma4:e2b-it-q4_K_M",
+    "deepseek-coder-v2:16b",
+    "deepseek-r1:14b-qwen-distill-q4_K_M",
+    "qwen2.5-coder:14b-instruct-q4_K_M",
+    "starcoder2:15b",
+    "gemma4:e2b-it-q8_0",
+    "gemma4:e4b-it-q4_K_M",
+    "gemma4:e4b-it-q8_0",
+    "gemma4:26b-a4b-it-q4_K_M",
+    "gemma4:31b-it-q4_K_M",
+    "qwen2.5-coder:32b-instruct-q4_K_M",
+    "deepseek-coder:33b-instruct-q4_K_M",
+    "gemma4:26b-a4b-it-q8_0",
+    "gemma4:31b-it-q8_0",
+    "mixtral:8x7b-instruct-v0.1-q4_K_M",
+    "dolphin-mistral:latest",
+    "dolphin-llama3:8b",
+    "huihui_ai/dolphin3-abliterated:latest",
+    "dolphin-mixtral:8x7b",
+    "dolphin-mixtral:8x7b-v2.7",
+    "dolphin-llama3:70b-v2.9-q4_K_M",
+    "rolandroland/llama3.1-uncensored:latest",
+    "llama3.3:70b-instruct-q4_K_M",
+    "llama3.1:70b-instruct-q4_K_M",
+    "qwen2.5:72b-instruct-q4_K_M",
+    "huihui_ai/llama3.3-abliterated:70b",
+    "qwen3:8b-q4_K_M",
+    "qwen3:14b-q4_K_M",
+    "qwen3:30b-a3b-instruct-2507-q4_K_M",
+    "qwen3:32b-q4_K_M",
+    "llama3.2:3b",
+    "bge-m3",
+    "qwen3.5:4b-q4_K_M",
+    "gemma3:4b-it-q4_K_M",
+    "mathstral:7b",
+    "deepseek-r1:8b-llama-distill-q4_K_M",
+    "deepseek-r1:7b-qwen-distill-q4_K_M",
+    "qwen2.5vl:7b",
+    "qwen3.5:9b-q4_K_M",
+    "phi4:14b-q4_K_M",
+    "closex/neuraldaredevil-8b-abliterated:latest",
+    "mistral-small3.2:24b-instruct-2506-q4_K_M",
+    "gemma3:27b-it-q4_K_M",
+    "qwen3.5:27b-q4_K_M",
+    "deepseek-r1:32b-qwen-distill-q4_K_M",
+    "qwq:32b-q4_K_M",
+    "qwen2.5vl:32b-q4_K_M",
+    "qwen3.5:35b-a3b-q4_K_M",
+    "nemotron:70b-instruct-q4_K_M",
+    "deepseek-r1:70b-llama-distill-q4_K_M",
+    "qwen2.5vl:72b-q4_K_M",
+    "qwen3.5:122b-a10b-q4_K_M"
+  ],
+  "models": {
+    "deepseek-coder:6.7b": {
+      "approx_size_gb": 3.8,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": "session pull before cache clear"
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "3.56 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "coding"
+    },
+    "qwen2.5-coder:7b": {
+      "approx_size_gb": 4.7,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "4.36 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "coding"
+    },
+    "llama3.1:8b-instruct-q4_K_M": {
+      "approx_size_gb": 4.9,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "4.58 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "deepseek-r1:8b-0528-qwen3-q4_K_M": {
+      "approx_size_gb": 5.2,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "4.87 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "gemma4:e2b-it-q4_K_M": {
+      "approx_size_gb": 7.2,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "6.67 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "deepseek-coder-v2:16b": {
+      "approx_size_gb": 8.9,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "8.29 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "coding"
+    },
+    "deepseek-r1:14b-qwen-distill-q4_K_M": {
+      "approx_size_gb": 9.0,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "8.37 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "qwen2.5-coder:14b-instruct-q4_K_M": {
+      "approx_size_gb": 9.0,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "8.37 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "coding"
+    },
+    "gemma4:e2b-it-q8_0": {
+      "approx_size_gb": 8.1,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "7.58 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "gemma4:e4b-it-q4_K_M": {
+      "approx_size_gb": 9.6,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "8.95 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "gemma4:e4b-it-q8_0": {
+      "approx_size_gb": 11.0,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "10.84 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "gemma4:26b-a4b-it-q4_K_M": {
+      "approx_size_gb": 17.0,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T18:00:00Z",
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "16.75 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "gemma4:31b-it-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "qwen2.5-coder:32b-instruct-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "coding"
+    },
+    "deepseek-coder:33b-instruct-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "coding"
+    },
+    "gemma4:26b-a4b-it-q8_0": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "gemma4:31b-it-q8_0": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "mixtral:8x7b-instruct-v0.1-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "moe_instruct"
+    },
+    "dolphin-mistral:latest": {
+      "approx_size_gb": 4.1,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T19:00:00Z",
+        "last_failed_utc": null,
+        "history_note": "uncensored batch"
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "3.83 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "dolphin-llama3:8b": {
+      "approx_size_gb": 4.7,
+      "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-03T19:30:00Z",
+        "last_failed_utc": null,
+        "history_note": "uncensored batch"
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "4.34 GiB",
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "huihui_ai/dolphin3-abliterated:latest": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "dolphin-mixtral:8x7b": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "dolphin-mixtral:8x7b-v2.7": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "dolphin-llama3:70b-v2.9-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "rolandroland/llama3.1-uncensored:latest": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "llama3.3:70b-instruct-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "instruct_70b"
+    },
+    "llama3.1:70b-instruct-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "instruct_70b"
+    },
+    "qwen2.5:72b-instruct-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "instruct_70b"
+    },
+    "huihui_ai/llama3.3-abliterated:70b": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "qwen3:8b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "qwen3"
+    },
+    "qwen3:14b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "qwen3"
+    },
+    "qwen3:30b-a3b-instruct-2507-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "qwen3"
+    },
+    "qwen3:32b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "qwen3"
+    },
+    "llama3.2:3b": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "bge-m3": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "embedding"
+    },
+    "qwen3.5:4b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "gemma3:4b-it-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "mathstral:7b": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "deepseek-r1:8b-llama-distill-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "deepseek-r1:7b-qwen-distill-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "qwen2.5vl:7b": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "vlm"
+    },
+    "qwen3.5:9b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "phi4:14b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "closex/neuraldaredevil-8b-abliterated:latest": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "uncensored"
+    },
+    "mistral-small3.2:24b-instruct-2506-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "gemma3:27b-it-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "general"
+    },
+    "qwen3.5:27b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "deepseek-r1:32b-qwen-distill-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "qwq:32b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "qwen2.5vl:32b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "vlm"
+    },
+    "qwen3.5:35b-a3b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "nemotron:70b-instruct-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "instruct_70b"
+    },
+    "deepseek-r1:70b-llama-distill-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "reasoning"
+    },
+    "qwen2.5vl:72b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "vlm"
+    },
+    "qwen3.5:122b-a10b-q4_K_M": {
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "",
+      "group": "specialist"
+    },
+    "starcoder2:15b": {
+      "approx_size_gb": 9.1,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "(queue tag corrected to starcoder2:15b \u2014 library tag)",
+      "group": "coding"
+    }
+  },
+  "links": {
+    "ollama_sync_script": "ollama-hosting/scripts/ollama-sync.sh",
+    "archival_manifest": "ollama-hosting/docs/data/ollama-archival-global-manifest.yaml",
+    "archival_model_map": "ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md",
+    "workflow_doc": "ollama-hosting/docs/OLLAMA-ARCHIVE-WORKFLOW.md",
+    "registry_dir": "ollama-hosting/registry"
+  }
+}

@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+# Pull the next (or all) models from OLLAMA_MODEL_REGISTRY.json that are not yet marked complete.
+# Run on the Ollama host (Supermicro) with ollama in PATH. Updates TARGET_PULL_HISTORY.csv and re-merges the registry.
+#
+# Usage:
+#   export OLLAMA_HOST=127.0.0.1:11434
+#   ./ollama-pull-queue              # all pending, in queue order
+#   ./ollama-pull-queue --one        # single next pending model
+#   USE_TRICKLE=0 ./ollama-pull-queue --one
+#   IGNORE_PULL_HISTORY=1 ./ollama-pull-queue   # walk TARGET_QUEUE_ORDERED.txt; ignore CSV completion (re-pull)
+#   CONTINUE_ON_FAIL=1 ./ollama-pull-queue      # keep going after a failed ollama pull
+#   OLLAMA_PULL_GROUP=uncensored ./ollama-pull-queue --one   # next pending tag in that classification only (registry mode)
+#
+# Idempotency / archival VM:
+#   After merge-pull-history, runs sync-pull-from-archive (default ON): any queue tag with
+#   models[tag].archive.on_canonical_disk set (from merge-manifest) is marked pull complete and
+#   gets a CSV row — no ollama pull for weights already on the archival disks.
+#   SKIP_SYNC_PULL_FROM_ARCHIVE=1  — skip that step (not recommended).
+#   RE_PULL_ARCHIVED=1             — also offer tags that are only on the VM for re-download to Supermicro.
+#
+# Paths:
+#   OLLAMA_DEV_ROOT   ollama-hosting root (default: parent of scripts/)
+#   OLLAMA_MODELS     Registry dir (default: $OLLAMA_DEV_ROOT/registry)
+#
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OLLAMA_DEV_ROOT="${OLLAMA_DEV_ROOT:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+MODELS_DIR="${OLLAMA_MODELS:-$OLLAMA_DEV_ROOT/registry}"
+REGISTRY_JSON="${OLLAMA_REGISTRY:-$MODELS_DIR/OLLAMA_MODEL_REGISTRY.json}"
+QUEUE_FILE="${QUEUE_FILE:-$MODELS_DIR/TARGET_QUEUE_ORDERED.txt}"
+HISTORY_CSV="${HISTORY_CSV:-$MODELS_DIR/TARGET_PULL_HISTORY.csv}"
+LOCK_FILE="${LOCK_FILE:-/tmp/ollama-pull-queue.lock}"
+registry_py() {
+  python3 "$MODELS_DIR/ollama_registry_tool.py" --registry "$REGISTRY_JSON" "$@"
+}
+
+export OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
+THROTTLE_KBPS="${THROTTLE_KBPS:-4096}"
+THROTTLE_UPLOAD_KBPS="${THROTTLE_UPLOAD_KBPS:-512}"
+IGNORE_PULL_HISTORY="${IGNORE_PULL_HISTORY:-}"
+USE_TRICKLE="${USE_TRICKLE:-1}"
+CONTINUE_ON_FAIL="${CONTINUE_ON_FAIL:-0}"
+PULL_GROUP="${OLLAMA_PULL_GROUP:-}"
+SKIP_SYNC_PULL_FROM_ARCHIVE="${SKIP_SYNC_PULL_FROM_ARCHIVE:-}"
+RE_PULL_ARCHIVED="${RE_PULL_ARCHIVED:-}"
+
+log() { printf '[%s] %s\n' "$(date -Iseconds)" "$*"; }
+
+append_history() {
+  local tag="$1" size="$2" status="$3" note="$4"
+  local esc_note="${note//,/ }"
+  printf '%s,%s,%s,%s,%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$tag" "$size" "$status" "$esc_note" >>"$HISTORY_CSV"
+}
+
+run_pull() {
+  local model="$1"
+  local note="ollama-pull-queue"
+  if [[ "$USE_TRICKLE" != "0" && "$USE_TRICKLE" != "false" ]] && command -v trickle >/dev/null 2>&1; then
+    note="${note} throttle_KiB_s=${THROTTLE_KBPS}"
+    log "pull (throttled ${THROTTLE_KBPS} KiB/s down): $model"
+    trickle -s -d "${THROTTLE_KBPS}" -u "${THROTTLE_UPLOAD_KBPS}" ollama pull "$model"
+  else
+    note="${note} unthrottled"
+    if [[ "$USE_TRICKLE" == "0" || "$USE_TRICKLE" == "false" ]]; then
+      log "pull (unthrottled USE_TRICKLE=0): $model"
+    else
+      log "WARN: trickle not installed — unthrottled pull: $model"
+    fi
+    ollama pull "$model"
+  fi
+}
+
+merge_registry_from_csv() {
+  if [[ -f "$MODELS_DIR/ollama_registry_tool.py" && -f "$REGISTRY_JSON" ]]; then
+    registry_py merge-pull-history --history "$HISTORY_CSV" || true
+  fi
+}
+
+sync_archived_to_pull_complete() {
+  if [[ -n "$SKIP_SYNC_PULL_FROM_ARCHIVE" && "$SKIP_SYNC_PULL_FROM_ARCHIVE" != "0" ]]; then
+    return 0
+  fi
+  if [[ -f "$MODELS_DIR/ollama_registry_tool.py" && -f "$REGISTRY_JSON" ]]; then
+    registry_py sync-pull-from-archive --history "$HISTORY_CSV" || true
+  fi
+}
+
+next_pending_cmd() {
+  local args=()
+  [[ "${RE_PULL_ARCHIVED:-}" == "1" ]] && args+=(--re-pull-archived)
+  if [[ -n "$PULL_GROUP" ]]; then
+    registry_py next-pending --group "$PULL_GROUP" "${args[@]}" || true
+  else
+    registry_py next-pending "${args[@]}" || true
+  fi
+}
+
+should_run_ollama_pull() {
+  local model="$1"
+  local sp_args=()
+  [[ "${RE_PULL_ARCHIVED:-}" == "1" ]] && sp_args+=(--re-pull-archived)
+  registry_py should-pull "${sp_args[@]}" "$model"
+}
+
+exec 9>"$LOCK_FILE"
+if ! flock -n 9; then
+  log "Another process holds $LOCK_FILE — exit."
+  exit 1
+fi
+
+ONE_MODE=0
+if [[ "${1:-}" == "--one" ]]; then
+  ONE_MODE=1
+fi
+
+if ! command -v ollama >/dev/null 2>&1; then
+  log "ERROR: ollama not in PATH"
+  exit 1
+fi
+
+if [[ ! -f "$REGISTRY_JSON" || ! -f "$MODELS_DIR/ollama_registry_tool.py" ]]; then
+  log "ERROR: need $REGISTRY_JSON and ollama_registry_tool.py under $MODELS_DIR"
+  exit 1
+fi
+
+touch "$HISTORY_CSV"
+pulled_this_run=0
+
+pull_one_tag() {
+  local model="$1"
+  log ">>> $model"
+  if run_pull "$model"; then
+    append_history "$model" "?" "completed" "ollama-pull-queue"
+    log "OK $model"
+    merge_registry_from_csv
+    pulled_this_run=$((pulled_this_run + 1))
+    return 0
+  fi
+  append_history "$model" "?" "failed" "ollama-pull-queue"
+  log "FAIL $model"
+  merge_registry_from_csv
+  return 1
+}
+
+if [[ -n "$IGNORE_PULL_HISTORY" ]]; then
+  [[ -n "$PULL_GROUP" ]] && log "WARN: OLLAMA_PULL_GROUP ignored when IGNORE_PULL_HISTORY is set"
+  [[ -f "$QUEUE_FILE" ]] || {
+    log "ERROR: queue file not found: $QUEUE_FILE"
+    exit 1
+  }
+  log "IGNORE_PULL_HISTORY set — using $QUEUE_FILE order (CSV completion ignored for skip)"
+  merge_registry_from_csv
+  sync_archived_to_pull_complete
+  merge_registry_from_csv
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    line="${line#"${line%%[![:space:]]*}"}"
+    line="${line%"${line##*[![:space:]]}"}"
+    [[ -z "$line" || "$line" == \#* ]] && continue
+    model="$line"
+    sp="$(should_run_ollama_pull "$model" || true)"
+    if [[ "$sp" != "yes" ]]; then
+      log "SKIP ($sp): $model — already on Supermicro cache or archival VM per registry"
+      continue
+    fi
+    pull_one_tag "$model" || {
+      if [[ "$CONTINUE_ON_FAIL" != "1" ]]; then
+        exit 1
+      fi
+    }
+    if [[ "$ONE_MODE" -eq 1 ]]; then
+      log "--one: stopping after single pull."
+      break
+    fi
+  done <"$QUEUE_FILE"
+else
+  [[ -n "$PULL_GROUP" ]] && log "OLLAMA_PULL_GROUP=$PULL_GROUP (registry classification filter)"
+  merge_registry_from_csv
+  sync_archived_to_pull_complete
+  merge_registry_from_csv
+  while true; do
+    merge_registry_from_csv
+    model="$(next_pending_cmd)"
+    if [[ -z "$model" ]]; then
+      log "No pending models in registry queue (for this group: ${PULL_GROUP:-all})."
+      break
+    fi
+    pull_one_tag "$model" || {
+      if [[ "$CONTINUE_ON_FAIL" != "1" ]]; then
+        exit 1
+      fi
+    }
+    if [[ "$ONE_MODE" -eq 1 ]]; then
+      log "--one: stopping after single pull."
+      break
+    fi
+  done
+fi
+
+log "Finished pass: $pulled_this_run pull(s) this run. ollama list:"
+ollama list || true

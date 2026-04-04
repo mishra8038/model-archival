@@ -1,0 +1,12 @@
+[Unit]
+Description=Every 4 hours — Ollama archival sync to VM d5
+Documentation=file:///home/x/z/env/dev-environment/supermicro/systemd/README-ollama-sync-timer.md
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=4h
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

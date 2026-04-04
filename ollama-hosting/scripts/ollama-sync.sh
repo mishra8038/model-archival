@@ -12,9 +12,8 @@
 #     removed. Re-runs are safe after you delete models on supermicro.
 #   Implemented by rsync without any --delete* options; RSYNC_EXTRA cannot add them.
 #
-# Default target rotates across disks on the archival VM (d5 → d2 → d3 → d1 → …) so each sync
-# lands on the next mount under /mnt/models/. Override any time with ARCHIVAL_VM_DEST=/path (rotation
-# index is not advanced when you set a fixed path).
+# Default target is a single archive root on the VM (d5). Override with ARCHIVAL_VM_SITE_CYCLE
+# or ARCHIVAL_VM_DEST=/path. Fixed ARCHIVAL_VM_DEST does not advance rotation state.
 # Same additive policy everywhere; old blobs under prior paths stay until you move or prune them.
 # Idempotent: rsync transfers deltas; --partial resumes interrupted runs.
 #
@@ -32,7 +31,7 @@
 #                           is chosen (see docs/OLLAMA-CACHE-POLICY.md). If **set**, that path is used
 #                           and the rotation counter is not advanced.
 #   ARCHIVAL_VM_SITE_CYCLE  Optional comma-separated cycle: LABEL=PATH pairs or bare paths under
-#                           /mnt/models/. Default: d5,d2,d3,d1 supermicro roots.
+#                           /mnt/models/. Default: d5=/mnt/models/d5/supermicro only.
 #   OLLAMA_SYNC_DEST      vm | local (default: vm)
 #   OLLAMA_D5_DEST        local directory when OLLAMA_SYNC_DEST=local (default under D5; use a d2 path if D5 full)
 #   OLLAMA_REMOTE_DIR     path under ~ on supermicro (default: .ollama)

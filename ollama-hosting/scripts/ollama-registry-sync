@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Run ollama-sync.sh (rsync to archival VM), then merge manifest + pull history into registry JSON.
+# Canonical tree: this repo's ollama-hosting/ (registry/ lives next to scripts/).
+#
+# Environment:
+#   OLLAMA_HOSTING     Root of ollama-hosting (default: parent of scripts/)
+#   OLLAMA_DEV_ROOT    Same as hosting for registry paths (default: parent of scripts/)
+#   OLLAMA_MODELS      Registry dir (default: $OLLAMA_DEV_ROOT/registry)
+#   OLLAMA_REGISTRY    Path to OLLAMA_MODEL_REGISTRY.json (optional)
+#   OLLAMA_SYNC_POST_MERGE_PULL  If 0, skip merge-pull-history after sync (default: 1)
+#   OLLAMA_SYNC_POST_STATUS      If 0, skip status preview (default: 1)
+#
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OLLAMA_HOSTING="${OLLAMA_HOSTING:-$(cd "$SCRIPT_DIR/.." && pwd)}"
+OLLAMA_DEV_ROOT="${OLLAMA_DEV_ROOT:-$OLLAMA_HOSTING}"
+MODELS_DIR="${OLLAMA_MODELS:-$OLLAMA_DEV_ROOT/registry}"
+REGISTRY_JSON="${OLLAMA_REGISTRY:-$MODELS_DIR/OLLAMA_MODEL_REGISTRY.json}"
+HISTORY_CSV="${HISTORY_CSV:-$MODELS_DIR/TARGET_PULL_HISTORY.csv}"
+registry_py() {
+  python3 "$MODELS_DIR/ollama_registry_tool.py" --registry "$REGISTRY_JSON" "$@"
+}
+SYNC_SH="$OLLAMA_HOSTING/scripts/ollama-sync.sh"
+
+if [[ ! -f "$SYNC_SH" ]]; then
+  echo "ollama-registry-sync: missing $SYNC_SH" >&2
+  exit 1
+fi
+if [[ ! -f "$MODELS_DIR/ollama_registry_tool.py" ]]; then
+  echo "ollama-registry-sync: missing registry tool under $MODELS_DIR" >&2
+  exit 1
+fi
+
+echo "ollama-registry-sync: OLLAMA_HOSTING=$OLLAMA_HOSTING" >&2
+(
+  cd "$OLLAMA_HOSTING" && ./scripts/ollama-sync.sh "$@"
+)
+rc=$?
+
+MANIFEST="$OLLAMA_HOSTING/docs/data/ollama-archival-global-manifest.yaml"
+if [[ "$rc" -eq 0 && -f "$MANIFEST" ]]; then
+  echo "ollama-registry-sync: merging archival manifest" >&2
+  registry_py merge-manifest "$MANIFEST" || echo "ollama-registry-sync: warning: merge-manifest failed" >&2
+fi
+
+if [[ "$rc" -eq 0 && "${OLLAMA_SYNC_POST_MERGE_PULL:-1}" != "0" ]]; then
+  registry_py merge-pull-history || echo "ollama-registry-sync: warning: merge-pull-history failed" >&2
+fi
+
+# Tags on archival disks → pull complete (so ollama-pull-queue does not re-download).
+if [[ "$rc" -eq 0 && "${OLLAMA_SYNC_POST_SYNC_ARCHIVE:-1}" != "0" ]]; then
+  registry_py sync-pull-from-archive --history "$HISTORY_CSV" \
+    || echo "ollama-registry-sync: warning: sync-pull-from-archive failed" >&2
+fi
+
+if [[ "$rc" -eq 0 && "${OLLAMA_SYNC_POST_STATUS:-1}" != "0" ]]; then
+  echo "" >&2
+  echo "ollama-registry-sync: registry status (first 25 lines)" >&2
+  registry_py status 2>/dev/null | head -25 >&2 || true
+fi
+
+if [[ "$rc" -eq 0 ]]; then
+  echo "" >&2
+  echo "ollama-registry-sync: next — verify docs/OLLAMA-ARCHIVAL-MODEL-MAP.md, then ollama rm on Supermicro if offloading." >&2
+fi
+
+exit "$rc"

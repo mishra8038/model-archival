@@ -9,7 +9,7 @@
 | Role | Default SSH | Default path |
 |------|-------------|--------------|
 | Ollama source (Supermicro) | `x@192.168.8.106` | `~/.ollama` (`OLLAMA_REMOTE_DIR`) |
-| Archival VM | `x@192.168.8.65` | Rotates across `/mnt/models/{d5,d2,d3,d1}/supermicro` |
+| Archival VM | `x@192.168.8.65` | Default archive: `/mnt/models/d5/supermicro` (single copy; override with `ARCHIVAL_VM_SITE_CYCLE`) |
 
 Override with **`SUPER_OLLAMA_REMOTE`**, **`ARCHIVAL_VM`**, **`ARCHIVAL_VM_DEST`** (fixed dest skips rotation advance), **`ARCHIVAL_VM_SITE_CYCLE`**.
 
@@ -44,7 +44,7 @@ When **`OLLAMA_SYNC_VM_MAINTAIN`** is non-zero (default), after a successful VM 
 
 If **`ARCHIVAL_VM_DEST`** is **unset**, `ollama_archival_rotation.py` picks the next path from the cycle, records the run in **`docs/data/ollama-sync-rotation.state`**, and advances **`next_index`** after success. A **fixed** `ARCHIVAL_VM_DEST` does **not** advance the cursor.
 
-Default cycle: **d5 → d2 → d3 → d1** (each `…/supermicro` under `/mnt/models/`).
+Default cycle: **d5** only (`/mnt/models/d5/supermicro`). Set **`ARCHIVAL_VM_SITE_CYCLE`** to add or move targets.
 
 ## Inventory and human map
 

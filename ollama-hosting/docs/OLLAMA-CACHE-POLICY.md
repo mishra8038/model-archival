@@ -2,9 +2,15 @@
 
 **Operator spec:** see [SYNC-JOB.md](SYNC-JOB.md). **Maintained tree:** this file lives under **`ollama-hosting/docs/`** (run scripts from **`ollama-hosting/`**).
 
+## Current policy (single copy on VM)
+
+- **One full Ollama archive** on the archival VM: **`/mnt/models/d5/supermicro`** only (no duplicate mirrors on d2/d3/d1 unless you change `ARCHIVAL_VM_SITE_CYCLE`).
+- **Supermicro offload loop:** after a model is **fully** on that archive (sync + integrity OK), **remove it from supermicro** (`ollama rm …`) per your keep rules — see **Offload loop** below and `OLLAMA-ONE-DISK-OFFLOAD.md` under `dev-environment/supermicro/`.
+- **Automated sync:** workstation user timer runs **`ollama-sync.sh`** to **d5** every **4 hours** (see `supermicro/systemd/README-ollama-sync-timer.md`).
+
 ## Goals
 
-1. **Free space on supermicro** by deleting Ollama blobs *only after* the same model is **fully synced** to the archival VM (`ollama-hosting/scripts/ollama-sync.sh` → `x@192.168.8.65`, destination **rotates** across `d5` → `d2` → `d3` → `d1` unless you set a fixed `ARCHIVAL_VM_DEST`).
+1. **Free space on supermicro** by deleting Ollama blobs *only after* the same model is **fully synced** to the archival VM (`ollama-hosting/scripts/ollama-sync.sh` → `x@192.168.8.65`, default destination **`d5`** only; override with `ARCHIVAL_VM_DEST` / `ARCHIVAL_VM_SITE_CYCLE` if you add disks).
 2. **Keep on supermicro** (hot subset for the GPU box):
    - **Gemma 4** — entire product line on disk (`gemma4/…` manifests: MoE, dense, E2B/E4B, any quant you still pull).
    - **Qwen Coder** only — `qwen2.5-coder/…`, and future `qwen3*coder*` paths — **not** base Qwen chat, **not** DeepSeek-R1 distills, **not** Llama/Dolphin/DeepSeek Coder unless you widen `keep_tag` again.
@@ -18,25 +24,23 @@ Ollama expects a **single** coherent `models/` tree (`blobs/` + `manifests/`). *
 
 | Mount | Typical use |
 |-------|-------------|
-| **`/mnt/models/d5/supermicro`** | Default `ARCHIVAL_VM_DEST` — existing additive archive. |
-| **`/mnt/models/d2/supermicro`** | Prefer when **D5** is tight (~**335 GiB** free class) — set `ARCHIVAL_VM_DEST=/mnt/models/d2/supermicro` for a **new** full mirror or migration target. |
-| **`/mnt/models/d3/supermicro`** | Same pattern as D2 (~**263 GiB** free class). |
-| **`/mnt/models/d1/supermicro`** | Only if **D1** has enough **contiguous** free space for the transfer (~**78 GiB** free is tight for a full ~120+ GiB cache). |
+| **`/mnt/models/d5/supermicro`** | **Default and only** archive root in rotation (single copy policy). |
+| **`/mnt/models/d2` … `d1`** | Optional **future** targets — set `ARCHIVAL_VM_SITE_CYCLE` if you move the archive; do **not** keep two full copies of the same cache unless you intend redundant mirrors. |
 
-Refresh free space before large syncs: `ssh x@192.168.8.65 'df -h /mnt/models/d{1,2,3,5}'`.
+Refresh free space before large syncs: `ssh x@192.168.8.65 'df -h /mnt/models/d5'`.
 
 ### Per-sync destination rotation
 
 - Leave **`ARCHIVAL_VM_DEST` unset** (empty): each successful `ollama-sync.sh` run picks the **next** path in the cycle and **advances** the counter in `docs/data/ollama-sync-rotation.state` (JSON: `next_index`, `sync_history`).
 - Set **`ARCHIVAL_VM_DEST=/mnt/models/dX/supermicro`** explicitly: that path is used; rotation **does not** advance (use for one-off or recovery).
-- Override the cycle order or members with **`ARCHIVAL_VM_SITE_CYCLE`** (comma-separated `LABEL=PATH` or bare paths under `/mnt/models/`). Default cycle is **d5, d2, d3, d1** (each `…/supermicro`).
+- Override the cycle with **`ARCHIVAL_VM_SITE_CYCLE`** (comma-separated `LABEL=PATH` or bare paths under `/mnt/models/`). Default cycle is **`d5`** only (`/mnt/models/d5/supermicro`).
 - Implementation: `ollama-hosting/scripts/ollama_archival_rotation.py` (called from `ollama-sync.sh`).
 
 ### Completed models only (sync) + archive hygiene (VM)
 
 1. **Supermicro before sync:** finish or cancel in-flight `ollama pull` jobs, then remove Ollama incomplete shards locally so they are not mistaken for complete weights (see `ollama-hosting/supermicro-rig/scripts/ollama-cleanup-partials.sh` on the GPU host, or delete `~/.ollama/models/blobs/*partial*` while no pull is running).
 2. **`ollama-sync.sh`:** by default **does not copy** `models/blobs/*partial*` or top-level `.rsync-partial/` from the source (set `OLLAMA_SYNC_INCLUDE_PARTIALS=1` only if you intentionally want incomplete shards — not recommended).
-3. **After each successful VM sync:** by default the script runs **`ollama_archive_vm_maintain.py`** on the archival VM for **every** root in the rotation cycle (`d5`, `d2`, `d3`, `d1`): deletes stray `*partial*` blobs, removes `.rsync-partial` trees, then prints an **integrity** summary (manifests whose layer blobs are missing). Set `OLLAMA_SYNC_VM_MAINTAIN=0` to skip.
+3. **After each successful VM sync:** by default the script runs **`ollama_archive_vm_maintain.py`** on the archival VM for **every** root in the rotation cycle (default **d5** only): deletes stray `*partial*` blobs, removes `.rsync-partial` trees, then prints an **integrity** summary. Set `OLLAMA_SYNC_VM_MAINTAIN=0` to skip.
 4. **Manual maintain only:** `ollama-hosting/scripts/ollama-archive-vm-maintain.sh` (same SSH + roots as sync).
 
 ### Where each model lives (canonical map)
@@ -56,14 +60,14 @@ cd ollama-hosting && uv run python scripts/update_ollama_vm_inventory.py --ssh x
 uv run python scripts/generate_ollama_archival_map.py
 ```
 
-(`ollama-sync.sh` passes the same `--root` list for **d5, d2, d3, d1** automatically.)
+(`ollama-sync.sh` passes the rotation cycle roots for inventory — default **d5** only.)
 
 ## Maintained inventory
 
 | File | Purpose |
 |------|---------|
-| `docs/data/ollama-cache-inventory.yaml` | Canonical lists: supermicro tags (fill in), VM **d5**/**d2**/**d3**/**d1** Ollama manifest paths (optional legacy), prune policy pointer. |
-| `docs/data/ollama-vm-models-inventory.yaml` | **Ollama descriptors** (`model:tag`), **disk** (`d5`/`d2`/`d3`/`d1`), **paths**, **approximate sizes** (manifest + blob files), **`supermicro_cleared`** (`unknown` / `yes` / `no`). Regenerated by `scripts/update_ollama_vm_inventory.py`. |
+| `docs/data/ollama-cache-inventory.yaml` | Canonical lists: supermicro tags (fill in), VM Ollama manifest paths, prune policy pointer. |
+| `docs/data/ollama-vm-models-inventory.yaml` | **Ollama descriptors** (`model:tag`), **disk** label, **paths**, **sizes**, **`supermicro_cleared`**. Regenerated by `scripts/update_ollama_vm_inventory.py`. |
 | `docs/data/ollama-sync-rotation.state` | Rotation cursor + append-only **sync_history** (which disk each sync targeted). |
 | `ollama-hosting/scripts/ollama_archive_vm_maintain.py` | Archival VM: delete `*partial*` blobs + `.rsync-partial/`; **integrity** check (manifest vs blobs). |
 | `ollama-hosting/scripts/ollama-archive-vm-maintain.sh` | Wrapper: SSH + `print-archive-roots` + maintain script (no rsync). |

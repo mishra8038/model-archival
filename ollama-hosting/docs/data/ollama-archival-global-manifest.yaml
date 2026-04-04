@@ -1,0 +1,123 @@
+schema_version: 1
+updated_at_utc: '2026-04-04T05:50:28Z'
+canonical_preference:
+- d5
+- d2
+- d3
+- d1
+note: canonical_disk is chosen from the first label in canonical_preference that has
+  a copy; replica_* lists other archival roots that also hold this model.
+ssh_host_vm: x@192.168.8.65
+models:
+- ollama_descriptor: deepseek-coder-v2:16b
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 8905126121
+  size_human: 8.29 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: deepseek-coder:6.7b
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 3827834503
+  size_human: 3.56 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: deepseek-r1:14b-qwen-distill-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 8988112209
+  size_human: 8.37 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: deepseek-r1:8b-0528-qwen3-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 5225376047
+  size_human: 4.87 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: dolphin-llama3:8b
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 4661235994
+  size_human: 4.34 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: dolphin-mistral:latest
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 4108940323
+  size_human: 3.83 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: gemma4:26b-a4b-it-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 17987581215
+  size_human: 16.75 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: gemma4:e2b-it-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 7162405886
+  size_human: 6.67 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: gemma4:e2b-it-q8_0
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 8140152828
+  size_human: 7.58 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: gemma4:e4b-it-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 9608350718
+  size_human: 8.95 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: gemma4:e4b-it-q8_0
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 11636116476
+  size_human: 10.84 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: llama3.1:8b-instruct-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 4920753328
+  size_human: 4.58 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: qwen2.5-coder:14b-instruct-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 8988124298
+  size_human: 8.37 GiB
+  supermicro_cleared: 'no'
+- ollama_descriptor: qwen2.5-coder:7b
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 4683087561
+  size_human: 4.36 GiB
+  supermicro_cleared: 'no'

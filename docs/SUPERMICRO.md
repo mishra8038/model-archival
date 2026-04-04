@@ -53,9 +53,9 @@ Pascal has no native **bfloat16**; Ollama stacks in this project target **Q4_K_M
 ## Operator checklist
 
 1. **Service:** `systemctl status ollama` — listen **`0.0.0.0:11434`** if LAN clients are used.  
-2. **Pulls:** use **`supermicro-rig/scripts/pull-ollama-stack.sh`** (or ordered queue under **`supermicro-rig/models/`**).  
-3. **Stuck partials:** **`supermicro-rig/scripts/ollama-cleanup-partials.sh`** — only when no `ollama pull` is active.  
-4. **Archive:** from repo root, `cd ollama-hosting && ./scripts/ollama-sync.sh` (see **SYNC-JOB** for bridge vs VM-pull).  
+2. **Pulls:** prefer **`ollama-hosting/scripts/ollama-pull-queue --one`** (registry + **`registry/TARGET_QUEUE_ORDERED.txt`**); or **`supermicro-rig/scripts/pull-ollama-stack.sh`** (symlink to **`../scripts/`**). Queue files under **`supermicro-rig/models/`** symlink **`../registry/`**.  
+3. **Stuck partials:** **`ollama-hosting/scripts/ollama-clean-partials`** — default inspect-only; **`--delete`** only when abandoning resume (see script header).  
+4. **Archive:** `cd ollama-hosting && ./scripts/ollama-sync.sh` — optional **`./scripts/ollama-registry-sync`** to merge manifest + CSV into **`registry/OLLAMA_MODEL_REGISTRY.json`** (see **SYNC-JOB**).  
 5. **Prune supermicro:** only after VM copy is verified — **`ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md`** and **`scripts/ollama-supermicro-prune-plan.sh`**.
 
 ---

@@ -28,11 +28,10 @@ from pathlib import Path
 
 
 def _default_cycle() -> list[tuple[str, str]]:
+    # Single canonical archive root — one full copy on the VM (see OLLAMA-CACHE-POLICY.md).
+    # Override with ARCHIVAL_VM_SITE_CYCLE if you add another mount later.
     return [
         ("d5", "/mnt/models/d5/supermicro"),
-        ("d2", "/mnt/models/d2/supermicro"),
-        ("d3", "/mnt/models/d3/supermicro"),
-        ("d1", "/mnt/models/d1/supermicro"),
     ]
 
 

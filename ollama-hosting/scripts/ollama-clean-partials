@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Inspect or delete Ollama *partial* blobs — see ollama-cleanup-partials.sh (default: keep for resume).
+exec "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/ollama-cleanup-partials.sh" "$@"

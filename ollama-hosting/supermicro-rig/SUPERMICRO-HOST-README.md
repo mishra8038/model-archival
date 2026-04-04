@@ -1,4 +1,4 @@
-> **Mirror:** This file is a copy of `~/z/env/dev-environment/supermicro/README.md`. Update the canonical tree there, then refresh this copy under `ollama-hosting/supermicro-rig/`.
+> **Mirror:** Partial copy of `~/z/env/dev-environment/supermicro/README.md`. **Ollama files** (queue, scripts, sync wrapper, docs) are canonical in **`~/z/dev/ollama`** — see **`~/z/env/dev-environment/supermicro/OLLAMA.md`**.
 
 ## Supermicro 1028GQ-TXR – ML Server Notes
 
@@ -32,11 +32,7 @@ Performed on host `x@192.168.8.106`:
 - `set-gpu-power-limits.service` (system boot oneshot)
 - `ollama.service` (custom unit, listens on `0.0.0.0:11434`)
 
-**Ollama model picks** (leaderboard-style hostable set, Q4–FP16 ladder, uncensored/abliterated, specialties): [OLLAMA_HOSTABLE_LEADER_PICKS.md](OLLAMA_HOSTABLE_LEADER_PICKS.md).
-
-**Target queue + download history** (ordered pulls, sizes, HF mapping table, throttled script): [models/TARGET_MODEL_LIST.md](models/TARGET_MODEL_LIST.md).
-
-**Archival sync** (rsync Supermicro `~/.ollama` → disk VM; **destination rotates** `d5`→`d2`→`d3`→`d1` per run unless `ARCHIVAL_VM_DEST` is set): run **`ollama-hosting/scripts/ollama-sync.sh`** from the **model-archival monorepo** (see `ollama-hosting/README.md`). Sync **excludes** incomplete Ollama `*partial*` blobs by default; after sync it **cleans** stray partials on the VM and checks **manifest↔blob integrity**. After each run, open **`ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md`** for **which `model:tag` lives on which disk** before pruning the Supermicro cache (keep Gemma 4 + Qwen Coder only). See `ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`. The archival VM often cannot SSH to the Supermicro, so the script may use an **sshfs bridge** from a workstation that can reach both hosts.
+**Ollama** — scripts, registry, docs, systemd timer: **`~/z/dev/ollama`** (see **`~/z/env/dev-environment/supermicro/OLLAMA.md`**). Archival sync job: **`ollama-hosting/scripts/ollama-sync.sh`**; optional wrapper **`~/z/dev/ollama/scripts/ollama-sync`** merges the VM manifest into the registry. Workstation timer: **`~/z/dev/ollama/systemd/`**. Policy: **`ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`**. Before **`ollama rm`**: **`ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md`** / **`ollama-archival-global-manifest.yaml`**. Often an **sshfs bridge** from a workstation is used.
 
 ### vm_host_gpu tuning (dev-environment)
 

@@ -1,49 +1,62 @@
-# Ollama hosting (Supermicro + archival sync)
+# Ollama hosting (Supermicro + archival sync + pull registry)
 
-This directory is the **home for Ollama-on-Supermicro operations** in the model-archival monorepo: pull queues, systemd unit, client env examples, and **rsync archival sync** to the disk VM (`x@192.168.8.65`) with rotating destinations.
+Single folder for **Ollama operations** in the model-archival monorepo: **archival rsync**, **inventory/manifest**, **ordered pull queue**, **registry JSON**, and **operator scripts**.
 
 ## Layout
 
 | Path | Role |
 |------|------|
-| **`supermicro-rig/`** | Mirror of Ollama-related material from **`~/z/env/dev-environment/supermicro/`** (host `x@192.168.8.106`): model lists, pull scripts, `ollama.service`, Aider/Hermes/OpenClaw examples. Refresh from that tree when the live rig changes. |
-| **`scripts/`** | **`ollama-sync.sh`** (Supermicro `~/.ollama` → VM, rotation, inventory), VM maintain, prune planner, inventory/map generators. |
-| **`docs/`** | Cache policy, archival model map, specialist↔Ollama pending report, **`docs/SYNC-JOB.md`** (operator spec). |
-| **`docs/data/`** | Rotation state, VM inventory YAML, cache inventory, Ollama registry size cache. |
+| **`registry/`** | **`OLLAMA_MODEL_REGISTRY.json`**, **`ollama_registry_tool.py`**, **`TARGET_QUEUE_ORDERED.txt`**, **`TARGET_PULL_HISTORY.csv`**, **`pull-queue-throttled.sh`** (wrapper → `scripts/ollama-pull-queue`) |
+| **`scripts/`** | **`ollama-sync.sh`** (rsync Supermicro `~/.ollama` → archival VM), **`ollama-registry-sync`** (sync + merge manifest + CSV into JSON), **`ollama-pull-queue`**, **`ollama-clean-partials`**, **`pull-ollama-stack.sh`**, **`pull-ollama-70b-stack.sh`**, **`pull-ollama-uncensored.sh`**, … |
+| **`docs/`** | **`OLLAMA-ARCHIVE-WORKFLOW.md`**, **`TARGET_MODEL_LIST.md`**, **`OLLAMA-CACHE-POLICY.md`**, **`OLLAMA-ARCHIVAL-MODEL-MAP.md`**, **`SPECIALIST-HF-PENDING-OLLAMA.md`**, **`docs/data/`** (manifest, inventory, rotation state) |
+| **`config/`** | `ollama.service` example, Aider / Hermes / OpenClaw env examples |
+| **`systemd/`** | User units for **`ollama-registry-sync`** (timer + oneshot service) |
+| **`supermicro-rig/`** | Host notes; **`supermicro-rig/models/`** symlinks into **`registry/`** and **`docs/TARGET_MODEL_LIST.md`** for backward-compatible paths |
 
 ## Quick commands
 
-From repo root (`model-archival/model-archival`):
-
 ```bash
-cd ollama-hosting
-uv sync   # once, for inventory / specialist report helpers
+cd ollama-hosting   # this directory
 
-# Sync Ollama cache to archival VM (default: rotate d5 → d2 → d3 → d1)
-./scripts/ollama-sync.sh
+# Archival sync + refresh registry (from machine with SSH to Supermicro + VM)
+./scripts/ollama-registry-sync
 
-# Same with supermicro_cleared inference (SSH to both hosts)
-OLLAMA_VM_INVENTORY_EXTRA='--infer-supermicro-cleared --supermicro-ssh x@192.168.8.106' ./scripts/ollama-sync.sh
+# On the GPU host (Ollama running); copy this repo or mount it
+export OLLAMA_HOST=127.0.0.1:11434
+./scripts/ollama-pull-queue --one
 
-# VM-only maintenance (no rsync)
-./scripts/ollama-archive-vm-maintain.sh
+# Registry tool
+cd registry && python3 ollama_registry_tool.py status
 ```
 
-**Canonical source for the GPU host** (bootstrap notes, Gemma tags, power limits) still lives in the dev-environment tree: **`~/z/env/dev-environment/supermicro/`**. Copy updates into `supermicro-rig/` when you change pull lists or service layout there.
+**Python env** (inventory / specialist helpers): `uv sync` once in **`ollama-hosting/`**.
 
-## Related monorepo pieces
+## Expected operator flow (Supermicro + archive VM)
 
-- **HF archiver** configs referenced by `generate_specialist_ollama_pending_report.py`: `../model-archival/config/` (`registry-specialists.yaml`, `registry.yaml`, `failed-models-registry.yaml`). Outputs and cache stay under **`ollama-hosting/docs/`**.
-- **Fingerprints:** `../fingerprints/scripts/snapshot_ollama_library.py` (not duplicated here).
+1. **Edit queue / registry** here (canonical), commit if needed.
+2. **Deploy pull kit to the GPU host** at **`~/z/dev/ollama/`** (real files — Supermicro does not need the workstation’s `model-archival` stub layout):
 
-## Split state (until you migrate)
+   ```bash
+   OLLAMA_SUPERMICRO_SSH=x@192.168.8.106 ./scripts/deploy-ollama-pull-kit-to-supermicro.sh
+   ```
 
-`model-archival/docs/data/ollama-sync-rotation.state` and related files still exist. After you confirm **`ollama-hosting`** workflows, either **copy the latest state** into `ollama-hosting/docs/data/` or **symlink** the old paths here so rotation does not fork.
+3. **Start pulls on Supermicro** (foreground or background):
 
-## Documentation
+   ```bash
+   OLLAMA_SUPERMICRO_SSH=x@192.168.8.106 ./scripts/trigger-ollama-pull-on-supermicro.sh
+   # or: ssh x@host 'cd ~/z/dev/ollama && ./scripts/ollama-pull-queue --one'
+   ```
 
-- **`docs/SYNC-JOB.md`** — job specification (strategies, env vars, rotation, safety).
-- **`docs/OLLAMA-CACHE-POLICY.md`** — retention, prune policy, inventory files.
-- **`supermicro-rig/SUPERMICRO-HOST-README.md`** — full Supermicro 1028GQ-TXR host notes (copied from dev-environment).
-- **Repo-level overview:** [`../docs/SUPERMICRO.md`](../docs/SUPERMICRO.md) — how the Supermicro fits the monorepo (anchors, checklist, links).
-- **Consolidated monorepo prompt:** [`../docs/PROJECT-PROMPT-AND-REQUIREMENTS.md`](../docs/PROJECT-PROMPT-AND-REQUIREMENTS.md).
+4. **Poll / copy completed cache to archival disks** — from a host with SSH to Supermicro **and** the archive VM, run **`./scripts/ollama-registry-sync`** (wraps **`ollama-sync.sh`** rsync of `~/.ollama` → rotation destinations, then merges manifest + pull history + **`sync-pull-from-archive`**). Schedule with **`systemd/`** user timer on the bridge/workstation if you want periodic polling.
+
+So: **deploy queue → pull on Supermicro → registry-sync moves blobs to archive VM** (then verify manifest / **`ollama rm`** on Supermicro per **`docs/OLLAMA-ARCHIVE-WORKFLOW.md`**).
+
+## Related monorepo docs
+
+- **[`../docs/SUPERMICRO.md`](../docs/SUPERMICRO.md)** — Supermicro role in the archive story  
+- **HF registries** used by specialist report generators: **`../model-archival/config/`**
+
+## `~/z/dev/ollama` on different machines
+
+- **Workstation** (next to `model-archival`): often a **stub** with symlinks + wrappers into this repo (see **`~/z/dev/ollama/README.md`**).
+- **Supermicro**: expect a **deployed copy** of **`registry/`** + pull **`scripts/`** at **`~/z/dev/ollama/`** from **`deploy-ollama-pull-kit-to-supermicro.sh`** — no dependency on `model-archival` being cloned there.

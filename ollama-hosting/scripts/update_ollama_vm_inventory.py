@@ -126,7 +126,8 @@ if __name__ == "__main__":
 
 
 def _run_remote_scanner(ssh: str, roots: list[tuple[str, str]]) -> list[dict[str, Any]]:
-    specs_json = json.dumps([{"root": r, "label": l} for r, l in roots])
+    # roots tuples are (disk_label, root_abs); JSON must map root -> path, label -> disk.
+    specs_json = json.dumps([{"root": path, "label": label} for label, path in roots])
     b64 = base64.b64encode(specs_json.encode()).decode("ascii")
     body = _REMOTE_SCANNER
     body = body.replace(
@@ -136,8 +137,11 @@ def _run_remote_scanner(ssh: str, roots: list[tuple[str, str]]) -> list[dict[str
         + "').decode())\n    all_rows = []\n    for item in specs:",
         1,
     )
+    # Use python3 - (stdin) instead of python3 -c BODY: multiline -c breaks on the
+    # remote side when sshd runs the command through sh -c (quotes/newlines).
     proc = subprocess.run(
-        ["ssh", "-o", "BatchMode=yes", ssh, "python3", "-c", body],
+        ["ssh", "-o", "BatchMode=yes", ssh, "python3", "-u", "-"],
+        input=body.encode("utf-8"),
         env={**os.environ, "PYTHONUNBUFFERED": "1"},
         capture_output=True,
         timeout=600,
@@ -155,7 +159,7 @@ def _run_remote_scanner(ssh: str, roots: list[tuple[str, str]]) -> list[dict[str
 
 
 def _run_local_scan(roots: list[tuple[str, str]]) -> list[dict[str, Any]]:
-    specs_json = json.dumps([{"root": r, "label": l} for r, l in roots])
+    specs_json = json.dumps([{"root": path, "label": label} for label, path in roots])
     b64 = base64.b64encode(specs_json.encode()).decode("ascii")
     body = _REMOTE_SCANNER.replace(
         "def main():\n    specs = json.loads(sys.stdin.read())\n    all_rows = []\n    for item in specs:",
@@ -200,7 +204,8 @@ for mf in root.rglob("*"):
     print(f"{model}:{tag}")
 """
     proc = subprocess.run(
-        ["ssh", "-o", "BatchMode=yes", ssh, "python3", "-c", script, ollama_home],
+        ["ssh", "-o", "BatchMode=yes", ssh, "python3", "-", ollama_home],
+        input=script,
         capture_output=True,
         text=True,
         timeout=120,
@@ -279,9 +284,6 @@ def main() -> None:
 
     default_roots: list[tuple[str, str]] = [
         ("d5", "/mnt/models/d5/supermicro"),
-        ("d2", "/mnt/models/d2/supermicro"),
-        ("d3", "/mnt/models/d3/supermicro"),
-        ("d1", "/mnt/models/d1/supermicro"),
     ]
     roots: list[tuple[str, str]] = []
     if args.root:
