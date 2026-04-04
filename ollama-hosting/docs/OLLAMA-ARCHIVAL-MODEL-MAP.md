@@ -1,6 +1,6 @@
 # Ollama archival model map
 
-_Generated from inventory snapshot **2026-04-04T05:50:28Z**._
+_Generated from inventory snapshot **2026-04-04T06:43:57Z**._
 
 **Supermicro retention (after VM sync):** keep **Gemma 4** (MoE + dense + edge) and **Qwen Coder** only; see `ollama-hosting/scripts/ollama-supermicro-prune-plan.sh` and `ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`. Other tags should exist on the archival VM below before you `ollama rm` them on the Supermicro.
 

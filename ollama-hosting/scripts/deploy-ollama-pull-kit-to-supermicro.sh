@@ -26,7 +26,9 @@ if [[ -z "$REMOTE" ]]; then
 fi
 
 ROOT="${OLLAMA_SUPERMICRO_ROOT:-~/z/dev/ollama}"
-RSYNC=(rsync -avz "${RSYNC_EXTRA:-}")
+RSYNC=(rsync -avz)
+# shellcheck disable=SC2206
+[[ -n "${RSYNC_EXTRA:-}" ]] && RSYNC+=($RSYNC_EXTRA)
 
 echo "Deploy pull kit → ${REMOTE}:${ROOT}" >&2
 ssh -o BatchMode=yes "$REMOTE" "mkdir -p ${ROOT}/registry ${ROOT}/scripts ${ROOT}/logs"

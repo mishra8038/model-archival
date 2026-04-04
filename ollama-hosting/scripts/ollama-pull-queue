@@ -18,6 +18,12 @@
 #   SKIP_SYNC_PULL_FROM_ARCHIVE=1  — skip that step (not recommended).
 #   RE_PULL_ARCHIVED=1             — also offer tags that are only on the VM for re-download to Supermicro.
 #
+# Single-runner / restart (default: replace stale work):
+#   OLLAMA_PULL_QUEUE_REPLACE=1       — before locking: SIGTERM/SIGKILL other ollama-pull-queue PIDs (not this one),
+#                                     then remove stale $LOCK_FILE so a fresh run can start.
+#   OLLAMA_PULL_QUEUE_REPLACE=0       — refuse if another instance holds the lock (legacy behavior).
+#   OLLAMA_PULL_QUEUE_KILL_OLLAMA_PULL=1 — also stop stray `ollama pull` children (default 1; set 0 to leave pulls alone).
+#
 # Paths:
 #   OLLAMA_DEV_ROOT   ollama-hosting root (default: parent of scripts/)
 #   OLLAMA_MODELS     Registry dir (default: $OLLAMA_DEV_ROOT/registry)
@@ -44,8 +50,41 @@ CONTINUE_ON_FAIL="${CONTINUE_ON_FAIL:-0}"
 PULL_GROUP="${OLLAMA_PULL_GROUP:-}"
 SKIP_SYNC_PULL_FROM_ARCHIVE="${SKIP_SYNC_PULL_FROM_ARCHIVE:-}"
 RE_PULL_ARCHIVED="${RE_PULL_ARCHIVED:-}"
+THIS_PID=$$
 
 log() { printf '[%s] %s\n' "$(date -Iseconds)" "$*"; }
+
+_cleanup_pids_sigterm_then_sigkill() {
+  local pattern="$1"
+  local label="$2"
+  local -a pids=()
+  mapfile -t pids < <(pgrep -f "$pattern" 2>/dev/null || true)
+  local p
+  for p in "${pids[@]:-}"; do
+    [[ -z "$p" || "$p" -eq "$THIS_PID" ]] && continue
+    log "$label: SIGTERM pid $p ($pattern)"
+    kill -TERM "$p" 2>/dev/null || true
+  done
+  sleep 1
+  mapfile -t pids < <(pgrep -f "$pattern" 2>/dev/null || true)
+  for p in "${pids[@]:-}"; do
+    [[ -z "$p" || "$p" -eq "$THIS_PID" ]] && continue
+    log "$label: SIGKILL pid $p"
+    kill -KILL "$p" 2>/dev/null || true
+  done
+  sleep 0.2
+}
+
+replace_stale_pull_queue_instances() {
+  [[ "${OLLAMA_PULL_QUEUE_REPLACE:-1}" == "0" ]] && return 0
+  _cleanup_pids_sigterm_then_sigkill 'ollama-pull-queue' 'OLLAMA_PULL_QUEUE_REPLACE'
+  rm -f "$LOCK_FILE"
+}
+
+kill_stray_ollama_pull_clients() {
+  [[ "${OLLAMA_PULL_QUEUE_KILL_OLLAMA_PULL:-1}" == "0" ]] && return 0
+  _cleanup_pids_sigterm_then_sigkill 'ollama pull' 'OLLAMA_PULL_QUEUE_KILL_OLLAMA_PULL'
+}
 
 append_history() {
   local tag="$1" size="$2" status="$3" note="$4"
@@ -103,9 +142,13 @@ should_run_ollama_pull() {
   registry_py should-pull "${sp_args[@]}" "$model"
 }
 
+# Ensure one runner: stop prior queue + pull clients, then take lock.
+replace_stale_pull_queue_instances
+kill_stray_ollama_pull_clients
+
 exec 9>"$LOCK_FILE"
 if ! flock -n 9; then
-  log "Another process holds $LOCK_FILE — exit."
+  log "Another process still holds $LOCK_FILE after cleanup — exit (retry in a few seconds)."
   exit 1
 fi
 

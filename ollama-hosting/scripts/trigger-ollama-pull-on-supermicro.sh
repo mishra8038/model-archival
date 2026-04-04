@@ -3,6 +3,8 @@
 #
 # Prerequisite: deploy-ollama-pull-kit-to-supermicro.sh
 #
+# ollama-pull-queue replaces other queue instances by default (see OLLAMA_PULL_QUEUE_REPLACE).
+#
 #   OLLAMA_SUPERMICRO_SSH=user@host ./trigger-ollama-pull-on-supermicro.sh
 #
 # Environment:

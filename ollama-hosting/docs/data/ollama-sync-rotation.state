@@ -1,5 +1,11 @@
 {
   "schema_version": 1,
   "next_index": 0,
-  "sync_history": []
+  "sync_history": [
+    {
+      "utc": "2026-04-04T06:43:56Z",
+      "disk_label": "d5",
+      "root_abs": "/mnt/models/d5/supermicro"
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 schema_version: 1
-updated_at_utc: '2026-04-04T05:50:28Z'
+updated_at_utc: '2026-04-04T06:43:57Z'
 ssh_host_vm: x@192.168.8.65
 roots_scanned:
 - disk_label: d5
@@ -106,6 +106,3 @@ models:
   size_bytes: 4683087561
   size_human: 4.36 GiB
   supermicro_cleared: 'no'
-supermicro_inventory_ssh: x@192.168.8.106
-supermicro_cleared_note: 'supermicro_cleared inferred: no = still on supermicro cache;
-  yes = not listed on supermicro (cleared or never there).'

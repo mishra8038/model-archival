@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at_utc": "2026-04-04T06:30:13Z",
+  "updated_at_utc": "2026-04-04T06:43:57Z",
   "queue": [
     "deepseek-coder:6.7b",
     "qwen2.5-coder:7b",
