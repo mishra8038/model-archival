@@ -44,6 +44,7 @@ Python CLI + bash orchestration that downloads Hugging Face model weights to **m
 | `status.py` | Rich UI, `STATUS.md`, run report hooks |
 | `verifier.py` | SHA-256, `manifest.json`, `global_index.jsonl`, descriptors |
 | `preflight.py` | Drives, tools, HF token checks |
+| `failed_registry.py` | Classify failures from `run_state.json` + parse `run-report-*.md` → merged registry |
 
 ---
 
@@ -67,7 +68,8 @@ bash scripts/run.sh --all [--registry config/registry-specialists.yaml] [--drive
 bash scripts/stop.sh
 
 uv run archiver download --all --dry-run
-uv run archiver status | verify | list | drives | tokens check | report
+uv run archiver status | verify | list | drives | tokens check | report | queue-plan [--json] [--out-md PATH]
+uv run archiver failed-registry [--include-skipped] [--no-historical] [--reports-dir PATH ...]
 ```
 
 HF token: `deploy/sethfToken.sh` → `~/.hf_token`.

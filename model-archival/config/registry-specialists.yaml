@@ -118,8 +118,9 @@ models:
   licence: MIT
   requires_auth: false
   commit_sha: null
-  notes: '[discipline:strategic_reasoning][game_theory] Full-precision parent of tensorblock
-    DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF; archive for non-quant workflows.'
+  notes: '[ollama:deepseek-r1:32b-class] [discipline:strategic_reasoning][game_theory]
+    Full-precision parent of tensorblock DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF;
+    archive for non-quant workflows.'
 - id: Qwen/QwQ-32B
   hf_repo: Qwen/QwQ-32B
   tier: G
@@ -196,48 +197,8 @@ models:
   requires_auth: false
   commit_sha: null
   notes: '[discipline:frontier][qwen3.5] MoE instruct/chat (~35B, ~3B active).'
-- id: Qwen/Qwen3.5-122B-A10B
-  hf_repo: Qwen/Qwen3.5-122B-A10B
-  tier: G
-  drive: d1
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: '[discipline:frontier][qwen3.5] Large MoE (~122B, ~10B active); D1-scale weights.'
-- id: Qwen/Qwen3.5-397B-A17B
-  hf_repo: Qwen/Qwen3.5-397B-A17B
-  tier: G
-  drive: d1
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: '[discipline:frontier][qwen3.5] Flagship MoE (~397B, ~17B active); largest tier — ensure D1 free.'
-# --- MiniMax M2.5 (public HF; PinchBench: minimax/minimax-m2.5) ---
-- id: MiniMaxAI/MiniMax-M2.5
-  hf_repo: MiniMaxAI/MiniMax-M2.5
-  tier: G
-  drive: d1
-  priority: 2
-  licence: other
-  requires_auth: false
-  commit_sha: null
-  notes: '[discipline:frontier][minimax] MiniMax M2.5 MoE open weights; agent/coding line. Very
-    large multi-shard tree — D1; ensure free space before run. HF: MiniMaxAI/MiniMax-M2.5.'
-# --- MiniMax M2.7 (PinchBench: minimax/minimax-m2.7) — keep for future downloads ---
-# Hub visibility TBD (404/logged-out vs gated). When live: accept terms on model card, then
-# `archiver tokens check`. Add BF16/FP8/NVFP4 sibling hf_repo rows here if MiniMax splits them.
-- id: MiniMaxAI/MiniMax-M2.7
-  hf_repo: MiniMaxAI/MiniMax-M2.7
-  tier: G
-  drive: d1
-  priority: 2
-  licence: other
-  requires_auth: true
-  commit_sha: null
-  notes: '[discipline:frontier][minimax] MiniMax M2.7 — registry slot kept for future pull when HF
-    repo is available; verify card + token before run. Large shards — D1. PinchBench: minimax/minimax-m2.7.'
+# Qwen3.5-122B-A10B / Qwen3.5-397B-A17B — main registry.yaml only (HF payload > ~140 GB).
+# MiniMaxAI/MiniMax-M2.5 — main registry.yaml only (same reason).
 - id: dmis-lab/biobert-base-cased-v1.2
   hf_repo: dmis-lab/biobert-base-cased-v1.2
   tier: G
@@ -267,30 +228,362 @@ models:
   requires_auth: true
   commit_sha: null
   notes: Gemma-3 4B multimodal — smallest capable open VLM
-# --- Google Gemini 3 (HF; licence-gated — hub pages 401 until terms accepted + token) ---
-# PinchBench uses google/gemini-3-flash-preview; Gemini API model id for lite line is
-# gemini-3.1-flash-lite-preview (HF repo id assumed parallel — fix hf_repo if Google renames).
-- id: google/gemini-3-flash-preview
-  hf_repo: google/gemini-3-flash-preview
+# --- Google Gemma 4 (Apr 2026; Apache 2.0, ungated on HF — collection google/gemma-4)
+# Priority band 1–2: finish E2B/E4B/26B BF16 before 31B; scheduler sorts (priority, drive, id).
+# ---
+- id: google/gemma-4-E2B
+  hf_repo: google/gemma-4-E2B
   tier: F
   drive: d3
-  priority: 2
-  licence: other
-  requires_auth: true
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
   commit_sha: null
-  notes: '[discipline:frontier][google] Gemini 3 Flash Preview on Hugging Face (gated).
-    Multimodal flash tier; accept terms on model card. PinchBench: google/gemini-3-flash-preview.'
-- id: google/gemini-3.1-flash-lite-preview
-  hf_repo: google/gemini-3.1-flash-lite-preview
+  notes: 'Gemma 4 E2B base — multimodal (text/image/audio), 128K ctx; smallest Gemma 4 line.'
+- id: google/gemma-4-E2B-it
+  hf_repo: google/gemma-4-E2B-it
   tier: F
   drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 E2B instruct; any-to-any pipeline on HF.
+- id: google/gemma-4-E4B
+  hf_repo: google/gemma-4-E4B
+  tier: F
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 E4B base — multimodal edge; 128K ctx.
+- id: google/gemma-4-E4B-it
+  hf_repo: google/gemma-4-E4B-it
+  tier: F
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 E4B instruct; any-to-any pipeline on HF.
+- id: google/gemma-4-26B-A4B
+  hf_repo: google/gemma-4-26B-A4B
+  tier: F
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 26B MoE (A4B active); multimodal; 256K ctx.
+- id: google/gemma-4-26B-A4B-it
+  hf_repo: google/gemma-4-26B-A4B-it
+  tier: F
+  drive: d2
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 26B MoE instruct; image-text-to-text on HF.
+- id: google/gemma-4-31B
+  hf_repo: google/gemma-4-31B
+  tier: F
+  drive: d1
   priority: 2
-  licence: other
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 31B dense base; 256K ctx — priority 2 after E2B/E4B/26B BF16 (priority 1).
+- id: google/gemma-4-31B-it
+  hf_repo: google/gemma-4-31B-it
+  tier: F
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 31B dense instruct — priority 2 after smaller Gemma 4 BF16 completes.
+# --- 4x NVIDIA P100 local inference stack (Ollama-style tags → HF; GGUF repos hold multiple quants)
+# Priority 3 — immediately after Google Gemma 4 BF16 (priorities 1–2); GGUF + BF16 same band (tie: drive, id).
+# ---
+- id: bartowski/google_gemma-4-E2B-it-GGUF
+  hf_repo: bartowski/google_gemma-4-E2B-it-GGUF
+  tier: F
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: google/gemma-4-E2B-it
+  quant_levels:
+  - Q4_K_M
+  - Q8_0
+  notes: '[ollama:gemma4:e2b-it-q4_K_M, gemma4:e2b-it-q8_0] GGUF shards for Gemma 4 E2B
+    instruct; pairs with google/gemma-4-E2B-it.'
+- id: bartowski/google_gemma-4-E4B-it-GGUF
+  hf_repo: bartowski/google_gemma-4-E4B-it-GGUF
+  tier: F
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: google/gemma-4-E4B-it
+  quant_levels:
+  - Q4_K_M
+  - Q8_0
+  notes: '[ollama:gemma4:e4b-it-q4_K_M, gemma4:e4b-it-q8_0] GGUF shards for Gemma 4 E4B
+    instruct; pairs with google/gemma-4-E4B-it.'
+- id: bartowski/google_gemma-4-26B-A4B-it-GGUF
+  hf_repo: bartowski/google_gemma-4-26B-A4B-it-GGUF
+  tier: F
+  drive: d2
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: google/gemma-4-26B-A4B-it
+  quant_levels:
+  - Q4_K_M
+  - Q8_0
+  notes: '[ollama:gemma4:26b-a4b-it-q4_K_M, gemma4:26b-a4b-it-q8_0] GGUF for Gemma 4 26B
+    MoE instruct; multi-GPU friendly on P100.'
+- id: bartowski/google_gemma-4-31B-it-GGUF
+  hf_repo: bartowski/google_gemma-4-31B-it-GGUF
+  tier: F
+  drive: d1
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: google/gemma-4-31B-it
+  quant_levels:
+  - Q4_K_M
+  - Q8_0
+  notes: '[ollama:gemma4:31b-it-q4_K_M, gemma4:31b-it-q8_0] GGUF for Gemma 4 31B dense
+    instruct; largest in this stack — prefer spare d1/d2 space.'
+# --- Ollama “architecture / generalist” — Llama-3.3-70B / R1-Llama-70B / Qwen2.5-72B-Instruct BF16 parents are registry.yaml only (>~140 GB on HF).
+- id: Qwen/Qwen2.5-Coder-7B-Instruct
+  hf_repo: Qwen/Qwen2.5-Coder-7B-Instruct
+  tier: B
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:qwen2.5-coder:7b] Qwen2.5 Coder 7B instruct (BF16/safetensors); fast
+    edits / completions on limited VRAM.'
+- id: bartowski/Qwen2.5-Coder-7B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-Coder-7B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: Qwen/Qwen2.5-Coder-7B-Instruct
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:qwen2.5-coder:7b] GGUF; pick Q4_K_M (or other) shard to match Ollama-class
+    runtimes on P100.'
+- id: Qwen/Qwen2.5-Coder-14B-Instruct
+  hf_repo: Qwen/Qwen2.5-Coder-14B-Instruct
+  tier: B
+  drive: d2
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:qwen2.5-coder:14b-instruct-q4_K_M] Qwen2.5 Coder 14B instruct parent;
+    GGUF quant in bartowski repo.'
+- id: bartowski/Qwen2.5-Coder-14B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-Coder-14B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: Qwen/Qwen2.5-Coder-14B-Instruct
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:qwen2.5-coder:14b-instruct-q4_K_M] GGUF Q4_K_M-class shards for 14B
+    coder; strong single-GPU coding quality on ~16GB.'
+- id: Qwen/Qwen2.5-Coder-32B-Instruct
+  hf_repo: Qwen/Qwen2.5-Coder-32B-Instruct
+  tier: B
+  drive: d2
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:qwen2.5-coder:32b-instruct-q4_K_M] Qwen2.5 Coder 32B instruct parent;
+    flagship in family — multi-GPU or use GGUF below.'
+- id: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
+  hf_repo: bartowski/Qwen2.5-Coder-32B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: Qwen/Qwen2.5-Coder-32B-Instruct
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:qwen2.5-coder:32b-instruct-q4_K_M] GGUF; multi-GPU / tensor-parallel
+    for 32B coder on P100.'
+- id: meta-llama/Llama-3.1-8B-Instruct
+  hf_repo: meta-llama/Llama-3.1-8B-Instruct
+  tier: A
+  drive: d2
+  priority: 3
+  licence: llama3.1
   requires_auth: true
   commit_sha: null
-  notes: '[discipline:frontier][google] Gemini 3.1 Flash-Lite Preview on Hugging Face
-    (gated). Lower-cost / lower-latency flash line per Google AI model docs; verify
-    hf_repo matches the card if download fails.'
+  notes: '[ollama:llama3.1:8b-instruct-q4_K_M] Llama 3.1 8B instruct (BF16); accept
+    Meta licence on HF; pair with bartowski GGUF for Q4_K_M runtimes.'
+- id: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+  hf_repo: bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: llama3.1
+  requires_auth: false
+  commit_sha: null
+  parent_model: meta-llama/Llama-3.1-8B-Instruct
+  quant_levels:
+  - Q4_K_M
+  - Q8_0
+  notes: '[ollama:llama3.1:8b-instruct-q4_K_M] GGUF; select Q4_K_M (or Q8_0) shard for
+    tooling / agents on P100.'
+- id: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+  hf_repo: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+  tier: G
+  drive: d3
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:deepseek-r1:8b-0528-qwen3-q4_K_M] DeepSeek-R1 0528 line distilled
+    to Qwen3 8B (BF16); reasoning / design vs primary codegen.'
+- id: bartowski/deepseek-ai_DeepSeek-R1-0528-Qwen3-8B-GGUF
+  hf_repo: bartowski/deepseek-ai_DeepSeek-R1-0528-Qwen3-8B-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  parent_model: deepseek-ai/DeepSeek-R1-0528-Qwen3-8B
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:deepseek-r1:8b-0528-qwen3-q4_K_M] GGUF; Q4_K_M-class file aligns with
+    typical Ollama q4_K_M pull.'
+- id: bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF
+  hf_repo: bartowski/DeepSeek-R1-Distill-Qwen-14B-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  parent_model: deepseek-ai/DeepSeek-R1-Distill-Qwen-14B
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:deepseek-r1:14b-qwen-distill-q4_K_M] GGUF for R1-distill Qwen 14B;
+    complements existing deepseek-ai/DeepSeek-R1-Distill-Qwen-14B entry above.'
+- id: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  hf_repo: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  tier: B
+  drive: d2
+  priority: 3
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:deepseek-coder-v2:16b] DeepSeek Coder V2 Lite (~16B active) instruct
+    parent; MoE family — check VRAM vs BF16.'
+- id: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
+  hf_repo: bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: null
+  parent_model: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:deepseek-coder-v2:16b] GGUF quant of Coder V2 Lite instruct for
+    single-GPU P100 runs.'
+- id: bigcode/starcoder2-15b
+  hf_repo: bigcode/starcoder2-15b
+  tier: B
+  drive: d2
+  priority: 3
+  licence: BigCode-OpenRAIL-M
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:starcoder2:15b-instruct-q4_K_M] StarCoder2 15B base/instruct weights
+    on HF; code-native baseline — pair with instruct GGUF below.'
+- id: bartowski/starcoder2-15b-instruct-GGUF
+  hf_repo: bartowski/starcoder2-15b-instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: BigCode-OpenRAIL-M
+  requires_auth: false
+  commit_sha: null
+  parent_model: bigcode/starcoder2-15b
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:starcoder2:15b-instruct-q4_K_M] StarCoder2 15B instruct GGUF; Q4_K_M-class
+    shard for P100.'
+- id: deepseek-ai/deepseek-coder-33b-instruct
+  hf_repo: deepseek-ai/deepseek-coder-33b-instruct
+  tier: B
+  drive: d1
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:deepseek-coder:33b-instruct-q4_K_M] DeepSeek Coder 33B instruct parent;
+    heavy code model — multi-GPU or GGUF.'
+- id: tensorblock/deepseek-coder-33b-instruct-GGUF
+  hf_repo: tensorblock/deepseek-coder-33b-instruct-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  parent_model: deepseek-ai/deepseek-coder-33b-instruct
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:deepseek-coder:33b-instruct-q4_K_M] GGUF Q4_K_M-class shards for
+    DeepSeek Coder 33B instruct.'
+- id: mistralai/Mixtral-8x7B-Instruct-v0.1
+  hf_repo: mistralai/Mixtral-8x7B-Instruct-v0.1
+  tier: A
+  drive: d2
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[ollama:mixtral:8x7b-instruct-v0.1-q4_K_M] Mixtral 8x7B MoE instruct (BF16);
+    needs multi-GPU; pair with GGUF for quantized local run.'
+- id: tensorblock/Mixtral-8x7B-Instruct-v0.1-GGUF
+  hf_repo: tensorblock/Mixtral-8x7B-Instruct-v0.1-GGUF
+  tier: C
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  parent_model: mistralai/Mixtral-8x7B-Instruct-v0.1
+  quant_levels:
+  - Q4_K_M
+  notes: '[ollama:mixtral:8x7b-instruct-v0.1-q4_K_M] GGUF MoE shards; multi-GPU P100
+    for respectable throughput.'
 - id: jinaai/jina-embeddings-v3
   hf_repo: jinaai/jina-embeddings-v3
   tier: B
@@ -531,7 +824,8 @@ models:
   licence: MIT
   requires_auth: false
   commit_sha: e5d64addd26a6a1db0f9b863abf6ee3141936807
-  notes: DeepSeek Coder v1 6.7B — strong small code model; 16K context
+  notes: '[ollama:deepseek-coder:6.7b] DeepSeek Coder v1 6.7B — strong small code model;
+    16K context'
 - id: HuggingFaceH4/zephyr-7b-beta
   hf_repo: HuggingFaceH4/zephyr-7b-beta
   tier: G
@@ -580,15 +874,6 @@ models:
   commit_sha: 87acb4b94e930c3d679e6e7ee9d57e2feab9ea71
   notes: 12B multimodal safety classifier pruned from Llama 4 Scout; input/output
     content moderation for text+images
-- id: mistralai/Leanstral-120B-A6B
-  hf_repo: mistralai/Leanstral-120B-A6B
-  tier: E
-  drive: d5
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Leanstral 120B-A6B sparse code/proof agent for Lean 4; Apache-2.0; see https://mistral.ai/news/leanstral
 - id: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
   hf_repo: mlabonne/NeuralDaredevil-8B-abliterated-GGUF
   tier: D
@@ -707,47 +992,16 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Embedding — multilingual; state-of-the-art retrieval
-- id: cognitivecomputations/dolphin-2.9.2-qwen2-72b
-  hf_repo: cognitivecomputations/dolphin-2.9.2-qwen2-72b
-  tier: D
-  drive: d5
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  parent_model: Qwen/Qwen2-72B
-  method: supervised-finetune
-  notes: Dolphin 72B — popular uncensored 72B
 - id: deepseek-ai/deepseek-vl2
   hf_repo: deepseek-ai/deepseek-vl2
   tier: F
-  drive: d5
+  drive: d3
   priority: 4
   licence: MIT
   requires_auth: false
   commit_sha: null
-  notes: DeepSeek MoE vision model — high-end open VLM; regulatory-risk preservation
-- id: failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
-  hf_repo: failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5
-  tier: D
-  drive: d3
-  priority: 4
-  licence: llama3
-  requires_auth: false
-  commit_sha: null
-  parent_model: meta-llama/Meta-Llama-3-70B-Instruct
-  method: abliteration
-  notes: 'failspy v3 series — weights live on D3 uncensored/ (moved from D5 2026-03-29).
-    Stale .tmp stubs on d3/d5 are safe to remove.'
-- id: meta-llama/Llama-3.2-90B-Vision-Instruct
-  hf_repo: meta-llama/Llama-3.2-90B-Vision-Instruct
-  tier: F
-  drive: d5
-  priority: 4
-  licence: llama3.2
-  requires_auth: true
-  commit_sha: null
-  notes: Meta's large open vision model — accept licence on HF
+  notes: DeepSeek MoE vision model — high-end open VLM; regulatory-risk preservation.
+    drive d3 — avoid d1 ENOSPC retries (~69 GiB free on VM).
 - id: meta-llama/Llama-Prompt-Guard-2-22M
   hf_repo: meta-llama/Llama-Prompt-Guard-2-22M
   tier: E
@@ -758,94 +1012,6 @@ models:
   commit_sha: 11614a155199674a0a95e6602d6ab0417b790ed0
   notes: Lightweight prompt safety model (22M); detects jailbreaks/malicious prompts
     for Llama 3/4 and other LLMs
-- id: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  hf_repo: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  tier: D
-  drive: d5
-  priority: 4
-  licence: llama3.1
-  requires_auth: true
-  commit_sha: null
-  notes: 'Nemotron Ultra 253B; Llama-3.1-based flagship; lowest priority [deprioritized:
-    very large / low specialist ROI]'
-- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
-  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
-  tier: D
-  drive: d5
-  priority: 4
-  licence: nvidia-open-model-license
-  requires_auth: false
-  commit_sha: null
-  notes: 'Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority [deprioritized:
-    very large / low specialist ROI]'
-- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
-  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
-  tier: D
-  drive: d5
-  priority: 4
-  licence: nvidia-open-model-license
-  requires_auth: false
-  commit_sha: null
-  notes: 'Nemotron 3 Super instruct; 124B MoE, 1M ctx; lowest priority [deprioritized:
-    very large / low specialist ROI]'
-- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
-  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
-  tier: D
-  drive: d5
-  priority: 4
-  licence: nvidia-open-model-license
-  requires_auth: false
-  commit_sha: null
-  notes: 'Nemotron 3 Super FP8 quant; lowest priority [deprioritized: very large /
-    low specialist ROI]'
-- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4
-  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4
-  tier: D
-  drive: d5
-  priority: 4
-  licence: nvidia-open-model-license
-  requires_auth: false
-  commit_sha: null
-  notes: 'Nemotron 3 Super NVFP4 quant; lowest priority [deprioritized: very large
-    / low specialist ROI]'
-- id: Qwen/Qwen2.5-Math-72B-Instruct
-  hf_repo: Qwen/Qwen2.5-Math-72B-Instruct
-  tier: G
-  drive: d5
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: State-of-the-art open math model at 72B
-- id: Qwen/Qwen2.5-VL-72B-Instruct
-  hf_repo: Qwen/Qwen2.5-VL-72B-Instruct
-  tier: F
-  drive: d5
-  priority: 4
-  licence: Qwen
-  requires_auth: false
-  commit_sha: null
-  notes: Best open VLM at 72B — image/video understanding
-- id: rombodawg/Rombos-LLM-V2.5-Qwen-72b
-  hf_repo: rombodawg/Rombos-LLM-V2.5-Qwen-72b
-  tier: D
-  drive: d5
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  parent_model: Qwen/Qwen2.5-72B-Instruct
-  method: merge
-  notes: Large uncensored Qwen2.5-72B merge; popular power-user model
-- id: Skywork/Skywork-Reward-Llama-3.1-70B
-  hf_repo: Skywork/Skywork-Reward-Llama-3.1-70B
-  tier: B
-  drive: d5
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Reward model — critical for DIY RLHF/DPO if upstream disappears
 - id: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   tier: D
@@ -874,28 +1040,6 @@ models:
   method: abliteration
   notes: 'tensorblock Q2_K/Q3_K_M; partial Q3_K_M + aria2 under d5/.tmp/ (d3 .tmp empty
     for this id). Schedule on D5.'
-- id: unsloth/DeepSeek-R1-GGUF
-  hf_repo: unsloth/DeepSeek-R1-GGUF
-  tier: C
-  drive: d5
-  priority: 4
-  licence: MIT
-  requires_auth: false
-  commit_sha: null
-  quant_levels:
-  - Q4_K_M
-  notes: 671B — Q4_K_M only (~340 GB)
-- id: unsloth/DeepSeek-V3-GGUF
-  hf_repo: unsloth/DeepSeek-V3-GGUF
-  tier: C
-  drive: d5
-  priority: 4
-  licence: MIT
-  requires_auth: false
-  commit_sha: null
-  quant_levels:
-  - Q4_K_M
-  notes: 671B — Q4_K_M only (~340 GB)
 - id: unsloth/phi-4-unsloth-bnb-4bit
   hf_repo: unsloth/phi-4-unsloth-bnb-4bit
   tier: C
@@ -906,15 +1050,6 @@ models:
   commit_sha: null
   notes: Space-efficient 4-bit Phi-4 variant — practical small chat model for limited
     hardware
-- id: alpindale/dbrx-instruct
-  hf_repo: alpindale/dbrx-instruct
-  tier: A
-  drive: d5
-  priority: 4
-  licence: other
-  requires_auth: false
-  commit_sha: null
-  notes: Community DBRX instruct conversion; ungated fallback when databricks/dbrx-instruct is inaccessible
 - id: mlx-community/dbrx-instruct-4bit
   hf_repo: mlx-community/dbrx-instruct-4bit
   tier: C
@@ -942,22 +1077,3 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Community fixed quantized DBRX instruct variant
-- id: Undi95/dbrx-base
-  hf_repo: Undi95/dbrx-base
-  tier: A
-  drive: d5
-  priority: 4
-  licence: other
-  requires_auth: false
-  commit_sha: null
-  notes: Community mirror of DBRX base (Databricks Open Model License metadata); use when databricks/dbrx-base gated access is unavailable
-- id: xai-org/grok-2
-  hf_repo: xai-org/grok-2
-  tier: G
-  drive: d5
-  priority: 4
-  licence: Grok-2-Community
-  requires_auth: false
-  commit_sha: null
-  notes: '~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License) [deprioritized:
-    very large / low specialist ROI]'

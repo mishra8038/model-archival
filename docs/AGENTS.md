@@ -17,6 +17,7 @@ alwaysApply: true
 - **`gdrive-archival/`** — Google Drive uploader (upload-only). Start at `gdrive-archival/AGENTS.md`.
 - **`fingerprints/`** — checksum/fingerprint harvester. Start at `fingerprints/AGENTS.md`.
 - **`code-archival/`** — source/code snapshotter. Start at `code-archival/AGENTS.md`.
+- **`gh-archival/`** — snapshot GitHub repos you own (`main` by default) and upload via rclone. Start at `gh-archival/README.md`.
 - **`full-stack/`** — full-stack archive utility. Start at `full-stack/AGENTS.md`.
 - **`integrity_tools/`** — misc integrity helpers. Start at `integrity_tools/AGENTS.md`.
 

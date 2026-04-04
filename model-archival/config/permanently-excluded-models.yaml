@@ -1,0 +1,8 @@
+# IDs we do not archive — do not add these to registry.yaml, registry-specialists.yaml,
+# registry-legacy.yaml, or registry_high_risk.yaml. (Not loaded by the archiver; policy only.)
+#
+# 2026-04: xai-org/grok-1 — ~7.6 GiB orphan partial under d1/.tmp removed; superseded by
+# newer xAI releases; scratch reclaimed on archival VM.
+permanently_excluded:
+  - id: xai-org/grok-1
+    reason: Orphan partial removed from d1/.tmp; permanently dropped from archival scope

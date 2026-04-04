@@ -133,3 +133,57 @@ models:
   commit_sha: null
   legacy: true
   notes: Repo 404 / unavailable; kept here as historical reference only.
+# Gated HF previews — withdrawn from specialist queue (no HF token / licence access; Gemma 4 covers Google line).
+- id: google/gemini-3-flash-preview
+  hf_repo: google/gemini-3-flash-preview
+  tier: F
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: true
+  commit_sha: null
+  legacy: true
+  notes: Gemini 3 Flash Preview on HF (gated). Removed from registry-specialists — no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.
+- id: google/gemini-3.1-flash-lite-preview
+  hf_repo: google/gemini-3.1-flash-lite-preview
+  tier: F
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: true
+  commit_sha: null
+  legacy: true
+  notes: Gemini 3.1 Flash-Lite Preview on HF (gated). Removed from registry-specialists — no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.
+# DeepSeek V3 family — excluded from default download (disk / policy); optional via legacy + --include-legacy.
+- id: deepseek-ai/DeepSeek-V3
+  hf_repo: deepseek-ai/DeepSeek-V3
+  tier: A
+  drive: d1
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: e815299b0bcbac849fa540c768ef21845365c9eb
+  legacy: true
+  notes: Full BF16 V3 instruct tree — deferred from default queue; fetch only when space and policy allow (registry-legacy + --include-legacy).
+- id: deepseek-ai/DeepSeek-V3-0324
+  hf_repo: deepseek-ai/DeepSeek-V3-0324
+  tier: A
+  drive: d1
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  notes: March 2024 checkpoint — older V3 variant; entire DeepSeek-V3 family excluded from default download (see sibling legacy entries). Fetch only with registry-legacy + --include-legacy if needed.
+- id: unsloth/DeepSeek-V3-GGUF
+  hf_repo: unsloth/DeepSeek-V3-GGUF
+  tier: C
+  drive: d1
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  legacy: true
+  quant_levels:
+  - Q4_K_M
+  notes: 671B Q4_K_M GGUF (~340 GB full tree) — excluded from default download; partials may remain under d1/.tmp until reclaimed or resumed via legacy + --include-legacy.

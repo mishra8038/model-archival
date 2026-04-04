@@ -18,6 +18,8 @@ STATUS_IN_PROGRESS = "in_progress"
 STATUS_COMPLETE = "complete"
 STATUS_FAILED = "failed"
 STATUS_SKIPPED = "skipped"      # auth required but no token
+# Checkpoint exceeds --max-model-download-gib (not retried until run_state cleared or cap removed)
+STATUS_DEFERRED_LARGE = "deferred_large"
 
 
 class RunState:

@@ -20,7 +20,12 @@ import yaml
 
 from archiver.downloader import _check_manifest_complete
 from archiver.models import DriveConfig, ModelEntry, load_registry
-from archiver.state import STATUS_COMPLETE, STATUS_IN_PROGRESS, STATUS_PENDING
+from archiver.state import (
+    STATUS_COMPLETE,
+    STATUS_FAILED,
+    STATUS_IN_PROGRESS,
+    STATUS_PENDING,
+)
 
 REGISTRY_FILES = (
     "registry.yaml",

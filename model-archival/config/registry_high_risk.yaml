@@ -29,13 +29,6 @@ models:
     priority: 2
     licence: apache-2.0
     requires_auth: false
-  - id: zetasepic/Qwen2.5-72B-Instruct-abliterated
-    hf_repo: zetasepic/Qwen2.5-72B-Instruct-abliterated
-    tier: D
-    drive: d3
-    priority: 1
-    licence: other
-    requires_auth: false
   - id: CombinHorizon/huihui-ai-abliterated-Qwen2.5-32B-Inst-BaseMerge-TIES
     hf_repo: CombinHorizon/huihui-ai-abliterated-Qwen2.5-32B-Inst-BaseMerge-TIES
     tier: D
@@ -77,13 +70,6 @@ models:
     drive: d3
     priority: 2
     licence: apache-2.0
-    requires_auth: false
-  - id: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
-    hf_repo: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
-    tier: D
-    drive: d3
-    priority: 1
-    licence: llama3.1
     requires_auth: false
   - id: NousResearch/Hermes-3-Llama-3.1-70B
     hf_repo: NousResearch/Hermes-3-Llama-3.1-70B

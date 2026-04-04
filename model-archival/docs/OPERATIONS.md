@@ -6,6 +6,17 @@ Day-to-day usage, monitoring, troubleshooting, and maintenance for the model-arc
 
 ## Starting a download run
 
+### Forward policy: max checkpoint size (80 GiB)
+
+**Default (`run.sh`):** new downloads are **skipped** when the summed Hugging Face LFS+XET file sizes for a checkpoint exceed **80 binary GiB** (`1024³` bytes per file, then summed). Those models are recorded in `run_state.json` as **`deferred_large`** (not `failed`). They are **not** retried automatically until you clear or edit that state, raise the cap, or run without a cap.
+
+- **CLI:** `uv run archiver download --max-model-download-gib 80 …` (omit the flag for no cap).
+- **`run.sh`:** default `MAX_MODEL_DOWNLOAD_GIB=80`; use **`--no-max-model-download`** for full registry sizes (e.g. 70B+ BF16 giants), or **`--max-model-download-gib N`** to change the threshold.
+
+When adding models to the registry, prefer checkpoints that fit under this cap unless you plan a dedicated uncapped run.
+
+---
+
 Always run inside `screen` — downloads take hours to days and SSH sessions drop.
 
 ```bash
@@ -37,6 +48,8 @@ bash run.sh --skip-env-check        # skip environment verification (faster rest
 The script is fully idempotent — re-running it skips already-verified models.
 
 ### Specialist registry — one model, flat cap (restart friendly)
+
+Checkpoints whose Hugging Face LFS+XET total is **above ~140 GB** are **not** listed in `registry-specialists.yaml`; they live in **`config/registry.yaml`** only (pull them with the default registry / `--all`, often with `--no-max-model-download` when above the 80 GiB default cap). The specialist file keeps smaller discipline + GGUF + tag-map entries; BF16 parents for Ollama-class maps remain in the main registry.
 
 To **resume or start exactly one** model from `config/registry-specialists.yaml` with a **single global cap** (serial queue = one model at a time):
 
@@ -79,6 +92,73 @@ screen -S archiver-specialists-rest bash run.sh --all \
 (`--drive` may be passed multiple times in `run.sh`.)
 
 **Do not** use `--storage-drive d3` for the whole specialist list unless you intentionally want every model file on D3 — large `drive: d5` rows belong on D5 when you are ready.
+
+### One active download per disk (`.tmp` / incomplete models)
+
+LFS scratch lives under **`<destination_mount>/.tmp/<model_slug>/`**. To avoid several large partials on the same spindle and to concentrate free space for the **largest single shard** being written, cap **one concurrent model per drive** and allow multiple drives in parallel:
+
+```bash
+# Example: adaptive pool, at most one partial per d1/d2/d3/d5 at a time
+uv run archiver --registry config/registry-specialists.yaml download --all \
+  --queue-mode adaptive \
+  --max-parallel-drives 5 \
+  --max-per-drive 1 \
+  --min-speed-mbps 3 \
+  --bandwidth-cap 2
+```
+
+Or via `run.sh`:
+
+```bash
+bash run.sh --all --registry config/registry-specialists.yaml \
+  --queue-mode adaptive --max-parallel 5 --max-per-drive 1 --bandwidth-cap 2
+```
+
+`--queue-mode serial` (default in `run.sh`) already implies a **single** active model globally — use the pattern above when you want **parallelism across disks** but not **within** a disk.
+
+### Queue plan (order + sizes + free space — e.g. after ENOSPC)
+
+When preflight fails on low space or you want a printable plan:
+
+```bash
+uv run archiver --registry config/registry-specialists.yaml queue-plan \
+  --out-md /mnt/models/d3/logs/QUEUE-PLAN.md
+```
+
+- **By drive (default):** each disk shows **free/total/used** once, then models targeting that `drive:` in order `(effective priority, id)`. **Est. size** = `run_state` `total_bytes` when known.
+- **Merged list:** add `--flat` for a single table sorted `eff. priority → drive → id`.
+- **Order:** same sort keys as the scheduler. With several workers, bandwidth gating can interleave jobs — treat as approximate.
+- **Est. size:** `total_bytes` from `run_state.json` when the downloader has planned the manifest (otherwise `—`).
+- **Free on dest:** live `df` via `psutil` for each registry drive mount. Rows with **&lt; 50 GiB** free match the default preflight abort threshold (unless you use `--skip-drive-space-check` on `download`).
+
+JSON for tooling: `queue-plan --json`. No Hugging Face downloads; optional `--skip-token-check` to skip gated API probes.
+
+### Specialist queue: finish near-complete models first (priority overrides)
+
+`DriveScheduler` reads **`priority_overrides.json`** on the infra drive (D3). Lower numbers run sooner. To **boost models that are already half-done on disk** and **defer large trees that are only ~20–40% complete** (until later in the queue), regenerate overrides from `run_state.json` + a multi-drive scan:
+
+```bash
+# From the archiver repo root on the VM (paths may be model-archiver/ on disk)
+uv run python scripts/compute-priority-overrides.py \
+  --registry config/registry-specialists.yaml \
+  --run-state /mnt/models/d3/run_state.json \
+  --mount /mnt/models \
+  --merge /mnt/models/d3/priority_overrides.json \
+  --output /mnt/models/d3/priority_overrides.json \
+  --defer-id 'MiniMaxAI/MiniMax-M2.5'
+```
+
+Repeat `--defer-id` for any huge partial where `run_state` has `total_bytes: 0`. Tune thresholds with `--finish-ratio`, `--large-bytes`, `--defer-below-ratio`. Overrides are re-read on each scheduler pick — no archiver restart required unless you change the running process.
+
+**Older VM `run.sh` without `--drive`:** start the specialist queue with the archiver CLI (global `--registry`):
+
+```bash
+screen -S archiver-specialists bash -lc \
+  'cd /path/to/archiver && uv run archiver --registry config/registry-specialists.yaml download --all \
+    --queue-mode adaptive --max-parallel-drives 4 --max-per-drive 2 \
+    --bandwidth-cap 4 --min-speed-mbps 3 --skip-drive-space-check \
+    2>&1 | tee -a /mnt/models/d3/logs/archiver-specialists.log'
+```
 
 ---
 
@@ -312,6 +392,35 @@ On a machine **without** ``/mnt/models/d3`` mounted, pass a writable output root
 
 ```bash
 uv run archiver audit-tmp --infra /tmp/archiver-audit-out
+```
+
+### Failed download registry (classify `run_state.json` + historical run reports)
+
+Builds **`config/failed-models-registry.yaml`** and **`docs/FAILED_MODEL_REGISTRY.md`** from:
+
+1. **`run_state.json`** — models with `status: failed` (and optional `skipped`).
+2. **`run-report-*.md`** under **`<run_state_dir>/logs/`** (and any **`--reports-dir`**) — same format as `RunReport` (`record_model_fail`, verification ✗ blocks, optional skips).
+
+Merges **`registry*.yaml`** for tier / `hf_repo` / `requires_auth`. Each row has **`primary_source`**: `run_state` vs `run_report`, plus **`historical_incidents`** (deduped events from reports, newest first by filename timestamp). Models that **no longer** have `failed` in `run_state` but appear in old reports are included as **`historical_only: true`** (e.g. later completed or pending).
+
+| Category | Meaning |
+|----------|---------|
+| `disk_space` | ENOSPC / no space left on device |
+| `unavailable` | Repo or asset not found (404, resolve errors) |
+| `auth` | 401/403, gated repo, access denied |
+| `failed_shards` | aria2 / hub retries exhausted (shards, transport) |
+| `verify` | Checksum / verification section marked failed in a run report |
+| `other` | Does not match the above |
+| `skipped_gated` | `status=skipped` in run_state and/or skip lines in run reports (with `--include-skipped`) |
+
+```bash
+cd model-archival
+uv run archiver failed-registry
+uv run archiver failed-registry --include-skipped
+uv run archiver failed-registry --no-historical   # run_state only
+uv run archiver failed-registry --reports-dir /path/to/extra/logs  # plus default <state>/logs
+# custom paths:
+uv run archiver failed-registry --state /mnt/models/d3/run_state.json --out-yaml /tmp/failed.yaml --no-md
 ```
 
 ### Re-mount after reboot

@@ -39,7 +39,8 @@ fi
 
 # Fall back to process search if PID file is stale or missing
 if [[ -z "$ARCHIVER_PID" ]] || ! kill -0 "$ARCHIVER_PID" 2>/dev/null; then
-    ARCHIVER_PID=$(pgrep -f "archiver download" 2>/dev/null | head -1 || true)
+    # Match both `archiver download` and `archiver … download` (uv may insert extra argv).
+    ARCHIVER_PID=$(pgrep -f "archiver.*[[:space:]]download" 2>/dev/null | head -1 || true)
 fi
 
 if [[ -z "$ARCHIVER_PID" ]]; then

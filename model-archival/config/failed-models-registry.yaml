@@ -1,0 +1,991 @@
+# Failed / skipped download registry — generated; refresh with:
+#   uv run archiver failed-registry
+# Optional: --state PATH  --include-skipped  --no-historical
+#   --reports-dir /mnt/models/d3/logs  (repeatable; default: <state-dir>/logs)
+
+generated_at_utc: '2026-04-03T14:54:33.548767+00:00'
+source_state: /mnt/models/d3/run_state.json
+historical:
+  enabled: true
+  report_files_scanned: 25
+  report_directories:
+  - /mnt/models/d3/logs
+  distinct_models_from_reports: 35
+  models_historical_only: 16
+summary:
+  total_failed: 26
+  total_skipped_included: 5
+  by_category:
+    disk_space: 5
+    unavailable: 6
+    auth: 1
+    failed_shards: 30
+    skipped_gated: 5
+  total_rows: 47
+categories:
+  disk_space:
+  - id: deepseek-ai/deepseek-vl2
+    failure_category: disk_space
+    reason_kind: no space left on device
+    run_state_status: pending
+    drive: d1
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: '[Errno 28] No space left on device'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-30_14-40-54.md
+      report_mtime_utc: '2026-04-01T03:58:44.627000+00:00'
+      kind: download_fail
+      error: 'Access denied for model-00001-of-000008.safetensors: aria2c error for model-00001-of-000008.safetensors: The
+        response status is not successful. status=403'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-30_14-40-54.md
+      report_mtime_utc: '2026-04-01T03:58:44.627000+00:00'
+      kind: download_fail
+      error: 'Failed to download DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00006-of-00009.gguf after 5 attempts: aria2c error
+        for DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00006-of-00009.gguf: Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-29_21-45-34.md
+      report_mtime_utc: '2026-03-30T14:20:17.325000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/raw/deepseek-ai'''
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/raw/deepseek-ai'''
+    hf_repo: deepseek-ai/deepseek-vl2
+    tier: F
+    registry_drive: d3
+    requires_auth: false
+  - id: meta-llama/Llama-3.2-90B-Vision-Instruct
+    failure_category: disk_space
+    reason_kind: no space left on device
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-03-30T01:45:34.998811+00:00'
+    error: '[Errno 28] No space left on device: ''/mnt/models/d5/raw/meta-llama'''
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/raw/meta-llama'''
+    hf_repo: meta-llama/Llama-3.2-90B-Vision-Instruct
+    tier: F
+    registry_drive: d5
+    requires_auth: true
+  - id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
+    failure_category: disk_space
+    reason_kind: disk space / abandoned
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-03T00:48:34.608265+00:00'
+    error: Download abandoned (operator removed d5 scratch ~37 GiB, ~16% of target). disk space / abandoned
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00004-of-00050.safetensors after 5 attempts: aria2c error for model-00004-of-00050.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
+    tier: D
+    registry_drive: d1
+    requires_auth: false
+  - id: Undi95/dbrx-base
+    failure_category: disk_space
+    reason_kind: disk space / abandoned
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-04-03T04:01:42.872386+00:00'
+    error: Download abandoned (operator removed d5 scratch ~32 GiB, ~13% of target). disk space / abandoned
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00001-of-00061.safetensors after 5 attempts: aria2c error for model-00001-of-00061.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: Undi95/dbrx-base
+    tier: A
+    registry_drive: d2
+    requires_auth: false
+  - id: unsloth/DeepSeek-R1-GGUF
+    failure_category: disk_space
+    reason_kind: disk space / abandoned
+    run_state_status: failed
+    drive: d5
+    updated_at: '2026-04-02T20:06:51.681535+00:00'
+    error: Download abandoned (operator removed d5 scratch ~131 GiB, ~35% of target). disk space / abandoned
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00001-of-00009.gguf after 5 attempts: aria2c error
+        for DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00001-of-00009.gguf: Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-30_14-40-54.md
+      report_mtime_utc: '2026-04-01T03:58:44.627000+00:00'
+      kind: download_fail
+      error: 'Failed to download DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00002-of-00009.gguf after 5 attempts: aria2c error
+        for DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00002-of-00009.gguf: Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-29_21-45-34.md
+      report_mtime_utc: '2026-03-30T14:20:17.325000+00:00'
+      kind: download_fail
+      error: 'Failed to download DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00003-of-00009.gguf after 5 attempts: aria2c error
+        for DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00003-of-00009.gguf: Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/quantized'''
+  unavailable:
+  - id: mistralai/Leanstral-120B-A6B
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d5
+    updated_at: '2026-04-03T08:12:47.174119+00:00'
+    error: 'Cannot resolve HF repo mistralai/Leanstral-120B-A6B: 404 Client Error. (Request ID: Root=1-69c1fc8a-024c4bb304000eb478f6c116;ef20d6d7-b308-4535-ad2f-2349e41ae9d9)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/mistralai/Leanstral-120B-A6B/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: mistralai/Leanstral-120B-A6B
+    tier: E
+    registry_drive: d5
+    requires_auth: false
+  - id: mosaicml/mpt-30b
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-03-23T02:50:57.550602+00:00'
+    error: 'Cannot resolve HF repo mosaicml/mpt-30b: 404 Client Error. (Request ID: Root=1-69c0aa99-4982627a699808a4370a9d6c;64987960-9da2-4c2d-92fa-68ec59fe9560)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/mosaicml/mpt-30b/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: mosaicml/mpt-30b
+    tier: A
+    registry_drive: d2
+    requires_auth: false
+  - id: mosaicml/mpt-30b-instruct
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-03-23T02:50:57.682547+00:00'
+    error: 'Cannot resolve HF repo mosaicml/mpt-30b-instruct: 404 Client Error. (Request ID: Root=1-69c0aa99-5cfd55e94455f9d97e81a86f;a23b6a4a-737f-4fa0-a13d-f0981d45c07e)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/mosaicml/mpt-30b-instruct/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: mosaicml/mpt-30b-instruct
+    tier: A
+    registry_drive: d2
+    requires_auth: false
+  - id: mosaicml/mpt-7b
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-03-23T02:50:57.890810+00:00'
+    error: 'Cannot resolve HF repo mosaicml/mpt-7b: 404 Client Error. (Request ID: Root=1-69c0aa99-721898887eeed4475a859cfb;b59f6a6f-e6fd-4d19-ad05-6b386649f77a)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/mosaicml/mpt-7b/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: mosaicml/mpt-7b
+    tier: A
+    registry_drive: d2
+    requires_auth: false
+  - id: mosaicml/mpt-7b-instruct
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-03-23T02:50:58.273715+00:00'
+    error: 'Cannot resolve HF repo mosaicml/mpt-7b-instruct: 404 Client Error. (Request ID: Root=1-69c0aa99-0dd62c7466ab20b30ec9f6db;59c9ea5d-c625-4674-b328-30b1dd882556)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/mosaicml/mpt-7b-instruct/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: mosaicml/mpt-7b-instruct
+    tier: A
+    registry_drive: d2
+    requires_auth: false
+  - id: Salesforce/CoDA-1.7B-Base
+    failure_category: unavailable
+    reason_kind: repository not found / cannot resolve
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T09:37:51.683050+00:00'
+    error: 'Cannot resolve HF repo Salesforce/CoDA-1.7B-Base: 404 Client Error. (Request ID: Root=1-69cea576-65b0a08a0816df410ef4c871;386f65dd-cc2f-4948-a73d-5d42a10231b3)
+
+
+      Repository Not Found for url: https://huggingface.co/api/models/Salesforce/CoDA-1.7B-Base/revision/main?blobs=true.
+
+      Please make sure you specified the correct `repo_id` and `repo_type`.
+
+      If you are trying to access a private or gated repo, make sure you are authenticated. For more details, see https://huggingface.co/docs/huggingface_hub/authentication'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00012.safetensors after 5 attempts: aria2c error for model-00002-of-00012.safetensors:
+        Authorization failed.'
+    hf_repo: Salesforce/CoDA-1.7B-Base
+    tier: G
+    registry_drive: d3
+    requires_auth: false
+  auth:
+  - id: Intel/neural-chat-7b-v3-1
+    failure_category: auth
+    reason_kind: gated / access denied
+    run_state_status: complete
+    drive: d3
+    updated_at: '2026-03-30T02:01:22.558146+00:00'
+    error: 'Access denied for pytorch_model-00001-of-00002.bin: aria2c error for pytorch_model-00001-of-00002.bin: The response
+      status is not successful. status=403'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-27_05-30-32.md
+      report_mtime_utc: '2026-03-27T17:18:12.585000+00:00'
+      kind: download_fail
+      error: 'Access denied for pytorch_model-00001-of-00002.bin: aria2c error for pytorch_model-00001-of-00002.bin: The response
+        status is not successful. status=403'
+    hf_repo: Intel/neural-chat-7b-v3-1
+    tier: G
+    registry_drive: d3
+    requires_auth: false
+  failed_shards:
+  - id: alpindale/dbrx-instruct
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d5
+    updated_at: '2026-04-03T08:12:46.915650+00:00'
+    error: 'Failed to download model-00002-of-00061.safetensors after 5 attempts: aria2c error for model-00002-of-00061.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00061.safetensors after 5 attempts: aria2c error for model-00002-of-00061.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: alpindale/dbrx-instruct
+    tier: A
+    registry_drive: d5
+    requires_auth: false
+  - id: cognitivecomputations/dolphin-2.9.2-qwen2-72b
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model-00004-of-00031.safetensors after 5 attempts: aria2c error for model-00004-of-00031.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00004-of-00031.safetensors after 5 attempts: aria2c error for model-00004-of-00031.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/uncensored/cognitivecomputations'''
+    hf_repo: cognitivecomputations/dolphin-2.9.2-qwen2-72b
+    tier: D
+    registry_drive: d5
+    requires_auth: false
+  - id: google/gemma-3-4b-it
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d3
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-3-4b-it
+    tier: F
+    registry_drive: d3
+    requires_auth: true
+  - id: google/gemma-4-26B-A4B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-04-02T23:12:02.595865+00:00'
+    error: 'Failed to download model-00001-of-00002.safetensors after 5 attempts: aria2c error for model-00001-of-00002.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00001-of-00002.safetensors after 5 attempts: aria2c error for model-00001-of-00002.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-26B-A4B
+    tier: F
+    registry_drive: d2
+    requires_auth: false
+  - id: google/gemma-4-26B-A4B-it
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d2
+    updated_at: '2026-04-02T23:21:41.147515+00:00'
+    error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-26B-A4B-it
+    tier: F
+    registry_drive: d2
+    requires_auth: false
+  - id: google/gemma-4-31B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-02T23:31:21.638511+00:00'
+    error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00002.safetensors after 5 attempts: aria2c error for model-00002-of-00002.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-31B
+    tier: F
+    registry_drive: d1
+    requires_auth: false
+  - id: google/gemma-4-31B-it
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-02T23:41:02.191097+00:00'
+    error: 'Failed to download model-00001-of-00002.safetensors after 5 attempts: aria2c error for model-00001-of-00002.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00001-of-00002.safetensors after 5 attempts: aria2c error for model-00001-of-00002.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-31B-it
+    tier: F
+    registry_drive: d1
+    requires_auth: false
+  - id: google/gemma-4-E2B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-02T22:33:35.909955+00:00'
+    error: 'Failed to download model.safetensors after 5 attempts: aria2c error for model.safetensors: SSL/TLS handshake failure:
+      The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors after 5 attempts: aria2c error for model.safetensors: SSL/TLS handshake
+        failure: The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-E2B
+    tier: F
+    registry_drive: d3
+    requires_auth: false
+  - id: google/gemma-4-E2B-it
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-02T22:43:08.416919+00:00'
+    error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
+      The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
+        The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-E2B-it
+    tier: F
+    registry_drive: d3
+    requires_auth: false
+  - id: google/gemma-4-E4B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-02T22:52:44.980016+00:00'
+    error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
+      The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
+        The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-E4B
+    tier: F
+    registry_drive: d3
+    requires_auth: false
+  - id: google/gemma-4-E4B-it
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-02T23:02:21.448504+00:00'
+    error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
+      The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download tokenizer.json after 5 attempts: aria2c error for tokenizer.json: SSL/TLS handshake failure:
+        The TLS connection was non-properly terminated.'
+    hf_repo: google/gemma-4-E4B-it
+    tier: F
+    registry_drive: d3
+    requires_auth: false
+  - id: google/medgemma-27b-it
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T09:55:20.075670+00:00'
+    error: 'Failed to download model-00002-of-00012.safetensors after 5 attempts: aria2c error for model-00002-of-00012.safetensors:
+      Authorization failed.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: google/medgemma-27b-it
+    tier: F
+    registry_drive: d3
+    requires_auth: true
+  - id: HuggingFaceH4/zephyr-7b-beta
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: complete
+    drive: d3
+    updated_at: '2026-03-30T03:42:05.977596+00:00'
+    error: 'Failed to download model-00005-of-00008.safetensors after 5 attempts: aria2c error for model-00005-of-00008.safetensors:
+      File /mnt/models/d3/.tmp/HuggingFaceH4_zephyr-7b-beta/model-00005-of-00008.safetensors exists, but a control file(*.aria2)
+      does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to download
+      the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-27_05-30-32.md
+      report_mtime_utc: '2026-03-27T17:18:12.585000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00005-of-00008.safetensors after 5 attempts: aria2c error for model-00005-of-00008.safetensors:
+        File /mnt/models/d3/.tmp/HuggingFaceH4_zephyr-7b-beta/model-00005-of-00008.safetensors exists, but a control file(*.aria2)
+        does not exist. Download was canceled in order to prevent your file from being truncated to 0. If you are sure to
+        download the file all over again, then delete it or add --allow-overwrite=true option and restart aria2.'
+    hf_repo: HuggingFaceH4/zephyr-7b-beta
+    tier: G
+    registry_drive: d3
+    requires_auth: false
+  - id: mlx-community/dbrx-instruct-4bit
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T06:55:29.305458+00:00'
+    error: 'Failed to download model-00002-of-00014.safetensors after 5 attempts: aria2c error for model-00002-of-00014.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00014.safetensors after 5 attempts: aria2c error for model-00002-of-00014.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: mlx-community/dbrx-instruct-4bit
+    tier: C
+    registry_drive: d3
+    requires_auth: false
+  - id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-03T01:56:00.423022+00:00'
+    error: 'Failed to download model-00007-of-00050.safetensors after 5 attempts: aria2c error for model-00007-of-00050.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00007-of-00050.safetensors after 5 attempts: aria2c error for model-00007-of-00050.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
+    tier: D
+    registry_drive: d1
+    requires_auth: false
+  - id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d5
+    updated_at: '2026-04-03T09:14:29.948216+00:00'
+    error: 'Failed to download model-00001-of-00026.safetensors after 5 attempts: aria2c error for model-00001-of-00026.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00001-of-00026.safetensors after 5 attempts: aria2c error for model-00001-of-00026.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
+    tier: D
+    registry_drive: d5
+    requires_auth: false
+  - id: Qwen/Qwen2.5-Math-72B-Instruct
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model-00033-of-00037.safetensors after 5 attempts: aria2c error for model-00033-of-00037.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00033-of-00037.safetensors after 5 attempts: aria2c error for model-00033-of-00037.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/raw/Qwen'''
+    hf_repo: Qwen/Qwen2.5-Math-72B-Instruct
+    tier: G
+    registry_drive: d5
+    requires_auth: false
+  - id: Qwen/Qwen2.5-VL-72B-Instruct
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model-00006-of-00038.safetensors after 5 attempts: aria2c error for model-00006-of-00038.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00006-of-00038.safetensors after 5 attempts: aria2c error for model-00006-of-00038.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/raw/Qwen'''
+    hf_repo: Qwen/Qwen2.5-VL-72B-Instruct
+    tier: F
+    registry_drive: d5
+    requires_auth: false
+  - id: Qwen/Qwen3.5-122B-A10B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d1
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model.safetensors-00011-of-00039.safetensors after 5 attempts: aria2c error for model.safetensors-00011-of-00039.safetensors:
+      Download aborted.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors-00011-of-00039.safetensors after 5 attempts: aria2c error for model.safetensors-00011-of-00039.safetensors:
+        Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-30_14-40-54.md
+      report_mtime_utc: '2026-04-01T03:58:44.627000+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors-00008-of-00039.safetensors after 5 attempts: aria2c error for model.safetensors-00008-of-00039.safetensors:
+        Download aborted.'
+    hf_repo: Qwen/Qwen3.5-122B-A10B
+    tier: G
+    registry_drive: d1
+    requires_auth: false
+  - id: Qwen/Qwen3.5-27B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: complete
+    drive: d2
+    updated_at: '2026-04-01T16:13:42.675517+00:00'
+    error: 'Failed to download model.safetensors-00005-of-00094.safetensors after 5 attempts: aria2c error for model.safetensors-00005-of-00094.safetensors:
+      Download aborted.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-30_14-40-54.md
+      report_mtime_utc: '2026-04-01T03:58:44.627000+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors-00005-of-00094.safetensors after 5 attempts: aria2c error for model.safetensors-00005-of-00094.safetensors:
+        Download aborted.'
+    hf_repo: Qwen/Qwen3.5-27B
+    tier: G
+    registry_drive: d2
+    requires_auth: false
+  - id: Qwen/Qwen3.5-35B-A3B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model.safetensors-00006-of-00014.safetensors after 5 attempts: aria2c error for model.safetensors-00006-of-00014.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors-00006-of-00014.safetensors after 5 attempts: aria2c error for model.safetensors-00006-of-00014.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: Qwen/Qwen3.5-35B-A3B
+    tier: G
+    registry_drive: d5
+    requires_auth: false
+  - id: Qwen/Qwen3.5-35B-A3B-Base
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model.safetensors-00002-of-00014.safetensors after 5 attempts: aria2c error for model.safetensors-00002-of-00014.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors-00002-of-00014.safetensors after 5 attempts: aria2c error for model.safetensors-00002-of-00014.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: Qwen/Qwen3.5-35B-A3B-Base
+    tier: G
+    registry_drive: d5
+    requires_auth: false
+  - id: Qwen/Qwen3.5-397B-A17B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d1
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model.safetensors-00001-of-00094.safetensors after 5 attempts: aria2c error for model.safetensors-00001-of-00094.safetensors:
+      Download aborted.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model.safetensors-00001-of-00094.safetensors after 5 attempts: aria2c error for model.safetensors-00001-of-00094.safetensors:
+        Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-29_21-45-34.md
+      report_mtime_utc: '2026-03-30T14:20:17.325000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d1/raw/Qwen/Qwen3.5-397B-A17B'''
+    hf_repo: Qwen/Qwen3.5-397B-A17B
+    tier: G
+    registry_drive: d1
+    requires_auth: false
+  - id: rombodawg/Rombos-LLM-V2.5-Qwen-72b
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d5
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download model-00002-of-00031.safetensors after 5 attempts: aria2c error for model-00002-of-00031.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00002-of-00031.safetensors after 5 attempts: aria2c error for model-00002-of-00031.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/uncensored/rombodawg'''
+    hf_repo: rombodawg/Rombos-LLM-V2.5-Qwen-72b
+    tier: D
+    registry_drive: d5
+    requires_auth: false
+  - id: SinclairSchneider/dbrx-base-quantization-fixed
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T05:18:56.752586+00:00'
+    error: 'Failed to download model-00001-of-00061.safetensors after 5 attempts: aria2c error for model-00001-of-00061.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00001-of-00061.safetensors after 5 attempts: aria2c error for model-00001-of-00061.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: SinclairSchneider/dbrx-base-quantization-fixed
+    tier: C
+    registry_drive: d3
+    requires_auth: false
+  - id: SinclairSchneider/dbrx-instruct-quantization-fixed
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d3
+    updated_at: '2026-04-03T06:36:08.569913+00:00'
+    error: 'Failed to download model-00003-of-00061.safetensors after 5 attempts: aria2c error for model-00003-of-00061.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download model-00003-of-00061.safetensors after 5 attempts: aria2c error for model-00003-of-00061.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: SinclairSchneider/dbrx-instruct-quantization-fixed
+    tier: C
+    registry_drive: d3
+    requires_auth: false
+  - id: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: complete
+    drive: d5
+    updated_at: '2026-03-29T01:27:21.623837+00:00'
+    error: 'Failed to download Llama-3.3-70B-Instruct-abliterated-Q3_K_M.gguf after 5 attempts: aria2c error for Llama-3.3-70B-Instruct-abliterated-Q3_K_M.gguf:
+      Download aborted.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: 'Failed to download Llama-3.3-70B-Instruct-abliterated-Q3_K_M.gguf after 5 attempts: aria2c error for Llama-3.3-70B-Instruct-abliterated-Q3_K_M.gguf:
+        Download aborted.'
+    hf_repo: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
+    tier: D
+    registry_drive: d5
+    requires_auth: false
+  - id: tiiuae/falcon-180B
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-03-25T15:24:52.602617+00:00'
+    error: 'Failed to download model-00005-of-00081.safetensors after 5 attempts: aria2c error for model-00005-of-00081.safetensors:
+      Download aborted.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: tiiuae/falcon-180B
+    tier: A
+    registry_drive: d5
+    requires_auth: true
+  - id: unsloth/DeepSeek-V3-GGUF
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: pending
+    drive: d1
+    updated_at: '2026-04-02T22:24:01.499693+00:00'
+    error: 'Failed to download DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf after 5 attempts: aria2c error for
+      DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf: Download aborted.'
+    primary_source: run_report
+    historical_only: true
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
+      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
+      kind: download_fail
+      error: 'Failed to download DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf after 5 attempts: aria2c error
+        for DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf: Download aborted.'
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-29_21-45-34.md
+      report_mtime_utc: '2026-03-30T14:20:17.325000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/quantized/unsloth/DeepSeek-V3-GGUF'''
+    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
+      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
+      kind: download_fail
+      error: '[Errno 28] No space left on device: ''/mnt/models/d5/quantized'''
+    hf_repo: unsloth/DeepSeek-V3-GGUF
+    tier: C
+    registry_drive: d1
+    requires_auth: false
+  - id: xai-org/grok-2
+    failure_category: failed_shards
+    reason_kind: download retries exhausted
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-03T02:44:21.397820+00:00'
+    error: 'Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors:
+      SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-02_18-24-01.md
+      report_mtime_utc: '2026-04-03T09:55:20.079239+00:00'
+      kind: download_fail
+      error: 'Failed to download pytorch_model-00002-TP-common.safetensors after 5 attempts: aria2c error for pytorch_model-00002-TP-common.safetensors:
+        SSL/TLS handshake failure: The TLS connection was non-properly terminated.'
+    hf_repo: xai-org/grok-2
+    tier: G
+    registry_drive: d1
+    requires_auth: false
+  skipped_gated:
+  - id: databricks/dbrx-base
+    failure_category: skipped_gated
+    reason_kind: skipped
+    run_state_status: skipped
+    drive: null
+    updated_at: '2026-03-25T15:24:55.641643+00:00'
+    error: No HF token access
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+  - id: databricks/dbrx-instruct
+    failure_category: skipped_gated
+    reason_kind: skipped
+    run_state_status: skipped
+    drive: null
+    updated_at: '2026-03-25T15:24:55.645823+00:00'
+    error: No HF token access
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+  - id: google/gemini-3-flash-preview
+    failure_category: skipped_gated
+    reason_kind: skipped
+    run_state_status: skipped
+    drive: null
+    updated_at: '2026-04-01T07:22:55.297602+00:00'
+    error: No HF token access
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: google/gemini-3-flash-preview
+    tier: F
+    registry_drive: d3
+    requires_auth: true
+  - id: google/gemini-3.1-flash-lite-preview
+    failure_category: skipped_gated
+    reason_kind: skipped
+    run_state_status: skipped
+    drive: null
+    updated_at: '2026-04-01T07:22:55.300837+00:00'
+    error: No HF token access
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: google/gemini-3.1-flash-lite-preview
+    tier: F
+    registry_drive: d3
+    requires_auth: true
+  - id: MiniMaxAI/MiniMax-M2.7
+    failure_category: skipped_gated
+    reason_kind: skipped
+    run_state_status: skipped
+    drive: null
+    updated_at: '2026-04-01T07:22:55.292580+00:00'
+    error: No HF token access
+    primary_source: run_state
+    historical_only: false
+    historical_incidents: []
+    hf_repo: MiniMaxAI/MiniMax-M2.7
+    tier: G
+    registry_drive: d1
+    requires_auth: true

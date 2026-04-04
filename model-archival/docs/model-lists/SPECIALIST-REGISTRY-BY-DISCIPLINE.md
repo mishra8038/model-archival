@@ -188,7 +188,6 @@
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16` | D | d5 | 4 |
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8` | D | d5 | 4 |
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4` | D | d5 | 4 |
-| `nvidia/Llama-3_1-Nemotron-Ultra-253B-v1` | D | d5 | 4 |
 
 ---
 

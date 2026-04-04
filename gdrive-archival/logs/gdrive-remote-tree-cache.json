@@ -1,0 +1,90 @@
+{
+  "generated_at_utc": "2026-04-03T03:41:12Z",
+  "note": "listing/hash-metadata snapshot (no Drive file-body download)",
+  "roots": [
+    {
+      "dir_count": 2161,
+      "dirs_digest_sha256": "4eebdefa240bf6c3c6d8ed74d42dd96f7a57da75c0d2b02ce74774233e643f97",
+      "file_count": 42783,
+      "files_digest_sha256": "6750522262390f175c1c44f995e0b2da0d075f97ac927ff3750a096ac1d80ea7",
+      "ok": true,
+      "remote_path": "gdrive:/models/d5",
+      "root": "d5"
+    },
+    {
+      "dir_count": 18,
+      "dirs_digest_sha256": "6c06ba57e386fbae36462293e5a5cef0b8012162ba2a3e1f111c7f44f256d927",
+      "file_count": 92,
+      "files_digest_sha256": "f99a5cb554043a92b2debb90747bb9e3ab9fdace516790c2cfb4c588af56da45",
+      "ok": true,
+      "remote_path": "gdrive:/models/d5/specialist",
+      "root": "d5/specialist"
+    },
+    {
+      "dir_count": 38,
+      "dirs_digest_sha256": "3cdf5b601fa363a5a288f982228aa441a94236e51ce43df92b5be316db761d94",
+      "file_count": 147,
+      "files_digest_sha256": "f2bfa24007bbcf7456379eb58803983407e0185fb3b7fdf17dc1c10d5afd6112",
+      "ok": true,
+      "remote_path": "gdrive:/models/d3/specialist",
+      "root": "d3/specialist"
+    },
+    {
+      "dir_count": 8,
+      "dirs_digest_sha256": "2d8d4d8dbe809a34b51ef818193d16263de689d5fd37d7b97da92d576b01af57",
+      "file_count": 63,
+      "files_digest_sha256": "f8b2723f1403f626d40d339f1396855448beb61e3eb044411a6c78f1fdf9c7dd",
+      "ok": true,
+      "remote_path": "gdrive:/models/d1/uncensored",
+      "root": "d1/uncensored"
+    },
+    {
+      "error": "2026/04/02 23:42:30 Failed to lsf: error in ListJSON: directory not found",
+      "ok": false,
+      "remote_path": "gdrive:/models/d2/uncensored",
+      "root": "d2/uncensored"
+    },
+    {
+      "dir_count": 3,
+      "dirs_digest_sha256": "ce4652e89fb3e663d539c5fb1b7e533377755298568f91256d579fb63b50a8fa",
+      "file_count": 5,
+      "files_digest_sha256": "8fd3f5c70df726728e01e1ad0a6a33f7622691510e8601ed628d2e13098fdee6",
+      "ok": true,
+      "remote_path": "gdrive:/models/d3/uncensored",
+      "root": "d3/uncensored"
+    },
+    {
+      "dir_count": 9,
+      "dirs_digest_sha256": "cefa7172073790d09cc16ad4f56879948e90e3404e394fc42688eae8d03290c3",
+      "file_count": 20,
+      "files_digest_sha256": "c7c8b7d0047d071ba0cc4b702dffc0ffc55a865867d65b4914ff2c51a3551bec",
+      "ok": true,
+      "remote_path": "gdrive:/models/d3/quantized",
+      "root": "d3/quantized"
+    },
+    {
+      "error": "2026/04/02 23:42:39 Failed to lsf: error in ListJSON: directory not found",
+      "ok": false,
+      "remote_path": "gdrive:/models/d1/raw/Qwen",
+      "root": "d1/raw/Qwen"
+    },
+    {
+      "error": "2026/04/02 23:42:41 Failed to lsf: error in ListJSON: directory not found",
+      "ok": false,
+      "remote_path": "gdrive:/models/d2/raw/Qwen",
+      "root": "d2/raw/Qwen"
+    },
+    {
+      "error": "2026/04/02 23:42:42 Failed to lsf: error in ListJSON: directory not found",
+      "ok": false,
+      "remote_path": "gdrive:/models/d3/raw/Qwen",
+      "root": "d3/raw/Qwen"
+    },
+    {
+      "error": "2026/04/02 23:42:44 Failed to lsf: error in ListJSON: directory not found",
+      "ok": false,
+      "remote_path": "gdrive:/models/d5/raw/Qwen",
+      "root": "d5/raw/Qwen"
+    }
+  ]
+}

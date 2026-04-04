@@ -1,0 +1,1040 @@
+{
+  "api_tags": {
+    "models": [
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "7bb8dfabfd9c",
+        "model": "kimi-k2-thinking",
+        "modified_at": "2025-11-06T00:00:00Z",
+        "name": "kimi-k2-thinking",
+        "size": 1118481408000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "653ca2ec1d71",
+        "model": "qwen3-coder:480b",
+        "modified_at": "2025-07-22T00:00:00Z",
+        "name": "qwen3-coder:480b",
+        "size": 510492157952
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "385d8e8f6803",
+        "model": "rnj-1:8b",
+        "modified_at": "2025-12-09T00:00:00Z",
+        "name": "rnj-1:8b",
+        "size": 16000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "d8afd22a6506",
+        "model": "qwen3-vl:235b",
+        "modified_at": "2025-09-22T00:00:00Z",
+        "name": "qwen3-vl:235b",
+        "size": 470000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "d1008bea3761",
+        "model": "minimax-m2.7",
+        "modified_at": "2026-03-18T00:00:00Z",
+        "name": "minimax-m2.7",
+        "size": 0
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "3f40c24f825c",
+        "model": "glm-5",
+        "modified_at": "2026-02-11T00:00:00Z",
+        "name": "glm-5",
+        "size": 756162687872
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "d8f3c2a16e5b",
+        "model": "qwen3-coder-next",
+        "modified_at": "2025-02-04T00:00:00Z",
+        "name": "qwen3-coder-next",
+        "size": 81800000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "05afbac4bad6",
+        "model": "gpt-oss:20b",
+        "modified_at": "2025-08-05T00:00:00Z",
+        "name": "gpt-oss:20b",
+        "size": 13780162412
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a1b2c3d40003",
+        "model": "ministral-3:8b",
+        "modified_at": "2025-12-02T00:00:00Z",
+        "name": "ministral-3:8b",
+        "size": 10400000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "b909ca2f1b7f",
+        "model": "qwen3.5:397b",
+        "modified_at": "2026-02-16T00:00:00Z",
+        "name": "qwen3.5:397b",
+        "size": 397000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "ee0873722cc3",
+        "model": "glm-4.6",
+        "modified_at": "2025-09-29T00:00:00Z",
+        "name": "glm-4.6",
+        "size": 696060000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "8c95dad96c75",
+        "model": "glm-4.7",
+        "modified_at": "2025-12-22T00:00:00Z",
+        "name": "glm-4.7",
+        "size": 696060000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "89c148d8ace8",
+        "model": "kimi-k2.5",
+        "modified_at": "2026-01-26T00:00:00Z",
+        "name": "kimi-k2.5",
+        "size": 1118481408000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a403a93c7b13",
+        "model": "deepseek-v3.2",
+        "modified_at": "2025-12-02T00:00:00Z",
+        "name": "deepseek-v3.2",
+        "size": 688586727753
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a5020f0cea71",
+        "model": "qwen3-vl:235b-instruct",
+        "modified_at": "2025-09-22T00:00:00Z",
+        "name": "qwen3-vl:235b-instruct",
+        "size": 470000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "d46b950f79ba",
+        "model": "minimax-m2",
+        "modified_at": "2025-10-27T00:00:00Z",
+        "name": "minimax-m2",
+        "size": 230000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "1361fbbdd94e",
+        "model": "minimax-m2.5",
+        "modified_at": "2026-02-12T00:00:00Z",
+        "name": "minimax-m2.5",
+        "size": 230000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a1b2c3d40001",
+        "model": "ministral-3:3b",
+        "modified_at": "2025-12-02T00:00:00Z",
+        "name": "ministral-3:3b",
+        "size": 4670000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a1b2c3d40005",
+        "model": "ministral-3:14b",
+        "modified_at": "2025-12-02T00:00:00Z",
+        "name": "ministral-3:14b",
+        "size": 15700000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "f7e3b2a16d5c",
+        "model": "mistral-large-3:675b",
+        "modified_at": "2025-12-02T00:00:00Z",
+        "name": "mistral-large-3:675b",
+        "size": 682000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "de057a012512",
+        "model": "devstral-small-2:24b",
+        "modified_at": "2025-12-09T00:00:00Z",
+        "name": "devstral-small-2:24b",
+        "size": 51600000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "c1d2e3f40002",
+        "model": "gemma3:4b",
+        "modified_at": "2025-03-12T00:00:00Z",
+        "name": "gemma3:4b",
+        "size": 8600000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "c1d2e3f40003",
+        "model": "gemma3:12b",
+        "modified_at": "2025-03-12T00:00:00Z",
+        "name": "gemma3:12b",
+        "size": 24000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "c1d2e3f40004",
+        "model": "gemma3:27b",
+        "modified_at": "2025-03-12T00:00:00Z",
+        "name": "gemma3:27b",
+        "size": 55000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "d98fe6ba01e6",
+        "model": "gpt-oss:120b",
+        "modified_at": "2025-08-05T00:00:00Z",
+        "name": "gpt-oss:120b",
+        "size": 65290180781
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "de057a012512",
+        "model": "devstral-2:123b",
+        "modified_at": "2025-12-08T00:00:00Z",
+        "name": "devstral-2:123b",
+        "size": 128249391520
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "5c1168f3a867",
+        "model": "cogito-2.1:671b",
+        "modified_at": "2025-11-19T00:00:00Z",
+        "name": "cogito-2.1:671b",
+        "size": 688586727753
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a4b4f1851393",
+        "model": "nemotron-3-nano:30b",
+        "modified_at": "2025-12-15T00:00:00Z",
+        "name": "nemotron-3-nano:30b",
+        "size": 32645090390
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "a7c3e1f98b2d",
+        "model": "minimax-m2.1",
+        "modified_at": "2025-12-20T00:00:00Z",
+        "name": "minimax-m2.1",
+        "size": 230000000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "9665a13eb6f1",
+        "model": "kimi-k2:1t",
+        "modified_at": "2025-09-05T00:00:00Z",
+        "name": "kimi-k2:1t",
+        "size": 1118481408000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "aada434099ae",
+        "model": "qwen3-next:80b",
+        "modified_at": "2025-09-10T00:00:00Z",
+        "name": "qwen3-next:80b",
+        "size": 81800000000
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "e1c8a9725f49",
+        "model": "deepseek-v3.1:671b",
+        "modified_at": "2025-11-20T00:00:00Z",
+        "name": "deepseek-v3.1:671b",
+        "size": 688586727753
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "f1e2c3f40001",
+        "model": "gemini-3-flash-preview",
+        "modified_at": "2025-12-17T00:00:00Z",
+        "name": "gemini-3-flash-preview",
+        "size": 0
+      },
+      {
+        "details": {
+          "families": null,
+          "family": "",
+          "format": "",
+          "parameter_size": "",
+          "parent_model": "",
+          "quantization_level": ""
+        },
+        "digest": "da11955bb451",
+        "model": "nemotron-3-super",
+        "modified_at": "2026-03-11T00:00:00Z",
+        "name": "nemotron-3-super",
+        "size": 230500000000
+      }
+    ]
+  },
+  "fetch_manifests": true,
+  "fetched_at_utc": "2026-04-02T17:59:50.307498+00:00",
+  "library_models": [
+    "alfred"
+  ],
+  "library_tag_catalog": {
+    "alfred": {
+      "tag_count": 7,
+      "tags": [
+        {
+          "config_digest": "sha256:462c5cd85a4570bc950f5b581086d3458e39ef89cc11cc4832ebfe80e43a56e5",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "e46325710c52",
+          "layers": [
+            {
+              "digest": "sha256:cc9f2665d1004eebb89afc3c6b9df4fa923e3dc53ab3fda4aa966665c164085a",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 23808462528
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:462c5cd85a4570bc950f5b581086d3458e39ef89cc11cc4832ebfe80e43a56e5",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "e46325710c526db3000ad8ed10f5ae05397f21803c855163efc1218ec490203f",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/latest",
+          "model": "alfred:latest",
+          "model_layer_digests": [
+            "sha256:cc9f2665d1004eebb89afc3c6b9df4fa923e3dc53ab3fda4aa966665c164085a"
+          ],
+          "size_label": "24GB"
+        },
+        {
+          "config_digest": "sha256:462c5cd85a4570bc950f5b581086d3458e39ef89cc11cc4832ebfe80e43a56e5",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "e46325710c52",
+          "layers": [
+            {
+              "digest": "sha256:cc9f2665d1004eebb89afc3c6b9df4fa923e3dc53ab3fda4aa966665c164085a",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 23808462528
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:462c5cd85a4570bc950f5b581086d3458e39ef89cc11cc4832ebfe80e43a56e5",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "e46325710c526db3000ad8ed10f5ae05397f21803c855163efc1218ec490203f",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/40b",
+          "model": "alfred:40b",
+          "model_layer_digests": [
+            "sha256:cc9f2665d1004eebb89afc3c6b9df4fa923e3dc53ab3fda4aa966665c164085a"
+          ],
+          "size_label": "24GB"
+        },
+        {
+          "config_digest": "sha256:462c5cd85a4570bc950f5b581086d3458e39ef89cc11cc4832ebfe80e43a56e5",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "e46325710c52",
+          "layers": [
+            {
+              "digest": "sha256:cc9f2665d1004eebb89afc3c6b9df4fa923e3dc53ab3fda4aa966665c164085a",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 23808462528
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:462c5cd85a4570bc950f5b581086d3458e39ef89cc11cc4832ebfe80e43a56e5",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "e46325710c526db3000ad8ed10f5ae05397f21803c855163efc1218ec490203f",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/40b-1023-q4_0",
+          "model": "alfred:40b-1023-q4_0",
+          "model_layer_digests": [
+            "sha256:cc9f2665d1004eebb89afc3c6b9df4fa923e3dc53ab3fda4aa966665c164085a"
+          ],
+          "size_label": "24GB"
+        },
+        {
+          "config_digest": "sha256:a3bcd3d8e03370287b7257da1863c29fc80842c574e41c91b4150bd7ba6aa007",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "d84e435512e7",
+          "layers": [
+            {
+              "digest": "sha256:eb5ef9d7f1ea0ae872289c981da1294f13b044c449c7a8592983414ee1537030",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 26389794496
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:a3bcd3d8e03370287b7257da1863c29fc80842c574e41c91b4150bd7ba6aa007",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "d84e435512e7c2748420c02f0a868f769cd24f5524c5ebb26cbfaab555434e17",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/40b-1023-q4_1",
+          "model": "alfred:40b-1023-q4_1",
+          "model_layer_digests": [
+            "sha256:eb5ef9d7f1ea0ae872289c981da1294f13b044c449c7a8592983414ee1537030"
+          ],
+          "size_label": "26GB"
+        },
+        {
+          "config_digest": "sha256:8f1ae7f2e6a1d5bb8898b33a73d908e234d115b151e7dc63980802eb97f76214",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "aa231f8a71bf",
+          "layers": [
+            {
+              "digest": "sha256:c1eaa656d1fdf840bd0ec7179c7678c79757a289245b7d0be34dc98a92b85b60",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 28971126464
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:8f1ae7f2e6a1d5bb8898b33a73d908e234d115b151e7dc63980802eb97f76214",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "aa231f8a71bfc5755414a32bac94b3de5989f7ba19cdbdfc7379da193b8028f5",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/40b-1023-q5_0",
+          "model": "alfred:40b-1023-q5_0",
+          "model_layer_digests": [
+            "sha256:c1eaa656d1fdf840bd0ec7179c7678c79757a289245b7d0be34dc98a92b85b60"
+          ],
+          "size_label": "29GB"
+        },
+        {
+          "config_digest": "sha256:f76e50f6ecf8d869cf8ec31b2df0b0f502e79066e01fceb86fa8d0b8e680b1e9",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "a0820dcbecfe",
+          "layers": [
+            {
+              "digest": "sha256:8fe50f6e3dd435b19b6122a246b4f56cb651ade5fca5c135c512851f718018b9",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 31552458432
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:f76e50f6ecf8d869cf8ec31b2df0b0f502e79066e01fceb86fa8d0b8e680b1e9",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "a0820dcbecfee2e58b85471c6d525b0120eb4a4087f7415b8bc040af27311861",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/40b-1023-q5_1",
+          "model": "alfred:40b-1023-q5_1",
+          "model_layer_digests": [
+            "sha256:8fe50f6e3dd435b19b6122a246b4f56cb651ade5fca5c135c512851f718018b9"
+          ],
+          "size_label": "32GB"
+        },
+        {
+          "config_digest": "sha256:badd5e02b2f865be4551cb20ab504f5ccfb7ff5211bb22469478ce705522fbba",
+          "config_size_bytes": 457,
+          "context_label": "2K context window",
+          "digest_prefix": "d811415ed9a6",
+          "layers": [
+            {
+              "digest": "sha256:2f6f20bd281af438b76438f4ebaf1d8daf7b28a866b69434798508b76256f3c0",
+              "media_type": "application/vnd.ollama.image.model",
+              "size_bytes": 44459118272
+            },
+            {
+              "digest": "sha256:99e602c5c919fb7ca59d786e7ae63780519fd6fcc2ebc507e7be55d5c20604b8",
+              "media_type": "application/vnd.ollama.image.template",
+              "size_bytes": 95
+            },
+            {
+              "digest": "sha256:b50dbd9341ccc0b2bf0205be21a35978b9635019f804115d651662f29a4dbad5",
+              "media_type": "application/vnd.ollama.image.system",
+              "size_bytes": 56
+            },
+            {
+              "digest": "sha256:c5eb2f6a710cee4496ff6f9fef598b579239de8c994e8deba4e6db72caba8970",
+              "media_type": "application/vnd.ollama.image.params",
+              "size_bytes": 201
+            },
+            {
+              "digest": "sha256:badd5e02b2f865be4551cb20ab504f5ccfb7ff5211bb22469478ce705522fbba",
+              "media_type": "application/vnd.docker.container.image.v1+json",
+              "size_bytes": 457
+            }
+          ],
+          "manifest_sha256": "d811415ed9a6a8d534f4fc04cc1e44f930d49c62b295e6643de1f0b474583201",
+          "manifest_url": "https://registry.ollama.ai/v2/library/alfred/manifests/40b-1023-q8_0",
+          "model": "alfred:40b-1023-q8_0",
+          "model_layer_digests": [
+            "sha256:2f6f20bd281af438b76438f4ebaf1d8daf7b28a866b69434798508b76256f3c0"
+          ],
+          "size_label": "44GB"
+        }
+      ],
+      "tags_url": "https://ollama.com/library/alfred/tags"
+    }
+  },
+  "models_with_errors": {},
+  "notes": "digest_prefix matches the first 12 hex chars of manifest_sha256 when manifests are fetched. model_layer_digests are full OCI blob digests (sha256:...) for application/vnd.ollama.image.model; compare sha256sum of a local .gguf to the 64-hex part after sha256: when the blob is the same file.",
+  "openai_models": {
+    "data": [
+      {
+        "created": 1764633600,
+        "id": "ministral-3:3b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1765152000,
+        "id": "devstral-2:123b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1765929600,
+        "id": "gemini-3-flash-preview",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1765238400,
+        "id": "rnj-1:8b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1762387200,
+        "id": "kimi-k2-thinking",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1765756800,
+        "id": "nemotron-3-nano:30b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1758499200,
+        "id": "qwen3-vl:235b-instruct",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1758499200,
+        "id": "qwen3-vl:235b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1773792000,
+        "id": "minimax-m2.7",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1765238400,
+        "id": "devstral-small-2:24b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1771200000,
+        "id": "qwen3.5:397b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1757462400,
+        "id": "qwen3-next:80b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1738627200,
+        "id": "qwen3-coder-next",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1754352000,
+        "id": "gpt-oss:20b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1741737600,
+        "id": "gemma3:12b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1761523200,
+        "id": "minimax-m2",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1764633600,
+        "id": "ministral-3:8b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1741737600,
+        "id": "gemma3:4b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1766361600,
+        "id": "glm-4.7",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1769385600,
+        "id": "kimi-k2.5",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1770854400,
+        "id": "minimax-m2.5",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1764633600,
+        "id": "mistral-large-3:675b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1753142400,
+        "id": "qwen3-coder:480b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1754352000,
+        "id": "gpt-oss:120b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1763510400,
+        "id": "cogito-2.1:671b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1764633600,
+        "id": "ministral-3:14b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1741737600,
+        "id": "gemma3:27b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1773187200,
+        "id": "nemotron-3-super",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1759104000,
+        "id": "glm-4.6",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1770768000,
+        "id": "glm-5",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1757030400,
+        "id": "kimi-k2:1t",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1764633600,
+        "id": "deepseek-v3.2",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1763596800,
+        "id": "deepseek-v3.1:671b",
+        "object": "model",
+        "owned_by": "ollama"
+      },
+      {
+        "created": 1766188800,
+        "id": "minimax-m2.1",
+        "object": "model",
+        "owned_by": "ollama"
+      }
+    ],
+    "object": "list"
+  },
+  "sources": {
+    "api_tags": "https://ollama.com/api/tags",
+    "library_index": "https://ollama.com/library",
+    "oci_manifest_template": "https://registry.ollama.ai/v2/library/<model>/manifests/<tag>",
+    "openai_models": "https://ollama.com/v1/models",
+    "tags_template": "https://ollama.com/library/<model>/tags"
+  },
+  "summary": {
+    "api_tags_models": 34,
+    "fetch_errors": 0,
+    "library_model_families": 1,
+    "manifest_fetch_failed": 0,
+    "manifest_fetch_ok": 7,
+    "openai_models_count": 34,
+    "total_tag_rows": 7
+  },
+  "summary_manifests": {
+    "failed": 0,
+    "ok": 7
+  }
+}

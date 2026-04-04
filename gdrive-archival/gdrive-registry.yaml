@@ -32,6 +32,16 @@ roots:
     final_checksum_verify: false
   - path: d3/quantized
     final_checksum_verify: false
+  # Qwen dense / instruct / MoE raw weights (manifest.json discovery). GGUF stays under
+  # d3/quantized (root above). d5 bulk sync excludes raw/** — list d5/raw/Qwen explicitly.
+  - path: d1/raw/Qwen
+    final_checksum_verify: false
+  - path: d2/raw/Qwen
+    final_checksum_verify: false
+  - path: d3/raw/Qwen
+    final_checksum_verify: false
+  - path: d5/raw/Qwen
+    final_checksum_verify: false
 
 # Uploader should exclude under d5 (rclone patterns relative to d5/ root):
 d5_exclude:

@@ -20,8 +20,9 @@ Added as useful, concrete specialist recommendations with valid HF repos and sma
 Large low-ROI specialist entries were kept but deprioritized to priority 4 on `d5`:
 
 - `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-*`
-- `nvidia/Llama-3_1-Nemotron-Ultra-253B-v1`
 - `xai-org/grok-2`
+
+`nvidia/Llama-3_1-Nemotron-Ultra-253B-v1` was removed from specialists; it remains in main `registry.yaml` (drive `d1`).
 
 ## Not directly incorporated
 

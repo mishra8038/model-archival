@@ -26,8 +26,16 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Optional
 
+from archiver.downloader import SizePolicySkip
 from archiver.models import ModelEntry, Registry
-from archiver.state import RunState, STATUS_COMPLETE, STATUS_FAILED, STATUS_SKIPPED, STATUS_IN_PROGRESS
+from archiver.state import (
+    RunState,
+    STATUS_COMPLETE,
+    STATUS_DEFERRED_LARGE,
+    STATUS_FAILED,
+    STATUS_IN_PROGRESS,
+    STATUS_SKIPPED,
+)
 
 log = logging.getLogger(__name__)
 
@@ -127,6 +135,9 @@ class DriveScheduler:
         for m in models:
             if self.state.is_complete(m.id):
                 log.debug("Already complete, skipping: %s", m.id)
+                continue
+            if self.state.get_model_status(m.id) == STATUS_DEFERRED_LARGE:
+                log.debug("Deferred (size cap), not queued: %s", m.id)
                 continue
             if m.requires_auth and not self.token_accessible.get(m.id, True):
                 log.warning("Skipping gated model (no token access): %s", m.id)
@@ -304,6 +315,15 @@ class DriveScheduler:
             if self.on_model_complete:
                 self.on_model_complete(model, manifest or {})
             log.info("✓ %s complete", model.id)
+
+        except SizePolicySkip as e:
+            err_msg = str(e).replace("\n", " ")[:200]
+            self.state.set_model_status(model.id, STATUS_DEFERRED_LARGE, error=str(e))
+            self._log_activity(
+                f"{time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())} "
+                f"MODEL_DEFER_LARGE {drive} {model.id} error={err_msg}"
+            )
+            log.warning("⊘ %s deferred (size cap): %s", model.id, err_msg)
 
         except Exception as e:
             err_msg = str(e).replace("\n", " ")[:200]

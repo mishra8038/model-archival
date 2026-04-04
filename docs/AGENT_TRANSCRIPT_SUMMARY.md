@@ -10,6 +10,26 @@
 
 ---
 
+## 2026-04-03 — VM `priority_overrides.json` (Gemma-4 first, failed tail)
+
+- **`192.168.8.65` `/mnt/models/d3/priority_overrides.json`:** Gemma-4 small dense **-620**, 26B MoE **-580**, 31B overrides removed; specialist **failed** → **120**; **`unsloth/DeepSeek-R1-GGUF`** (failed) **120**; last four (**`DeepSeek-V3-GGUF`**, **`deepseek-vl2`**, **`Qwen3.5-122B-A10B`**, **`Qwen3.5-397B-A17B`**) → **250**; pending/in_progress override **0** removed. Log: **`docs/remote/REMOTE_ACTIVITY_LOG.192.168.8.65.md`**.
+- **Gemini 3 HF previews:** Removed **`google/gemini-3-flash-preview`** and **`google/gemini-3.1-flash-lite-preview`** from **`registry-specialists.yaml`**; added to **`registry-legacy.yaml`** (`legacy: true`, no token / Gemma 4 sufficient). **`failed-registry`** regenerated on VM; repo **`config/failed-models-registry.yaml`** + **`docs/FAILED_MODEL_REGISTRY.md`** updated.
+
+## 2026-04-02 — Archiver: `failed-registry` (run_state + historical `run-report-*.md`)
+
+- **`model-archival/src/archiver/failed_registry.py`:** Classifies `error` / `last_error` → `disk_space` | `unavailable` | `auth` | `failed_shards` | `verify` | `other` (+ `skipped_gated` with `--include-skipped`); parses **`run-report-*.md`** for past download/verify/skip events; merges **`registry*.yaml`**; dedupes incidents; **`historical_only`** rows when not currently `failed` in `run_state`.
+- **`uv run archiver failed-registry`:** **`--no-historical`**, **`--reports-dir`** (repeatable). Writes **`config/failed-models-registry.yaml`** + **`docs/FAILED_MODEL_REGISTRY.md`**. Docs: **`model-archival/docs/OPERATIONS.md`**, **`docs/AI_CONTEXT.md`**.
+
+## 2026-04-02 — `gh-archival`: owned GitHub repos → tarballs + rclone
+
+- **`gh-archival/`:** Standalone Python package (`uv sync`); console script **`gh-archival`**. Commands: **`check`**, **`list-repos`** (API `affiliation=owner`, default branch **`main`** unless `--any-default-branch`), **`run`** (`git archive` **`.tar.gz`** per repo or `--format dir`, manifest JSON, optional **`rclone copy`** via **`GH_ARCHIVAL_RCLONE_REMOTE`**). See **`gh-archival/README.md`**.
+- **Ollama library metadata:** **`fingerprints/scripts/snapshot_ollama_library.py`** archives **`https://ollama.com/api/tags`**, **`/v1/models`**, **`/library`** (model families), per-family **`/library/<name>/tags`**, and (by default) **`https://registry.ollama.ai/v2/library/<model>/manifests/<tag>`** OCI manifests — full **`manifest_sha256`**, per-layer digests, and **`model_layer_digests`** (`application/vnd.ollama.image.model`, for GGUF blob verification vs **`sha256sum`**). **`--no-manifests`** skips registry. Output **`fingerprints/ollama-library/YYYY-MM-DD/snapshot.json`** (+ README).
+
+## 2026-03-30 — Specialist queue: completion-based `priority_overrides` + VM run
+
+- **`model-archival/scripts/compute-priority-overrides.py`:** Multi-drive scan vs `run_state.json`; **`--defer-id`** for huge partials when `total_bytes` is missing. **`model-archival/scripts/stop.sh`:** `pgrep -f 'archiver.*[[:space:]]download'`. **`model-archival/docs/OPERATIONS.md`:** overrides + older-VM `uv run archiver --registry … download` example.
+- **VM `192.168.8.65`:** Merged `/mnt/models/d3/priority_overrides.json`; started **`screen -S archiver-specialists`** adaptive specialist run — **`docs/remote/REMOTE_ACTIVITY_LOG.192.168.8.65.md`**.
+
 ## 2026-03-29 — Deploy: tmux + powerline + fonts + tmux-powerline
 
 - **`deploy/setup-mxlinux.sh`:** `tmux`, `python3-powerline`, `fonts-powerline` in `PACKAGES`; step **1b** clones [erikw/tmux-powerline](https://github.com/erikw/tmux-powerline) → `~/.tmux-powerline`.

@@ -1,0 +1,142 @@
+{
+  "deepseek-coder-v2:16b": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "deepseek-coder-v2",
+    "size_bytes": 8905126121,
+    "tag": "16b"
+  },
+  "deepseek-coder:33b-instruct-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "deepseek-coder",
+    "size_bytes": 19940674986,
+    "tag": "33b-instruct-q4_K_M"
+  },
+  "deepseek-coder:6.7b": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "deepseek-coder",
+    "size_bytes": 3827834503,
+    "tag": "6.7b"
+  },
+  "deepseek-r1:14b-qwen-distill-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "deepseek-r1",
+    "size_bytes": 8988112209,
+    "tag": "14b-qwen-distill-q4_K_M"
+  },
+  "deepseek-r1:32b-class": {
+    "error": "manifest unknown (check tag on ollama.com/library)",
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "deepseek-r1",
+    "size_bytes": null,
+    "tag": "32b-class"
+  },
+  "deepseek-r1:8b-0528-qwen3-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "deepseek-r1",
+    "size_bytes": 5225376047,
+    "tag": "8b-0528-qwen3-q4_K_M"
+  },
+  "gemma4:26b-a4b-it-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 17987581215,
+    "tag": "26b-a4b-it-q4_K_M"
+  },
+  "gemma4:26b-a4b-it-q8_0": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 28052911389,
+    "tag": "26b-a4b-it-q8_0"
+  },
+  "gemma4:31b-it-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 19868981791,
+    "tag": "31b-it-q4_K_M"
+  },
+  "gemma4:31b-it-q8_0": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 33834625565,
+    "tag": "31b-it-q8_0"
+  },
+  "gemma4:e2b-it-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 7162405886,
+    "tag": "e2b-it-q4_K_M"
+  },
+  "gemma4:e2b-it-q8_0": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 8140152828,
+    "tag": "e2b-it-q8_0"
+  },
+  "gemma4:e4b-it-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 9608350718,
+    "tag": "e4b-it-q4_K_M"
+  },
+  "gemma4:e4b-it-q8_0": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "gemma4",
+    "size_bytes": 11636116476,
+    "tag": "e4b-it-q8_0"
+  },
+  "llama3.1:8b-instruct-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "llama3.1",
+    "size_bytes": 4920753328,
+    "tag": "8b-instruct-q4_K_M"
+  },
+  "mixtral:8x7b-instruct-v0.1-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "mixtral",
+    "size_bytes": 28448479830,
+    "tag": "8x7b-instruct-v0.1-q4_K_M"
+  },
+  "qwen2.5-coder:14b-instruct-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "qwen2.5-coder",
+    "size_bytes": 8988124298,
+    "tag": "14b-instruct-q4_K_M"
+  },
+  "qwen2.5-coder:32b-instruct-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "qwen2.5-coder",
+    "size_bytes": 19851349898,
+    "tag": "32b-instruct-q4_K_M"
+  },
+  "qwen2.5-coder:7b": {
+    "error": null,
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "qwen2.5-coder",
+    "size_bytes": 4683087561,
+    "tag": "7b"
+  },
+  "starcoder2:15b-instruct-q4_K_M": {
+    "error": "manifest unknown (check tag on ollama.com/library)",
+    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "model": "starcoder2",
+    "size_bytes": null,
+    "tag": "15b-instruct-q4_K_M"
+  }
+}

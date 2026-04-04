@@ -1,9 +1,9 @@
 {
   "header": {
-    "generated_at_utc": "2026-03-29T23:58:33.654301+00:00",
+    "generated_at_utc": "2026-04-03T14:55:43.782750+00:00",
     "models_mount": "/mnt/models",
-    "run_state_json": "/mnt/models/d3/run_state.json",
-    "run_state_loaded": false,
+    "run_state_json": "/tmp/run_state_vm.json",
+    "run_state_loaded": true,
     "global_index": {
       "path": "/mnt/models/d3/archive/checksums/global_index.jsonl",
       "exists": false,
@@ -36,7 +36,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -62,7 +62,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -88,7 +88,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -114,7 +114,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -140,7 +140,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -166,7 +166,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -192,7 +192,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -218,7 +218,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -244,7 +244,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -270,7 +270,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -296,7 +296,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -322,7 +322,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -348,7 +348,89 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "unsloth/DeepSeek-V3-GGUF",
+        "hf_repo": "unsloth/DeepSeek-V3-GGUF",
+        "tier": "C",
+        "drive": "d1",
+        "priority": 4,
+        "licence": "MIT",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [
+          "Q4_K_M"
+        ],
+        "parent_model": null,
+        "method": null,
+        "notes": "671B — Q4_K_M only (~340 GB). drive d1 — LFS scratch under d1/.tmp after d3 tmp removed (2026-04).",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml",
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d1/quantized/unsloth/DeepSeek-V3-GGUF/main",
+        "path_absolute": "/mnt/models/d1/quantized/unsloth/DeepSeek-V3-GGUF/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "pending",
+        "manifest": null
+      },
+      {
+        "id": "xai-org/grok-2",
+        "hf_repo": "xai-org/grok-2",
+        "tier": "G",
+        "drive": "d1",
+        "priority": 4,
+        "licence": "Grok-2-Community",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License). drive d1 — scratch/final tree on D1 after d5 space move (2026-03).",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml",
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d1/raw/xai-org/grok-2/main",
+        "path_absolute": "/mnt/models/d1/raw/xai-org/grok-2/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
+        "manifest": null
+      },
+      {
+        "id": "MiniMaxAI/MiniMax-M2.7",
+        "hf_repo": "MiniMaxAI/MiniMax-M2.7",
+        "tier": "G",
+        "drive": "d1",
+        "priority": 2,
+        "licence": "other",
+        "requires_auth": true,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "[discipline:frontier][minimax] MiniMax M2.7 — gated on HF; requires accepted terms + HF token (`archiver tokens check`). Skipped when no token. Large multi-shard — D1. PinchBench: minimax/minimax-m2.7. Main registry (moved from registry-specialists).",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d1/raw/MiniMaxAI/MiniMax-M2.7/main",
+        "path_absolute": "/mnt/models/d1/raw/MiniMaxAI/MiniMax-M2.7/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "skipped",
         "manifest": null
       },
       {
@@ -370,6 +452,58 @@
         ],
         "path_relative": "d1/raw/Qwen/Qwen2.5-3B/main",
         "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-3B/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen2.5-0.5B",
+        "hf_repo": "Qwen/Qwen2.5-0.5B",
+        "tier": "A",
+        "drive": "d1",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Pre-trained 0.5B base for Qwen2.5 — scaling-law anchor; pairs with Qwen2.5-0.5B-Instruct",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d1/raw/Qwen/Qwen2.5-0.5B/main",
+        "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-0.5B/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen2.5-1.5B",
+        "hf_repo": "Qwen/Qwen2.5-1.5B",
+        "tier": "A",
+        "drive": "d1",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Pre-trained 1.5B base for Qwen2.5 — scaling-law anchor; pairs with Qwen2.5-1.5B-Instruct",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d1/raw/Qwen/Qwen2.5-1.5B/main",
+        "path_absolute": "/mnt/models/d1/raw/Qwen/Qwen2.5-1.5B/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
@@ -400,7 +534,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -426,7 +560,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -452,7 +586,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -478,7 +612,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -505,7 +639,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -532,7 +666,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -558,7 +692,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -584,59 +718,61 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
-        "id": "tiiuae/falcon-180B",
-        "hf_repo": "tiiuae/falcon-180B",
-        "tier": "A",
+        "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16",
+        "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16",
+        "tier": "D",
         "drive": "d1",
         "priority": 4,
-        "licence": "Falcon-180B-TII",
-        "requires_auth": true,
+        "licence": "nvidia-open-model-license",
+        "requires_auth": false,
         "commit_sha_registry": null,
         "quant_levels": [],
         "parent_model": null,
         "method": null,
-        "notes": "TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF",
+        "notes": "Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority. drive d1 — aligned with .tmp partials on D1 after d5 space move (2026-03).",
         "legacy": false,
         "registry_sources": [
-          "model-archival/config/registry.yaml"
+          "model-archival/config/registry.yaml",
+          "model-archival/config/registry-specialists.yaml"
         ],
-        "path_relative": "d1/raw/tiiuae/falcon-180B/main",
-        "path_absolute": "/mnt/models/d1/raw/tiiuae/falcon-180B/main",
+        "path_relative": "d1/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16/main",
+        "path_absolute": "/mnt/models/d1/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
-        "id": "tiiuae/falcon-180B-chat",
-        "hf_repo": "tiiuae/falcon-180B-chat",
-        "tier": "A",
+        "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+        "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
+        "tier": "D",
         "drive": "d1",
         "priority": 4,
-        "licence": "Falcon-180B-TII",
-        "requires_auth": true,
+        "licence": "nvidia-open-model-license",
+        "requires_auth": false,
         "commit_sha_registry": null,
         "quant_levels": [],
         "parent_model": null,
         "method": null,
-        "notes": "TII Falcon 180B instruct; no direct replacement",
+        "notes": "Nemotron 3 Super BF16 (HF id without Base-); matches historical run_state skew; drive d1.",
         "legacy": false,
         "registry_sources": [
-          "model-archival/config/registry.yaml"
+          "model-archival/config/registry.yaml",
+          "model-archival/config/registry-specialists.yaml"
         ],
-        "path_relative": "d1/raw/tiiuae/falcon-180B-chat/main",
-        "path_absolute": "/mnt/models/d1/raw/tiiuae/falcon-180B-chat/main",
+        "path_relative": "d1/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/main",
+        "path_absolute": "/mnt/models/d1/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -663,7 +799,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -689,7 +825,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -715,7 +851,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -793,7 +929,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -819,7 +955,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -845,33 +981,59 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "in_progress",
         "manifest": null
       },
       {
-        "id": "MiniMaxAI/MiniMax-M2.7",
-        "hf_repo": "MiniMaxAI/MiniMax-M2.7",
-        "tier": "G",
+        "id": "google/gemma-4-31B",
+        "hf_repo": "google/gemma-4-31B",
+        "tier": "F",
         "drive": "d1",
-        "priority": 2,
-        "licence": "other",
-        "requires_auth": true,
+        "priority": 4,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
         "commit_sha_registry": null,
         "quant_levels": [],
         "parent_model": null,
         "method": null,
-        "notes": "[discipline:frontier][minimax] MiniMax M2.7 — registry slot kept for future pull when HF repo is available; verify card + token before run. Large shards — D1. PinchBench: minimax/minimax-m2.7.",
+        "notes": "Gemma 4 31B dense base; 256K ctx. Priority 4 — defer until smaller Gemma 4 (E2B/E4B) complete.",
         "legacy": false,
         "registry_sources": [
           "model-archival/config/registry-specialists.yaml"
         ],
-        "path_relative": "d1/raw/MiniMaxAI/MiniMax-M2.7/main",
-        "path_absolute": "/mnt/models/d1/raw/MiniMaxAI/MiniMax-M2.7/main",
+        "path_relative": "d1/raw/google/gemma-4-31B/main",
+        "path_absolute": "/mnt/models/d1/raw/google/gemma-4-31B/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
+        "manifest": null
+      },
+      {
+        "id": "google/gemma-4-31B-it",
+        "hf_repo": "google/gemma-4-31B-it",
+        "tier": "F",
+        "drive": "d1",
+        "priority": 4,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemma 4 31B dense instruct. Priority 4 — defer until smaller Gemma 4 (E2B/E4B) complete.",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d1/raw/google/gemma-4-31B-it/main",
+        "path_absolute": "/mnt/models/d1/raw/google/gemma-4-31B-it/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
         "manifest": null
       }
     ],
@@ -899,7 +1061,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -926,7 +1088,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -953,7 +1115,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -980,7 +1142,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1006,7 +1168,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1032,7 +1194,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -1058,7 +1220,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1084,7 +1246,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1110,7 +1272,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1136,7 +1298,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1162,7 +1324,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1184,6 +1346,110 @@
         ],
         "path_relative": "d2/raw/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218",
         "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-8B/b968826d9c46dd6066d109eabc6255188de91218",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen3-0.6B-Base",
+        "hf_repo": "Qwen/Qwen3-0.6B-Base",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen3 0.6B pre-trained base; scaling-law / tiny-model anchor; pairs with Qwen/Qwen3-0.6B",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen3-0.6B-Base/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-0.6B-Base/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen3-0.6B",
+        "hf_repo": "Qwen/Qwen3-0.6B",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen3 0.6B post-trained from Base (chat); no separate official *-Instruct repo on HF",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen3-0.6B/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-0.6B/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen3-1.7B-Base",
+        "hf_repo": "Qwen/Qwen3-1.7B-Base",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen3 1.7B pre-trained base; complements Qwen3-4B and Qwen/Qwen3-1.7B",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen3-1.7B-Base/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-1.7B-Base/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen3-1.7B",
+        "hf_repo": "Qwen/Qwen3-1.7B",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen3 1.7B post-trained from Base (chat); no separate official *-Instruct repo on HF",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen3-1.7B/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen3-1.7B/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
@@ -1214,33 +1480,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
-        "manifest": null
-      },
-      {
-        "id": "meta-llama/Llama-3.1-70B-Instruct",
-        "hf_repo": "meta-llama/Llama-3.1-70B-Instruct",
-        "tier": "A",
-        "drive": "d2",
-        "priority": 4,
-        "licence": "llama3.1",
-        "requires_auth": true,
-        "commit_sha_registry": "1605565b47bb9346c5515c34102e054115b4f98b",
-        "quant_levels": [],
-        "parent_model": null,
-        "method": null,
-        "notes": null,
-        "legacy": false,
-        "registry_sources": [
-          "model-archival/config/registry.yaml"
-        ],
-        "path_relative": "d2/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b",
-        "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b",
-        "on_disk": {
-          "revision_dir_exists": false,
-          "manifest_present": false
-        },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1266,7 +1506,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1292,7 +1532,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1318,7 +1558,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1344,7 +1584,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1371,7 +1611,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1397,7 +1637,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -1423,7 +1663,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -1449,7 +1689,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1475,7 +1715,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1501,7 +1741,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1527,7 +1767,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1554,7 +1794,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1581,7 +1821,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1607,7 +1847,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1634,7 +1874,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -1661,7 +1901,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -1688,7 +1928,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -1714,7 +1954,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1740,7 +1980,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1766,7 +2006,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1792,7 +2032,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1818,7 +2058,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1844,7 +2084,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1871,7 +2111,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1897,7 +2137,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1923,7 +2163,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1949,7 +2189,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -1975,7 +2215,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2001,7 +2241,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2027,7 +2267,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2049,6 +2289,84 @@
         ],
         "path_relative": "d2/uncensored/mlabonne/NeuralDaredevil-8B-abliterated/main",
         "path_absolute": "/mnt/models/d2/uncensored/mlabonne/NeuralDaredevil-8B-abliterated/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen2.5-0.5B-Instruct",
+        "hf_repo": "Qwen/Qwen2.5-0.5B-Instruct",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen2.5 0.5B instruct; tiny open chat baseline",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen2.5-0.5B-Instruct/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-0.5B-Instruct/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen2.5-1.5B-Instruct",
+        "hf_repo": "Qwen/Qwen2.5-1.5B-Instruct",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen2.5 1.5B instruct; high-usage small checkpoint",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen2.5-1.5B-Instruct/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-1.5B-Instruct/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "Qwen/Qwen2.5-3B-Instruct",
+        "hf_repo": "Qwen/Qwen2.5-3B-Instruct",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Qwen2.5 3B instruct; pairs with Qwen2.5-3B base",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d2/raw/Qwen/Qwen2.5-3B-Instruct/main",
+        "path_absolute": "/mnt/models/d2/raw/Qwen/Qwen2.5-3B-Instruct/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
@@ -2079,7 +2397,61 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "tiiuae/falcon-180B-chat",
+        "hf_repo": "tiiuae/falcon-180B-chat",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 4,
+        "licence": "Falcon-180B-TII",
+        "requires_auth": true,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "TII Falcon 180B instruct; drive d2 — retry after d1 ENOSPC (VM tight on d1).",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml",
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d2/raw/tiiuae/falcon-180B-chat/main",
+        "path_absolute": "/mnt/models/d2/raw/tiiuae/falcon-180B-chat/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "pending",
+        "manifest": null
+      },
+      {
+        "id": "Undi95/dbrx-base",
+        "hf_repo": "Undi95/dbrx-base",
+        "tier": "A",
+        "drive": "d2",
+        "priority": 4,
+        "licence": "other",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Community DBRX base mirror (ungated); disk-space retry; drive d2 vs tight d5.",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml",
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d2/raw/Undi95/dbrx-base/main",
+        "path_absolute": "/mnt/models/d2/raw/Undi95/dbrx-base/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -2105,7 +2477,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -2131,7 +2503,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -2157,7 +2529,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -2183,7 +2555,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -2209,7 +2581,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2235,7 +2607,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2261,7 +2633,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -2287,7 +2659,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -2313,11 +2685,89 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "google/gemma-4-26B-A4B",
+        "hf_repo": "google/gemma-4-26B-A4B",
+        "tier": "F",
+        "drive": "d2",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemma 4 26B MoE (A4B active); multimodal; 256K ctx.",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d2/raw/google/gemma-4-26B-A4B/main",
+        "path_absolute": "/mnt/models/d2/raw/google/gemma-4-26B-A4B/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
+        "manifest": null
+      },
+      {
+        "id": "google/gemma-4-26B-A4B-it",
+        "hf_repo": "google/gemma-4-26B-A4B-it",
+        "tier": "F",
+        "drive": "d2",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemma 4 26B MoE instruct; image-text-to-text on HF.",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d2/raw/google/gemma-4-26B-A4B-it/main",
+        "path_absolute": "/mnt/models/d2/raw/google/gemma-4-26B-A4B-it/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
         "manifest": null
       }
     ],
     "d3": [
+      {
+        "id": "meta-llama/Llama-3.1-70B-Instruct",
+        "hf_repo": "meta-llama/Llama-3.1-70B-Instruct",
+        "tier": "A",
+        "drive": "d3",
+        "priority": 4,
+        "licence": "llama3.1",
+        "requires_auth": true,
+        "commit_sha_registry": "1605565b47bb9346c5515c34102e054115b4f98b",
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": null,
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d3/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b",
+        "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "complete",
+        "manifest": null
+      },
       {
         "id": "google/medgemma-27b-text-it",
         "hf_repo": "google/medgemma-27b-text-it",
@@ -2342,7 +2792,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2369,7 +2819,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -2396,7 +2846,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -2423,7 +2873,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2450,7 +2900,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2477,7 +2927,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2504,7 +2954,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2531,7 +2981,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -2557,7 +3007,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2584,7 +3034,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2611,7 +3061,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2716,7 +3166,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2743,7 +3193,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2770,7 +3220,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2797,7 +3247,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2824,7 +3274,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2852,7 +3302,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2880,7 +3330,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2908,7 +3358,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2936,7 +3386,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2964,7 +3414,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -2992,7 +3442,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3020,7 +3470,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3048,7 +3498,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3076,7 +3526,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3104,7 +3554,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3132,7 +3582,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3160,7 +3610,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3189,7 +3639,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3217,7 +3667,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3245,7 +3695,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3273,7 +3723,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3301,7 +3751,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3330,7 +3780,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3359,7 +3809,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3388,7 +3838,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3414,7 +3864,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3441,7 +3891,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3470,7 +3920,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3499,7 +3949,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3528,7 +3978,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3557,7 +4007,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3584,7 +4034,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3611,7 +4061,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3638,7 +4088,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -3665,7 +4115,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3692,7 +4142,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3719,7 +4169,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3746,7 +4196,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -3773,7 +4223,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -3800,7 +4250,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -3827,7 +4277,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3855,7 +4305,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3883,7 +4333,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3910,7 +4360,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3936,7 +4386,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -3958,6 +4408,58 @@
         ],
         "path_relative": "d3/raw/meta-llama/Llama-3.2-1B-Instruct/main",
         "path_absolute": "/mnt/models/d3/raw/meta-llama/Llama-3.2-1B-Instruct/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "complete",
+        "manifest": null
+      },
+      {
+        "id": "HuggingFaceTB/SmolLM2-360M",
+        "hf_repo": "HuggingFaceTB/SmolLM2-360M",
+        "tier": "A",
+        "drive": "d3",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "SmolLM2 360M pre-trained base; minimum viable modern LM ladder; pairs with SmolLM2-360M-Instruct",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d3/raw/HuggingFaceTB/SmolLM2-360M/main",
+        "path_absolute": "/mnt/models/d3/raw/HuggingFaceTB/SmolLM2-360M/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": null,
+        "manifest": null
+      },
+      {
+        "id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+        "hf_repo": "HuggingFaceTB/SmolLM2-360M-Instruct",
+        "tier": "A",
+        "drive": "d3",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "SmolLM2 360M instruct; edge / on-device baseline alongside 1.7B-Instruct",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry.yaml"
+        ],
+        "path_relative": "d3/raw/HuggingFaceTB/SmolLM2-360M-Instruct/main",
+        "path_absolute": "/mnt/models/d3/raw/HuggingFaceTB/SmolLM2-360M-Instruct/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
@@ -3988,7 +4490,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4015,7 +4517,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -4042,7 +4544,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -4069,7 +4571,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4096,7 +4598,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4123,7 +4625,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4150,7 +4652,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4177,7 +4679,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4203,7 +4705,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4229,7 +4731,59 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
+        "manifest": null
+      },
+      {
+        "id": "google/gemini-3-flash-preview",
+        "hf_repo": "google/gemini-3-flash-preview",
+        "tier": "F",
+        "drive": "d3",
+        "priority": 2,
+        "licence": "other",
+        "requires_auth": true,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemini 3 Flash Preview on HF (gated). Removed from registry-specialists — no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.",
+        "legacy": true,
+        "registry_sources": [
+          "model-archival/config/registry-legacy.yaml"
+        ],
+        "path_relative": "d3/raw/google/gemini-3-flash-preview/main",
+        "path_absolute": "/mnt/models/d3/raw/google/gemini-3-flash-preview/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "skipped",
+        "manifest": null
+      },
+      {
+        "id": "google/gemini-3.1-flash-lite-preview",
+        "hf_repo": "google/gemini-3.1-flash-lite-preview",
+        "tier": "F",
+        "drive": "d3",
+        "priority": 2,
+        "licence": "other",
+        "requires_auth": true,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemini 3.1 Flash-Lite Preview on HF (gated). Removed from registry-specialists — no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.",
+        "legacy": true,
+        "registry_sources": [
+          "model-archival/config/registry-legacy.yaml"
+        ],
+        "path_relative": "d3/raw/google/gemini-3.1-flash-lite-preview/main",
+        "path_absolute": "/mnt/models/d3/raw/google/gemini-3.1-flash-lite-preview/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "skipped",
         "manifest": null
       },
       {
@@ -4255,7 +4809,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4281,7 +4835,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4307,7 +4861,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4333,7 +4887,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4359,7 +4913,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4385,7 +4939,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4411,7 +4965,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4437,7 +4991,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4463,7 +5017,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4489,59 +5043,111 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
-        "id": "google/gemini-3-flash-preview",
-        "hf_repo": "google/gemini-3-flash-preview",
+        "id": "google/gemma-4-E2B",
+        "hf_repo": "google/gemma-4-E2B",
         "tier": "F",
         "drive": "d3",
-        "priority": 2,
-        "licence": "other",
-        "requires_auth": true,
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
         "commit_sha_registry": null,
         "quant_levels": [],
         "parent_model": null,
         "method": null,
-        "notes": "[discipline:frontier][google] Gemini 3 Flash Preview on Hugging Face (gated). Multimodal flash tier; accept terms on model card. PinchBench: google/gemini-3-flash-preview.",
+        "notes": "Gemma 4 E2B base — multimodal (text/image/audio), 128K ctx; smallest Gemma 4 line.",
         "legacy": false,
         "registry_sources": [
           "model-archival/config/registry-specialists.yaml"
         ],
-        "path_relative": "d3/raw/google/gemini-3-flash-preview/main",
-        "path_absolute": "/mnt/models/d3/raw/google/gemini-3-flash-preview/main",
+        "path_relative": "d3/raw/google/gemma-4-E2B/main",
+        "path_absolute": "/mnt/models/d3/raw/google/gemma-4-E2B/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
-        "id": "google/gemini-3.1-flash-lite-preview",
-        "hf_repo": "google/gemini-3.1-flash-lite-preview",
+        "id": "google/gemma-4-E2B-it",
+        "hf_repo": "google/gemma-4-E2B-it",
         "tier": "F",
         "drive": "d3",
-        "priority": 2,
-        "licence": "other",
-        "requires_auth": true,
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
         "commit_sha_registry": null,
         "quant_levels": [],
         "parent_model": null,
         "method": null,
-        "notes": "[discipline:frontier][google] Gemini 3.1 Flash-Lite Preview on Hugging Face (gated). Lower-cost / lower-latency flash line per Google AI model docs; verify hf_repo matches the card if download fails.",
+        "notes": "Gemma 4 E2B instruct; any-to-any pipeline on HF.",
         "legacy": false,
         "registry_sources": [
           "model-archival/config/registry-specialists.yaml"
         ],
-        "path_relative": "d3/raw/google/gemini-3.1-flash-lite-preview/main",
-        "path_absolute": "/mnt/models/d3/raw/google/gemini-3.1-flash-lite-preview/main",
+        "path_relative": "d3/raw/google/gemma-4-E2B-it/main",
+        "path_absolute": "/mnt/models/d3/raw/google/gemma-4-E2B-it/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
+        "manifest": null
+      },
+      {
+        "id": "google/gemma-4-E4B",
+        "hf_repo": "google/gemma-4-E4B",
+        "tier": "F",
+        "drive": "d3",
+        "priority": 1,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemma 4 E4B base — multimodal edge; 128K ctx.",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d3/raw/google/gemma-4-E4B/main",
+        "path_absolute": "/mnt/models/d3/raw/google/gemma-4-E4B/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
+        "manifest": null
+      },
+      {
+        "id": "google/gemma-4-E4B-it",
+        "hf_repo": "google/gemma-4-E4B-it",
+        "tier": "F",
+        "drive": "d3",
+        "priority": 3,
+        "licence": "Apache-2.0",
+        "requires_auth": false,
+        "commit_sha_registry": null,
+        "quant_levels": [],
+        "parent_model": null,
+        "method": null,
+        "notes": "Gemma 4 E4B instruct; any-to-any pipeline on HF.",
+        "legacy": false,
+        "registry_sources": [
+          "model-archival/config/registry-specialists.yaml"
+        ],
+        "path_relative": "d3/raw/google/gemma-4-E4B-it/main",
+        "path_absolute": "/mnt/models/d3/raw/google/gemma-4-E4B-it/main",
+        "on_disk": {
+          "revision_dir_exists": false,
+          "manifest_present": false
+        },
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -4567,7 +5173,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4593,7 +5199,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4619,7 +5225,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4645,7 +5251,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4671,7 +5277,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4697,7 +5303,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4723,7 +5329,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4749,7 +5355,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4775,7 +5381,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4801,7 +5407,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       }
     ],
@@ -4829,7 +5435,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -4855,7 +5461,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -4882,65 +5488,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
-        "manifest": null
-      },
-      {
-        "id": "unsloth/DeepSeek-R1-GGUF",
-        "hf_repo": "unsloth/DeepSeek-R1-GGUF",
-        "tier": "C",
-        "drive": "d5",
-        "priority": 4,
-        "licence": "MIT",
-        "requires_auth": false,
-        "commit_sha_registry": null,
-        "quant_levels": [
-          "Q4_K_M"
-        ],
-        "parent_model": null,
-        "method": null,
-        "notes": "671B — Q4_K_M only (~340 GB)",
-        "legacy": false,
-        "registry_sources": [
-          "model-archival/config/registry.yaml",
-          "model-archival/config/registry-specialists.yaml"
-        ],
-        "path_relative": "d5/quantized/unsloth/DeepSeek-R1-GGUF/main",
-        "path_absolute": "/mnt/models/d5/quantized/unsloth/DeepSeek-R1-GGUF/main",
-        "on_disk": {
-          "revision_dir_exists": false,
-          "manifest_present": false
-        },
-        "download_status": null,
-        "manifest": null
-      },
-      {
-        "id": "unsloth/DeepSeek-V3-GGUF",
-        "hf_repo": "unsloth/DeepSeek-V3-GGUF",
-        "tier": "C",
-        "drive": "d5",
-        "priority": 4,
-        "licence": "MIT",
-        "requires_auth": false,
-        "commit_sha_registry": null,
-        "quant_levels": [
-          "Q4_K_M"
-        ],
-        "parent_model": null,
-        "method": null,
-        "notes": "671B — Q4_K_M only (~340 GB)",
-        "legacy": false,
-        "registry_sources": [
-          "model-archival/config/registry.yaml",
-          "model-archival/config/registry-specialists.yaml"
-        ],
-        "path_relative": "d5/quantized/unsloth/DeepSeek-V3-GGUF/main",
-        "path_absolute": "/mnt/models/d5/quantized/unsloth/DeepSeek-V3-GGUF/main",
-        "on_disk": {
-          "revision_dir_exists": false,
-          "manifest_present": false
-        },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -4955,7 +5503,7 @@
         "quant_levels": [],
         "parent_model": "Qwen/Qwen2-72B",
         "method": "supervised-finetune",
-        "notes": "Dolphin 72B — popular uncensored 72B",
+        "notes": "Dolphin 72B — popular uncensored 72B. drive d5 — d3/d5 .tmp cleared (2026-04); partial/finish under d5/uncensored/",
         "legacy": false,
         "registry_sources": [
           "model-archival/config/registry.yaml",
@@ -4967,7 +5515,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -4996,7 +5544,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -5023,7 +5571,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -5050,7 +5598,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -5077,7 +5625,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -5104,7 +5652,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -5131,7 +5679,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -5158,61 +5706,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
-        "manifest": null
-      },
-      {
-        "id": "Undi95/dbrx-base",
-        "hf_repo": "Undi95/dbrx-base",
-        "tier": "A",
-        "drive": "d5",
-        "priority": 4,
-        "licence": "other",
-        "requires_auth": false,
-        "commit_sha_registry": null,
-        "quant_levels": [],
-        "parent_model": null,
-        "method": null,
-        "notes": "Community mirror of DBRX base (Databricks Open Model License metadata); use when databricks/dbrx-base gated access is unavailable",
-        "legacy": false,
-        "registry_sources": [
-          "model-archival/config/registry.yaml",
-          "model-archival/config/registry-specialists.yaml"
-        ],
-        "path_relative": "d5/raw/Undi95/dbrx-base/main",
-        "path_absolute": "/mnt/models/d5/raw/Undi95/dbrx-base/main",
-        "on_disk": {
-          "revision_dir_exists": false,
-          "manifest_present": false
-        },
-        "download_status": null,
-        "manifest": null
-      },
-      {
-        "id": "xai-org/grok-2",
-        "hf_repo": "xai-org/grok-2",
-        "tier": "G",
-        "drive": "d5",
-        "priority": 4,
-        "licence": "Grok-2-Community",
-        "requires_auth": false,
-        "commit_sha_registry": null,
-        "quant_levels": [],
-        "parent_model": null,
-        "method": null,
-        "notes": "~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License)",
-        "legacy": false,
-        "registry_sources": [
-          "model-archival/config/registry.yaml",
-          "model-archival/config/registry-specialists.yaml"
-        ],
-        "path_relative": "d5/raw/xai-org/grok-2/main",
-        "path_absolute": "/mnt/models/d5/raw/xai-org/grok-2/main",
-        "on_disk": {
-          "revision_dir_exists": false,
-          "manifest_present": false
-        },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -5239,61 +5733,33 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
-        "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16",
-        "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16",
-        "tier": "D",
+        "id": "tiiuae/falcon-180B",
+        "hf_repo": "tiiuae/falcon-180B",
+        "tier": "A",
         "drive": "d5",
         "priority": 4,
-        "licence": "nvidia-open-model-license",
-        "requires_auth": false,
+        "licence": "Falcon-180B-TII",
+        "requires_auth": true,
         "commit_sha_registry": null,
         "quant_levels": [],
         "parent_model": null,
         "method": null,
-        "notes": "Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority",
+        "notes": "TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF. drive d5 — LFS scratch under d5/.tmp after d1 tmp removed (2026-04).",
         "legacy": false,
         "registry_sources": [
-          "model-archival/config/registry.yaml",
-          "model-archival/config/registry-specialists.yaml"
+          "model-archival/config/registry.yaml"
         ],
-        "path_relative": "d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16/main",
-        "path_absolute": "/mnt/models/d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16/main",
+        "path_relative": "d5/raw/tiiuae/falcon-180B/main",
+        "path_absolute": "/mnt/models/d5/raw/tiiuae/falcon-180B/main",
         "on_disk": {
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
-        "manifest": null
-      },
-      {
-        "id": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
-        "hf_repo": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16",
-        "tier": "D",
-        "drive": "d5",
-        "priority": 4,
-        "licence": "nvidia-open-model-license",
-        "requires_auth": false,
-        "commit_sha_registry": null,
-        "quant_levels": [],
-        "parent_model": null,
-        "method": null,
-        "notes": "Nemotron 3 Super instruct; 124B MoE, 1M ctx; lowest priority",
-        "legacy": false,
-        "registry_sources": [
-          "model-archival/config/registry.yaml",
-          "model-archival/config/registry-specialists.yaml"
-        ],
-        "path_relative": "d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/main",
-        "path_absolute": "/mnt/models/d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16/main",
-        "on_disk": {
-          "revision_dir_exists": false,
-          "manifest_present": false
-        },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -5320,7 +5786,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "failed",
         "manifest": null
       },
       {
@@ -5347,7 +5813,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "complete",
         "manifest": null
       },
       {
@@ -5373,7 +5839,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       },
       {
@@ -5399,7 +5865,7 @@
           "revision_dir_exists": false,
           "manifest_present": false
         },
-        "download_status": null,
+        "download_status": "pending",
         "manifest": null
       }
     ]

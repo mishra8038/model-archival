@@ -1,19 +1,19 @@
 # GDrive registry upload status
 
-_Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`logs/uploaded.log`](uploaded.log) (`registry-model` / `registry-tree` / `registry-d5`)._
+_Generated: 2026-04-03T14:55:08Z (UTC) — discovery under `models_mount` + [`logs/uploaded.log`](uploaded.log) (`registry-model` / `registry-tree` / `registry-d5`)._
 
 ## Summary
 
 | Item | Value |
 |------|-------|
 | `models_mount` | `/mnt/models` |
-| Model revision dirs discovered | 67 |
-| Uploaded at least once (in log ∩ on disk) | 14 |
+| Model revision dirs discovered | 66 |
+| Uploaded at least once (in log ∩ on disk) | 13 |
 | Pending (on disk, not in log) | 53 |
-| In log but path missing locally | 460 |
-| Newest `registry-model` log timestamp | 2026-03-27T13:03:11Z |
+| In log but path missing locally | 475 |
+| Newest `registry-model` log timestamp | 2026-04-03T09:21:31Z |
 | Last `registry-d5` (full `d5/` tree) log timestamp | — (not logged yet) |
-| **Tracker** (`registry-upload-state.json`): models marked uploaded (skip rclone) | 474 |
+| **Tracker** (`registry-upload-state.json`): models marked uploaded (skip rclone) | 488 |
 | **Tracker**: `d5/` full tree marked complete | no |
 | Pre-upload verify failure lines (`gdrive-preupload-verify-failures.jsonl`) | 8 |
 
@@ -21,8 +21,6 @@ _Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`lo
 
 ## Pending (not yet in uploaded.log)
 
-- `d1/uncensored/CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES/d976a5d6768d54c5e59a88fe63238a055c30c06a`
-- `d1/uncensored/FINGU-AI/RomboUltima-32B/98a732a32e2366a2ab8f08fdc3d668892e7c1f7f`
 - `d2/uncensored/cognitivecomputations/Dolphin3.0-Llama3.1-8B/f065677950dfc7e708d518d64cf1f5041ee007a0`
 - `d2/uncensored/huihui-ai/DeepSeek-R1-Distill-Llama-70B-abliterated/116ff0fa55425b094a38a6bbf6faf2f5cafea335`
 - `d2/uncensored/huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated/939b7e288235a393e2aac8a16ddc3d48f9406f03`
@@ -36,16 +34,15 @@ _Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`lo
 - `d3/quantized/bartowski/DeepSeek-Coder-V2-Lite-Instruct-GGUF/8f248fa2072348f77a8bc37754e470de1f61866e`
 - `d3/quantized/bartowski/DeepSeek-R1-Distill-Llama-70B-GGUF/1842c5f7280f933ead58adf8afd078672c9f6cd0`
 - `d3/quantized/bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF/1dc8cf9ffa5dd333057ea1b09ccf4772d8726dec`
-- `d3/quantized/bartowski/Llama-3.3-70B-Instruct-GGUF/b6c5c9f176f3279204034e1d16d393105e95cb88`
 - `d3/quantized/bartowski/Mistral-Small-24B-Instruct-2501-GGUF/62a613c92d5a5f73bba6d348b51433b232c4640c`
 - `d3/quantized/bartowski/Qwen2.5-14B-Instruct-GGUF/05244aa5d871c661c80082a15d3bce44714d068d`
 - `d3/quantized/bartowski/Qwen2.5-32B-Instruct-GGUF/2116cbb385b8ce3a4d28cf3bf1cd2039a55821a6`
-- `d3/quantized/bartowski/Qwen2.5-72B-Instruct-GGUF/d43fd973131bce821f41e2df3c78c6fe15c5627a`
 - `d3/quantized/bartowski/Qwen2.5-Coder-32B-Instruct-GGUF/40b525506a4f98ed425882fa6dfc90cc8139065e`
 - `d3/quantized/bartowski/google_gemma-3-27b-it-GGUF/4a05c54413bd0d87d77a97af403266f69cec0ee6`
 - `d3/quantized/bartowski/phi-4-GGUF/19cd65f97c2f1712a81c506611d3f9c94b16a1e1`
 - `d3/quantized/mistralai/Devstral-Small-2507_gguf/ee2f0c00c5c86862f471fbf533268cf01b80d4a6`
 - `d3/quantized/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-NVFP4/ce1b118ae66ec705d02c241525192832eb045fd3`
+- `d3/quantized/unsloth/Qwen3-4B-Instruct-2507-GGUF/a06e946bb6b655725eafa393f4a9745d460374c9`
 - `d3/quantized/unsloth/phi-4-unsloth-bnb-4bit/26dd1bdcaaab6bf52793b1a09b259ceed592d092`
 - `d3/specialist/chemistry/raw/AI4Chem/ChemLLM-7B-Chat/b8b2ea19e48f53d190fe8dced94572717f8e89a2`
 - `d3/specialist/chemistry/raw/OpenDFM/ChemDFM-v1.5-8B/f5790d56a903ce480b1eff8d0adf9613d8acee0c`
@@ -67,17 +64,19 @@ _Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`lo
 - `d3/specialist/science/raw/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16/cbd3fa9f933d55ef16a84236559f4ee2a0526848`
 - `d3/specialist/science/raw/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-Base-BF16/97ab8012882a655dc38df4fee47422aca9caca07`
 - `d3/uncensored/FINGU-AI/RomboUltima-32B/98a732a32e2366a2ab8f08fdc3d668892e7c1f7f`
+- `d3/uncensored/failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5/fc951b03d92972ab52ad9392e620eba6173526b9`
 - `d3/uncensored/huihui-ai/Qwen2.5-72B-Instruct-abliterated/ff4f9fe269d95bad2bd741af23b805cd9f449a8b`
 - `d3/uncensored/tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF/de00cb261ea6fea79a45ffbb6e583befed7be954`
+- `d3/uncensored/tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF/92582e3714cbade9d0211778c8b9bd08c9fca8f6`
 - `d3/uncensored/tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF/dd90f4a1a90029c907f18b8111fd64df05a8c6f3`
 - `d5/code-archives`
-- `d5/uncensored/failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5/fc951b03d92972ab52ad9392e620eba6173526b9`
+- `d5/uncensored/CombinHorizon/d976a5d6768d54c5e59a88fe63238a055c30c06a`
+- `d5/uncensored/FINGU-AI/49b7b720ddd40ccdca303922037a4bb34b1ca33b`
 - `d5/uncensored/nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-NVFP4/b1ffe4992d7db6d768453a551a656b8d12c638fb`
 - `d5/uncensored/tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF/89b48f9faec5188e7a05011676538aaf0889ad9a`
 
 ## Uploaded model dirs (present on disk + in log)
 
-- `d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b`
 - `d3/quantized/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF/bf5b95e96dac0462e2a09145ec66cae9a3f12067`
 - `d3/quantized/bartowski/Qwen2.5-7B-Instruct-GGUF/8911e8a47f92bac19d6f5c64a2e2095bd2f7d031`
 - `d3/quantized/unsloth/Phi-4-mini-instruct-GGUF/78eb92a46fc37e6b524df991ed9aca9bc6aa7b80`
@@ -94,6 +93,7 @@ _Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`lo
 
 ## Logged but missing on disk
 
+- `d1/uncensored/FINGU-AI/Chocolatine-Fusion-14B/49b7b720ddd40ccdca303922037a4bb34b1ca33b`
 - `d5/archive`
 - `d5/code-archives/1NickPappas__move-code-quality-skill/release`
 - `d5/code-archives/567-labs__instructor/release`
@@ -444,6 +444,7 @@ _Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`lo
 - `d5/full-stack-archives/wheels/e3-cu121-py311`
 - `d5/full-stack-archives/wheels/e4-cu124-py311`
 - `d5/full-stack-archives/wheels/e4-cu128-py312`
+- `d5/gh-archival-output/snapshots/2026-04-02T195908Z`
 - `d5/graphcore-archive/docs/install-guides`
 - `d5/graphcore-archive/docs/monitoring`
 - `d5/graphcore-archive/docs/popvision`
@@ -554,6 +555,19 @@ _Generated: 2026-03-28T17:48:12Z (UTC) — discovery under `models_mount` + [`lo
 - `d5/lost+found`
 - `d5/model-checksums`
 - `d5/specialist/science/raw`
+- `d5/specialist/science/uncensored`
+- `d5/tooling-archive/aider.git/hooks`
+- `d5/tooling-archive/aider.git/info`
+- `d5/tooling-archive/aider.git/objects`
+- `d5/tooling-archive/aider.git/refs`
+- `d5/tooling-archive/continue.git/hooks`
+- `d5/tooling-archive/continue.git/info`
+- `d5/tooling-archive/continue.git/objects`
+- `d5/tooling-archive/continue.git/refs`
+- `d5/tooling-archive/tabby.git/hooks`
+- `d5/tooling-archive/tabby.git/info`
+- `d5/tooling-archive/tabby.git/objects`
+- `d5/tooling-archive/tabby.git/refs`
 
 ## Related logs
 

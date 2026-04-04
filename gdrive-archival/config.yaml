@@ -17,7 +17,7 @@ gdrive:
   # ~50% of upload: measure uplink (Mbps) with VPN as used for GDrive, then
   #   target_Mbps = 0.5 * measured_upload_Mbps
   #   bwlimit ≈ (target_Mbps / 8) as "NM" (e.g. 100 Mbps up → 50 Mbps → ~6M)
-  bwlimit: "2M"
+  bwlimit: "1M"
   # Tracker-skipped dirs: run `rclone check --checksum --one-way` vs Drive before skipping (no full download).
   # Disable for a run: `backup-registry --no-verify-remote`
   registry_verify_remote: true

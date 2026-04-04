@@ -43,28 +43,46 @@ fi
 case "$MODE" in
   registry)
     SESSION=gdrive-upload
-    if screen -ls 2>/dev/null | grep -q "\.${SESSION}[[:space:]]"; then
-      echo "Screen '$SESSION' still present after stop. Quit manually: screen -S $SESSION -X quit" >&2
-      exit 1
-    fi
     LOG="$SCRIPT_DIR/logs/registry-upload.log"
-    screen -S "$SESSION" -dm bash -c "cd '$SCRIPT_DIR' && export RCLONE_CONFIG='${RCLONE_CONFIG}' && exec python3 -u backup.py backup-registry >>'$LOG' 2>&1"
-    echo "Started GDrive registry upload in screen '$SESSION'."
+    _run="cd '$SCRIPT_DIR' && export RCLONE_CONFIG='${RCLONE_CONFIG}' && exec python3 -u backup.py backup-registry >>'$LOG' 2>&1"
+    if command -v screen >/dev/null 2>&1; then
+      if screen -ls 2>/dev/null | grep -q "\.${SESSION}[[:space:]]"; then
+        echo "Screen '$SESSION' still present after stop. Quit manually: screen -S $SESSION -X quit" >&2
+        exit 1
+      fi
+      screen -S "$SESSION" -dm bash -c "$_run"
+      echo "Started GDrive registry upload in screen '$SESSION'."
+      echo "  attach: screen -r $SESSION"
+    else
+      echo "screen not installed; starting registry upload with nohup (stop.sh still stops backup-registry)." >&2
+      nohup bash -c "$_run" >/dev/null 2>&1 &
+      echo $! >"$SCRIPT_DIR/logs/registry-upload.pid"
+      echo "Started GDrive registry upload (PID $(cat "$SCRIPT_DIR/logs/registry-upload.pid"), nohup)."
+      echo "  pid file: logs/registry-upload.pid"
+    fi
     echo "  log: tail -f $LOG"
-    echo "  attach: screen -r $SESSION"
     echo "  progress: logs/registry-upload-state.json + logs/GDRIVE-REGISTRY-UPLOAD-STATUS.md"
     ;;
   staging)
     SESSION=gdrive-staging
-    if screen -ls 2>/dev/null | grep -q "\.${SESSION}[[:space:]]"; then
-      echo "Screen '$SESSION' still present after stop. Quit manually: screen -S $SESSION -X quit" >&2
-      exit 1
-    fi
     LOG="$SCRIPT_DIR/logs/staging-upload.log"
-    screen -S "$SESSION" -dm bash -c "cd '$SCRIPT_DIR' && export RCLONE_CONFIG='${RCLONE_CONFIG}' && exec python3 -u backup.py backup-staging >>'$LOG' 2>&1"
-    echo "Started GDrive staging upload in screen '$SESSION'."
+    _run_st="cd '$SCRIPT_DIR' && export RCLONE_CONFIG='${RCLONE_CONFIG}' && exec python3 -u backup.py backup-staging >>'$LOG' 2>&1"
+    if command -v screen >/dev/null 2>&1; then
+      if screen -ls 2>/dev/null | grep -q "\.${SESSION}[[:space:]]"; then
+        echo "Screen '$SESSION' still present after stop. Quit manually: screen -S $SESSION -X quit" >&2
+        exit 1
+      fi
+      screen -S "$SESSION" -dm bash -c "$_run_st"
+      echo "Started GDrive staging upload in screen '$SESSION'."
+      echo "  attach: screen -r $SESSION"
+    else
+      echo "screen not installed; starting staging upload with nohup." >&2
+      nohup bash -c "$_run_st" >/dev/null 2>&1 &
+      echo $! >"$SCRIPT_DIR/logs/staging-upload.pid"
+      echo "Started GDrive staging upload (PID $(cat "$SCRIPT_DIR/logs/staging-upload.pid"), nohup)."
+      echo "  pid file: logs/staging-upload.pid"
+    fi
     echo "  log: tail -f $LOG"
-    echo "  attach: screen -r $SESSION"
     ;;
   *)
     echo "Usage: bash start.sh [registry|staging]" >&2

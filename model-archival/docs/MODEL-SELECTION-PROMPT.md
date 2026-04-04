@@ -10,6 +10,8 @@ You are helping maintain a **Hugging Face model archival registry** for offline,
 
 **Model preference criteria (what to include in the MAIN list):**
 
+0. **Disk size (forward policy)** — Prefer checkpoints whose **total Hugging Face LFS+XET payload is under ~80 binary GiB** per model. The default `run.sh` / archiver cap skips larger trees as `deferred_large` unless the operator runs with `--no-max-model-download` or a higher `--max-model-download-gib`. When suggesting BF16 70B+ or other giants, call out that they need an explicit uncapped run.
+
 1. **Frontier / leaderboard** — Current top open models: DeepSeek (V3, R1, R1-Distill-*), Qwen (2.5, 3, base + instruct), Meta Llama (3.1, 3.2, 3.3), Google Gemma 3, Mistral (Large, Small, Mixtral), Microsoft Phi-4, Cohere Command R+, NVIDIA Nemotron, AllenAI Tulu, NovaSky, xAI Grok, etc. Include both **instruct** and **base** (pre-trained) versions where relevant for reproducibility and fine-tuning.
 
 2. **Code-specialist (Tier B)** — DeepSeek-Coder-V2, Qwen2.5-Coder, Qwen3-Coder, Codestral, Devstral, OlympicCoder, and similar top code models.

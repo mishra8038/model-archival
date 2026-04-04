@@ -71,6 +71,10 @@ class DownloadError(RuntimeError):
     pass
 
 
+class SizePolicySkip(DownloadError):
+    """HF repo total size exceeds Downloader max_download_bytes (see --max-model-download-gib)."""
+
+
 class AuthError(DownloadError):
     """HTTP 401/403 — token missing or invalid. Do not retry."""
 
@@ -83,12 +87,14 @@ class Downloader:
         archive_index_path: Path,
         hf_token: Optional[str] = None,
         dry_run: bool = False,
+        max_download_bytes: Optional[int] = None,
     ) -> None:
         self.aria2 = aria2
         self.tmp_dir = tmp_dir
         self.archive_index_path = archive_index_path
         self.hf_token = hf_token
         self.dry_run = dry_run
+        self.max_download_bytes = max_download_bytes
         self._api = HfApi(token=hf_token)
 
     # ------------------------------------------------------------------
@@ -160,6 +166,14 @@ class Downloader:
         lfs_count = sum(1 for f in repo_files if f["storage"] == "lfs")
         xet_count = sum(1 for f in repo_files if f["storage"] == "xet")
         total_bytes = sum(f["size"] for f in repo_files)
+
+        if self.max_download_bytes is not None and total_bytes > self.max_download_bytes:
+            cap_gib = self.max_download_bytes / (1024**3)
+            got_gib = total_bytes / (1024**3)
+            raise SizePolicySkip(
+                f"HF repo ~{got_gib:.1f} GiB exceeds download cap ({cap_gib:.0f} GiB); "
+                f"raise cap (--no-max-model-download / higher --max-model-download-gib) or remove from queue"
+            )
 
         log.info(
             "┌── BEGIN  %s  commit=%s  files=%d  size=%.1f GB  [LFS:%d  XET:%d]",

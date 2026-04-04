@@ -30,10 +30,14 @@
 #                         Default window 07:00-23:00 → full bandwidth 23:00–07:00 (late night)
 #   --queue-mode MODE     Queue mode: adaptive|serial (default: serial)
 #   --max-parallel N      Max parallel drive workers (default: 1; ignored in serial queue mode)
+#   --max-per-drive N     Max concurrent models per disk (default: omit → archiver default 4).
+#                         Use 1 with --queue-mode adaptive to keep one .tmp partial per drive.
 #   --skip-network        Pass --skip-network to environment check
 #   --registry PATH       Use alternate registry (default: config/registry.yaml)
 #   --storage-drive LABEL Write all models under this mount (e.g. d3); registry drive: unchanged
 #   --drive LABEL         Only models with registry drive: LABEL (repeat option for several)
+#   --max-model-download-gib N   Skip checkpoints when HF file sum exceeds N binary GiB (1024³)
+#   --no-max-model-download      Do not pass a size cap (download any registry size)
 #   --help                Show this message
 #
 # Examples:
@@ -113,10 +117,16 @@ SCHEDULED_BANDWIDTH_CAP="0.75"       # ~6 Mbps during the window
 SCHEDULED_BANDWIDTH_WINDOW="07:00-23:00"
 QUEUE_MODE="serial"
 MAX_PARALLEL=1
+# Pass-through to archiver (empty = omit flag, use archiver default 4). Use 1 with adaptive to
+# limit each disk to one active partial in .tmp/ at a time.
+MAX_PER_DRIVE=""
 SKIP_NETWORK=false
 REGISTRY_FILE="config/registry.yaml"
 STORAGE_DRIVE=""       # optional: e.g. d3 — passed through to archiver download --storage-drive
 DRIVE_FILTERS=()       # optional: repeat --drive d3 — only those registry drive: labels
+# Forward policy: do not start new downloads for checkpoints whose HF LFS+XET sum exceeds this
+# many binary GiB. Override with --no-max-model-download or --max-model-download-gib N.
+MAX_MODEL_DOWNLOAD_GIB="80"
 
 # ---------------------------------------------------------------------------
 # Argument parsing
@@ -142,10 +152,13 @@ while [[ $# -gt 0 ]]; do
         --scheduled-bandwidth-window) SCHEDULED_BANDWIDTH_WINDOW="$2"; shift 2 ;;
         --queue-mode)       QUEUE_MODE="$2";           shift 2 ;;
         --max-parallel)     MAX_PARALLEL="$2";         shift 2 ;;
+        --max-per-drive)    MAX_PER_DRIVE="$2";        shift 2 ;;
         --skip-network)     SKIP_NETWORK=true;         shift ;;
         --registry)         REGISTRY_FILE="$2";        shift 2 ;;
         --storage-drive)    STORAGE_DRIVE="$2";        shift 2 ;;
         --drive)            DRIVE_FILTERS+=("$2");      shift 2 ;;
+        --max-model-download-gib) MAX_MODEL_DOWNLOAD_GIB="$2"; shift 2 ;;
+        --no-max-model-download) MAX_MODEL_DOWNLOAD_GIB=""; shift ;;
         --help|-h)          usage ;;
         *) echo "Unknown option: $1  (run with --help)"; exit 1 ;;
     esac
@@ -191,6 +204,7 @@ _rpt "| Scheduled cap (inside window) | ${SCHEDULED_BANDWIDTH_CAP:-disabled} MB/
 _rpt "| Scheduled cap window (local) | ${SCHEDULED_BANDWIDTH_WINDOW:-disabled} (outside window = unlimited) |"
 _rpt "| Queue mode | $QUEUE_MODE |"
 _rpt "| Max parallel | $MAX_PARALLEL |"
+_rpt "| Max per drive | ${MAX_PER_DRIVE:-(archiver default)} |"
 _rpt "| Storage drive override | ${STORAGE_DRIVE:-(none — use registry)} |"
 _rpt "| Drive filter | ${DRIVE_FILTERS[*]:-(all registry drives)} |"
 _rpt ""
@@ -213,6 +227,7 @@ info "Priority:     ${PRIORITY_ONLY:-all}"
 info "Tier:         ${TIER:-all}"
 info "Rehash:       $REHASH"
 info "Queue mode:   $QUEUE_MODE"
+[[ -n "$MAX_PER_DRIVE" ]] && info "Max per drive:  $MAX_PER_DRIVE"
 if [[ -n "$BANDWIDTH_CAP" ]]; then
     info "Bandwidth:    ${BANDWIDTH_CAP} MB/s (24/7 cap)"
 elif [[ -n "$SCHEDULED_BANDWIDTH_CAP" && -n "$SCHEDULED_BANDWIDTH_WINDOW" ]]; then
@@ -442,10 +457,14 @@ fi
 [[ -n "${SKIP_DRIVE_SPACE_CHECK:-}" ]] && DOWNLOAD_ARGS+=("--skip-drive-space-check")
 DOWNLOAD_ARGS+=("--queue-mode" "$QUEUE_MODE")
 DOWNLOAD_ARGS+=("--max-parallel-drives" "$MAX_PARALLEL")
+[[ -n "$MAX_PER_DRIVE" ]] && DOWNLOAD_ARGS+=("--max-per-drive" "$MAX_PER_DRIVE")
 [[ -n "$STORAGE_DRIVE" ]] && DOWNLOAD_ARGS+=("--storage-drive" "$STORAGE_DRIVE")
 for _d in "${DRIVE_FILTERS[@]}"; do
     [[ -n "$_d" ]] && DOWNLOAD_ARGS+=("--drive" "$_d")
 done
+if [[ -n "${MAX_MODEL_DOWNLOAD_GIB:-}" ]]; then
+    DOWNLOAD_ARGS+=("--max-model-download-gib" "$MAX_MODEL_DOWNLOAD_GIB")
+fi
 
 info "Running dry-run to capture download plan…"
 PLAN_RC=0

@@ -50,9 +50,17 @@ Current registry has roughly: **~18 models on d1**, **~54 on d2**, **~48 on d3**
 
 ---
 
-## 4. Do we have enough disk space?
+## 4. Forward download size cap (operations policy)
 
-- **D5:** Primarily metadata; 916 GB is more than enough for archive index, logs, and state, with headroom for a **small number of overflow models** when D1/D3 are full.
+**Going forward, default archiver runs** (via `run.sh`) enforce a **maximum single-checkpoint download size of 80 binary GiB**: after resolving the HF file list, if the summed LFS+XET sizes exceed that threshold, the archiver **does not download** and sets `run_state.json` status to **`deferred_large`**. This avoids tying up disks and `.tmp` scratch on multi-hundred-gigabyte trees unless you explicitly opt out (`--no-max-model-download` or a higher `--max-model-download-gib`).
+
+Registry curation should prefer models under this cap when possible; use uncapped runs only when you intend to pull large BF16 checkpoints.
+
+---
+
+## 5. Do we have enough disk space?
+
+- **D5:** Primarily metadata; 916 GB is more than enough for archive index, logs, and state, with headroom for a **small number of overflow models** when D1/D3 are full. (See §4 for the default **80 GiB** per-checkpoint download cap on new pulls.)
 - **D1:** Must fit all d1 models **plus** headroom for `.tmp` (at least the size of the largest single file you might download, often 100–200 GB for sharded giants). 5.5 TB is intended to cover current d1 giants and scratch; if you add more very large models, check free space first.
 - **D2:** `drives.yaml` has historically noted “FULL; no new writes” when the disk was near capacity. **Before adding or running new d2 models, check free space** (e.g. `df -h /mnt/models/d2`). If D2 is full, either free space, or assign new mid‑size raw models to **d1** in the registry (and ensure D1 has room).
 - **D3:** Same idea: ensure free space on `/mnt/models/d3` for all d3 models (GGUF + any small raw on d3).
@@ -65,7 +73,7 @@ Current registry has roughly: **~18 models on d1**, **~54 on d2**, **~48 on d3**
 
 ---
 
-## 5. Quick reference
+## 6. Quick reference
 
 | Question | Answer |
 |----------|--------|

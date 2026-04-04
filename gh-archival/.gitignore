@@ -1,0 +1,7 @@
+gh-archival-output/
+.venv/
+__pycache__/
+*.egg-info/
+dist/
+build/
+*.pyc

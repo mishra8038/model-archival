@@ -1,0 +1,26 @@
+[project]
+name = "gh-archival"
+version = "0.1.0"
+description = "Snapshot personal GitHub repos (default branch) and upload to Google Drive via rclone"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click>=8.1",
+    "httpx>=0.27",
+    "rich>=13.0",
+]
+
+[project.scripts]
+gh-archival = "gh_archival.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["gh_archival"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]

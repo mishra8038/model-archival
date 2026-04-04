@@ -17,7 +17,8 @@ model-archival/
     registry.yaml     master model list (source of truth)
     drives.yaml       drive mount points and roles
   src/archiver/
-    cli.py            click commands: download, verify, status, list, drives, tokens, pin
+    cli.py            click commands: download, verify, status, list, drives, tokens, pin, queue-plan, audit-tmp, failed-registry
+    queue_plan.py     approximate queue order + per-drive free space (ENOSPC planning)
     downloader.py     per-model download logic (LFS via aria2, XET via hf_hub_download)
     scheduler.py      worker pool; max parallel models + max per drive; add more when speed/(n+1) >= 6 MB/s
     aria2_manager.py  aria2c daemon (16 concurrent files; optional --bandwidth-cap)

@@ -23,6 +23,10 @@ alwaysApply: true
 
 In-progress downloads land in `D1/.tmp/` (then `D3/.tmp` if needed) — never on D5 or root SSD.
 
+**Download size cap (default):** `run.sh` passes **`--max-model-download-gib 80`** (binary GiB, summed HF file sizes). Checkpoints above that are marked **`deferred_large`** in `run_state.json` and are not retried until state is cleared or you use **`--no-max-model-download`** / a higher limit for a dedicated run.
+
+**Ollama cache sync** (`model-archival/scripts/ollama-sync.sh`): default destination is **`/mnt/models/d5/supermicro`**. If **D5 is full**, continue syncs on **D2** with **`ARCHIVAL_VM_DEST=/mnt/models/d2/supermicro`** (create the directory first). Sync is additive-only; existing trees under `d5/supermicro` stay until you move or delete them.
+
 ## Before rebooting — always stop gracefully
 
 ```bash

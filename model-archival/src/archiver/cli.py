@@ -24,6 +24,7 @@ from archiver.models import ModelEntry, load_registry, save_registry, Registry
 from archiver.state import (
     RunState,
     STATUS_COMPLETE,
+    STATUS_DEFERRED_LARGE,
     STATUS_FAILED,
     STATUS_IN_PROGRESS,
     STATUS_PENDING,
@@ -225,7 +226,8 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option("--max-parallel-drives", "max_parallel_models", type=int, default=12, show_default=True,
               help="Max simultaneous model downloads (worker pool size; ignored in serial queue mode)")
 @click.option("--max-per-drive", type=int, default=4, show_default=True,
-              help="Max concurrent models per drive (limits disk thrash; ignored in serial queue mode)")
+              help="Max concurrent models per drive (use 1 to keep a single .tmp partial per disk; "
+                   "ignored in serial queue mode)")
 @click.option("--min-speed-mbps", type=float, default=6.0, show_default=True,
               help="Only add another model if aggregate/(n+1) >= this (MB/s; ignored in serial queue mode)")
 @click.option("--bandwidth-cap", type=float, default=None, help="Total bandwidth cap in MB/s (0.75 = 6 Mbps)")
@@ -256,6 +258,12 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
 @click.option(
     "--skip-drive-space-check", is_flag=True,
     help="Do not abort when a drive has <50 GB free (e.g. D2 full by design)",
+)
+@click.option(
+    "--max-model-download-gib",
+    type=float,
+    default=None,
+    help="Skip checkpoints when summed HF LFS+XET file sizes exceed this many binary GiB (1024³).",
 )
 @click.option(
     "--storage-drive",
@@ -292,12 +300,13 @@ def cmd_download(
     fast: bool,
     status_out: Optional[str],
     skip_drive_space_check: bool,
+    max_model_download_gib: Optional[float],
     storage_drive: Optional[str],
     drive_only: tuple[str, ...],
 ) -> None:
     """Download model weights. Use --all, --tier X, or specify a model ID."""
     from archiver.aria2_manager import Aria2Manager, BandwidthSchedule
-    from archiver.downloader import Downloader
+    from archiver.downloader import Downloader, SizePolicySkip
     from archiver.scheduler import DriveScheduler
     from archiver.status import StatusDisplay, RunReport
     from archiver.state import sync_archive
@@ -324,6 +333,12 @@ def cmd_download(
     index_path  = archive_dir / "checksums" / "global_index.jsonl"
     status_path = Path(status_out) if status_out else (infra / "STATUS.md")
     activity_log_path = infra / "archiver-activity.log"
+
+    max_download_bytes: Optional[int] = None
+    if max_model_download_gib is not None:
+        if max_model_download_gib <= 0:
+            raise click.BadParameter("--max-model-download-gib must be positive")
+        max_download_bytes = int(max_model_download_gib * (1024**3))
 
     if bandwidth_cap is not None and scheduled_bandwidth_cap is not None:
         raise click.UsageError(
@@ -360,6 +375,12 @@ def cmd_download(
 
     # ── Startup banner ────────────────────────────────────────────────────
     _print_startup_banner(reg, infra, tmp_dir, logs_dir, dry_run)
+    if max_download_bytes is not None:
+        console.print(
+            f"[cyan]Size cap:[/] skip new downloads when HF repo file sum "
+            f"> [bold]{max_model_download_gib:g}[/] GiB → "
+            f"`run_state.json` status [bold]{STATUS_DEFERRED_LARGE}[/]"
+        )
     if storage_drive:
         console.print(
             f"[cyan]Storage override:[/] all selected models → "
@@ -453,6 +474,7 @@ def cmd_download(
         "status_md": str(status_path),
         "storage_drive": storage_drive or "(registry)",
         "drive_only": ",".join(drive_only) if drive_only else "(all)",
+        "max_model_download_gib": max_model_download_gib if max_model_download_gib is not None else "(none)",
     }
     run_report.open(
         hf_token_set=bool(hf_token),
@@ -492,11 +514,16 @@ def cmd_download(
             archive_index_path=index_path,
             hf_token=hf_token,
             dry_run=False,
+            max_download_bytes=max_download_bytes,
         )
 
         def do_download(model):
             run_report.record_model_start(model)
-            return downloader.download_model(model, run_report=run_report)
+            try:
+                return downloader.download_model(model, run_report=run_report)
+            except SizePolicySkip as e:
+                run_report.record_model_skip(model.id, str(e))
+                raise
 
         replica_roots = _archive_replica_mounts(reg)
 
@@ -693,6 +720,341 @@ def cmd_stats(ctx: click.Context) -> None:
     summary = state.summary()
     n_complete = summary.get(STATUS_COMPLETE, 0)
     console.print(f"\n[bold]Overall:[/] {n_complete} complete, {summary}")
+
+
+# ------------------------------------------------------------------
+# queue-plan — approximate order + disk headroom (for ENOSPC / planning)
+# ------------------------------------------------------------------
+
+
+@cli.command("queue-plan")
+@click.option(
+    "--state",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="run_state.json [default: D3 infra from drives.yaml]",
+)
+@click.option(
+    "--infra",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Infra root (priority_overrides.json) [default: D3 from drives.yaml]",
+)
+@click.option("--include-legacy", is_flag=True, default=False, help="Include legacy registry rows")
+@click.option("--tier", type=click.Choice(["A", "B", "C", "D", "E", "F", "G"]))
+@click.option("--priority-only", type=int, default=None, help="Only this registry priority band")
+@click.option(
+    "--drive",
+    "drive_only",
+    type=str,
+    multiple=True,
+    metavar="LABEL",
+    help="Only models with this registry drive: (repeatable)",
+)
+@click.option(
+    "--skip-token-check",
+    is_flag=True,
+    default=False,
+    help="Do not call HF API for gated models (treat as no token)",
+)
+@click.option("--json", "as_json", is_flag=True, help="Machine-readable stdout")
+@click.option(
+    "--flat",
+    is_flag=True,
+    default=False,
+    help="Also print one merged table (eff. priority → drive → id), after per-drive sections",
+)
+@click.option(
+    "--out-md",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Also write Markdown snapshot to this path",
+)
+@click.pass_context
+def cmd_queue_plan(
+    ctx: click.Context,
+    state: Optional[Path],
+    infra: Optional[Path],
+    include_legacy: bool,
+    tier: Optional[str],
+    priority_only: Optional[int],
+    drive_only: tuple[str, ...],
+    skip_token_check: bool,
+    as_json: bool,
+    flat: bool,
+    out_md: Optional[Path],
+) -> None:
+    """
+    Print download queue **by destination drive**: for each disk, available space
+    and models in priority order with estimated size (``run_state`` ``total_bytes``).
+
+    For **one active partial per disk** (maximize single-model ``.tmp`` use), run
+    downloads with ``--queue-mode adaptive --max-per-drive 1`` and set
+    ``--max-parallel-drives`` to the number of disks you want active at once.
+    """
+    from archiver.preflight import MIN_FREE_ABORT_GB, check_hf_token
+    from archiver.queue_plan import (
+        approximate_download_order,
+        drive_free_space_gib,
+        group_by_drive_ordered,
+        load_priority_overrides,
+        scheduler_eligible_models,
+    )
+
+    registry_path: Path = ctx.obj["registry_path"]
+    drives_path: Path = ctx.obj["drives_path"]
+    reg = load_registry(registry_path, drives_path if drives_path.exists() else None)
+    infra_root = Path(infra).resolve() if infra else _infra_root(reg)
+    state_path = Path(state).resolve() if state else _state_path(reg)
+    if not state_path.exists():
+        raise click.ClickException(f"run_state not found: {state_path}")
+    st = RunState(state_path)
+
+    models = reg.models
+    if not include_legacy:
+        models = [m for m in models if not getattr(m, "legacy", False)]
+    if tier:
+        models = [m for m in models if m.tier == tier]
+    if priority_only is not None:
+        models = [m for m in models if m.priority == priority_only]
+    if drive_only:
+        labels = {d.strip().lower() for d in drive_only if d.strip()}
+        unknown = labels - set(reg.drives.keys())
+        if unknown:
+            raise click.BadParameter(
+                f"--drive unknown: {', '.join(sorted(unknown))} "
+                f"(known: {', '.join(sorted(reg.drives))})"
+            )
+        models = [m for m in models if m.drive in labels]
+
+    hf_token = None if skip_token_check else os.environ.get("HF_TOKEN")
+    token_results: dict[str, bool] = check_hf_token(hf_token, reg) if hf_token else {}
+
+    overrides = load_priority_overrides(infra_root / "priority_overrides.json")
+    eligible, excluded = scheduler_eligible_models(models, st, token_results)
+    ordered = approximate_download_order(eligible, overrides)
+    free = drive_free_space_gib(reg)
+    drive_labels = sorted(reg.drives.keys())
+    by_drive = group_by_drive_ordered(eligible, overrides, drive_labels)
+
+    def _model_row(m: ModelEntry) -> dict:
+        data = st.get_model_data(m.id)
+        tb = int(data.get("total_bytes") or 0)
+        return {
+            "model_id": m.id,
+            "drive": m.drive,
+            "effective_priority": overrides.get(m.id, m.priority),
+            "registry_priority": m.priority,
+            "status": st.get_model_status(m.id),
+            "total_bytes": tb,
+        }
+
+    if as_json:
+        payload = {
+            "by_drive": {
+                lab: {
+                    "mount": str(reg.drives[lab].mount_point),
+                    "free_gib": round(free.get(lab, (0.0, 0.0, 0.0))[0], 2),
+                    "total_gib": round(free.get(lab, (0.0, 0.0, 0.0))[1], 2),
+                    "used_percent": round(free.get(lab, (0.0, 0.0, 0.0))[2], 1),
+                    "below_preflight_abort_gib": free.get(lab, (0.0, 0.0, 0.0))[0]
+                    < MIN_FREE_ABORT_GB,
+                    "models": [_model_row(m) for m in mlist],
+                }
+                for lab, mlist in by_drive
+            },
+            "approximate_queue": [
+                {
+                    **_model_row(m),
+                    "free_gib_on_dest": round(free.get(m.drive, (0.0, 0.0, 0.0))[0], 2),
+                }
+                for m in ordered
+            ],
+            "drives": {
+                lab: {
+                    "free_gib": round(t[0], 2),
+                    "total_gib": round(t[1], 2),
+                    "used_percent": round(t[2], 1),
+                    "below_preflight_abort_gib": t[0] < MIN_FREE_ABORT_GB,
+                }
+                for lab, t in free.items()
+            },
+            "excluded": [{"model_id": mid, "reason": r} for mid, r in excluded],
+        }
+        print(json.dumps(payload, indent=2))
+    else:
+        console.print(Rule("[bold cyan]Drive free space[/bold cyan]"))
+        dt = Table(show_header=True, header_style="bold")
+        dt.add_column("Drive", width=5)
+        dt.add_column("Mount", overflow="fold")
+        dt.add_column("Free (GiB)", justify="right")
+        dt.add_column("Total (GiB)", justify="right")
+        dt.add_column("Used %", justify="right")
+        dt.add_column("Preflight", width=14)
+        for lab in sorted(free.keys()):
+            fg, tg, pct = free[lab]
+            mp = reg.drives[lab].mount_point
+            warn = ""
+            if fg < MIN_FREE_ABORT_GB:
+                warn = f"[red]<{MIN_FREE_ABORT_GB:.0f} GiB abort[/]"
+            elif pct >= 90:
+                warn = "[yellow]tight[/]"
+            else:
+                warn = "—"
+            dt.add_row(
+                lab,
+                str(mp),
+                f"{fg:.1f}",
+                f"{tg:.1f}",
+                f"{pct:.1f}",
+                warn,
+            )
+        console.print(dt)
+        console.print(
+            f"[dim]Preflight aborts when free < {MIN_FREE_ABORT_GB:.0f} GiB on a drive "
+            f"(unless download --skip-drive-space-check).[/]\n"
+        )
+
+        console.print(Rule("[bold cyan]Queue by destination drive[/bold cyan]"))
+        for lab, mlist in by_drive:
+            fg, tg, pct = free.get(lab, (0.0, 0.0, 0.0))
+            mp = reg.drives[lab].mount_point
+            head = (
+                f"[bold]{lab}[/]  {mp}  —  "
+                f"[cyan]{fg:.1f} GiB free[/] / {tg:.1f} GiB total ({pct:.1f}% used)"
+            )
+            if fg < MIN_FREE_ABORT_GB:
+                head += f"  [red](<{MIN_FREE_ABORT_GB:.0f} GiB preflight min)[/]"
+            console.print(head)
+            if not mlist:
+                console.print("  [dim](no models in queue for this drive)[/]\n")
+                continue
+            qt = Table(show_header=True, header_style="bold")
+            qt.add_column("#", justify="right", width=4)
+            qt.add_column("Model", style="cyan", overflow="fold")
+            qt.add_column("Eff", justify="right", width=4)
+            qt.add_column("Reg", justify="right", width=4)
+            qt.add_column("Status", width=11)
+            qt.add_column("Est. size", justify="right", width=12)
+            for i, m in enumerate(mlist, 1):
+                data = st.get_model_data(m.id)
+                tb = int(data.get("total_bytes") or 0)
+                qt.add_row(
+                    str(i),
+                    m.id,
+                    str(overrides.get(m.id, m.priority)),
+                    str(m.priority),
+                    st.get_model_status(m.id),
+                    _fmt_bytes_cli(tb) if tb else "—",
+                )
+            console.print(qt)
+            console.print("")
+
+        if flat:
+            console.print(Rule("[bold cyan]Merged order (eff. priority → drive → id)[/bold cyan]"))
+            qt = Table(show_header=True, header_style="bold")
+            qt.add_column("#", justify="right", width=5)
+            qt.add_column("Model", style="cyan", overflow="fold")
+            qt.add_column("Dest", width=5)
+            qt.add_column("Eff", justify="right", width=4)
+            qt.add_column("Reg", justify="right", width=4)
+            qt.add_column("Status", width=11)
+            qt.add_column("Est. size", justify="right", width=12)
+            qt.add_column("Free on dest", justify="right", width=12)
+            for i, m in enumerate(ordered, 1):
+                data = st.get_model_data(m.id)
+                tb = int(data.get("total_bytes") or 0)
+                fg = free.get(m.drive, (0.0, 0.0, 0.0))[0]
+                qt.add_row(
+                    str(i),
+                    m.id,
+                    m.drive,
+                    str(overrides.get(m.id, m.priority)),
+                    str(m.priority),
+                    st.get_model_status(m.id),
+                    _fmt_bytes_cli(tb) if tb else "—",
+                    f"{fg:.1f} GiB",
+                )
+            console.print(qt)
+        if excluded:
+            console.print(f"\n[dim]Excluded from queue ({len(excluded)}):[/]")
+            for mid, reason in excluded[:25]:
+                console.print(f"  [dim]{mid}[/] — {reason}")
+            if len(excluded) > 25:
+                console.print(f"  [dim]… {len(excluded) - 25} more[/]")
+
+    if out_md and not as_json:
+        lines = [
+            "# Download queue plan (approximate)",
+            "",
+            f"_Generated UTC: {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}_",
+            "",
+            "## Drive free space",
+            "",
+            "| Drive | Mount | Free (GiB) | Total (GiB) | Used % | Notes |",
+            "|-------|-------|------------|-------------|--------|-------|",
+        ]
+        for lab in sorted(free.keys()):
+            fg, tg, pct = free[lab]
+            mp = reg.drives[lab].mount_point
+            note = f"<{MIN_FREE_ABORT_GB:.0f} GiB → preflight abort" if fg < MIN_FREE_ABORT_GB else ""
+            lines.append(
+                f"| {lab} | `{mp}` | {fg:.1f} | {tg:.1f} | {pct:.1f} | {note} |"
+            )
+        lines += ["", "## Queue by destination drive", ""]
+        for lab, mlist in by_drive:
+            fg, tg, pct = free.get(lab, (0.0, 0.0, 0.0))
+            mp = reg.drives[lab].mount_point
+            note = f"<{MIN_FREE_ABORT_GB:.0f} GiB → preflight abort" if fg < MIN_FREE_ABORT_GB else ""
+            lines.append(f"### {lab} (`{mp}`)")
+            lines.append("")
+            space_line = f"**Space:** {fg:.1f} GiB free / {tg:.1f} GiB total ({pct:.1f}% used)."
+            if note:
+                space_line += " " + note
+            lines.append(space_line)
+            lines.append("")
+            if not mlist:
+                lines.append("_No models in queue for this drive._")
+                lines.append("")
+                continue
+            lines.append(
+                "| # | Model | Eff pri | Reg pri | Status | Est. bytes |"
+            )
+            lines.append("|--:|-------|--------:|--------:|--------|------------|")
+            for i, m in enumerate(mlist, 1):
+                data = st.get_model_data(m.id)
+                tb = int(data.get("total_bytes") or 0)
+                sz = str(tb) if tb else "—"
+                lines.append(
+                    f"| {i} | `{m.id}` | {overrides.get(m.id, m.priority)} | {m.priority} "
+                    f"| {st.get_model_status(m.id)} | {sz} |"
+                )
+            lines.append("")
+        if flat:
+            lines += [
+                "## Merged queue order (eff. priority → drive → id)",
+                "",
+                "| # | Model | Dest | Eff pri | Reg pri | Status | Est. bytes | Free on dest |",
+                "|--:|-------|------|--------:|--------:|--------|------------|--------------|",
+            ]
+            for i, m in enumerate(ordered, 1):
+                data = st.get_model_data(m.id)
+                tb = int(data.get("total_bytes") or 0)
+                fg = free.get(m.drive, (0.0, 0.0, 0.0))[0]
+                sz = str(tb) if tb else "—"
+                lines.append(
+                    f"| {i} | `{m.id}` | {m.drive} | {overrides.get(m.id, m.priority)} | {m.priority} "
+                    f"| {st.get_model_status(m.id)} | {sz} | {fg:.1f} GiB |"
+                )
+        if excluded:
+            lines += ["", "## Excluded", ""]
+            for mid, reason in excluded:
+                lines.append(f"- `{mid}` — {reason}")
+        Path(out_md).parent.mkdir(parents=True, exist_ok=True)
+        tmp = Path(out_md).with_suffix(Path(out_md).suffix + ".tmp")
+        tmp.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        tmp.replace(out_md)
+        console.print(f"\n[green]Wrote {out_md}[/]")
 
 
 # ------------------------------------------------------------------
@@ -899,12 +1261,14 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
     n_in_progress = summary.get(STATUS_IN_PROGRESS, 0)
     n_pending = summary.get(STATUS_PENDING, 0)
     n_skipped = summary.get(STATUS_SKIPPED, 0)
+    n_deferred_large = summary.get(STATUS_DEFERRED_LARGE, 0)
 
     # Derive queue (pending + in_progress) from registry ordering.
     queue = []
     completed = []
     failed = []
     skipped = []
+    deferred_large = []
     for m in sorted(reg.models, key=lambda m: (m.tier, m.priority, m.drive, m.id)):
         data = state.get_model_data(m.id)
         status = data.get("status", STATUS_PENDING)
@@ -917,6 +1281,8 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
             failed.append(row)
         elif status == STATUS_SKIPPED:
             skipped.append(row)
+        elif status == STATUS_DEFERRED_LARGE:
+            deferred_large.append(row)
 
     # Recent activity from append-only log (for summaries and thread count).
     recent_activity_lines: list[str] = []
@@ -961,6 +1327,7 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
         f"| Pending | {n_pending} |",
         f"| Failed | {n_failed} |",
         f"| Skipped (no token / gated) | {n_skipped} |",
+        f"| Deferred (checkpoint > size cap) | {n_deferred_large} |",
         f"| ETA (from live STATUS.md) | {eta_str} |",
         "",
         "## Recent Activity",
@@ -1026,17 +1393,17 @@ def cmd_report(ctx: click.Context, output: Optional[str], full_report: bool) -> 
     else:
         lines.append("| — | — | — | — | — |")
 
-    # Failed / skipped section.
+    # Failed / skipped / deferred (size cap) section.
     lines += [
         "",
-        "## Failed / Skipped Models",
+        "## Failed / Skipped / Deferred (size cap) Models",
         "",
         "| Model | Status | Reason |",
         "|-------|--------|--------|",
     ]
 
-    if failed or skipped:
-        for m, data, status in failed + skipped:
+    if failed or skipped or deferred_large:
+        for m, data, status in failed + skipped + deferred_large:
             reason = data.get("error", "—")
             lines.append(f"| `{m.id}` | {status} | {reason} |")
     else:
@@ -1155,6 +1522,132 @@ def cmd_audit_tmp(
                 console.print(f"[green]{line}[/]")
             if not deleted:
                 console.print("[dim]No reclaimable_tmp paths to remove.[/]")
+
+
+# ------------------------------------------------------------------
+# failed-registry — classify failed (and optional skipped) downloads
+# ------------------------------------------------------------------
+
+
+@cli.command("failed-registry")
+@click.option(
+    "--state",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="run_state.json [default: D3 infra from drives.yaml]",
+)
+@click.option(
+    "--config-dir",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Directory with registry*.yaml [default: parent of --registry]",
+)
+@click.option(
+    "--out-yaml",
+    type=click.Path(path_type=Path),
+    default="config/failed-models-registry.yaml",
+    show_default=True,
+    help="Output YAML path (relative to cwd unless absolute)",
+)
+@click.option(
+    "--out-md",
+    type=click.Path(path_type=Path),
+    default="docs/FAILED_MODEL_REGISTRY.md",
+    show_default=True,
+    help="Output Markdown path (relative to cwd unless absolute)",
+)
+@click.option(
+    "--no-md",
+    is_flag=True,
+    default=False,
+    help="Do not write Markdown",
+)
+@click.option(
+    "--include-skipped",
+    is_flag=True,
+    default=False,
+    help="Include status=skipped (gated / no token) under category skipped_gated",
+)
+@click.option(
+    "--no-historical",
+    is_flag=True,
+    default=False,
+    help="Do not scan run-report-*.md under --reports-dir / <state>/logs",
+)
+@click.option(
+    "--reports-dir",
+    multiple=True,
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Extra directory(ies) with run-report-*.md (repeatable). "
+    "Default when historical is on: <run_state_dir>/logs",
+)
+@click.pass_context
+def cmd_failed_registry(
+    ctx: click.Context,
+    state: Optional[Path],
+    config_dir: Optional[Path],
+    out_yaml: Path,
+    out_md: Path,
+    no_md: bool,
+    include_skipped: bool,
+    no_historical: bool,
+    reports_dir: tuple[Path, ...],
+) -> None:
+    """
+    Read run_state.json and write a failed-model registry: YAML + Markdown.
+
+    Failure classes: disk_space, unavailable, auth, failed_shards, verify, other
+    (and skipped_gated when --include-skipped).
+
+    By default, merges historical failures from run-report-*.md (RunReport) under
+    the same directory as run_state.json's ``logs/`` folder, plus any ``--reports-dir``.
+    """
+    from archiver.failed_registry import (
+        build_failed_registry_payload,
+        write_failed_registry_markdown,
+        write_failed_registry_yaml,
+    )
+
+    registry_path: Path = ctx.obj["registry_path"]
+    drives_path: Path = ctx.obj["drives_path"]
+    cfg_dir = Path(config_dir).resolve() if config_dir else registry_path.parent.resolve()
+    reg0 = load_registry(registry_path, drives_path if drives_path.exists() else None)
+    state_path = Path(state).resolve() if state else _state_path(reg0)
+
+    extra_reports = [Path(p).resolve() for p in reports_dir] if reports_dir else None
+
+    try:
+        payload = build_failed_registry_payload(
+            state_path=state_path,
+            config_dir=cfg_dir,
+            registry_path=registry_path,
+            drives_path=drives_path,
+            include_skipped=include_skipped,
+            include_historical=not no_historical,
+            historical_report_dirs=extra_reports,
+        )
+    except FileNotFoundError as exc:
+        console.print(f"[red]{exc}[/]")
+        console.print(
+            "[yellow]Run on the archive host with drives mounted, or pass an explicit path:[/]\n"
+            "  cd model-archival && uv run archiver failed-registry\n"
+            "[dim]  uv run archiver failed-registry --state /mnt/models/d3/run_state.json[/]"
+        )
+        raise SystemExit(1) from exc
+    out_yaml = Path(out_yaml).resolve()
+    write_failed_registry_yaml(out_yaml, payload)
+    console.print(f"[green]Failed registry YAML → {out_yaml}[/]")
+    if not no_md:
+        out_md = Path(out_md).resolve()
+        write_failed_registry_markdown(out_md, payload)
+        console.print(f"[green]Failed registry MD   → {out_md}[/]")
+    s = payload["summary"]
+    console.print(
+        f"[dim]{s['total_failed']} failed"
+        + (f", {s.get('total_skipped_included', 0)} skipped" if include_skipped else "")
+        + f" — by category: {s.get('by_category', {})}[/]"
+    )
 
 
 # ------------------------------------------------------------------

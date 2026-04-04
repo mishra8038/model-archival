@@ -1,0 +1,15 @@
+# Ollama VM model inventory — regenerate with:
+#   uv run python scripts/update_ollama_vm_inventory.py --ssh x@192.168.8.65
+# See docs/OLLAMA-CACHE-POLICY.md. supermicro_cleared: unknown until you set it or use
+# --infer-supermicro-cleared --supermicro-ssh user@host.
+schema_version: 1
+updated_at_utc: '1970-01-01T00:00:00Z'
+ssh_host_vm: null
+roots_scanned:
+- disk_label: d5
+  root_abs: /mnt/models/d5/supermicro
+- disk_label: d2
+  root_abs: /mnt/models/d2/supermicro
+- disk_label: d3
+  root_abs: /mnt/models/d3/supermicro
+models: []
