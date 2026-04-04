@@ -19,8 +19,8 @@
 #   RE_PULL_ARCHIVED=1             — also offer tags that are only on the VM for re-download to Supermicro.
 #
 # Single-runner / restart (default: replace stale work):
-#   OLLAMA_PULL_QUEUE_REPLACE=1       — before locking: SIGTERM/SIGKILL other ollama-pull-queue PIDs (not this one),
-#                                     then remove stale $LOCK_FILE so a fresh run can start.
+#   OLLAMA_PULL_QUEUE_REPLACE=1       — before locking: SIGTERM/SIGKILL other *direct* runners
+#                                     (bash /path/ollama-pull-queue …), not ssh/bash -c parents; then rm stale $LOCK_FILE.
 #   OLLAMA_PULL_QUEUE_REPLACE=0       — refuse if another instance holds the lock (legacy behavior).
 #   OLLAMA_PULL_QUEUE_KILL_OLLAMA_PULL=1 — also stop stray `ollama pull` children (default 1; set 0 to leave pulls alone).
 #
@@ -75,9 +75,50 @@ _cleanup_pids_sigterm_then_sigkill() {
   sleep 0.2
 }
 
+# PIDs of other *direct* invocations of this script (bash /path/ollama-pull-queue …).
+# Skips "bash -c '…ollama-pull-queue…'" (ssh, nohup wrappers) so we do not kill our parent shell.
+_other_pull_queue_script_pids() {
+  local self_script
+  self_script="$(readlink -f "$SCRIPT_DIR/ollama-pull-queue" 2>/dev/null || echo "$SCRIPT_DIR/ollama-pull-queue")"
+  local pid argv0 argv1
+  for pid in $(pgrep -f 'ollama-pull-queue' 2>/dev/null || true); do
+    [[ -z "$pid" || "$pid" -eq "$THIS_PID" ]] && continue
+    [[ -r "/proc/$pid/cmdline" ]] || continue
+    argv0=$(tr '\0' '\n' <"/proc/$pid/cmdline" | sed -n '1p')
+    argv1=$(tr '\0' '\n' <"/proc/$pid/cmdline" | sed -n '2p')
+    [[ "$argv0" == *bash* ]] || [[ "$argv0" == *sh* ]] || continue
+    if [[ "$argv1" == "-c" ]]; then
+      continue
+    fi
+    if [[ "$(readlink -f "$argv1" 2>/dev/null || true)" == "$self_script" ]] || [[ "$argv1" == *ollama-pull-queue ]]; then
+      printf '%s\n' "$pid"
+    fi
+  done
+}
+
+_cleanup_other_pull_queue_scripts() {
+  local label="$1"
+  local -a pids=()
+  mapfile -t pids < <(_other_pull_queue_script_pids | sort -u)
+  local p
+  for p in "${pids[@]:-}"; do
+    [[ -z "$p" ]] && continue
+    log "$label: SIGTERM pid $p (other ollama-pull-queue script)"
+    kill -TERM "$p" 2>/dev/null || true
+  done
+  sleep 1
+  mapfile -t pids < <(_other_pull_queue_script_pids | sort -u)
+  for p in "${pids[@]:-}"; do
+    [[ -z "$p" ]] && continue
+    log "$label: SIGKILL pid $p"
+    kill -KILL "$p" 2>/dev/null || true
+  done
+  sleep 0.2
+}
+
 replace_stale_pull_queue_instances() {
   [[ "${OLLAMA_PULL_QUEUE_REPLACE:-1}" == "0" ]] && return 0
-  _cleanup_pids_sigterm_then_sigkill 'ollama-pull-queue' 'OLLAMA_PULL_QUEUE_REPLACE'
+  _cleanup_other_pull_queue_scripts 'OLLAMA_PULL_QUEUE_REPLACE'
   rm -f "$LOCK_FILE"
 }
 

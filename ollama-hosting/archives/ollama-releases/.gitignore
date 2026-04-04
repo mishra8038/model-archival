@@ -1,0 +1,4 @@
+# Pinned Ollama release payloads (large). Populated by scripts/archive-ollama-release.sh
+*
+!.gitignore
+!README.txt

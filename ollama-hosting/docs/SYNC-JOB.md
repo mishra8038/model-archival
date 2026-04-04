@@ -59,7 +59,7 @@ Extra CLI flags for inventory (e.g. infer **`supermicro_cleared`**): **`OLLAMA_V
 
 | Variable | Meaning |
 |----------|---------|
-| **`OLLAMA_SYNC_BWLIMIT_KB`** | rsync `--bwlimit` in KiB/s (default `4096`; `0` = unlimited) |
+| **`OLLAMA_SYNC_BWLIMIT_KB`** | rsync `--bwlimit` in KiB/s (default **`0`** = unlimited on LAN; set e.g. `4096` to cap WAN or shared links) |
 | **`SSHPASS` / `VM_SSHPASS`** | Optional; use with **`sshpass`** for password-based SSH |
 | **`RSYNC_EXTRA`** | Extra rsync args; **delete/remove flags are stripped** |
 

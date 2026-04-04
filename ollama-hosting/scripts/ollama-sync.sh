@@ -41,7 +41,8 @@
 #   VM_SSHPASS            password for sshpass → archival VM (optional)
 #   RSYNC_RSH             override ssh for supermicro rsync (local mode / bridge sshfs uses separate ssh)
 #   RSYNC_EXTRA           extra rsync args (e.g. --dry-run); delete/remove flags are stripped
-#   OLLAMA_SYNC_BWLIMIT_KB  rsync --bwlimit in KiB/s (default 4096 ≈ 4 MiB/s); set 0 for unlimited
+#   OLLAMA_SYNC_BWLIMIT_KB  rsync --bwlimit in KiB/s (default 0 = unlimited on LAN). Cap only if needed
+#                             (Ollama *downloads* are throttled separately via pull-queue / trickle, not this script).
 #   OLLAMA_SYNC_INCLUDE_PARTIALS  if 1, sync Ollama *partial* blob files (default 0 — completed only)
 #   OLLAMA_SYNC_VM_MAINTAIN      if not 0, after VM sync run partial cleanup + integrity on all cycle roots (default 1)
 #   OLLAMA_SYNC_UPDATE_INVENTORY  if not 0, after a successful sync run inventory refresh from REPO (non-fatal).
@@ -63,8 +64,8 @@ ARCHIVAL_VM_DEST="${ARCHIVAL_VM_DEST:-}"
 SYNC_DEST="${OLLAMA_SYNC_DEST:-vm}"
 LOCAL_DEST="${OLLAMA_D5_DEST:-/mnt/models/d5/supermicro}"
 
-# rsync --bwlimit is KiB/s; 4096 ≈ 4 MiB/s (aligns with common archiver flat cap wording).
-RSYNC_BW_KB="${OLLAMA_SYNC_BWLIMIT_KB:-4096}"
+# rsync --bwlimit is KiB/s. Default unlimited: Supermicro ↔ archive VM is LAN; do not confuse with Ollama pull caps.
+RSYNC_BW_KB="${OLLAMA_SYNC_BWLIMIT_KB:-0}"
 # Additive-only: never pass --delete* to rsync (see sanitize_rsync_extra).
 # rsync --partial is for resumable *rsync* transfers, not Ollama's *-partial* blob files (excluded below).
 RSYNC_BASE=(rsync -avh --partial --partial-dir=.rsync-partial --info=progress2)
@@ -152,8 +153,9 @@ fi
 if [[ -n "$RSYNC_BW_KB" && "$RSYNC_BW_KB" != "0" ]]; then
   echo "ollama-sync: rsync --bwlimit=${RSYNC_BW_KB} KiB/s (~$((RSYNC_BW_KB / 1024)) MiB/s)" >&2
 else
-  echo "ollama-sync: rsync bandwidth unlimited (OLLAMA_SYNC_BWLIMIT_KB=0)" >&2
+  echo "ollama-sync: rsync bandwidth unlimited (default for LAN; set OLLAMA_SYNC_BWLIMIT_KB e.g. 4096 to cap)" >&2
 fi
+echo "ollama-sync: idempotent run — additive only (no --delete* on destination); interrupted transfers resume via rsync --partial" >&2
 
 sync_local() {
   mkdir -p "$LOCAL_DEST" || {

@@ -1,5 +1,5 @@
 schema_version: 1
-updated_at_utc: '2026-04-04T06:43:57Z'
+updated_at_utc: '2026-04-04T07:24:37Z'
 ssh_host_vm: x@192.168.8.65
 roots_scanned:
 - disk_label: d5
@@ -106,3 +106,10 @@ models:
   size_bytes: 4683087561
   size_human: 4.36 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: starcoder2:15b
+  disk_label: d5
+  root_abs: /mnt/models/d5/supermicro
+  manifest_relpath: starcoder2/15b
+  size_bytes: 9065413313
+  size_human: 8.44 GiB
+  supermicro_cleared: unknown

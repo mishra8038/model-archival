@@ -1,6 +1,6 @@
 # Ollama archival model map
 
-_Generated from inventory snapshot **2026-04-04T06:43:57Z**._
+_Generated from inventory snapshot **2026-04-04T07:24:37Z**._
 
 **Supermicro retention (after VM sync):** keep **Gemma 4** (MoE + dense + edge) and **Qwen Coder** only; see `ollama-hosting/scripts/ollama-supermicro-prune-plan.sh` and `ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`. Other tags should exist on the archival VM below before you `ollama rm` them on the Supermicro.
 
@@ -28,6 +28,7 @@ _Generated from inventory snapshot **2026-04-04T06:43:57Z**._
 | llama3.1:8b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 4.58 GiB | no |
 | qwen2.5-coder:14b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 8.37 GiB | no |
 | qwen2.5-coder:7b | d5 | `/mnt/models/d5/supermicro` | 4.36 GiB | no |
+| starcoder2:15b | d5 | `/mnt/models/d5/supermicro` | 8.44 GiB | unknown |
 
 ## Canonical location (deduplicated)
 
@@ -49,6 +50,7 @@ One row per `model:tag`. **Canonical** is the preferred disk copy; **Replicas** 
 | llama3.1:8b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 4.58 GiB | no |
 | qwen2.5-coder:14b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 8.37 GiB | no |
 | qwen2.5-coder:7b | d5 | `/mnt/models/d5/supermicro` | — | 4.36 GiB | no |
+| starcoder2:15b | d5 | `/mnt/models/d5/supermicro` | — | 8.44 GiB | unknown |
 
 ## Machine-readable source
 
