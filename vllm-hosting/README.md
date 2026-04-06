@@ -10,7 +10,7 @@ This directory lives in the **same monorepo** as `model-archival/` and `ollama-h
 - **HF cache:** `$VLLM_ARCHIVE_ROOT/hf_hub` → `HF_HOME`
 - **State:** `$VLLM_ARCHIVE_ROOT/state/completed_repos.txt` (one `org/repo` per line)
 
-**Space:** The manifest sums to **~2.8 TiB** rough order-of-magnitude. A **~916 GiB D5** cannot hold the full set; use a **priority prefix**, **`VLLM_ARCHIVE_ROOT=/mnt/models/d2/vllm`**, or split across drives. See `docs/VLLM-ARCHIVE.md`.
+**Space:** Each model is capped at **~120 GiB** (`approx_disk_gib`); see **`approx_total_disk_gib_sum`** in `config/vllm-archive-manifest.yaml` after regeneration. A **~916 GiB D5** may still need **subsets** or **`VLLM_ARCHIVE_ROOT=/mnt/models/d2/vllm`**. See `docs/VLLM-ARCHIVE.md`.
 
 ## One-time setup on the VM
 
