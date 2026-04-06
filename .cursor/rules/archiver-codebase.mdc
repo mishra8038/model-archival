@@ -27,6 +27,9 @@ model-archival/
     models.py         ModelEntry / DriveConfig dataclasses + registry I/O
     verifier.py       SHA-256, manifest.json, global_index.jsonl
     preflight.py      pre-flight checks
+vllm-hosting/
+  config/vllm-archive-manifest.yaml   HF repos for vLLM archival (deduped from Ollama queue intent)
+  scripts/vllm-archive-pull-one.sh     archive VM: one huggingface-cli download per run (optional trickle cap)
 ```
 
 ## Key bugs fixed in this session

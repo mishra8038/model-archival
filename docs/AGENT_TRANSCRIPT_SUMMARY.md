@@ -10,6 +10,54 @@
 
 ---
 
+## 2026-04-05 — vLLM-oriented HF archive (`d5/vllm`, replaces Ollama pull intent)
+
+- **New tree:** **`vllm-hosting/`** — **`config/vllm-archive-manifest.yaml`** (**57** deduped HF repos, **`~2827 GiB`** summed estimate, disclaimer in YAML), **`config/env-archive-vm-vllm.sh`** (`HF_HOME` under **`/mnt/models/d5/vllm`**, prepends **`$VLLM_ARCHIVE_ROOT/venv/bin`** when **`huggingface-cli`** exists), **`scripts/vllm-archive-setup-dirs.sh`**, **`scripts/vllm-archive-pull-one.sh`**, **`scripts/vllm_archive_pull_one.py`** (queue + lock + **`state/completed_repos.txt`**), **`scripts/_generate_vllm_manifest.py`** (regenerate manifest). **Docs:** **`vllm-hosting/docs/VLLM-ARCHIVE.md`**, **`vllm-hosting/README.md`**. **Ollama doc pointer:** **`ollama-hosting/docs/TARGET_MODEL_LIST.md`** header.
+- **Archive VM (`192.168.8.65`):** **`/mnt/models/d5/vllm`** layout; **`vllm-hosting/`** is **in the monorepo** — after **`git pull`** at **`/home/x/dev/model-archival`**, use **`./vllm-hosting/...`** (not a separate rsync-only tree). **`trickle`** may be missing; use **`USE_TRICKLE=0`** until capped pulls. **`MODEL_ARCHIVAL_UV_ROOT=/home/x/dev/model-archival/model-archiver`** for **`uv run` + PyYAML**. **D5** may be too small for the full manifest — use subset or **`VLLM_ARCHIVE_ROOT`** on **D2**.
+- **When to pull:** operator runs **`source …/env-archive-vm-vllm.sh`** then **`./vllm-hosting/scripts/vllm-archive-pull-one.sh`** (default **2 MiB/s** via **`THROTTLE_KBPS=2048`** + **`trickle`**).
+
+## 2026-04-05 — D1 prune: &lt;60% progress (VM applied)
+
+- **`src/archiver/d1_disk_eval.py`:** Shared **`gather_d1_incomplete_rows`**, **`remove_models_from_yaml_registry`** (``.bak`` before round-trip), **`strip_models_from_run_state`**.
+- **`scripts/d1_prune_low_progress.py`:** Default **dry-run**; **`--apply`** deletes **`repo_base`** + **`.tmp/<slug>`**, drops ids from **`registry.yaml`** + **`registry-d1-manifest-incomplete.yaml`**, strips **`run_state.json`**; **`--apply-disk-only`** / **`--no-treat-hf-errors-as-prune`** / **`--threshold-pct`**. **VM (`192.168.8.65`):** **`--apply`** removed **15** low-progress ids (only **6** trees still existed on disk); **3** incomplete **≥60%** rows left in narrow file (**InternLM**, **Llama-3.3-70B-Instruct**, **DeepSeek-V3-0324**). PyYAML rewrite **drops comments** — **`config/registry.yaml.bak`** on VM preserves pre-prune file.
+- **`scripts/evaluate_d1_incomplete.py`:** Refactored to use **`d1_disk_eval`**; detail table adds **Progress %**.
+
+## 2026-04-05 — D1 incomplete evaluation script (narrow registry + download estimate)
+
+- **`model-archival/scripts/evaluate_d1_incomplete.py`:** On the archive host (D1 mounted), scans **`registry.yaml`** rows with **`drive: d1`**, marks **manifest-complete** if any revision dir passes **`_check_manifest_complete`**, compares to **`registry-d1-manifest-incomplete.yaml`**, and calls HF (same file filters as **`resolve_model_archive_files`**) to estimate **remaining GiB** (HF sizes minus bytes under resolved commit dir, sibling revs, and **`d1/.tmp/<slug>/`**; sidecar-done files excluded). **`downloader.py`:** factored **`resolve_model_archive_files(model, api)`** and **`estimate_remaining_download_bytes(...)`** for reuse.
+- **Run:** `cd model-archival && export HF_TOKEN=… && uv run python scripts/evaluate_d1_incomplete.py` (optional `--out-md reports/D1-INCOMPLETE-EVAL.md`).
+
+## 2026-04-05 — MiniMax M2.7: dropped from active registries (gated)
+
+- **Removed** **`MiniMaxAI/MiniMax-M2.7`** from **`model-archival/config/registry.yaml`** and **`registry-d1-manifest-incomplete.yaml`** (operator: repeatedly **skipped** — gated HF token / licence).
+- **Recorded** under **`categories.auth`** in **`model-archival/config/failed-models-registry.yaml`** (`primary_source: operator`); bumped **`summary`** counts (**`auth: 3`**, **`total_rows: 47`**, **`total_failed: 31`**). **VM:** update **`run_state.json`** or run **`uv run archiver failed-registry`** when syncing state so default runs do not keep a stale **`skipped`** row.
+
+## 2026-04-05 — PAR2: per-revision backfill driver for D2/D3
+
+- **`model-archival/scripts/par2_backfill_d2_d3.py`:** Walks **`raw/`**, **`quantized/`**, **`uncensored/`**, **`specialist/`** on **`/mnt/models/d2`** and **`d3`**; invokes **`par2 c`** with **`-B<rev_dir>`** and relative file paths into each revision’s **`.parity/`** (par2cmdline-compatible). Space checks: **`--reserve-gib`**, estimate fudge. Skips existing **`.par2`**; per-drive **abandon** on **`par2`** failure or free &lt; reserve after a create; oversized single trees **skip** without abandoning the whole disk. Reports **`reports/PAR2-D2-D3-RUN-*.md`** / **`.json`** + **`PAR2-D2-D3-LATEST.md`**. **`find_par2()`** also uses **`~/.local/bin/par2`** when PATH lacks system install.
+- **`integrity_tools/parity_cli.py`:** Same **`par2 c` / `-B` / relative paths** for create; **`verify`/`repair`** use resolved **`par2`** and **`cwd=model`**. **Archive VM:** built par2cmdline from source into **`~/.local/bin`** (no sudo); full backfill started via **`nohup`** + **`PATH`** (see **`/mnt/models/d3/logs/par2-d2-d3-*.log`**).
+- **Docs:** **`model-archival/reports/PAR2-BACKFILL-D2-D3.md`**, **`reports/README.md`**, **`integrity_tools/README.md`** § fleet backfill; **`PAR2-STORAGE-ESTIMATE-D1-D2-D3.md`** links the script.
+
+## 2026-04-05 — VM: dedupe redundant HF trees (registry-aligned)
+
+- **`192.168.8.65`:** Consolidated same-`hf_repo` copies to **one** tree per **`registry.yaml`**: removed **d3** partial **MiniMaxAI/MiniMax-M2.5** (kept **d1**); **rsync** **Phi-4-mini-instruct** **d3→d5** (registry **d5**), removed **d2/d3** BF16 stubs; **rsync** **Llama-3.2-3B-Instruct** **d3→d2**, set **`latest`** on **d2**, removed **d3**; removed **d2** stub + **d3 specialist/science** stub for **deepseek-coder-6.7b-instruct**; removed **d3 specialist/science** stub for **failspy/Meta-Llama-3-70B-Instruct-abliterated-v3.5**. **Qwen2.5-Math-72B-Instruct**: only **d5** + symlink layout (no action).
+- **Reports / tools:** **`model-archival/reports/MODEL-DEDUPE-2026-04-05.md`**; **`model-archival/scripts/scan-cross-drive-raw-duplicates.sh`**, **`scan-suspicious-revision-layout.sh`** (read-only; use before bulk deletes).
+
+## 2026-04-05 — Ollama queue: embedding models (beyond `bge-m3`)
+
+- **`TARGET_QUEUE_ORDERED.txt`** / **`OLLAMA_MODEL_REGISTRY.json`:** After **`bge-m3`**, added **`granite-embedding`**, **`nomic-embed-text`**, **`embeddinggemma`**, **`snowflake-arctic-embed`**, **`mxbai-embed-large`**, **`bge-large`**, **`qwen3-embedding`** (manifest sizes verified on **`registry.ollama.ai`**). **`ollama_registry_tool.py`** `default_group_for_tag` maps these to **`embedding`**.
+
+## 2026-04-05 — Ollama targets: MedGemma community pulls + DeepSeek R1 tag fix
+
+- **`ollama-hosting/registry/TARGET_QUEUE_ORDERED.txt`** + **`OLLAMA_MODEL_REGISTRY.json`:** **`alibayram/medgemma:4b`** (~2.49 GB manifest) after **`gemma3:4b-it-q4_K_M`**. **`alibayram/medgemma:27b`** **removed** from queue — **27B MedGemma** via **HF** (`google/medgemma-27b-it`, etc.). **`starcoder2:15b-instruct-q4_K_M`** **not** queued (**404** on registry — keep HF bartowski GGUF).
+- **Docs / YAML:** **`TARGET_MODEL_LIST.md`**, **`SPECIALIST-HF-PENDING-OLLAMA.md`** (ollama-hosting + model-archival copies), **`registry-specialists.yaml`** (MedGemma + DeepSeek R1 note), **`final_downloads.yaml`**, **`ollama-registry-size-cache.json`** (both `docs/data/` trees): replaced invalid **`deepseek-r1:32b-class`** with **`deepseek-r1:32b-qwen-distill-q4_K_M`**.
+
+## 2026-04-05 — VM: `d5/specialist` → `d2/specialist` blocked (d2 full)
+
+- **`192.168.8.65`:** Partial **`rsync`** of **`/mnt/models/d5/specialist`** (~**154G**) to **`/mnt/models/d2/specialist`** failed with **ENOSPC** (~**121G** copied). Removed incomplete **`/mnt/models/d2/specialist`** to recover d2 (**~114G** free afterward). **Source on d5 unchanged.**
+- **Root cause:** d2 **~2.7T** filesystem is too full to hold the **154G** specialist tree in addition to existing **`d2/raw`** / **`d2/uncensored`** / **`d2/quantized`** — need **~40–60G+** more free space (or offload other data) before retry. **`rsync -av --remove-source-files`** … `/mnt/models/d5/specialist/` → `/mnt/models/d2/specialist/` when ready.
+- **Registries / gdrive roots:** **Not** updated to **`d2/specialist`** (would desync until the move completes). Scratch: **`.chat/2026-04-05-d5-specialist-d2-move-blocked.md`**.
+
 ## 2026-04-03 — VM `priority_overrides.json` (Gemma-4 first, failed tail)
 
 - **`192.168.8.65` `/mnt/models/d3/priority_overrides.json`:** Gemma-4 small dense **-620**, 26B MoE **-580**, 31B overrides removed; specialist **failed** → **120**; **`unsloth/DeepSeek-R1-GGUF`** (failed) **120**; last four (**`DeepSeek-V3-GGUF`**, **`deepseek-vl2`**, **`Qwen3.5-122B-A10B`**, **`Qwen3.5-397B-A17B`**) → **250**; pending/in_progress override **0** removed. Log: **`docs/remote/REMOTE_ACTIVITY_LOG.192.168.8.65.md`**.
@@ -70,6 +118,14 @@
 - **`model-archival/src/archiver/cli.py`:** `run_state.json`, `logs/`, `archive/` (primary), `STATUS.md`, activity log, `gdrive_metadata_pending`, `priority_overrides.json` → **D3** (`_infra_root`). Scratch: D1 then non-D5 `tmp_dir`, then `d3/.tmp` — **never D5**. `sync_archive()` replicas → **D1 + D2 only** (`_archive_replica_mounts`). One-time copy from legacy D5 paths via `_maybe_migrate_infra_from_d5` when D3 files are missing.
 - **`config/drives.yaml`:** D5 `tmp_dir` removed; roles updated. **`gdrive-archival/config.yaml`:** `metadata_pending_path` → `/mnt/models/d3/gdrive_metadata_pending`. **`gdrive-archival/backup.py`** defaults: `run_state` → d3.
 - **Rules/docs touched:** `.cursor/rules/archiver-codebase.mdc`, `vm-operations.mdc`, `model-archival/docs/AI_CONTEXT.md`; helper scripts `gen-manifest.py`, `generate-archived-models-doc.py`, `run.sh`, `verify-archive.py` example.
+
+---
+
+## 2026-04-05 — `archive/` replicas include D5
+
+- **`model-archival/src/archiver/cli.py`:** `_archive_replica_mounts` now lists **d1, d2, d5** (D3 remains canonical `archive/`). **`sync_archive()`** overwrites each replica from D3 after each successful model complete.
+- **Docs/rules:** `docs/AI_CONTEXT.md`, `docs/OPERATIONS.md`, `docs/REQUIREMENTS.md` (design bullets), `.cursor/rules/archiver-codebase.mdc`.
+- **VM:** one-shot `sync_archive` run so **`/mnt/models/d5/archive`** matches D3 (~600K each on d1/d2/d5 after sync).
 
 ---
 
