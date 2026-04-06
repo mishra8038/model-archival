@@ -1,0 +1,201 @@
+# Archiver registry: final vLLM priority list (HF BF16 / safetensors-class).
+# Source manifest: ../../vllm-hosting/config/vllm-target-list-2.yaml (regen _build_vllm_target_list_2.py).
+#
+# Storage: drive **d5_vllm** → ``/mnt/models/d5/vllm/{raw,uncensored}/<org>/<repo>/<rev>/``
+# (isolated from other ``d5/raw`` trees). Scratch stays on **D1/.tmp** per archiver policy.
+#
+# Run (archive VM, from ``model-archival/``):
+#   bash scripts/run-vllm-d5-archiver.sh
+# or:
+#   bash scripts/run.sh --all --registry config/registry-vllm.yaml --drive d5_vllm --bandwidth-cap 2
+#
+models:
+- id: FINGU-AI/RomboUltima-32B
+  hf_repo: FINGU-AI/RomboUltima-32B
+  tier: D
+  drive: d5_vllm
+  priority: 10
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][uncensored] 32B merge; vLLM weights on d5/vllm'
+- id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
+  hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
+  tier: D
+  drive: d5_vllm
+  priority: 20
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][uncensored] Abliterated R1 Qwen-32B'
+- id: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
+  hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
+  tier: D
+  drive: d5_vllm
+  priority: 30
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][uncensored]'
+- id: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
+  hf_repo: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
+  tier: D
+  drive: d5_vllm
+  priority: 40
+  licence: apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][uncensored]'
+- id: TechxGenus/starcoder2-15b-instruct
+  hf_repo: TechxGenus/starcoder2-15b-instruct
+  tier: G
+  drive: d5_vllm
+  priority: 50
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][code] Community StarCoder2 instruct; verify HF card (BigCode lineage)'
+- id: meta-llama/Llama-3.2-11B-Vision-Instruct
+  hf_repo: meta-llama/Llama-3.2-11B-Vision-Instruct
+  tier: F
+  drive: d5_vllm
+  priority: 60
+  licence: llama3.2
+  requires_auth: true
+  commit_sha: null
+  notes: '[vllm-target-list-2][vlm] Meta gated — accept licence on HF'
+- id: ibm-granite/granite-3.3-8b-instruct
+  hf_repo: ibm-granite/granite-3.3-8b-instruct
+  tier: G
+  drive: d5_vllm
+  priority: 70
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][enterprise]'
+- id: AdaptLLM/finance-chat
+  hf_repo: AdaptLLM/finance-chat
+  tier: G
+  drive: d5_vllm
+  priority: 80
+  licence: llama2
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][finance] Llama-2 lineage — verify HF licence'
+- id: Alibaba-NLP/gte-Qwen2-7B-instruct
+  hf_repo: Alibaba-NLP/gte-Qwen2-7B-instruct
+  tier: B
+  drive: d5_vllm
+  priority: 90
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding]'
+- id: allenai/OLMo-2-1124-7B-Instruct
+  hf_repo: allenai/OLMo-2-1124-7B-Instruct
+  tier: G
+  drive: d5_vllm
+  priority: 100
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][science]'
+- id: intfloat/e5-mistral-7b-instruct
+  hf_repo: intfloat/e5-mistral-7b-instruct
+  tier: B
+  drive: d5_vllm
+  priority: 110
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding]'
+- id: Snowflake/snowflake-arctic-embed-l-v2.0
+  hf_repo: Snowflake/snowflake-arctic-embed-l-v2.0
+  tier: B
+  drive: d5_vllm
+  priority: 120
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Arctic Embed L v2'
+- id: BAAI/bge-en-icl
+  hf_repo: BAAI/bge-en-icl
+  tier: B
+  drive: d5_vllm
+  priority: 130
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding]'
+- id: pile-of-law/legalbert-large-1.7M-2
+  hf_repo: pile-of-law/legalbert-large-1.7M-2
+  tier: B
+  drive: d5_vllm
+  priority: 140
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][legal] CC BY-NC-SA dataset — review NC terms'
+- id: HuggingFaceTB/fineweb-edu-classifier
+  hf_repo: HuggingFaceTB/fineweb-edu-classifier
+  tier: B
+  drive: d5_vllm
+  priority: 150
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][classifier]'
+- id: language-plus-molecules/molt5-base-smiles2caption-LPM24
+  hf_repo: language-plus-molecules/molt5-base-smiles2caption-LPM24
+  tier: G
+  drive: d5_vllm
+  priority: 160
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][chemistry] MolT5'
+- id: ProsusAI/finbert
+  hf_repo: ProsusAI/finbert
+  tier: B
+  drive: d5_vllm
+  priority: 170
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][finance][encoder]'
+- id: allenai/scibert_scivocab_uncased
+  hf_repo: allenai/scibert_scivocab_uncased
+  tier: B
+  drive: d5_vllm
+  priority: 180
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][science][encoder]'
+- id: m3rg-iitd/matscibert
+  hf_repo: m3rg-iitd/matscibert
+  tier: B
+  drive: d5_vllm
+  priority: 190
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][materials][encoder]'
+- id: DeepChem/ChemBERTa-77M-MLM
+  hf_repo: DeepChem/ChemBERTa-77M-MLM
+  tier: B
+  drive: d5_vllm
+  priority: 200
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][chemistry][encoder]'
+- id: Derify/ModChemBERT-MLM-DAPT-TAFT
+  hf_repo: Derify/ModChemBERT-MLM-DAPT-TAFT
+  tier: B
+  drive: d5_vllm
+  priority: 210
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][chemistry][encoder]'

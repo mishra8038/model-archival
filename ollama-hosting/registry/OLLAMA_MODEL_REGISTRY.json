@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at_utc": "2026-04-04T06:43:57Z",
+  "updated_at_utc": "2026-04-05T13:07:39Z",
   "queue": [
     "deepseek-coder:6.7b",
     "qwen2.5-coder:7b",
@@ -38,18 +38,29 @@
     "qwen3:32b-q4_K_M",
     "llama3.2:3b",
     "bge-m3",
+    "granite-embedding",
+    "nomic-embed-text",
+    "embeddinggemma",
+    "snowflake-arctic-embed",
+    "mxbai-embed-large",
+    "bge-large",
+    "qwen3-embedding",
     "qwen3.5:4b-q4_K_M",
+    "qwen3.5:4b-bf16",
     "gemma3:4b-it-q4_K_M",
+    "alibayram/medgemma:4b",
     "mathstral:7b",
     "deepseek-r1:8b-llama-distill-q4_K_M",
     "deepseek-r1:7b-qwen-distill-q4_K_M",
     "qwen2.5vl:7b",
     "qwen3.5:9b-q4_K_M",
+    "qwen3.5:9b-bf16",
     "phi4:14b-q4_K_M",
     "closex/neuraldaredevil-8b-abliterated:latest",
     "mistral-small3.2:24b-instruct-2506-q4_K_M",
     "gemma3:27b-it-q4_K_M",
     "qwen3.5:27b-q4_K_M",
+    "qwen3.5:27b-bf16",
     "deepseek-r1:32b-qwen-distill-q4_K_M",
     "qwq:32b-q4_K_M",
     "qwen2.5vl:32b-q4_K_M",
@@ -279,16 +290,16 @@
     "gemma4:31b-it-q4_K_M": {
       "approx_size_gb": null,
       "pull": {
-        "status": "pending",
-        "last_completed_utc": null,
+        "status": "complete",
+        "last_completed_utc": "2026-04-05T02:53:25Z",
         "last_failed_utc": null,
-        "history_note": null
+        "history_note": "sync-pull-from-archive-vm"
       },
       "archive": {
-        "on_canonical_disk": null,
-        "canonical_root": null,
-        "supermicro_cleared": null,
-        "size_human": null,
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "18.50 GiB",
         "replica_disks": []
       },
       "notes": "",
@@ -297,16 +308,16 @@
     "qwen2.5-coder:32b-instruct-q4_K_M": {
       "approx_size_gb": null,
       "pull": {
-        "status": "pending",
-        "last_completed_utc": null,
+        "status": "complete",
+        "last_completed_utc": "2026-04-05T02:53:25Z",
         "last_failed_utc": null,
-        "history_note": null
+        "history_note": "sync-pull-from-archive-vm"
       },
       "archive": {
-        "on_canonical_disk": null,
-        "canonical_root": null,
-        "supermicro_cleared": null,
-        "size_human": null,
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "18.49 GiB",
         "replica_disks": []
       },
       "notes": "",
@@ -708,6 +719,24 @@
       "notes": "",
       "group": "specialist"
     },
+    "qwen3.5:4b-bf16": {
+      "approx_size_gb": 9.3,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Dense Qwen3.5 BF16 (Ollama native; not GGUF Q4).",
+      "group": "specialist"
+    },
     "gemma3:4b-it-q4_K_M": {
       "approx_size_gb": null,
       "pull": {
@@ -816,6 +845,24 @@
       "notes": "",
       "group": "specialist"
     },
+    "qwen3.5:9b-bf16": {
+      "approx_size_gb": 19.0,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Dense Qwen3.5 BF16 (Ollama native; not GGUF Q4).",
+      "group": "specialist"
+    },
     "phi4:14b-q4_K_M": {
       "approx_size_gb": null,
       "pull": {
@@ -904,6 +951,24 @@
         "replica_disks": []
       },
       "notes": "",
+      "group": "specialist"
+    },
+    "qwen3.5:27b-bf16": {
+      "approx_size_gb": 56.0,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Dense Qwen3.5 BF16 (Ollama native; not GGUF Q4).",
       "group": "specialist"
     },
     "deepseek-r1:32b-qwen-distill-q4_K_M": {
@@ -1053,6 +1118,25 @@
     "starcoder2:15b": {
       "approx_size_gb": 9.1,
       "pull": {
+        "status": "complete",
+        "last_completed_utc": "2026-04-05T02:53:25Z",
+        "last_failed_utc": null,
+        "history_note": "sync-pull-from-archive-vm"
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "8.44 GiB",
+        "replica_disks": []
+      },
+      "notes": "(queue tag corrected to starcoder2:15b \u2014 library tag)",
+      "group": "coding"
+    },
+    "alibayram/medgemma:4b": {
+      "group": "specialist",
+      "approx_size_gb": 2.49,
+      "pull": {
         "status": "pending",
         "last_completed_utc": null,
         "last_failed_utc": null,
@@ -1065,8 +1149,133 @@
         "size_human": null,
         "replica_disks": []
       },
-      "notes": "(queue tag corrected to starcoder2:15b \u2014 library tag)",
-      "group": "coding"
+      "notes": "HF-fallback for google/medgemma-4b-it (specialist registry); community model on ollama.com \u2014 verify licence/size before production use."
+    },
+    "qwen3-embedding": {
+      "group": "embedding",
+      "approx_size_gb": 4.68,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Qwen3 embedding line; larger frontier option (~4.7 GB manifest)."
+    },
+    "bge-large": {
+      "group": "embedding",
+      "approx_size_gb": 0.67,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "English dense BGE; classic stack alongside multilingual bge-m3."
+    },
+    "mxbai-embed-large": {
+      "group": "embedding",
+      "approx_size_gb": 0.67,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "MixedBread AI large embed; documented in supermicro rig picks."
+    },
+    "snowflake-arctic-embed": {
+      "group": "embedding",
+      "approx_size_gb": 0.67,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Snowflake Arctic Embed; strong MTEB-class dense retrieval."
+    },
+    "embeddinggemma": {
+      "group": "embedding",
+      "approx_size_gb": 0.62,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Gemma-family embedding; complements Gemma chat/VLM stack."
+    },
+    "nomic-embed-text": {
+      "group": "embedding",
+      "approx_size_gb": 0.27,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "Common Ollama default for text embeddings; fast CPU-friendly."
+    },
+    "granite-embedding": {
+      "group": "embedding",
+      "approx_size_gb": 0.063,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": null,
+        "canonical_root": null,
+        "supermicro_cleared": null,
+        "size_human": null,
+        "replica_disks": []
+      },
+      "notes": "IBM Granite embedding; tiny baseline for RAG / eval."
     }
   },
   "links": {

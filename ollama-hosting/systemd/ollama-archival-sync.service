@@ -1,7 +1,0 @@
-[Unit]
-Description=Sync supermicro Ollama cache to archival VM (registry merge after ollama-sync.sh)
-
-[Service]
-Type=oneshot
-# Adjust path if your model-archival clone is not under $HOME/z/dev/model-archival/model-archival
-ExecStart=/bin/bash -lc 'OLLAMA_SYNC_BWLIMIT_KB=0 ARCHIVAL_VM_DEST=/mnt/models/d5/supermicro exec "$HOME/z/dev/model-archival/model-archival/ollama-hosting/scripts/ollama-registry-sync"'

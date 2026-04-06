@@ -10,7 +10,7 @@ This directory lives in the **same monorepo** as `model-archival/` and `ollama-h
 - **HF cache:** `$VLLM_ARCHIVE_ROOT/hf_hub` → `HF_HOME`
 - **State:** `$VLLM_ARCHIVE_ROOT/state/completed_repos.txt` (one `org/repo` per line)
 
-**Space:** Each model is capped at **~120 GiB** (`approx_disk_gib`); see **`approx_total_disk_gib_sum`** in `config/vllm-archive-manifest.yaml` after regeneration. A **~916 GiB D5** may still need **subsets** or **`VLLM_ARCHIVE_ROOT=/mnt/models/d2/vllm`**. See `docs/VLLM-ARCHIVE.md`.
+**Default queue:** `config/vllm-immediate-targets.yaml` — **>21B params**, **<120 GiB** each, **general / specialist / uncensored** causal models only (~**948 GiB** summed; **16** repos). **Wide catalog:** `config/vllm-archive-manifest.yaml`. A **~916 GiB D5** still needs **subsets** or **`VLLM_ARCHIVE_ROOT=/mnt/models/d2/vllm`**. See `docs/VLLM-ARCHIVE.md`.
 
 ## One-time setup on the VM
 
@@ -41,9 +41,15 @@ Dry-run / queue inspection:
 ./vllm-hosting/scripts/vllm-archive-pull-one.sh --list
 ```
 
-## Regenerate manifest YAML
+## Regenerate YAML
 
-After editing `scripts/_generate_vllm_manifest.py`:
+**Immediate targets** (`vllm-immediate-targets.yaml`), after editing `scripts/_generate_vllm_immediate_targets.py`:
+
+```bash
+uv run --directory model-archival python ../vllm-hosting/scripts/_generate_vllm_immediate_targets.py
+```
+
+**Wide manifest** (`vllm-archive-manifest.yaml`), after editing `scripts/_generate_vllm_manifest.py`:
 
 ```bash
 # Workstation (nested clone):

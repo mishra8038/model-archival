@@ -1,0 +1,4 @@
+# Staging for archive-ollama-github-to-d5.sh (large tarballs + clone)
+*
+!.gitignore
+!README.txt

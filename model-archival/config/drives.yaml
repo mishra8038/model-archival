@@ -39,3 +39,11 @@ d5:
   role: "Completed models only when assigned drive: d5; no archiver scratch or metadata"
   by_id: ""
   serial: ""
+
+# Logical volume on D5: same disk as ``d5`` but separate tree for vLLM BF16/safetensors (not d5/raw).
+# Do not set tmp_dir — in-progress partials stay on D1/.tmp (same policy as d5).
+d5_vllm:
+  mount_point: /mnt/models/d5/vllm
+  role: "vLLM-oriented weights under d5/vllm/{raw,uncensored}/…; isolated from d5/raw overflow"
+  by_id: ""
+  serial: ""

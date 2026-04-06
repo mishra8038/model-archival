@@ -71,7 +71,8 @@ def _tmp_dir(reg: Registry) -> Path:
     if d1 and d1.tmp_dir:
         return d1.tmp_dir
     for label, drive in reg.drives.items():
-        if label == "d5":
+        # Never use D5 or the D5/vLLM subtree for scratch — same physical disk policy as d5.
+        if label in ("d5", "d5_vllm"):
             continue
         if drive.tmp_dir:
             return drive.tmp_dir
@@ -100,9 +101,13 @@ def _maybe_migrate_infra_from_d5(reg: Registry, infra: Path) -> None:
 
 
 def _archive_replica_mounts(reg: Registry) -> list[Path]:
-    """Replicate archive/ to D1 and D2 only — not D3 (primary) or D5 (models only when assigned)."""
+    """Replicate primary ``archive/`` (D3 infra) to every other data drive with a mount.
+
+    D3 holds the canonical ``archive/``; D1, D2, and D5 receive full copies after each
+    successful model complete (``sync_archive``). Weight trees stay on their registry drives.
+    """
     out: list[Path] = []
-    for label in ("d1", "d2"):
+    for label in ("d1", "d2", "d5"):
         d = reg.drives.get(label)
         if d:
             out.append(d.mount_point)

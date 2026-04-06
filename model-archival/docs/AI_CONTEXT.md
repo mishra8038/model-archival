@@ -27,7 +27,7 @@ Python CLI + bash orchestration that downloads Hugging Face model weights to **m
 | `src/archiver/` | All Python modules (package `archiver`) |
 | `deploy/` | VM setup, token helper, mount scripts |
 
-**On disk (runtime):** `d3/run_state.json`, `d3/STATUS.md`, `d3/logs/`, `d3/archive/` (replicated to d1/d2 `archive/`); scratch **`d1/.tmp/`** then **`d3/.tmp`** — never D5 for infra or partials; D5 only for completed `drive: d5` model trees — never root SSD for weights.
+**On disk (runtime):** `d3/run_state.json`, `d3/STATUS.md`, `d3/logs/`, `d3/archive/` (canonical; **`archive/`** replicated to **d1, d2, d5** after each successful model complete); scratch **`d1/.tmp/`** then **`d3/.tmp`** — never D5 for infra or partials; D5 only for completed `drive: d5` model trees — never root SSD for weights.
 
 ---
 

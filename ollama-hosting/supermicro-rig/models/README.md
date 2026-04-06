@@ -8,4 +8,4 @@
 
 **Human doc:** **`../../docs/TARGET_MODEL_LIST.md`** (also linked here as `TARGET_MODEL_LIST.md`).
 
-On the Supermicro, prefer **`cd …/ollama-hosting`**, **`./scripts/ollama-pull-queue --one`**, so paths and JSON stay consistent.
+On the Supermicro, prefer **`cd …/ollama-hosting`**, **`./scripts/ollama-pull-queue`** (one model per run by default), so paths and JSON stay consistent.

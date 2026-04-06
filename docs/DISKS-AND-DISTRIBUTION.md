@@ -22,7 +22,7 @@ Physical disk layout, roles, and how artifacts are distributed across drives.
 
 ### D1 — /mnt/models/d1
 
-- **Model weights:** Tier A large (DeepSeek-V3, DeepSeek-R1, Qwen3-32B, Qwen3-235B-A22B, Llama-3.1-405B, Llama-3.3-70B, Mistral-Large, Command R+, DeepSeek-Coder-V2-Instruct), Tier F large (Qwen2.5-VL-72B, Llama-3.2-90B-Vision).
+- **Model weights:** Tier A large (DeepSeek-V3, DeepSeek-R1, Qwen3-32B, Qwen3-235B-A22B, Llama-3.3-70B, Mistral-Large, Command R+, DeepSeek-Coder-V2-Instruct), Tier F large (Qwen2.5-VL-72B, Llama-3.2-90B-Vision).
 - **Scratch:** `D1/.tmp/` — in-progress downloads only; ~2.3 TB headroom for partials.
 - **Fingerprints:** `D1/model-checksums/` — default output for the checksum crawler (index.jsonl, per-repo fingerprint files, leaderboard-snapshots).
 - **Code archival:** `D1/code-archival/` — source snapshots from code-archival (if configured to use D1).

@@ -1,6 +1,6 @@
 # Ollama archival model map
 
-_Generated from inventory snapshot **2026-04-04T07:24:37Z**._
+_Generated from inventory snapshot **2026-04-05T02:53:25Z**._
 
 **Supermicro retention (after VM sync):** keep **Gemma 4** (MoE + dense + edge) and **Qwen Coder** only; see `ollama-hosting/scripts/ollama-supermicro-prune-plan.sh` and `ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`. Other tags should exist on the archival VM below before you `ollama rm` them on the Supermicro.
 
@@ -21,12 +21,14 @@ _Generated from inventory snapshot **2026-04-04T07:24:37Z**._
 | dolphin-llama3:8b | d5 | `/mnt/models/d5/supermicro` | 4.34 GiB | no |
 | dolphin-mistral:latest | d5 | `/mnt/models/d5/supermicro` | 3.83 GiB | no |
 | gemma4:26b-a4b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 16.75 GiB | no |
+| gemma4:31b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 18.50 GiB | unknown |
 | gemma4:e2b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 6.67 GiB | no |
 | gemma4:e2b-it-q8_0 | d5 | `/mnt/models/d5/supermicro` | 7.58 GiB | no |
 | gemma4:e4b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 8.95 GiB | no |
 | gemma4:e4b-it-q8_0 | d5 | `/mnt/models/d5/supermicro` | 10.84 GiB | no |
 | llama3.1:8b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 4.58 GiB | no |
 | qwen2.5-coder:14b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 8.37 GiB | no |
+| qwen2.5-coder:32b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | 18.49 GiB | unknown |
 | qwen2.5-coder:7b | d5 | `/mnt/models/d5/supermicro` | 4.36 GiB | no |
 | starcoder2:15b | d5 | `/mnt/models/d5/supermicro` | 8.44 GiB | unknown |
 
@@ -43,12 +45,14 @@ One row per `model:tag`. **Canonical** is the preferred disk copy; **Replicas** 
 | dolphin-llama3:8b | d5 | `/mnt/models/d5/supermicro` | — | 4.34 GiB | no |
 | dolphin-mistral:latest | d5 | `/mnt/models/d5/supermicro` | — | 3.83 GiB | no |
 | gemma4:26b-a4b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 16.75 GiB | no |
+| gemma4:31b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 18.50 GiB | unknown |
 | gemma4:e2b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 6.67 GiB | no |
 | gemma4:e2b-it-q8_0 | d5 | `/mnt/models/d5/supermicro` | — | 7.58 GiB | no |
 | gemma4:e4b-it-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 8.95 GiB | no |
 | gemma4:e4b-it-q8_0 | d5 | `/mnt/models/d5/supermicro` | — | 10.84 GiB | no |
 | llama3.1:8b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 4.58 GiB | no |
 | qwen2.5-coder:14b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 8.37 GiB | no |
+| qwen2.5-coder:32b-instruct-q4_K_M | d5 | `/mnt/models/d5/supermicro` | — | 18.49 GiB | unknown |
 | qwen2.5-coder:7b | d5 | `/mnt/models/d5/supermicro` | — | 4.36 GiB | no |
 | starcoder2:15b | d5 | `/mnt/models/d5/supermicro` | — | 8.44 GiB | unknown |
 

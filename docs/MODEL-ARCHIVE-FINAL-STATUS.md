@@ -237,7 +237,6 @@ Authoritative file: `model-archival/config/final_pending_registry.yaml` (regener
 | `jeffmeloy/Qwen2.5-7B-nerd-uncensored-v0.9` | D | d3 | 2 | — | — | n/a | `d3/uncensored/jeffmeloy/Qwen2.5-7B-nerd-uncensored-v0.9/main` | `registry_high_risk.yaml` |
 | `jeffmeloy/Qwen2.5-7B-nerd-uncensored-v1.0` | D | d3 | 2 | — | — | n/a | `d3/uncensored/jeffmeloy/Qwen2.5-7B-nerd-uncensored-v1.0/main` | `registry_high_risk.yaml` |
 | `jinaai/jina-embeddings-v3` | B | d3 | 1 | complete | 2.1 | n/a | `d3/raw/jinaai/jina-embeddings-v3/main` | `registry-specialists.yaml`, `final_downloads.yaml` |
-| `meta-llama/Llama-3.1-405B` | A | d1 | 4 | pending | 2275.9 | n/a | `d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe` | `registry.yaml` |
 | `meta-llama/Llama-3.1-405B-Instruct` | A | d1 | 4 | pending | 2276.0 | n/a | `d1/raw/meta-llama/Llama-3.1-405B-Instruct/main` | `registry.yaml` |
 | `meta-llama/Llama-3.1-70B-Instruct` | A | d3 | 4 | complete | 262.9 | n/a | `d3/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b` | `registry.yaml` |
 | `meta-llama/Llama-3.1-8B-Instruct` | A | d2 | 2 | complete | 29.9 | n/a | `d2/raw/meta-llama/Llama-3.1-8B-Instruct/0e9e39f249a16976918f6564b8830bc894c89659` | `registry.yaml`, `registry-specialists.yaml`, `final_downloads.yaml` |
@@ -247,9 +246,8 @@ Authoritative file: `model-archival/config/final_pending_registry.yaml` (regener
 | `meta-llama/Llama-3.2-3B-Instruct` | A | d2 | 1 | complete | 12.0 | n/a | `d2/raw/meta-llama/Llama-3.2-3B-Instruct/0cb88a4f764b7a12671c53f0838cd831a0843b95` | `registry.yaml` |
 | `meta-llama/Llama-3.2-90B-Vision-Instruct` | F | d5 | 4 | pending | 330.5 | n/a | `d5/raw/meta-llama/Llama-3.2-90B-Vision-Instruct/main` | `registry.yaml` |
 | `meta-llama/Llama-3.3-70B-Instruct` | A | d1 | 4 | pending | 262.9 | n/a | `d1/raw/meta-llama/Llama-3.3-70B-Instruct/6f6073b423013f6a7d4d9f39144961bfbfbc386b` | `registry.yaml` |
-| `meta-llama/Llama-4-Maverick-17B-128E` | A | d1 | 4 | pending | 748.0 | n/a | `d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2` | `registry.yaml` |
 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct` | A | d2 | 4 | — | 748.0 | n/a | `d2/raw/meta-llama/Llama-4-Maverick-17B-128E-Instruct/main` | `registry.yaml` |
-| `meta-llama/Llama-4-Scout-17B-16E` | A | d1 | 4 | pending | 202.4 | n/a | `d1/raw/meta-llama/Llama-4-Scout-17B-16E/main` | `registry.yaml` |
+| `meta-llama/Llama-4-Scout-17B-16E` | A | — | 4 | failed | 202.4 | n/a | operator purged D1; see `failed-models-registry.yaml` | `failed-models-registry.yaml` |
 | `meta-llama/Llama-4-Scout-17B-16E-Instruct` | A | d2 | 4 | — | 202.4 | n/a | `d2/raw/meta-llama/Llama-4-Scout-17B-16E-Instruct/main` | `registry.yaml` |
 | `meta-llama/Llama-Guard-4-12B` | E | d3 | 1 | complete | 22.4 | n/a | `d3/raw/meta-llama/Llama-Guard-4-12B/87acb4b94e930c3d679e6e7ee9d57e2feab9ea71` | `registry.yaml`, `registry-specialists.yaml`, `final_downloads.yaml` |
 | `meta-llama/Llama-Prompt-Guard-2-22M` | E | d3 | 1 | complete | 0.3 | n/a | `d3/raw/meta-llama/Llama-Prompt-Guard-2-22M/11614a155199674a0a95e6602d6ab0417b790ed0` | `registry.yaml`, `registry-specialists.yaml`, `final_downloads.yaml` |

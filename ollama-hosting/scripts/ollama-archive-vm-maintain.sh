@@ -21,5 +21,11 @@ if [[ "${#_roots[@]}" -eq 0 ]]; then
   echo "error: no archive roots (print-archive-roots empty)" >&2
   exit 1
 fi
-echo "Maintaining ${#_roots[@]} root(s) on $ARCHIVAL_VM …" >&2
-cat "$REPO/scripts/ollama_archive_vm_maintain.py" | "${vm_ssh[@]}" "$ARCHIVAL_VM" python3 - "${_roots[@]}"
+_maint_args=()
+if [[ "${OLLAMA_MAINTAIN_KEEP_PARTIALS:-0}" == "1" ]]; then
+  _maint_args+=(--keep-ollama-partials)
+  echo "Maintaining (preserving Ollama *partial* blobs) …" >&2
+else
+  echo "Maintaining ${#_roots[@]} root(s) on $ARCHIVAL_VM …" >&2
+fi
+cat "$REPO/scripts/ollama_archive_vm_maintain.py" | "${vm_ssh[@]}" "$ARCHIVAL_VM" python3 - "${_maint_args[@]}" "${_roots[@]}"

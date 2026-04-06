@@ -13,3 +13,6 @@ iso_utc,ollama_tag,approx_size_gb,status,notes
 2026-04-03T18:00:00Z,gemma4:26b-a4b-it-q4_K_M,17,completed,
 2026-04-03T19:00:00Z,dolphin-mistral:latest,4.1,completed,uncensored batch
 2026-04-03T19:30:00Z,dolphin-llama3:8b,4.7,completed,uncensored batch
+2026-04-05T02:53:25Z,starcoder2:15b,9.1,completed,sync-pull-from-archive-vm
+2026-04-05T02:53:25Z,gemma4:31b-it-q4_K_M,?,completed,sync-pull-from-archive-vm
+2026-04-05T02:53:25Z,qwen2.5-coder:32b-instruct-q4_K_M,?,completed,sync-pull-from-archive-vm

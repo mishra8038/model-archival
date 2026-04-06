@@ -24,7 +24,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Chinese ecosystem — 34B chat; fragile to geopolitical restriction",
+      "notes": "Chinese ecosystem \u2014 34B chat; fragile to geopolitical restriction",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -77,7 +77,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Embedding model — strong multilingual; RAG ecosystem utility",
+      "notes": "Embedding model \u2014 strong multilingual; RAG ecosystem utility",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -104,7 +104,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Embedding model — English ICL retrieval; essential for RAG if labs go offline",
+      "notes": "Embedding model \u2014 English ICL retrieval; essential for RAG if labs go offline",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -131,7 +131,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Embedding — backbone of many local retrieval systems; English",
+      "notes": "Embedding \u2014 backbone of many local retrieval systems; English",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -158,7 +158,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Embedding — multilingual; state-of-the-art retrieval",
+      "notes": "Embedding \u2014 multilingual; state-of-the-art retrieval",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -185,7 +185,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "CC-BY-NC — non-commercial only; requires HF access and token; excluded from default.",
+      "notes": "CC-BY-NC \u2014 non-commercial only; requires HF access and token; excluded from default.",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry-legacy.yaml"
@@ -315,7 +315,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": "merge",
-      "notes": "14B fusion/merge chat model — uncensored-leaning; strong single-GPU option",
+      "notes": "14B fusion/merge chat model \u2014 uncensored-leaning; strong single-GPU option",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -341,7 +341,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": "merge",
-      "notes": "32B merge model — uncensored / experimental; complements other Qwen2.5/Llama merges",
+      "notes": "32B merge model \u2014 uncensored / experimental; complements other Qwen2.5/Llama merges",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -394,7 +394,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Canonical 7B DPO-tuned chat model — reference for preference optimization behaviour",
+      "notes": "Canonical 7B DPO-tuned chat model \u2014 reference for preference optimization behaviour",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -554,7 +554,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "[discipline:frontier][minimax] MiniMax M2.5 MoE open weights; agent/coding line. Very large multi-shard tree — D1; ensure free space before run. HF: MiniMaxAI/MiniMax-M2.5.",
+      "notes": "[discipline:frontier][minimax] MiniMax M2.5 MoE open weights; agent/coding line. Very large multi-shard tree \u2014 D1; ensure free space before run. HF: MiniMaxAI/MiniMax-M2.5.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -580,7 +580,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "[discipline:frontier][minimax] MiniMax M2.7 — gated on HF; requires accepted terms + HF token (`archiver tokens check`). Skipped when no token. Large multi-shard — D1. PinchBench: minimax/minimax-m2.7. Main registry (moved from registry-specialists).",
+      "notes": "[discipline:frontier][minimax] MiniMax M2.7 \u2014 gated on HF; requires accepted terms + HF token (`archiver tokens check`). Skipped when no token. Large multi-shard \u2014 D1. PinchBench: minimax/minimax-m2.7. Main registry (moved from registry-specialists).",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -686,7 +686,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "[discipline:chemistry][retrosynthesis] OpenDFM RetroDFM-R checkpoint; DeepRetro (Deep Forest Sciences) is a software framework — no standalone HF weight repo — use this for archival alongside ChemDFM",
+      "notes": "[discipline:chemistry][retrosynthesis] OpenDFM RetroDFM-R checkpoint; DeepRetro (Deep Forest Sciences) is a software framework \u2014 no standalone HF weight repo \u2014 use this for archival alongside ChemDFM",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -739,7 +739,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Qwen reasoning model — 61k downloads, strong math/coding CoT",
+      "notes": "Qwen reasoning model \u2014 61k downloads, strong math/coding CoT",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -794,7 +794,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 110B base (Qwen1.5 gen); superseded by Qwen2.5/3 — preservation only.",
+      "notes": "Pre-trained 110B base (Qwen1.5 gen); superseded by Qwen2.5/3 \u2014 preservation only.",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry-legacy.yaml"
@@ -820,7 +820,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 0.5B base for Qwen2.5 — scaling-law anchor; pairs with Qwen2.5-0.5B-Instruct",
+      "notes": "Pre-trained 0.5B base for Qwen2.5 \u2014 scaling-law anchor; pairs with Qwen2.5-0.5B-Instruct",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -872,7 +872,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 1.5B base for Qwen2.5 — scaling-law anchor; pairs with Qwen2.5-1.5B-Instruct",
+      "notes": "Pre-trained 1.5B base for Qwen2.5 \u2014 scaling-law anchor; pairs with Qwen2.5-1.5B-Instruct",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -924,7 +924,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 14B base for Qwen2.5 — complements existing 14B instruct",
+      "notes": "Pre-trained 14B base for Qwen2.5 \u2014 complements existing 14B instruct",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -950,7 +950,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "2M downloads — glaring gap between 7B and 32B, lb=41.3",
+      "notes": "2M downloads \u2014 glaring gap between 7B and 32B, lb=41.3",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -976,7 +976,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Long-context (1M token) variant — 55k downloads",
+      "notes": "Long-context (1M token) variant \u2014 55k downloads",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1002,7 +1002,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 32B base for Qwen2.5 — large dense base; pairs with 32B instruct",
+      "notes": "Pre-trained 32B base for Qwen2.5 \u2014 large dense base; pairs with 32B instruct",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1054,7 +1054,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 3B base for Qwen2.5 — small, future-facing anchor",
+      "notes": "Pre-trained 3B base for Qwen2.5 \u2014 small, future-facing anchor",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1106,7 +1106,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained base (no instruct) — foundation for fine-tunes; preservation priority",
+      "notes": "Pre-trained base (no instruct) \u2014 foundation for fine-tunes; preservation priority",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1158,7 +1158,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 7B base for Qwen2.5 — canonical mid-size base",
+      "notes": "Pre-trained 7B base for Qwen2.5 \u2014 canonical mid-size base",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1210,7 +1210,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "lb=39.9 — top open code model (previously requires_auth was wrong)",
+      "notes": "lb=39.9 \u2014 top open code model (previously requires_auth was wrong)",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1316,7 +1316,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Best open VLM at 72B — image/video understanding",
+      "notes": "Best open VLM at 72B \u2014 image/video understanding",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -1500,7 +1500,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Qwen3 MoE — 235B total, 22B active. 680k downloads",
+      "notes": "Qwen3 MoE \u2014 235B total, 22B active. 680k downloads",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1526,7 +1526,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Smaller Qwen3 MoE — 1.2M downloads",
+      "notes": "Smaller Qwen3 MoE \u2014 1.2M downloads",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1658,7 +1658,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Qwen3 MoE code model — 1M downloads",
+      "notes": "Qwen3 MoE code model \u2014 1M downloads",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -1788,7 +1788,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "[discipline:frontier][qwen3.5] Flagship MoE (~397B, ~17B active); largest tier — ensure D1 free.",
+      "notes": "[discipline:frontier][qwen3.5] Flagship MoE (~397B, ~17B active); largest tier \u2014 ensure D1 free.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -2026,7 +2026,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Reward model — critical for DIY RLHF/DPO if upstream disappears",
+      "notes": "Reward model \u2014 critical for DIY RLHF/DPO if upstream disappears",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -2053,7 +2053,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Tsinghua GLM-4 9B — strong CN/EN; 128K context; regulatory-risk hedge",
+      "notes": "Tsinghua GLM-4 9B \u2014 strong CN/EN; 128K context; regulatory-risk hedge",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -2080,7 +2080,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Ultra-small 1.1B — valuable if GPU access becomes restricted; runs on CPU/low memory",
+      "notes": "Ultra-small 1.1B \u2014 valuable if GPU access becomes restricted; runs on CPU/low memory",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -2160,7 +2160,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "lb=42.3 — AllenAI RLVR alignment research flagship; scientifically significant",
+      "notes": "lb=42.3 \u2014 AllenAI RLVR alignment research flagship; scientifically significant",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -2766,7 +2766,7 @@
       "quant_levels": [],
       "parent_model": "meta-llama/Llama-3.1-8B",
       "method": "supervised-finetune",
-      "notes": "Dolphin — long-running uncensored series, historically significant",
+      "notes": "Dolphin \u2014 long-running uncensored series, historically significant",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -2792,7 +2792,7 @@
       "quant_levels": [],
       "parent_model": "Qwen/Qwen2-72B",
       "method": "supervised-finetune",
-      "notes": "Dolphin 72B — popular uncensored 72B. drive d5 — d3/d5 .tmp cleared (2026-04); partial/finish under d5/uncensored/",
+      "notes": "Dolphin 72B \u2014 popular uncensored 72B. drive d5 \u2014 d3/d5 .tmp cleared (2026-04); partial/finish under d5/uncensored/",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -2897,7 +2897,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "May 2025 improved R1 checkpoint — 1.1M downloads",
+      "notes": "May 2025 improved R1 checkpoint \u2014 1.1M downloads",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -2976,7 +2976,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Smaller distill — fits single consumer GPU",
+      "notes": "Smaller distill \u2014 fits single consumer GPU",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -3030,7 +3030,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Smallest reasoning distill — fits in 8 GB VRAM",
+      "notes": "Smallest reasoning distill \u2014 fits in 8 GB VRAM",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -3083,7 +3083,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "March 2024 checkpoint — improved over original V3",
+      "notes": "March 2024 checkpoint \u2014 improved over original V3",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -3109,7 +3109,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Pre-trained 671B MoE base (no SFT/RLHF) — foundation for future fine-tunes; preservation priority",
+      "notes": "Pre-trained 671B MoE base (no SFT/RLHF) \u2014 foundation for future fine-tunes; preservation priority",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -3135,7 +3135,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "DeepSeek Coder v1 33B — extremely strong code model; beats GPT-3.5-turbo on HumanEval",
+      "notes": "DeepSeek Coder v1 33B \u2014 extremely strong code model; beats GPT-3.5-turbo on HumanEval",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -3161,7 +3161,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "DeepSeek Coder v1 6.7B — strong small code model; 16K context",
+      "notes": "DeepSeek Coder v1 6.7B \u2014 strong small code model; 16K context",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -3188,7 +3188,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "[discipline:math] DeepSeek Math 7B instruct — distinct from Mathstral/Qwen2.5-Math line; RL-tuned math reasoning.",
+      "notes": "[discipline:math] DeepSeek Math 7B instruct \u2014 distinct from Mathstral/Qwen2.5-Math line; RL-tuned math reasoning.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -3214,7 +3214,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "DeepSeek MoE vision model — high-end open VLM; regulatory-risk preservation",
+      "notes": "DeepSeek MoE vision model \u2014 high-end open VLM; regulatory-risk preservation",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -3320,7 +3320,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemini 3 Flash Preview on HF (gated). Removed from registry-specialists — no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.",
+      "notes": "Gemini 3 Flash Preview on HF (gated). Removed from registry-specialists \u2014 no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry-legacy.yaml"
@@ -3346,7 +3346,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemini 3.1 Flash-Lite Preview on HF (gated). Removed from registry-specialists — no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.",
+      "notes": "Gemini 3.1 Flash-Lite Preview on HF (gated). Removed from registry-specialists \u2014 no HF token access; Gemma 4 sufficient. Retained for failed-registry / audit merge only.",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry-legacy.yaml"
@@ -3450,7 +3450,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemma-3 4B multimodal — smallest capable open VLM",
+      "notes": "Gemma-3 4B multimodal \u2014 smallest capable open VLM",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -3529,7 +3529,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemma 4 31B dense base; 256K ctx. Priority 4 — defer until smaller Gemma 4 (E2B/E4B) complete.",
+      "notes": "Gemma 4 31B dense base; 256K ctx. Priority 4 \u2014 defer until smaller Gemma 4 (E2B/E4B) complete.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -3555,7 +3555,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemma 4 31B dense instruct. Priority 4 — defer until smaller Gemma 4 (E2B/E4B) complete.",
+      "notes": "Gemma 4 31B dense instruct. Priority 4 \u2014 defer until smaller Gemma 4 (E2B/E4B) complete.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -3581,7 +3581,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemma 4 E2B base — multimodal (text/image/audio), 128K ctx; smallest Gemma 4 line.",
+      "notes": "Gemma 4 E2B base \u2014 multimodal (text/image/audio), 128K ctx; smallest Gemma 4 line.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -3633,7 +3633,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Gemma 4 E4B base — multimodal edge; 128K ctx.",
+      "notes": "Gemma 4 E4B base \u2014 multimodal edge; 128K ctx.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry-specialists.yaml"
@@ -3712,7 +3712,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "[discipline:biomedical] MedGemma 27B text — accept Health AI Developer Foundation ToU on HF (same gating flow as Gemma)",
+      "notes": "[discipline:biomedical] MedGemma 27B text \u2014 accept Health AI Developer Foundation ToU on HF (same gating flow as Gemma)",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -3870,7 +3870,7 @@
       "quant_levels": [],
       "parent_model": "Qwen/Qwen2.5-72B-Instruct",
       "method": "abliteration",
-      "notes": "lb=48.1 — actually scores *above* base model on leaderboard",
+      "notes": "lb=48.1 \u2014 actually scores *above* base model on leaderboard",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -3948,7 +3948,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "InternLM2.5 20B — Chinese ecosystem; realistic candidate for access restriction",
+      "notes": "InternLM2.5 20B \u2014 Chinese ecosystem; realistic candidate for access restriction",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -4001,7 +4001,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Embedding — 7B instruct; strong for local RAG",
+      "notes": "Embedding \u2014 7B instruct; strong for local RAG",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -4040,32 +4040,6 @@
         "manifest_present": false
       },
       "download_status": "complete",
-      "manifest": null
-    },
-    {
-      "id": "meta-llama/Llama-3.1-405B",
-      "hf_repo": "meta-llama/Llama-3.1-405B",
-      "tier": "A",
-      "drive": "d1",
-      "priority": 4,
-      "licence": "llama3.1",
-      "requires_auth": true,
-      "commit_sha_registry": "b906e4dc842aa489c962f9db26554dcfdde901fe",
-      "quant_levels": [],
-      "parent_model": null,
-      "method": null,
-      "notes": "Pre-trained base (no instruct) — foundation for fine-tunes; accept licence on HF",
-      "legacy": false,
-      "registry_sources": [
-        "model-archival/config/registry.yaml"
-      ],
-      "path_relative": "d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe",
-      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe",
-      "on_disk": {
-        "revision_dir_exists": false,
-        "manifest_present": false
-      },
-      "download_status": "pending",
       "manifest": null
     },
     {
@@ -4158,7 +4132,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Meta's open vision model — accept at huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct",
+      "notes": "Meta's open vision model \u2014 accept at huggingface.co/meta-llama/Llama-3.2-11B-Vision-Instruct",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -4263,7 +4237,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Meta's large open vision model — accept licence on HF",
+      "notes": "Meta's large open vision model \u2014 accept licence on HF",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -4305,32 +4279,6 @@
       "manifest": null
     },
     {
-      "id": "meta-llama/Llama-4-Maverick-17B-128E",
-      "hf_repo": "meta-llama/Llama-4-Maverick-17B-128E",
-      "tier": "A",
-      "drive": "d1",
-      "priority": 4,
-      "licence": "llama4",
-      "requires_auth": true,
-      "commit_sha_registry": "10751cb97a4d7c90f7ed89196b98eb8220cfa1c2",
-      "quant_levels": [],
-      "parent_model": null,
-      "method": null,
-      "notes": "Llama 4 Maverick base MoE (17B params, 128 experts); high-capability foundation model",
-      "legacy": false,
-      "registry_sources": [
-        "model-archival/config/registry.yaml"
-      ],
-      "path_relative": "d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2",
-      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2",
-      "on_disk": {
-        "revision_dir_exists": false,
-        "manifest_present": false
-      },
-      "download_status": "pending",
-      "manifest": null
-    },
-    {
       "id": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
       "hf_repo": "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
       "tier": "A",
@@ -4349,32 +4297,6 @@
       ],
       "path_relative": "d2/raw/meta-llama/Llama-4-Maverick-17B-128E-Instruct/main",
       "path_absolute": "/mnt/models/d2/raw/meta-llama/Llama-4-Maverick-17B-128E-Instruct/main",
-      "on_disk": {
-        "revision_dir_exists": false,
-        "manifest_present": false
-      },
-      "download_status": "pending",
-      "manifest": null
-    },
-    {
-      "id": "meta-llama/Llama-4-Scout-17B-16E",
-      "hf_repo": "meta-llama/Llama-4-Scout-17B-16E",
-      "tier": "A",
-      "drive": "d1",
-      "priority": 4,
-      "licence": "llama4",
-      "requires_auth": true,
-      "commit_sha_registry": null,
-      "quant_levels": [],
-      "parent_model": null,
-      "method": null,
-      "notes": "Llama 4 Scout base MoE (17B params, 16 experts); core pre-trained checkpoint for future fine-tunes",
-      "legacy": false,
-      "registry_sources": [
-        "model-archival/config/registry.yaml"
-      ],
-      "path_relative": "d1/raw/meta-llama/Llama-4-Scout-17B-16E/main",
-      "path_absolute": "/mnt/models/d1/raw/meta-llama/Llama-4-Scout-17B-16E/main",
       "on_disk": {
         "revision_dir_exists": false,
         "manifest_present": false
@@ -4526,7 +4448,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Very capable tiny model; 128K context — strong fallback when GPU is scarce",
+      "notes": "Very capable tiny model; 128K context \u2014 strong fallback when GPU is scarce",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -4553,7 +4475,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "3.8B compact instruct; 128K context — strong small CPU/GPU model",
+      "notes": "3.8B compact instruct; 128K context \u2014 strong small CPU/GPU model",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -4738,7 +4660,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "lb=46.5 — supersedes 2407; accept at huggingface.co/mistralai/Mistral-Large-Instruct-2411",
+      "notes": "lb=46.5 \u2014 supersedes 2407; accept at huggingface.co/mistralai/Mistral-Large-Instruct-2411",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -4764,7 +4686,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "24B Apache-2.0 — supersedes Mistral-7B as the practical open Mistral",
+      "notes": "24B Apache-2.0 \u2014 supersedes Mistral-7B as the practical open Mistral",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -4791,7 +4713,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "8x22B MoE — larger open MoE; capability type not fully covered elsewhere",
+      "notes": "8x22B MoE \u2014 larger open MoE; capability type not fully covered elsewhere",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -4817,7 +4739,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "8x7B MoE (~47B total) — flagship open MoE; runs well locally",
+      "notes": "8x7B MoE (~47B total) \u2014 flagship open MoE; runs well locally",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -5242,7 +5164,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority. drive d1 — aligned with .tmp partials on D1 after d5 space move (2026-03).",
+      "notes": "Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority. drive d1 \u2014 aligned with .tmp partials on D1 after d5 space move (2026-03).",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5456,7 +5378,7 @@
       ],
       "parent_model": "deepseek-ai/DeepSeek-R1-Distill-Llama-70B",
       "method": "abliteration",
-      "notes": "tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d3/.tmp/ — schedule on D3.",
+      "notes": "tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d3/.tmp/ \u2014 schedule on D3.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5543,7 +5465,7 @@
       ],
       "parent_model": "meta-llama/Llama-3.3-70B-Instruct",
       "method": "abliteration",
-      "notes": "tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d5/.tmp/ — schedule on D5.",
+      "notes": "tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d5/.tmp/ \u2014 schedule on D5.",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5599,7 +5521,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "10B Falcon3 instruct model — strong open chat baseline",
+      "notes": "10B Falcon3 instruct model \u2014 strong open chat baseline",
       "legacy": true,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5626,7 +5548,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF. drive d5 — LFS scratch under d5/.tmp after d1 tmp removed (2026-04).",
+      "notes": "TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF. drive d5 \u2014 LFS scratch under d5/.tmp after d1 tmp removed (2026-04).",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml"
@@ -5652,7 +5574,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "TII Falcon 180B instruct; drive d2 — retry after d1 ENOSPC (VM tight on d1).",
+      "notes": "TII Falcon 180B instruct; drive d2 \u2014 retry after d1 ENOSPC (VM tight on d1).",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5707,7 +5629,7 @@
       ],
       "parent_model": null,
       "method": null,
-      "notes": "671B — Q4_K_M only (~340 GB). drive d1 — LFS scratch under d1/.tmp after d3 tmp removed (2026-04).",
+      "notes": "671B \u2014 Q4_K_M only (~340 GB). drive d1 \u2014 LFS scratch under d1/.tmp after d3 tmp removed (2026-04).",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5736,7 +5658,7 @@
       ],
       "parent_model": null,
       "method": null,
-      "notes": "Compact Phi-4-mini GGUF; good fit for 8–16 GB machines",
+      "notes": "Compact Phi-4-mini GGUF; good fit for 8\u201316 GB machines",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5792,7 +5714,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "Space-efficient 4-bit Phi-4 variant — practical small chat model for limited hardware",
+      "notes": "Space-efficient 4-bit Phi-4 variant \u2014 practical small chat model for limited hardware",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",
@@ -5846,7 +5768,7 @@
       "quant_levels": [],
       "parent_model": null,
       "method": null,
-      "notes": "~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License). drive d1 — scratch/final tree on D1 after d5 space move (2026-03).",
+      "notes": "~500GB, 42 files; xAI Grok-2 LLM (Grok 2 Community License). drive d1 \u2014 scratch/final tree on D1 after d5 space move (2026-03).",
       "legacy": false,
       "registry_sources": [
         "model-archival/config/registry.yaml",

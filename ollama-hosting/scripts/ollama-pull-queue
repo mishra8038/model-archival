@@ -4,9 +4,16 @@
 #
 # Usage:
 #   export OLLAMA_HOST=127.0.0.1:11434
-#   ./ollama-pull-queue              # all pending, in queue order
-#   ./ollama-pull-queue --one        # single next pending model
-#   USE_TRICKLE=0 ./ollama-pull-queue --one
+#   ./ollama-pull-queue              # default: **one** next pending model (same as --one)
+#   ./ollama-pull-queue --all        # drain all pending in queue order (single runner; still one ollama pull at a time)
+#   ./ollama-pull-queue --one        # explicit single pull (same as no args)
+#   OLLAMA_PULL_QUEUE_DRAIN=1 ./ollama-pull-queue   # drain without --all (automation)
+#   USE_TRICKLE=0 ./ollama-pull-queue   # disable ~4 MiB/s download cap (not recommended on shared WAN)
+#
+# Download cap (registry / model blobs), separate from LAN sync:
+#   Default **~4 MB/s download cap**: **4096 KiB/s** (`trickle -d`, ≈ 4 MiB/s). **trickle must be installed** or the script exits
+#   (sudo apt install trickle). Override with THROTTLE_KBPS / THROTTLE_UPLOAD_KBPS.
+#   **ollama-sync.sh** / Supermicro→archive rsync is **uncapped** by default (OLLAMA_SYNC_BWLIMIT_KB=0) — different path.
 #   IGNORE_PULL_HISTORY=1 ./ollama-pull-queue   # walk TARGET_QUEUE_ORDERED.txt; ignore CSV completion (re-pull)
 #   CONTINUE_ON_FAIL=1 ./ollama-pull-queue      # keep going after a failed ollama pull
 #   OLLAMA_PULL_GROUP=uncensored ./ollama-pull-queue --one   # next pending tag in that classification only (registry mode)
@@ -42,6 +49,7 @@ registry_py() {
 }
 
 export OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
+# ~4 MiB/s down: trickle -d uses KiB/s (1024-based). 4096 KiB/s = 4 MiB/s (≈4.19 MB/s decimal). LAN rsync: ollama-sync.sh — uncapped by default.
 THROTTLE_KBPS="${THROTTLE_KBPS:-4096}"
 THROTTLE_UPLOAD_KBPS="${THROTTLE_UPLOAD_KBPS:-512}"
 IGNORE_PULL_HISTORY="${IGNORE_PULL_HISTORY:-}"
@@ -193,9 +201,36 @@ if ! flock -n 9; then
   exit 1
 fi
 
-ONE_MODE=0
-if [[ "${1:-}" == "--one" ]]; then
-  ONE_MODE=1
+if [[ "$USE_TRICKLE" != "0" && "$USE_TRICKLE" != "false" ]]; then
+  if ! command -v trickle >/dev/null 2>&1; then
+    log "ERROR: Ollama pull cap is ${THROTTLE_KBPS} KiB/s (~4 MiB/s) via trickle, but trickle is not in PATH."
+    log "       Install on the GPU host: sudo apt install trickle"
+    log "       Or disable the cap (not recommended on saturated links): USE_TRICKLE=0 ollama-pull-queue …"
+    log "       (Archival rsync stays uncapped by default — see ollama-sync.sh / OLLAMA_SYNC_BWLIMIT_KB.)"
+    exit 1
+  fi
+  log "Ollama pull bandwidth cap: ${THROTTLE_KBPS} KiB/s down (~4 MiB/s at default), ${THROTTLE_UPLOAD_KBPS} KiB/s up (trickle). USE_TRICKLE=0 to disable."
+fi
+
+# Default: one model per invocation (re-run script or timer for the next). --all / --drain / OLLAMA_PULL_QUEUE_DRAIN=1 drains.
+ONE_MODE=1
+for _arg in "$@"; do
+  case "$_arg" in
+    --one) ONE_MODE=1 ;;
+    --all|--drain) ONE_MODE=0 ;;
+    *)
+      log "ERROR: unknown argument: $_arg (expected --one, --all, or --drain)"
+      exit 2
+      ;;
+  esac
+done
+if [[ "${OLLAMA_PULL_QUEUE_DRAIN:-0}" == "1" || "${OLLAMA_PULL_QUEUE_DRAIN:-0}" == "true" ]]; then
+  ONE_MODE=0
+fi
+if [[ "$ONE_MODE" -eq 1 ]]; then
+  log "Mode: single pull per run (default). Use --all or OLLAMA_PULL_QUEUE_DRAIN=1 to drain entire pending queue."
+else
+  log "Mode: draining all pending models in queue order (one ollama pull at a time within this process)."
 fi
 
 if ! command -v ollama >/dev/null 2>&1; then

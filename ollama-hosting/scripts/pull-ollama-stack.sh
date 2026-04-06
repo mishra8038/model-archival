@@ -2,12 +2,26 @@
 # Run ON the Supermicro host (Ollama installed, `ollama serve` running).
 # Pulls Gemma 4 (Q4/Q8, P100-friendly) + recommended coding / reasoning models.
 # Order: smaller first. Idempotent: `ollama pull` reuses layers.
-# Prefer registry: ./scripts/ollama-pull-queue --one (uses ollama-hosting/registry/).
+# Prefer registry: ./scripts/ollama-pull-queue (default: one model per run; uses ollama-hosting/registry/).
 #
 set -u
 export OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
+# Match ollama-pull-queue: one pull at a time in this loop, ~4 MiB/s down via trickle.
+THROTTLE_KBPS="${THROTTLE_KBPS:-4096}"
+THROTTLE_UPLOAD_KBPS="${THROTTLE_UPLOAD_KBPS:-512}"
+USE_TRICKLE="${USE_TRICKLE:-1}"
 
 log() { printf '%s %s\n' "$(date -Iseconds)" "$*"; }
+
+run_pull() {
+  local m="$1"
+  if [[ "$USE_TRICKLE" != "0" && "$USE_TRICKLE" != "false" ]] && command -v trickle >/dev/null 2>&1; then
+    trickle -s -d "${THROTTLE_KBPS}" -u "${THROTTLE_UPLOAD_KBPS}" ollama pull "$m"
+  else
+    [[ "$USE_TRICKLE" != "0" && "$USE_TRICKLE" != "false" ]] && log "WARN: trickle not installed — unthrottled pull: $m"
+    ollama pull "$m"
+  fi
+}
 
 MODELS=(
   deepseek-coder:6.7b
@@ -37,11 +51,11 @@ main() {
     exit 1
   fi
   log "OLLAMA_HOST=$OLLAMA_HOST"
-  log "Starting pulls (${#MODELS[@]} models)…"
+  log "Starting pulls (${#MODELS[@]} models, sequential, ${THROTTLE_KBPS} KiB/s down if trickle)…"
   local ok=0 fail=0
   for m in "${MODELS[@]}"; do
     log ">>> pull $m"
-    if ollama pull "$m"; then
+    if run_pull "$m"; then
       log "OK   $m"
       ok=$((ok + 1))
     else

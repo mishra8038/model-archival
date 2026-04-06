@@ -59,6 +59,9 @@
 #   # Specialists whose registry drive: is d3 only (parallel with GDrive upload hitting d5):
 #   bash run.sh --all --registry config/registry-specialists.yaml --drive d3 --bandwidth-cap 2
 #
+#   # D1 narrow registry (3 incomplete models), 2 MB/s — use wrapper:
+#   bash scripts/run-d1-focused-incomplete.sh
+#
 #   # Tier A only, dry-run:
 #   bash run.sh --tier A --dry-run
 # =============================================================================

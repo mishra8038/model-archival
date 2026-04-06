@@ -13,7 +13,7 @@ class ModelEntry:
     id: str
     hf_repo: str
     tier: str                        # A | B | C | D | E | F | G
-    drive: str                       # d1 .. d5
+    drive: str                       # d1..d5, or e.g. d5_vllm (see drives.yaml)
     priority: int                    # 0=first (optional), 1=base, 2=small GGUF, 3=instruct, 4=middle quants (lower = sooner)
     licence: str
     requires_auth: bool

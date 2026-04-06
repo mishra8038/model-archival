@@ -51,7 +51,4 @@ model_ids_full:
   - Qwen/Qwen2.5-7B
   - Qwen/Qwen2.5-14B
   - google/gemma-3-27b-pt
-  - Qwen/Qwen2.5-32B
   - Qwen/Qwen2.5-72B
-  - deepseek-ai/DeepSeek-V3-Base
-  - Qwen/Qwen3-235B-A22B-Base

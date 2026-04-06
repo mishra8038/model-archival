@@ -1,12 +1,3 @@
-# Final archiver download queue (2026-04)
-# Criteria: all specialist registry models + tier D + tier C priority<=2 (small hostable quants) from main/legacy, plus near-term partial completes.
-#
-# Run:
-#   cd model-archival && uv run archiver --registry config/final_downloads.yaml download --all
-#
-# Regenerate this file + final_pending_registry.yaml + docs/MODEL-ARCHIVE-FINAL-STATUS.md:
-#   uv run python scripts/generate_final_archiver_artifacts.py --run-state /path/to/run_state.json
-
 models:
 - id: AI4Chem/ChemLLM-7B-Chat
   hf_repo: AI4Chem/ChemLLM-7B-Chat
@@ -54,13 +45,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Embedding — multilingual; state-of-the-art retrieval
-- id: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
-  hf_repo: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
-  tier: D
-  drive: d3
-  priority: 2
-  licence: apache-2.0
-  requires_auth: false
 - id: EleutherAI/llemma_7b
   hf_repo: EleutherAI/llemma_7b
   tier: G
@@ -81,16 +65,6 @@ models:
   commit_sha: null
   notes: '[discipline:legal][classification] Specialist legal instruct model from
     LLM_ARCHIVE_v2; small-first anchor.'
-- id: FINGU-AI/Chocolatine-Fusion-14B
-  hf_repo: FINGU-AI/Chocolatine-Fusion-14B
-  tier: D
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: 49b7b720ddd40ccdca303922037a4bb34b1ca33b
-  method: merge
-  notes: 14B fusion/merge chat model — uncensored-leaning; strong single-GPU option
 - id: FINGU-AI/RomboUltima-32B
   hf_repo: FINGU-AI/RomboUltima-32B
   tier: D
@@ -753,9 +727,9 @@ models:
   licence: MIT
   requires_auth: false
   commit_sha: null
-  notes: '[ollama:deepseek-r1:32b-class] [discipline:strategic_reasoning][game_theory]
-    Full-precision parent of tensorblock DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF;
-    archive for non-quant workflows.'
+  notes: '[ollama:deepseek-r1:32b-qwen-distill-q4_K_M] [discipline:strategic_reasoning][game_theory]
+    Official Ollama Q4 distill tag (not 32b-class). Full-precision parent of tensorblock
+    DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF; archive for non-quant workflows.'
 - id: deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
   hf_repo: deepseek-ai/DeepSeek-R1-Distill-Qwen-7B
   tier: G
@@ -1158,15 +1132,6 @@ models:
   parent_model: nvidia/Llama-3.1-Nemotron-70B-Instruct
   method: LoRA abliteration
   notes: Open LLM Leaderboard 2 lb~40.9; lorablated Nemotron-70B class
-- id: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  hf_repo: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  tier: D
-  drive: d1
-  priority: 4
-  licence: llama3.1
-  requires_auth: true
-  commit_sha: null
-  notes: Nemotron Ultra 253B; Llama-3.1-based flagship; lowest priority
 - id: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
   hf_repo: nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16
   tier: A
@@ -1367,19 +1332,6 @@ models:
   - Q4_K_M
   notes: '[ollama:deepseek-coder:33b-instruct-q4_K_M] GGUF Q4_K_M-class shards for
     DeepSeek Coder 33B instruct.'
-- id: unsloth/DeepSeek-V3-GGUF
-  hf_repo: unsloth/DeepSeek-V3-GGUF
-  tier: C
-  drive: d1
-  priority: 2
-  licence: MIT
-  requires_auth: false
-  commit_sha: null
-  legacy: true
-  quant_levels:
-  - Q4_K_M
-  notes: 671B Q4_K_M GGUF (~340 GB full tree) — excluded from default download; partials
-    may remain under d1/.tmp until reclaimed or resumed via legacy + --include-legacy.
 - id: unsloth/Phi-4-mini-instruct-GGUF
   hf_repo: unsloth/Phi-4-mini-instruct-GGUF
   tier: C

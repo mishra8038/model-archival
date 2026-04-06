@@ -27,12 +27,19 @@
     "size_bytes": 8988112209,
     "tag": "14b-qwen-distill-q4_K_M"
   },
-  "deepseek-r1:32b-class": {
-    "error": "manifest unknown (check tag on ollama.com/library)",
-    "fetched_at_utc": "2026-04-03T22:40:01Z",
+  "deepseek-r1:32b-qwen-distill-q4_K_M": {
+    "error": null,
+    "fetched_at_utc": "2026-04-05T12:00:00Z",
     "model": "deepseek-r1",
-    "size_bytes": null,
-    "tag": "32b-class"
+    "size_bytes": 19851337321,
+    "tag": "32b-qwen-distill-q4_K_M"
+  },
+  "alibayram/medgemma:4b": {
+    "error": null,
+    "fetched_at_utc": "2026-04-05T12:00:00Z",
+    "model": "alibayram/medgemma",
+    "size_bytes": 2489895125,
+    "tag": "4b"
   },
   "deepseek-r1:8b-0528-qwen3-q4_K_M": {
     "error": null,
@@ -133,8 +140,8 @@
     "tag": "7b"
   },
   "starcoder2:15b-instruct-q4_K_M": {
-    "error": "manifest unknown (check tag on ollama.com/library)",
-    "fetched_at_utc": "2026-04-03T22:40:01Z",
+    "error": "registry.ollama.ai returns 404 for library/starcoder2 manifest 15b-instruct-q4_K_M (2026-04-05); use HF bartowski GGUF or base starcoder2:15b",
+    "fetched_at_utc": "2026-04-05T12:00:00Z",
     "model": "starcoder2",
     "size_bytes": null,
     "tag": "15b-instruct-q4_K_M"

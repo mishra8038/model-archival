@@ -52,4 +52,4 @@ ssh -o BatchMode=yes "$REMOTE" "chmod +x ${ROOT}/scripts/"* 2>/dev/null || true
 
 echo "Deployed. On Supermicro:" >&2
 echo "  export OLLAMA_HOST=127.0.0.1:11434" >&2
-echo "  ${ROOT}/scripts/ollama-pull-queue --one" >&2
+echo "  ${ROOT}/scripts/ollama-pull-queue          # one model per run (default); --all to drain" >&2

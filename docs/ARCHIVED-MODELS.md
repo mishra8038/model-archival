@@ -392,7 +392,6 @@ Expected layout matches `ModelEntry.model_dir` in the archiver: `<models_mount>/
 | `internlm/internlm2_5-20b-chat` | A | `/mnt/models/d2/raw/internlm/internlm2_5-20b-chat/main` | pending | no | no |
 | `intfloat/e5-large-v2` | B | `/mnt/models/d3/raw/intfloat/e5-large-v2/main` | pending | no | no |
 | `intfloat/e5-mistral-7b-instruct` | B | `/mnt/models/d3/raw/intfloat/e5-mistral-7b-instruct/main` | complete | no | no |
-| `meta-llama/Llama-3.1-405B` | A | `/mnt/models/d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe` | pending | no | no |
 | `meta-llama/Llama-3.1-405B-Instruct` | A | `/mnt/models/d1/raw/meta-llama/Llama-3.1-405B-Instruct/main` | pending | no | no |
 | `meta-llama/Llama-3.1-70B-Instruct` | A | `/mnt/models/d3/raw/meta-llama/Llama-3.1-70B-Instruct/1605565b47bb9346c5515c34102e054115b4f98b` | complete | no | no |
 | `meta-llama/Llama-3.1-8B-Instruct` | A | `/mnt/models/d2/raw/meta-llama/Llama-3.1-8B-Instruct/0e9e39f249a16976918f6564b8830bc894c89659` | complete | no | no |
@@ -402,9 +401,8 @@ Expected layout matches `ModelEntry.model_dir` in the archiver: `<models_mount>/
 | `meta-llama/Llama-3.2-3B-Instruct` | A | `/mnt/models/d2/raw/meta-llama/Llama-3.2-3B-Instruct/0cb88a4f764b7a12671c53f0838cd831a0843b95` | complete | no | no |
 | `meta-llama/Llama-3.2-90B-Vision-Instruct` | F | `/mnt/models/d5/raw/meta-llama/Llama-3.2-90B-Vision-Instruct/main` | pending | no | no |
 | `meta-llama/Llama-3.3-70B-Instruct` | A | `/mnt/models/d1/raw/meta-llama/Llama-3.3-70B-Instruct/6f6073b423013f6a7d4d9f39144961bfbfbc386b` | pending | no | no |
-| `meta-llama/Llama-4-Maverick-17B-128E` | A | `/mnt/models/d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2` | pending | no | no |
 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct` | A | `/mnt/models/d2/raw/meta-llama/Llama-4-Maverick-17B-128E-Instruct/main` | pending | no | no |
-| `meta-llama/Llama-4-Scout-17B-16E` | A | `/mnt/models/d1/raw/meta-llama/Llama-4-Scout-17B-16E/main` | pending | no | no |
+| `meta-llama/Llama-4-Scout-17B-16E` | A | — | failed | no | no |
 | `meta-llama/Llama-4-Scout-17B-16E-Instruct` | A | `/mnt/models/d2/raw/meta-llama/Llama-4-Scout-17B-16E-Instruct/main` | pending | no | no |
 | `meta-llama/Llama-Guard-4-12B` | E | `/mnt/models/d3/raw/meta-llama/Llama-Guard-4-12B/87acb4b94e930c3d679e6e7ee9d57e2feab9ea71` | complete | no | no |
 | `meta-llama/Llama-Prompt-Guard-2-22M` | E | `/mnt/models/d3/raw/meta-llama/Llama-Prompt-Guard-2-22M/11614a155199674a0a95e6602d6ab0417b790ed0` | complete | no | no |
@@ -583,7 +581,6 @@ Sorted **unique** `id` values (**181** models):
 - `internlm/internlm2_5-20b-chat`
 - `intfloat/e5-large-v2`
 - `intfloat/e5-mistral-7b-instruct`
-- `meta-llama/Llama-3.1-405B`
 - `meta-llama/Llama-3.1-405B-Instruct`
 - `meta-llama/Llama-3.1-70B-Instruct`
 - `meta-llama/Llama-3.1-8B-Instruct`
@@ -593,7 +590,6 @@ Sorted **unique** `id` values (**181** models):
 - `meta-llama/Llama-3.2-3B-Instruct`
 - `meta-llama/Llama-3.2-90B-Vision-Instruct`
 - `meta-llama/Llama-3.3-70B-Instruct`
-- `meta-llama/Llama-4-Maverick-17B-128E`
 - `meta-llama/Llama-4-Maverick-17B-128E-Instruct`
 - `meta-llama/Llama-4-Scout-17B-16E`
 - `meta-llama/Llama-4-Scout-17B-16E-Instruct`

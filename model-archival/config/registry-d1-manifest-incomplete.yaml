@@ -1,0 +1,33 @@
+models:
+- id: IntervitensInc/internlm2_5-20b-llamafied
+  hf_repo: IntervitensInc/internlm2_5-20b-llamafied
+  tier: A
+  drive: d1
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Top ~20B pretrained model on HF Open LLM leaderboard; llamafied InternLM2.5
+    base
+  legacy: false
+- id: meta-llama/Llama-3.3-70B-Instruct
+  hf_repo: meta-llama/Llama-3.3-70B-Instruct
+  tier: A
+  drive: d1
+  priority: 1
+  licence: llama3.3
+  requires_auth: true
+  commit_sha: null
+  notes: 'Resume partial d1 tree; gated (HF_TOKEN + Meta licence). [d1-completion-queue]'
+  legacy: false
+- id: deepseek-ai/DeepSeek-V3-0324
+  hf_repo: deepseek-ai/DeepSeek-V3-0324
+  tier: A
+  drive: d1
+  priority: 1
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  legacy: false
+  notes: March 2024 checkpoint; on main registry for D1 completion. Use focused run
+    with --no-max-model-download (~641 GiB HF). [d1-completion-queue]

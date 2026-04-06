@@ -1,7 +1,7 @@
 # One Ollama tag per line; # and blank lines ignored.
 # Order: smaller / base stack first, then large Gemma/coder, MoE, uncensored, 70B-class.
 # Canonical copy lives in this directory (ollama-hosting/registry/). supermicro-rig/models/ symlinks here.
-# starcoder2:15b — Ollama library tag (instruct-q4_K_M variant does not exist on registry).
+# starcoder2:15b — Ollama library; `starcoder2:15b-instruct-q4_K_M` is not on registry.ollama.ai (404); keep HF/bartowski GGUF for instruct.
 # Sizes: docs/TARGET_MODEL_LIST.md — verify on https://ollama.com/library before pull.
 
 deepseek-coder:6.7b
@@ -42,19 +42,31 @@ llama3.2:3b
 
 # From SPECIALIST-HF-PENDING-OLLAMA (≤128 GiB artifact, leaderboard-tier only).
 # Group order: small / hostable → uncensored → specialist / larger.
+# Embeddings (MTEB-useful / RAG): bge-m3 + library defaults below (sizes ≈ manifest sum).
 bge-m3
+granite-embedding
+nomic-embed-text
+embeddinggemma
+snowflake-arctic-embed
+mxbai-embed-large
+bge-large
+qwen3-embedding
 qwen3.5:4b-q4_K_M
+qwen3.5:4b-bf16
 gemma3:4b-it-q4_K_M
+alibayram/medgemma:4b
 mathstral:7b
 deepseek-r1:8b-llama-distill-q4_K_M
 deepseek-r1:7b-qwen-distill-q4_K_M
 qwen2.5vl:7b
 qwen3.5:9b-q4_K_M
+qwen3.5:9b-bf16
 phi4:14b-q4_K_M
 closex/neuraldaredevil-8b-abliterated:latest
 mistral-small3.2:24b-instruct-2506-q4_K_M
 gemma3:27b-it-q4_K_M
 qwen3.5:27b-q4_K_M
+qwen3.5:27b-bf16
 deepseek-r1:32b-qwen-distill-q4_K_M
 qwq:32b-q4_K_M
 qwen2.5vl:32b-q4_K_M

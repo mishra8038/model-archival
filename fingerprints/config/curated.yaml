@@ -223,19 +223,6 @@ models:
     registry_date: '2026-03-05'
     arch: gguf
 
-  - hf_repo: unsloth/DeepSeek-V3-GGUF
-    family: deepseek
-    tier: C
-    importance: high
-    licence: mit
-    requires_auth: false
-    params_b: 671.0
-    merged: false
-    hf_downloads: 0
-    hf_likes: 0
-    registry_date: '2026-03-05'
-    arch: gguf
-
   - hf_repo: Qwen/Qwen3-32B-GGUF
     family: qwen
     tier: C

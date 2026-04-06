@@ -228,7 +228,7 @@ Linux reports in GiB (2³⁰ bytes), and ext4 reserves ~1% for root. Realistic u
 
 | Label | Labelled | Raw GiB (lsblk) | Usable after ext4 | Assigned Role |
 |-------|----------|-----------------|-------------------|---------------|
-| D1 | 6 TB | ~5,400–5,590 GiB | **~5.3 TB** | Raw giants: DeepSeek-V3, DeepSeek-R1, Llama 405B, DeepSeek-Coder-V2 |
+| D1 | 6 TB | ~5,400–5,590 GiB | **~5.3 TB** | Raw giants: DeepSeek-V3, DeepSeek-R1, Llama 3.1 405B Instruct (if queued), DeepSeek-Coder-V2 |
 | D2 | 3 TB | ~2,700–2,800 GiB | **~2.6 TB** | Raw mid-size: Tier A remainder + Tier B code + **Tier D uncensored raw BF16** |
 | D3 | 3 TB | ~2,700–2,800 GiB | **~2.6 TB** | Tier C (all GGUF) + Tier D GGUF |
 | D5 | 1 TB | ~850–960 GiB | **~0.87 TB** | Primary archive/ (registry, checksums, manifests), logs |
@@ -323,7 +323,7 @@ Usable capacity assumed: **~870 GB** (conservative, post-format on a 1 TB drive)
 
 ```
 /mnt/models/d5/
-├── archive/           ← canonical copy; replicated to d1–d3/archive/ after every download
+├── archive/           ← canonical on d3; replicated to d1/d2/d5 archive/ after every download
 │   ├── registry.yaml
 │   ├── checksums/
 │   │   └── global_index.jsonl
@@ -447,9 +447,8 @@ Five drives, unified namespace under `/mnt/models/`. Each drive mounted at its o
 ```
 
 **Design decisions:**
-- `archive/` is replicated to every drive after each successful model download. It contains only `registry.yaml`, `checksums/global_index.jsonl`, and per-model `manifest.json` files — total size is well under 1 GB even for the full archive. Any single surviving drive gives you the complete verification record.
-- D5 holds the canonical (primary) `archive/`; all other drives hold replicas. The archiver writes to D5 first, then syncs to D1–D4 as a post-download step.
-- All partial/in-progress downloads land on D5 (`.tmp/`), then are atomically moved to the target drive on successful verification. No partial files ever exist on D1–D4.
+- `archive/` on **D3** (infra) is the **canonical** copy; after each successful model download it is replicated to **`d1/archive/`**, **`d2/archive/`**, and **`d5/archive/`** via `sync_archive()`. It contains `checksums/global_index.jsonl`, per-model `manifest.json` paths under `manifests/`, and related metadata — total size is well under 1 GB. Any single surviving replica drive still holds the verification record.
+- **D3** holds `run_state.json`, `STATUS.md`, `logs/`, and primary `archive/`; partial LFS downloads use **`d1/.tmp`** then **`d3/.tmp`** (never D5 for scratch unless overflow models target d5).
 - Directory key is the HF commit SHA — bit-reproducible, never a floating `main`.
 - Each drive's top-level content directory (`raw/`, `quantized/`, `uncensored/`) is self-contained — rsync or backup of a single tier touches only one drive.
 - Symlink `<drive>/raw/<org>/<model>/latest` → `<commit-sha>` for convenience; never used for verification.
@@ -588,7 +587,7 @@ When running in a TTY, `rich` renders a **live multi-panel layout** refreshed ev
 └─────────────────────────────────────────────────────────────────────────────┘
 ┌─ Drive Usage ────────────────────────────────────┐ ┌─ Queue (next 5) ──────┐
 │  D1  [████████████░░░░░░░░]  3.4/6.0 TB          │ │  1. DS-R1 (D1)        │
-│  D2  [████████░░░░░░░░░░░░]  1.5/3.0 TB          │ │  2. Llama-405B (D1)   │
+│  D2  [████████░░░░░░░░░░░░]  1.5/3.0 TB          │ │  2. Llama-405B-Inst (D1) │
 │  D3  [████░░░░░░░░░░░░░░░░]  0.7/3.0 TB          │ │  3. Qwen2.5-32B (D2)  │
 │  D4  [███░░░░░░░░░░░░░░░░░]  0.6/2.0 TB          │ │  4. Gemma3-27B (D2)   │
 │  D5  [░░░░░░░░░░░░░░░░░░░░]  0.05/1.0 TB         │ │  5. Codestral (D2)    │

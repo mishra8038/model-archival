@@ -40,7 +40,8 @@ def default_group_for_tag(tag: str) -> str:
       moe_instruct  Censored MoE instruct (e.g. Mixtral 8x7B instruct).
       instruct_70b  Dense ~70B class instruct (Llama 3.x 70B, Qwen2.5 72B, Nemotron 70B).
       qwen3         Qwen3 library line (tags starting with qwen3:, not qwen3.5).
-      embedding     bge-m3.
+      embedding     bge-m3, nomic-embed-text, mxbai-embed-large, snowflake-arctic-embed,
+                    bge-large, embeddinggemma, granite-embedding, qwen3-embedding.
       vlm           Qwen2.5-VL.
       specialist    Frontier / multimodal Qwen3.5, Mathstral, Phi-4, Mistral Small 3.2, default bucket.
     """
@@ -52,7 +53,16 @@ def default_group_for_tag(tag: str) -> str:
         or t.startswith("dolphin-")
     ):
         return "uncensored"
-    if t.startswith("bge-m3"):
+    if (
+        t.startswith("bge-m3")
+        or t.startswith("bge-large")
+        or t.startswith("nomic-embed")
+        or t.startswith("mxbai-embed")
+        or t.startswith("snowflake-arctic-embed")
+        or t.startswith("embeddinggemma")
+        or t.startswith("granite-embedding")
+        or t.startswith("qwen3-embedding")
+    ):
         return "embedding"
     if "qwen2.5vl" in tag or "qwen2.5-vl" in t:
         return "vlm"

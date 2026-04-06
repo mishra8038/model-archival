@@ -4,10 +4,12 @@
 #
 # Policy (additive / archive-safe):
 #   - New and updated blobs from the source cache are copied to the destination.
-#   - **Completed models only:** Ollama in-progress shards (`models/blobs/*partial*`) are excluded
-#     from rsync by default (OLLAMA_SYNC_INCLUDE_PARTIALS=1 to override — not recommended).
-#   - After each VM sync, optional maintenance on the archival VM removes stray *partial* blobs and
-#     `.rsync-partial` dirs on **all** cycle roots, then checks manifest↔blob integrity (OLLAMA_SYNC_VM_MAINTAIN=0 to skip).
+#   - **Partials:** By default rsync **excludes** Ollama in-progress shards (`models/blobs/*partial*`) and
+#     `.rsync-partial/`. Set **OLLAMA_SYNC_INCLUDE_PARTIALS=1** to mirror the full Supermicro cache so the
+#     archive VM can **resume** pulls (OLLAMA_HOME = mirror root); post-sync maintain then uses
+#     **--keep-ollama-partials** (see docs/OLLAMA-RESUME-ON-ARCHIVE-VM.md).
+#   - After each VM sync, optional maintenance on the archival VM removes stray *partial* blobs (unless keep flag)
+#     and `.rsync-partial` dirs on **all** cycle roots, then checks manifest↔blob integrity (OLLAMA_SYNC_VM_MAINTAIN=0 to skip).
 #   - Files already at the destination that no longer exist in the source Ollama cache are NEVER
 #     removed. Re-runs are safe after you delete models on supermicro.
 #   Implemented by rsync without any --delete* options; RSYNC_EXTRA cannot add them.
@@ -43,7 +45,10 @@
 #   RSYNC_EXTRA           extra rsync args (e.g. --dry-run); delete/remove flags are stripped
 #   OLLAMA_SYNC_BWLIMIT_KB  rsync --bwlimit in KiB/s (default 0 = unlimited on LAN). Cap only if needed
 #                             (Ollama *downloads* are throttled separately via pull-queue / trickle, not this script).
-#   OLLAMA_SYNC_INCLUDE_PARTIALS  if 1, sync Ollama *partial* blob files (default 0 — completed only)
+#   OLLAMA_SYNC_INCLUDE_PARTIALS  if 1, sync Ollama *partial* blob files + .rsync-partial (default 0).
+#                                   After sync, VM maintain keeps those partials (--keep-ollama-partials) so
+#                                   Ollama on the archive VM can resume pulls (see docs/OLLAMA-RESUME-ON-ARCHIVE-VM.md).
+#   OLLAMA_MAINTAIN_KEEP_PARTIALS if 1, pass --keep-ollama-partials to VM maintain even when partials were not synced.
 #   OLLAMA_SYNC_VM_MAINTAIN      if not 0, after VM sync run partial cleanup + integrity on all cycle roots (default 1)
 #   OLLAMA_SYNC_UPDATE_INVENTORY  if not 0, after a successful sync run inventory refresh from REPO (non-fatal).
 #     vm mode: SSH to ARCHIVAL_VM. local mode: scan LOCAL_DEST with disk label OLLAMA_VM_LOCAL_DISK_LABEL (default: local).
@@ -75,6 +80,8 @@ fi
 if [[ "${OLLAMA_SYNC_INCLUDE_PARTIALS:-0}" != "1" ]]; then
   RSYNC_BASE+=(--exclude='models/blobs/*partial*' --exclude='.rsync-partial/')
   echo "ollama-sync: excluding incomplete Ollama blobs (models/blobs/*partial*) and .rsync-partial/" >&2
+else
+  echo "ollama-sync: including Ollama *partial* blobs and .rsync-partial/ (mirror for resume on archive VM)" >&2
 fi
 
 if ! command -v rsync >/dev/null 2>&1 || ! command -v ssh >/dev/null 2>&1; then
@@ -271,8 +278,13 @@ if [[ "${OLLAMA_SYNC_VM_MAINTAIN:-1}" != "0" ]] && [[ "$SYNC_DEST" == "vm" ]] \
   mapfile -t _maint_roots < <(python3 "$REPO/scripts/ollama_archival_rotation.py" print-archive-roots \
     ${ARCHIVAL_VM_SITE_CYCLE:+--cycle "$ARCHIVAL_VM_SITE_CYCLE"})
   if [[ "${#_maint_roots[@]}" -gt 0 ]]; then
+    _maint_py_args=()
+    if [[ "${OLLAMA_SYNC_INCLUDE_PARTIALS:-0}" == "1" ]] || [[ "${OLLAMA_MAINTAIN_KEEP_PARTIALS:-0}" == "1" ]]; then
+      _maint_py_args+=(--keep-ollama-partials)
+      echo "ollama-sync: VM maintain preserves Ollama *partial* blobs (resume-safe)" >&2
+    fi
     echo "ollama-sync: archival VM maintain (${#_maint_roots[@]} roots): partial cleanup + integrity check" >&2
-    if ! cat "$REPO/scripts/ollama_archive_vm_maintain.py" | "${vm_ssh[@]}" "$ARCHIVAL_VM" python3 - "${_maint_roots[@]}"; then
+    if ! cat "$REPO/scripts/ollama_archive_vm_maintain.py" | "${vm_ssh[@]}" "$ARCHIVAL_VM" python3 - "${_maint_py_args[@]}" "${_maint_roots[@]}"; then
       echo "ollama-sync: warning: archival VM maintain exited non-zero" >&2
     fi
   fi

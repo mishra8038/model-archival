@@ -28,11 +28,20 @@ def iter_target_files(root: Path, min_size_bytes: int) -> Iterable[Path]:
                 yield p
 
 
-def ensure_par2_available() -> None:
-    if shutil.which("par2") is None:
-        raise SystemExit(
-            "par2 binary not found in PATH. Install par2cmdline (e.g. pacman -S par2cmdline)."
-        )
+def _par2_exe() -> str:
+    w = shutil.which("par2")
+    if w:
+        return w
+    local = Path.home() / ".local/bin/par2"
+    if local.is_file() and os.access(local, os.X_OK):
+        return str(local)
+    raise SystemExit(
+        "par2 binary not found in PATH or ~/.local/bin. Install par2cmdline (e.g. pacman -S par2cmdline)."
+    )
+
+
+def ensure_par2_available() -> str:
+    return _par2_exe()
 
 
 def build_parity(
@@ -41,7 +50,8 @@ def build_parity(
     redundancy_pct: int,
     min_size_bytes: int,
 ) -> None:
-    ensure_par2_available()
+    par2_exe = ensure_par2_available()
+    model_path = model_path.resolve()
     files = list(iter_target_files(model_path, min_size_bytes))
     if not files:
         print(f"No files above threshold under {model_path}")
@@ -58,21 +68,22 @@ def build_parity(
 
     parity_dir.mkdir(parents=True, exist_ok=True)
     base_name = model_path.name
-    parity_base = parity_dir / base_name
-
+    parity_out = (parity_dir / base_name).resolve()
+    rel_inputs = [str(p.resolve().relative_to(model_path)) for p in files]
     cmd: List[str] = [
-        "par2",
-        "create",
+        par2_exe,
+        "c",
+        f"-B{model_path}",
         f"-r{redundancy_pct}",
-        str(parity_base),
+        str(parity_out),
+        *rel_inputs,
     ]
-    cmd.extend(str(p) for p in files)
     print(f"Running: {' '.join(cmd)}")
-    subprocess.check_call(cmd)
+    subprocess.check_call(cmd, cwd=str(model_path))
 
 
 def verify_parity(model_path: Path, parity_root: Path | None) -> int:
-    ensure_par2_available()
+    par2_exe = ensure_par2_available()
     if parity_root is None:
         parity_dir = model_path / ".parity"
     else:
@@ -92,13 +103,13 @@ def verify_parity(model_path: Path, parity_root: Path | None) -> int:
         print(f"No main parity file at {main_par}")
         return 1
 
-    cmd = ["par2", "verify", str(main_par)]
+    cmd = [par2_exe, "verify", str(main_par)]
     print(f"Running: {' '.join(cmd)}")
-    return subprocess.call(cmd)
+    return subprocess.call(cmd, cwd=str(Path(model_path).resolve()))
 
 
 def repair_from_parity(model_path: Path, parity_root: Path | None) -> int:
-    ensure_par2_available()
+    par2_exe = ensure_par2_available()
     if parity_root is None:
         parity_dir = model_path / ".parity"
     else:
@@ -118,9 +129,9 @@ def repair_from_parity(model_path: Path, parity_root: Path | None) -> int:
         print(f"No main parity file at {main_par}")
         return 1
 
-    cmd = ["par2", "repair", str(main_par)]
+    cmd = [par2_exe, "repair", str(main_par)]
     print(f"Running: {' '.join(cmd)}")
-    return subprocess.call(cmd)
+    return subprocess.call(cmd, cwd=str(Path(model_path).resolve()))
 
 
 def cmd_create(args: argparse.Namespace) -> None:

@@ -10,11 +10,32 @@
 
 ---
 
+## 2026-04-06 — VM: Graphcore on D1 (move + D5 `graphcore-*` into tree)
+
+- **`x@192.168.8.65`:** moved **`/mnt/models/d5/graphcore`** → **`/mnt/models/d1/graphcore`** (~**47 GiB**, cross-fs `mv`). User then merged **`d5/graphcore-archive`**, **`d5/graphcore-downloads`**, **`d5/graphcore-projects`** into **`/mnt/models/d1/graphcore/`** as **`graphcore-archive/`**, **`graphcore-downloads/`**, **`graphcore-projects/`**.
+- **Docs:** **`docs/remote/REMOTE_ACTIVITY_LOG.192.168.8.65.md`**; manifest scope **`model-archival/reports/MODEL-DISK-MANIFEST-2026-04-05.md`** (`d1/graphcore` excluded from model TSV). **GDrive audit logs:** `gdrive-archival/logs/GDRIVE-REGISTRY-UPLOAD-STATUS.md`, `gdrive-archival/logs/registry-uploaded-models.md`, `gdrive-archival/logs/registry-uploaded-models.json` — **`d5/graphcore*`** path prefixes rewritten to **`d1/graphcore/...`** plus layout notes where applicable.
+
+## 2026-04-05 — vLLM immediate queue (>21B, <120 GiB, focused)
+
+- **`vllm-hosting/config/vllm-immediate-targets.yaml`** — **16** causal HF repos: **>21B** total params, **<120 GiB** each, roles **`general` / `specialist` / `uncensored`**. Generator: **`vllm-hosting/scripts/_generate_vllm_immediate_targets.py`** (~**948 GiB** summed). **`vllm_archive_pull_one.py`** defaults to this manifest; wide catalog: **`--manifest .../vllm-archive-manifest.yaml`**.
+- **`model-archival/config/registry-vllm-immediate.yaml`** — same repos for **`archiver download --registry`** (manifest+SHA parity). **`vllm-hosting/docs/VLLM-ARCHIVE.md`** + **`README`**: archiver vs **`huggingface-cli`** guidance.
+
+## 2026-04-05 — Specialists: science + management / finance
+
+- **`registry-specialists.yaml` + vLLM generator:** **Science** — **`allenai/OLMo-2-1124-7B-Instruct`**, **`allenai/scibert_scivocab_uncased`**, **`m3rg-iitd/matscibert`**, **`nvidia/OpenMath-Nemotron-{1.5B,7B}`** (CC-BY-4.0 in notes), **`TIGER-Lab/MAmmoTH2-8B`**, **`Snowflake/snowflake-arctic-embed-l-v2.0`**, **`HuggingFaceTB/fineweb-edu-classifier`**. **Management / finance** — **`ibm-granite/granite-3.3-8b-instruct`**, **`AdaptLLM/finance-chat`** (`licence: llama2`), **`ProsusAI/finbert`**. Regenerated **`vllm-hosting/config/vllm-archive-manifest.yaml`**.
+
+## 2026-04-05 — Specialists: chemistry / math / law (registry + vLLM manifest)
+
+- **`model-archival/config/registry-specialists.yaml`:** Added **legal** encoders **`nlpaueb/legal-bert-{base,small}-uncased`**, **`pile-of-law/legalbert-large-1.7M-2`** (PoL NC-SA terms in notes). **Math:** **`Qwen/Qwen2.5-Math-1.5B-Instruct`**, **`Qwen/Qwen2-Math-7B-Instruct`**, **`AI-MO/NuminaMath-7B-{TIR,CoT}`**, **`qingy2019/Qwen2.5-Math-14B-Instruct`**, **`meta-math/MetaMath-Mistral-7B`**, **`WizardLMTeam/WizardMath-7B-V1.1`** (`licence: other` — verify card). **Chemistry:** **`language-plus-molecules/molt5-base-smiles2caption-LPM24`**, **`DeepChem/ChemBERTa-77M-MLM`**, **`Derify/ModChemBERT-MLM-DAPT-TAFT`**.
+- **`vllm-hosting/scripts/_generate_vllm_manifest.py`** + regenerated **`vllm-hosting/config/vllm-archive-manifest.yaml`** (encoder/MolT5 rows noted as non-causal where relevant).
+
 ## 2026-04-05 — vLLM-oriented HF archive (`d5/vllm`, replaces Ollama pull intent)
 
 - **New tree:** **`vllm-hosting/`** — **`config/vllm-archive-manifest.yaml`** (**57** deduped HF repos, **`~2827 GiB`** summed estimate, disclaimer in YAML), **`config/env-archive-vm-vllm.sh`** (`HF_HOME` under **`/mnt/models/d5/vllm`**, prepends **`$VLLM_ARCHIVE_ROOT/venv/bin`** when **`huggingface-cli`** exists), **`scripts/vllm-archive-setup-dirs.sh`**, **`scripts/vllm-archive-pull-one.sh`**, **`scripts/vllm_archive_pull_one.py`** (queue + lock + **`state/completed_repos.txt`**), **`scripts/_generate_vllm_manifest.py`** (regenerate manifest). **Docs:** **`vllm-hosting/docs/VLLM-ARCHIVE.md`**, **`vllm-hosting/README.md`**. **Ollama doc pointer:** **`ollama-hosting/docs/TARGET_MODEL_LIST.md`** header.
 - **Archive VM (`192.168.8.65`):** **`/mnt/models/d5/vllm`** layout; **`vllm-hosting/`** is **in the monorepo** — after **`git pull`** at **`/home/x/dev/model-archival`**, use **`./vllm-hosting/...`** (not a separate rsync-only tree). **`trickle`** may be missing; use **`USE_TRICKLE=0`** until capped pulls. **`MODEL_ARCHIVAL_UV_ROOT=/home/x/dev/model-archival/model-archiver`** for **`uv run` + PyYAML**. **D5** may be too small for the full manifest — use subset or **`VLLM_ARCHIVE_ROOT`** on **D2**.
 - **When to pull:** operator runs **`source …/env-archive-vm-vllm.sh`** then **`./vllm-hosting/scripts/vllm-archive-pull-one.sh`** (default **2 MiB/s** via **`THROTTLE_KBPS=2048`** + **`trickle`**).
+- **2026-04-05 (later):** Manifest **schema v2** — **`max_approx_disk_gib_per_model: 120`**; **`policy.excluded_over_limit`** lists former **>120 GiB** repos (70B class, Gemma‑4‑31B, 72B VL, Qwen3.5‑122B, dolphin‑72B, etc.). Added **`target_category`**: **`specialist`** (e.g. R1‑0528‑Qwen3‑8B, OlympicCoder 7B/32B, gte‑Qwen2 / e5‑mistral / bge‑en‑icl, deepseek‑math / Qwen2.5‑Math‑7B, TechxGenus starcoder2‑15b‑instruct, Llama‑3.2‑11B‑Vision) and **`uncensored`** (huihui R1‑Qwen‑32B abliterated, Mistral‑Small‑24B abliterated, Qwen2.5‑14B abliterated v2, RomboUltima‑32B). Regenerate: **`uv run --directory model-archival python ../vllm-hosting/scripts/_generate_vllm_manifest.py`**.
+- **vLLM manifest vs archiver:** **`model-archival/scripts/vllm_manifest_vs_archiver.py`** — merged registry + **`run_state.json`** + on-disk **`_check_manifest_complete`** (or unregistered drive scan). On archive VM (**61** manifest repos, snapshot): **34** verified paths. **`--out-md`** → **`vllm-hosting/reports/VLLM-VS-ARCHIVER.md`** (ensure **`vllm-hosting/reports/`** exists before **`scp`** from VM). **`--out-md`** now writes only the Markdown file (summary line on stderr). Spot-check rows with **`run_state: complete`** but **no** verified path (**QwQ-32B**, **Mathstral**, **deepseek-math-7b-instruct**, etc.): layout, **`.sha256`** sidecars, or **`latest`**-only dirs.
 
 ## 2026-04-05 — D1 prune: &lt;60% progress (VM applied)
 

@@ -9,13 +9,13 @@ _Generated (UTC): `2026-04-04T00:57:08.148555+00:00`_
 | Metric | Count |
 |--------|------:|
 | Total failed (run_state) | 29 |
-| Total rows (merged) | 45 |
+| Total rows (merged) | 46 |
 
 | Category | Models |
 |----------|-------:|
 | `failed_shards` | 31 |
 | `unavailable` | 7 |
-| `disk_space` | 5 |
+| `disk_space` | 6 |
 | `auth` | 2 |
 
 ### Historical run reports (`run-report-*.md`)
@@ -36,6 +36,7 @@ _Generated (UTC): `2026-04-04T00:57:08.148555+00:00`_
 | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16` | d1 | D | disk space / abandoned | run_state | — | 1 | 2026-04-03T00:48:34 |
 | `Undi95/dbrx-base` | d2 | A | disk space / abandoned | run_state | — | 1 | 2026-04-03T04:01:42 |
 | `unsloth/DeepSeek-R1-GGUF` | d5 | — | disk space / abandoned | run_state | — | 4 | 2026-04-02T20:06:51 |
+| `meta-llama/Llama-4-Scout-17B-16E` | d1 | A | operator purge / abandoned | operator | — | 0 | 2026-04-05T20:00:00 |
 
 <details><summary>Error text + run-report history</summary>
 
@@ -159,6 +160,15 @@ Failed to download DeepSeek-R1-Q4_K_M/DeepSeek-R1-Q4_K_M-00003-of-00009.gguf aft
 
 ```
 [Errno 28] No space left on device: '/mnt/models/d5/quantized'
+```
+
+### `meta-llama/Llama-4-Scout-17B-16E`
+
+**Primary error:**
+
+```
+Removed from registry.yaml; D1 tree purged (incomplete ~202 GiB target).
+Retained for audit in failed-models-registry only. Re-add to registry to retry.
 ```
 
 </details>

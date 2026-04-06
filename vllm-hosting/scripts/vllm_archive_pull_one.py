@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Download the next pending Hugging Face model from vllm-archive-manifest.yaml (one repo per run).
+Download the next pending Hugging Face model from vllm-immediate-targets.yaml by default
+(focused >21B / <120 GiB queue). Override with --manifest for the full catalog.
 
 Respects HF_HOME / VLLM_ARCHIVE_ROOT from the environment (see config/env-archive-vm-vllm.sh).
 Uses `trickle` for a ~2 MiB/s download cap by default (override THROTTLE_KBPS).
@@ -110,7 +111,7 @@ def main() -> None:
     args = ap.parse_args()
 
     script_root = pathlib.Path(__file__).resolve().parents[1]
-    manifest = args.manifest or (script_root / "config" / "vllm-archive-manifest.yaml")
+    manifest = args.manifest or (script_root / "config" / "vllm-immediate-targets.yaml")
     if not manifest.is_file():
         raise SystemExit(f"Missing manifest: {manifest}")
 

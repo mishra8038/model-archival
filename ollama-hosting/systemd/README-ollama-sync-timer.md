@@ -1,35 +1,34 @@
-# systemd user timer — Ollama archival sync every 4 hours
+# Ollama archival sync — systemd timer **removed**
 
-Runs on the **workstation** that can reach **supermicro** and the **archival VM** (same host where you manually run the sshfs bridge sync).
-
-**ExecStart** calls **`$HOME/z/dev/model-archival/model-archival/ollama-hosting/scripts/ollama-registry-sync`**, which runs **`ollama-hosting/scripts/ollama-sync.sh`** and then merges **`docs/data/ollama-archival-global-manifest.yaml`** + **`registry/TARGET_PULL_HISTORY.csv`** into **`ollama-hosting/registry/OLLAMA_MODEL_REGISTRY.json`**. Edit the unit file if your clone path differs.
-
-## Install
+Periodic **`ollama-registry-sync`** via a user **timer** is **no longer** shipped in this repo. Run sync **manually** when you want to copy Supermicro `~/.ollama` to the archive VM and refresh the registry:
 
 ```bash
-mkdir -p ~/.config/systemd/user
-OH="$HOME/z/dev/model-archival/model-archival/ollama-hosting"
-cp "$OH/systemd/ollama-archival-sync.service" ~/.config/systemd/user/
-cp "$OH/systemd/ollama-archival-sync.timer" ~/.config/systemd/user/
+cd /path/to/ollama-hosting
+./scripts/ollama-registry-sync
+```
+
+## If you previously installed the timer
+
+Disable and remove the units so nothing runs on a schedule:
+
+```bash
+systemctl --user disable --now ollama-archival-sync.timer 2>/dev/null || true
+rm -f ~/.config/systemd/user/ollama-archival-sync.timer \
+      ~/.config/systemd/user/ollama-archival-sync.service
 systemctl --user daemon-reload
-systemctl --user enable --now ollama-archival-sync.timer
 ```
 
-## Check
+Optional: reset failed state if any:
 
 ```bash
-systemctl --user list-timers ollama-archival-sync.timer
-journalctl --user -u ollama-archival-sync.service -n 80 --no-pager
+systemctl --user reset-failed ollama-archival-sync.service 2>/dev/null || true
 ```
 
-## Requirements
-
-- **SSH** to Supermicro and archival VM without interactive password (keys loaded).
-- **`uv`** on `PATH` in login shells (inventory step) if `ollama-sync.sh` invokes it.
-- **Runs while logged out:** `loginctl enable-linger "$USER"`
-
-## One-shot test
+One-off sync (same as old service would have run):
 
 ```bash
-systemctl --user start ollama-archival-sync.service
+cd "$HOME/z/dev/model-archival/model-archival/ollama-hosting"
+OLLAMA_SYNC_BWLIMIT_KB=0 ARCHIVAL_VM_DEST=/mnt/models/d5/supermicro ./scripts/ollama-registry-sync
 ```
+
+Adjust paths to match your clone.

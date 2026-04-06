@@ -1,24 +1,17 @@
-# Final pending registry — union IDs not complete/skipped in run_state.
-# Regenerate with final_downloads.yaml + MODEL-ARCHIVE-FINAL-STATUS.md:
-#   cd model-archival && uv run python scripts/generate_final_archiver_artifacts.py \
-#     --run-state /mnt/models/d3/run_state.json
-#
-# Do not run this script without --run-state: it would emit an empty pending list.
-#
 metadata:
-  generated: 2026-04-04 01:19 UTC
-  run_state_source: docs/MODEL-ARCHIVE-FINAL-STATUS.md table snapshot (2026-04-04
-    01:03 UTC doc)
+  generated: 2026-04-05 08:26 UTC
+  run_state_source: docs/MODEL-ARCHIVE-FINAL-STATUS.md table snapshot (no live run_state.json
+    on this host)
   run_state_provided: true
-  description: Union-scope models whose archiver status is not complete or skipped,
-    parsed from the MODEL-ARCHIVE-FINAL-STATUS.md model table. Regenerate from live
-    run_state via generate_final_archiver_artifacts.py.
+  description: 'Union-scope models whose archiver status is not complete or skipped,
+    parsed from MODEL-ARCHIVE-FINAL-STATUS.md. Regenerate from live run_state: uv
+    run python scripts/generate_final_archiver_artifacts.py --run-state /mnt/models/d3/run_state.json'
   counts_by_status:
-    failed: 28
+    failed: 29
     in_progress: 1
     not_in_run_state: 56
-    pending: 32
-  pending_model_count: 117
+    pending: 31
+  pending_model_count: 116
 models:
 - id: Qwen/Qwen2.5-VL-72B-Instruct
   hf_repo: Qwen/Qwen2.5-VL-72B-Instruct
@@ -71,16 +64,6 @@ models:
   registry_sources:
   - registry.yaml
   total_gib: 135.4
-- id: Qwen/Qwen3-235B-A22B
-  hf_repo: Qwen/Qwen3-235B-A22B
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/Qwen/Qwen3-235B-A22B/main
-  registry_sources:
-  - registry.yaml
-  total_gib: 437.9
 - id: Qwen/Qwen3-4B-Instruct-2507
   hf_repo: Qwen/Qwen3-4B-Instruct-2507
   run_state_status: pending
@@ -171,16 +154,6 @@ models:
   registry_sources:
   - registry-legacy.yaml
   total_gib: 641.3
-- id: deepseek-ai/DeepSeek-V3-Base
-  hf_repo: deepseek-ai/DeepSeek-V3-Base
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/deepseek-ai/DeepSeek-V3-Base/main
-  registry_sources:
-  - registry.yaml
-  total_gib: 641.3
 - id: deepseek-ai/deepseek-vl2
   hf_repo: deepseek-ai/deepseek-vl2
   run_state_status: pending
@@ -204,26 +177,6 @@ models:
   - registry.yaml
   - registry-legacy.yaml
   total_gib: 37.0
-- id: meta-llama/Llama-3.1-405B
-  hf_repo: meta-llama/Llama-3.1-405B
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/meta-llama/Llama-3.1-405B/b906e4dc842aa489c962f9db26554dcfdde901fe
-  registry_sources:
-  - registry.yaml
-  total_gib: 2275.9
-- id: meta-llama/Llama-3.1-405B-Instruct
-  hf_repo: meta-llama/Llama-3.1-405B-Instruct
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/meta-llama/Llama-3.1-405B-Instruct/main
-  registry_sources:
-  - registry.yaml
-  total_gib: 2276.0
 - id: meta-llama/Llama-3.2-90B-Vision-Instruct
   hf_repo: meta-llama/Llama-3.2-90B-Vision-Instruct
   run_state_status: pending
@@ -234,36 +187,6 @@ models:
   registry_sources:
   - registry.yaml
   total_gib: 330.5
-- id: meta-llama/Llama-3.3-70B-Instruct
-  hf_repo: meta-llama/Llama-3.3-70B-Instruct
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/meta-llama/Llama-3.3-70B-Instruct/6f6073b423013f6a7d4d9f39144961bfbfbc386b
-  registry_sources:
-  - registry.yaml
-  total_gib: 262.9
-- id: meta-llama/Llama-4-Maverick-17B-128E
-  hf_repo: meta-llama/Llama-4-Maverick-17B-128E
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/meta-llama/Llama-4-Maverick-17B-128E/10751cb97a4d7c90f7ed89196b98eb8220cfa1c2
-  registry_sources:
-  - registry.yaml
-  total_gib: 748.0
-- id: meta-llama/Llama-4-Scout-17B-16E
-  hf_repo: meta-llama/Llama-4-Scout-17B-16E
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 4
-  expected_path: d1/raw/meta-llama/Llama-4-Scout-17B-16E/main
-  registry_sources:
-  - registry.yaml
-  total_gib: 202.4
 - id: microsoft/Phi-3-mini-128k-instruct
   hf_repo: microsoft/Phi-3-mini-128k-instruct
   run_state_status: pending
@@ -297,17 +220,6 @@ models:
   - registry-specialists.yaml
   - final_downloads.yaml
   total_gib: 177.4
-- id: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  hf_repo: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  run_state_status: pending
-  tier: D
-  drive: d1
-  priority: 4
-  expected_path: d1/uncensored/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1/main
-  registry_sources:
-  - registry.yaml
-  - final_downloads.yaml
-  total_gib: 472.0
 - id: rombodawg/Rombos-LLM-V2.5-Qwen-72b
   hf_repo: rombodawg/Rombos-LLM-V2.5-Qwen-72b
   run_state_status: pending
@@ -319,17 +231,6 @@ models:
   - registry.yaml
   - final_downloads.yaml
   total_gib: 135.4
-- id: tiiuae/Falcon3-10B-Instruct
-  hf_repo: tiiuae/Falcon3-10B-Instruct
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 2
-  expected_path: d1/raw/tiiuae/Falcon3-10B-Instruct/main
-  registry_sources:
-  - registry.yaml
-  - registry-legacy.yaml
-  total_gib: 19.2
 - id: tiiuae/falcon-180B-chat
   hf_repo: tiiuae/falcon-180B-chat
   run_state_status: pending
@@ -340,28 +241,6 @@ models:
   registry_sources:
   - registry.yaml
   total_gib: 334.4
-- id: unsloth/DeepSeek-V3-GGUF
-  hf_repo: unsloth/DeepSeek-V3-GGUF
-  run_state_status: pending
-  tier: C
-  drive: d1
-  priority: 2
-  expected_path: d1/quantized/unsloth/DeepSeek-V3-GGUF/main
-  registry_sources:
-  - registry-legacy.yaml
-  - final_downloads.yaml
-  total_gib: 376.7
-- id: upstage/solar-pro-preview-instruct
-  hf_repo: upstage/solar-pro-preview-instruct
-  run_state_status: pending
-  tier: A
-  drive: d1
-  priority: 2
-  expected_path: d1/raw/upstage/solar-pro-preview-instruct/main
-  registry_sources:
-  - registry.yaml
-  - registry-legacy.yaml
-  total_gib: 41.2
 - id: MiniMaxAI/MiniMax-M2.5
   hf_repo: MiniMaxAI/MiniMax-M2.5
   run_state_status: failed

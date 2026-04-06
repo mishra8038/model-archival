@@ -75,7 +75,7 @@ To **generate or extend** the model list using an LLM, use the prompt in `docs/M
 | E/F/G | Reasoning, vision, math, research | Mixed | varies |
 
 ### Tier A — Key models (examples)
-DeepSeek-V3, DeepSeek-R1, DeepSeek-R1-Distill-*, Qwen2.5-72B/32B/7B-Instruct, Qwen3-*, Phi-4, Command-R+, Llama-3.1-405B, Llama-3.3-70B, Gemma-3-27B/12B, Mistral-Large-2411, Mistral-Small-24B
+DeepSeek-V3, DeepSeek-R1, DeepSeek-R1-Distill-*, Qwen2.5-72B/32B/7B-Instruct, Qwen3-*, Phi-4, Command-R+, Llama-3.3-70B, Gemma-3-27B/12B, Mistral-Large-2411, Mistral-Small-24B
 
 ### Tier B — Key models (examples)
 DeepSeek-Coder-V2-Instruct, Qwen2.5-Coder-32B, Codestral-22B, Devstral-Small, OlympicCoder-32B

@@ -551,7 +551,7 @@ find /mnt/models/d5/logs/ -name "run-report-*.md" -mtime +60 -delete
 
 ### Replicate metadata to all drives
 
-The archiver replicates `archive/` (manifests, global index) to all non-D5 drives automatically after each model completes. To trigger manually — re-run any model with `uv run archiver download <model-id>` or wait for the next full run.
+The archiver replicates **`d3/archive/`** (manifests, global index, metadata snapshots) to **`d1/archive/`**, **`d2/archive/`**, and **`d5/archive/`** automatically after each model completes. To trigger the same sync without a download, call `archiver.state.sync_archive` from a short `uv run python` snippet (primary = `<d3>/archive`, replicas = d1/d2/d5 mount points from `drives.yaml`).
 
 ### Upgrade a model to a newer version
 

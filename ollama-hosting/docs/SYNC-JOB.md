@@ -27,18 +27,18 @@ Tried in order:
 
 Set **`OLLAMA_SKIP_VM_PULL=1`** to skip (1) and use the bridge immediately.
 
-## Completed weights only
+## Completed weights only (default)
 
 By default the job **excludes** incomplete Ollama shards:
 
 - `models/blobs/*partial*`
 - `.rsync-partial/` at the Ollama cache root
 
-Override only with **`OLLAMA_SYNC_INCLUDE_PARTIALS=1`** (not recommended for archival).
+Set **`OLLAMA_SYNC_INCLUDE_PARTIALS=1`** to mirror the **full** Supermicro cache (including in-flight downloads) so **`OLLAMA_HOME`** on the archive VM can **resume** pulls. Post-sync maintain then keeps `*partial*` files (**`--keep-ollama-partials`**). See **`OLLAMA-RESUME-ON-ARCHIVE-VM.md`**.
 
 ## Post-sync maintenance (VM)
 
-When **`OLLAMA_SYNC_VM_MAINTAIN`** is non-zero (default), after a successful VM sync the job streams **`ollama_archive_vm_maintain.py`** to the archival VM and runs it on **every** root in the rotation cycle: remove stray `*partial*` blobs and `.rsync-partial` trees, then print manifest↔blob integrity. Set **`OLLAMA_SYNC_VM_MAINTAIN=0`** to skip.
+When **`OLLAMA_SYNC_VM_MAINTAIN`** is non-zero (default), after a successful VM sync the job streams **`ollama_archive_vm_maintain.py`** to the archival VM and runs it on **every** root in the rotation cycle: remove stray `*partial*` blobs (unless **`OLLAMA_SYNC_INCLUDE_PARTIALS=1`** or **`OLLAMA_MAINTAIN_KEEP_PARTIALS=1`**), prune `.rsync-partial` trees, then print manifest↔blob integrity. Set **`OLLAMA_SYNC_VM_MAINTAIN=0`** to skip.
 
 ## Destination rotation
 

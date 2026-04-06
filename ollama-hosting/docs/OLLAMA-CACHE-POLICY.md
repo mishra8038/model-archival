@@ -6,7 +6,7 @@
 
 - **One full Ollama archive** on the archival VM: **`/mnt/models/d5/supermicro`** only (no duplicate mirrors on d2/d3/d1 unless you change `ARCHIVAL_VM_SITE_CYCLE`).
 - **Supermicro offload loop:** after a model is **fully** on that archive (sync + integrity OK), **remove it from supermicro** (`ollama rm …`) per your keep rules — see **Offload loop** below and `OLLAMA-ONE-DISK-OFFLOAD.md` under `dev-environment/supermicro/`.
-- **Automated sync:** workstation user timer runs **`ollama-sync.sh`** to **d5** every **4 hours** (see `supermicro/systemd/README-ollama-sync-timer.md`).
+- **Sync timing:** run **`ollama-registry-sync`** / **`ollama-sync.sh`** **manually** (or your own cron) when you want a copy on the VM — the repo **does not** ship a systemd timer (see **`systemd/README-ollama-sync-timer.md`** if you need to remove old installed units).
 
 ## Goals
 

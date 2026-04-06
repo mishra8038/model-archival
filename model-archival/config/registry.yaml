@@ -1,15 +1,22 @@
-# Dropped / banned IDs (not in this list): see permanently-excluded-models.yaml
 models:
-- id: deepseek-ai/DeepSeek-V3-Base
-  hf_repo: deepseek-ai/DeepSeek-V3-Base
+- id: deepseek-ai/DeepSeek-V3
+  hf_repo: deepseek-ai/DeepSeek-V3
   tier: A
   drive: d1
   priority: 4
   licence: MIT
   requires_auth: false
+  commit_sha: e815299b0bcbac849fa540c768ef21845365c9eb
+- id: deepseek-ai/DeepSeek-V3-0324
+  hf_repo: deepseek-ai/DeepSeek-V3-0324
+  tier: A
+  drive: d1
+  priority: 1
+  licence: MIT
+  requires_auth: false
   commit_sha: null
-  notes: Pre-trained 671B MoE base (no SFT/RLHF) — foundation for future fine-tunes;
-    preservation priority
+  notes: March 2024 checkpoint — improved over original V3. [d1-completion-queue] Prioritized
+    to finish incomplete D1 tree (~641 GiB HF; use narrow run + --no-max-model-download).
 - id: deepseek-ai/DeepSeek-R1
   hf_repo: deepseek-ai/DeepSeek-R1
   tier: A
@@ -137,69 +144,6 @@ models:
   licence: Apache-2.0
   requires_auth: false
   commit_sha: b968826d9c46dd6066d109eabc6255188de91218
-- id: Qwen/Qwen3-0.6B-Base
-  hf_repo: Qwen/Qwen3-0.6B-Base
-  tier: A
-  drive: d2
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3 0.6B pre-trained base; scaling-law / tiny-model anchor; pairs with Qwen/Qwen3-0.6B
-- id: Qwen/Qwen3-0.6B
-  hf_repo: Qwen/Qwen3-0.6B
-  tier: A
-  drive: d2
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3 0.6B post-trained from Base (chat); no separate official *-Instruct repo on HF
-- id: Qwen/Qwen3-1.7B-Base
-  hf_repo: Qwen/Qwen3-1.7B-Base
-  tier: A
-  drive: d2
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3 1.7B pre-trained base; complements Qwen3-4B and Qwen/Qwen3-1.7B
-- id: Qwen/Qwen3-1.7B
-  hf_repo: Qwen/Qwen3-1.7B
-  tier: A
-  drive: d2
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3 1.7B post-trained from Base (chat); no separate official *-Instruct repo on HF
-- id: Qwen/Qwen3-235B-A22B
-  hf_repo: Qwen/Qwen3-235B-A22B
-  tier: A
-  drive: d1
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3 MoE — 235B total, 22B active. 680k downloads
-- id: Qwen/Qwen3.5-122B-A10B
-  hf_repo: Qwen/Qwen3.5-122B-A10B
-  tier: A
-  drive: d1
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3.5 MoE (~122B, ~10B active); HF tree well over 140 GB — main registry only (from registry-specialists).
-- id: Qwen/Qwen3.5-397B-A17B
-  hf_repo: Qwen/Qwen3.5-397B-A17B
-  tier: A
-  drive: d1
-  priority: 4
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen3.5 flagship MoE (~397B, ~17B active); D1-scale; main registry only (from registry-specialists).
 - id: Qwen/Qwen3-30B-A3B
   hf_repo: Qwen/Qwen3-30B-A3B
   tier: A
@@ -209,33 +153,15 @@ models:
   requires_auth: false
   commit_sha: ad44e777bcd18fa416d9da3bd8f70d33ebb85d39
   notes: Smaller Qwen3 MoE — 1.2M downloads
-- id: meta-llama/Llama-3.1-405B-Instruct
-  hf_repo: meta-llama/Llama-3.1-405B-Instruct
-  tier: A
-  drive: d1
-  priority: 4
-  licence: llama3.1
-  requires_auth: true
-  commit_sha: null
-  notes: Accept licence at huggingface.co/meta-llama/Llama-3.1-405B-Instruct
-- id: meta-llama/Llama-3.1-405B
-  hf_repo: meta-llama/Llama-3.1-405B
-  tier: A
-  drive: d1
-  priority: 4
-  licence: llama3.1
-  requires_auth: true
-  commit_sha: b906e4dc842aa489c962f9db26554dcfdde901fe
-  notes: Pre-trained base (no instruct) — foundation for fine-tunes; accept licence
-    on HF
 - id: meta-llama/Llama-3.3-70B-Instruct
   hf_repo: meta-llama/Llama-3.3-70B-Instruct
   tier: A
   drive: d1
-  priority: 4
+  priority: 1
   licence: llama3.3
   requires_auth: true
   commit_sha: 6f6073b423013f6a7d4d9f39144961bfbfbc386b
+  notes: '[d1-completion-queue] Resume partial d1 tree; HF_TOKEN + Meta licence required.'
 - id: meta-llama/Llama-3.1-70B-Instruct
   hf_repo: meta-llama/Llama-3.1-70B-Instruct
   tier: A
@@ -376,8 +302,8 @@ models:
   licence: Qwen
   requires_auth: false
   commit_sha: null
-  notes: '[discipline:chemistry] ChemDFM v2 on Qwen2.5-14B (newer OpenDFM chemistry dialogue
-    model)'
+  notes: '[discipline:chemistry] ChemDFM v2 on Qwen2.5-14B (newer OpenDFM chemistry
+    dialogue model)'
 - id: OpenDFM/RetroDFM-R-v0-8B
   hf_repo: OpenDFM/RetroDFM-R-v0-8B
   tier: G
@@ -387,8 +313,8 @@ models:
   requires_auth: false
   commit_sha: null
   notes: '[discipline:chemistry][retrosynthesis] OpenDFM RetroDFM-R checkpoint; DeepRetro
-    (Deep Forest Sciences) is a software framework — no standalone HF weight repo — use
-    this for archival alongside ChemDFM'
+    (Deep Forest Sciences) is a software framework — no standalone HF weight repo
+    — use this for archival alongside ChemDFM'
 - id: meta-llama/Llama-3.2-3B-Instruct
   hf_repo: meta-llama/Llama-3.2-3B-Instruct
   tier: A
@@ -596,7 +522,8 @@ models:
   licence: Apache-2.0
   requires_auth: false
   commit_sha: 34113aee9d255591a1fa75b60d1e3422e82c3b1f
-  notes: Olympiad-level coding reasoning (open-r1); strong competition-style code / CoT
+  notes: Olympiad-level coding reasoning (open-r1); strong competition-style code
+    / CoT
 - id: bigcode/starcoder2-15b
   hf_repo: bigcode/starcoder2-15b
   tier: B
@@ -614,7 +541,8 @@ models:
   licence: MIT
   requires_auth: false
   commit_sha: null
-  notes: '[discipline:marketing][stp:A] General-purpose embedding model for segmentation and retrieval pipelines.'
+  notes: '[discipline:marketing][stp:A] General-purpose embedding model for segmentation
+    and retrieval pipelines.'
 - id: Prior-Labs/TabPFN-v2-clf
   hf_repo: Prior-Labs/TabPFN-v2-clf
   tier: G
@@ -623,7 +551,8 @@ models:
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
-  notes: '[discipline:marketing][stp:B] Tabular foundation model classifier for structured marketing prediction tasks.'
+  notes: '[discipline:marketing][stp:B] Tabular foundation model classifier for structured
+    marketing prediction tasks.'
 - id: sentence-transformers/all-mpnet-base-v2
   hf_repo: sentence-transformers/all-mpnet-base-v2
   tier: B
@@ -632,7 +561,8 @@ models:
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
-  notes: '[discipline:marketing][stp:C] Strong sentence embedding baseline for audience similarity and semantic matching.'
+  notes: '[discipline:marketing][stp:C] Strong sentence embedding baseline for audience
+    similarity and semantic matching.'
 - id: BAAI/bge-en-icl
   hf_repo: BAAI/bge-en-icl
   tier: B
@@ -935,17 +865,6 @@ models:
   parent_model: Qwen/Qwen2.5-72B-Instruct
   method: abliteration
   notes: lb=48.1 — actually scores *above* base model on leaderboard
-- id: zetasepic/Qwen2.5-72B-Instruct-abliterated
-  hf_repo: zetasepic/Qwen2.5-72B-Instruct-abliterated
-  tier: D
-  drive: d3
-  priority: 4
-  licence: other
-  requires_auth: false
-  commit_sha: null
-  parent_model: Qwen/Qwen2.5-72B-Instruct
-  method: abliteration
-  notes: Open LLM Leaderboard 2 lb~46.3; strong 72B abliterated alternative to huihui-ai line
 - id: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
   hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
   tier: D
@@ -977,7 +896,8 @@ models:
   commit_sha: null
   parent_model: Qwen/Qwen2-72B
   method: supervised-finetune
-  notes: Dolphin 72B — popular uncensored 72B. drive d5 — d3/d5 .tmp cleared (2026-04); partial/finish under d5/uncensored/
+  notes: Dolphin 72B — popular uncensored 72B. drive d5 — d3/d5 .tmp cleared (2026-04);
+    partial/finish under d5/uncensored/
 - id: mlabonne/Llama-3.1-70B-Instruct-lorablated
   hf_repo: mlabonne/Llama-3.1-70B-Instruct-lorablated
   tier: D
@@ -988,17 +908,6 @@ models:
   commit_sha: null
   parent_model: meta-llama/Llama-3.1-70B-Instruct
   method: LoRA abliteration
-- id: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
-  hf_repo: nbeerbower/Llama-3.1-Nemotron-lorablated-70B
-  tier: D
-  drive: d2
-  priority: 4
-  licence: llama3.1
-  requires_auth: false
-  commit_sha: null
-  parent_model: nvidia/Llama-3.1-Nemotron-70B-Instruct
-  method: LoRA abliteration
-  notes: Open LLM Leaderboard 2 lb~40.9; lorablated Nemotron-70B class
 - id: mlabonne/NeuralDaredevil-8B-abliterated
   hf_repo: mlabonne/NeuralDaredevil-8B-abliterated
   tier: D
@@ -1019,7 +928,7 @@ models:
   commit_sha: null
   parent_model: meta-llama/Meta-Llama-3-70B-Instruct
   method: abliteration
-  notes: 'failspy v3 series; weights on D3 uncensored/ (moved from D5 2026-03-29).'
+  notes: failspy v3 series; weights on D3 uncensored/ (moved from D5 2026-03-29).
 - id: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   hf_repo: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   tier: D
@@ -1032,7 +941,8 @@ models:
   - Q3_K_M
   parent_model: meta-llama/Llama-3.3-70B-Instruct
   method: abliteration
-  notes: 'tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d5/.tmp/ — schedule on D5.'
+  notes: tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d5/.tmp/ — schedule on
+    D5.
 - id: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF
   tier: D
@@ -1045,7 +955,8 @@ models:
   - Q3_K_M
   parent_model: deepseek-ai/DeepSeek-R1-Distill-Llama-70B
   method: abliteration
-  notes: 'tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d3/.tmp/ — schedule on D3.'
+  notes: tensorblock Q2_K/Q3_K_M; in-progress Q3_K_M under d3/.tmp/ — schedule on
+    D3.
 - id: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   hf_repo: tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF
   tier: D
@@ -1189,7 +1100,8 @@ models:
   licence: other
   requires_auth: false
   commit_sha: null
-  notes: Community DBRX instruct conversion; ungated fallback when databricks/dbrx-instruct is inaccessible
+  notes: Community DBRX instruct conversion; ungated fallback when databricks/dbrx-instruct
+    is inaccessible
 - id: mlx-community/dbrx-instruct-4bit
   hf_repo: mlx-community/dbrx-instruct-4bit
   tier: C
@@ -1217,24 +1129,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Community fixed quantized DBRX instruct variant
-- id: MiniMaxAI/MiniMax-M2.5
-  hf_repo: MiniMaxAI/MiniMax-M2.5
-  tier: G
-  drive: d1
-  priority: 4
-  licence: other
-  requires_auth: false
-  commit_sha: null
-  notes: MiniMax M2.5 open weights; very large multi-shard tree — main registry only (from registry-specialists; PinchBench minimax/minimax-m2.5).
-- id: MiniMaxAI/MiniMax-M2.7
-  hf_repo: MiniMaxAI/MiniMax-M2.7
-  tier: G
-  drive: d1
-  priority: 2
-  licence: other
-  requires_auth: true
-  commit_sha: null
-  notes: '[discipline:frontier][minimax] MiniMax M2.7 — gated on HF; requires accepted terms + HF token (`archiver tokens check`). Skipped when no token. Large multi-shard — D1. PinchBench: minimax/minimax-m2.7. Main registry (moved from registry-specialists).'
 - id: Qwen/Qwen2.5-3B
   hf_repo: Qwen/Qwen2.5-3B
   tier: A
@@ -1244,51 +1138,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Pre-trained 3B base for Qwen2.5 — small, future-facing anchor
-- id: Qwen/Qwen2.5-0.5B
-  hf_repo: Qwen/Qwen2.5-0.5B
-  tier: A
-  drive: d1
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Pre-trained 0.5B base for Qwen2.5 — scaling-law anchor; pairs with Qwen2.5-0.5B-Instruct
-- id: Qwen/Qwen2.5-1.5B
-  hf_repo: Qwen/Qwen2.5-1.5B
-  tier: A
-  drive: d1
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Pre-trained 1.5B base for Qwen2.5 — scaling-law anchor; pairs with Qwen2.5-1.5B-Instruct
-- id: Qwen/Qwen2.5-0.5B-Instruct
-  hf_repo: Qwen/Qwen2.5-0.5B-Instruct
-  tier: A
-  drive: d2
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen2.5 0.5B instruct; tiny open chat baseline
-- id: Qwen/Qwen2.5-1.5B-Instruct
-  hf_repo: Qwen/Qwen2.5-1.5B-Instruct
-  tier: A
-  drive: d2
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen2.5 1.5B instruct; high-usage small checkpoint
-- id: Qwen/Qwen2.5-3B-Instruct
-  hf_repo: Qwen/Qwen2.5-3B-Instruct
-  tier: A
-  drive: d2
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: Qwen2.5 3B instruct; pairs with Qwen2.5-3B base
 - id: Qwen/Qwen2.5-7B
   hf_repo: Qwen/Qwen2.5-7B
   tier: A
@@ -1307,44 +1156,16 @@ models:
   requires_auth: false
   commit_sha: 97e1e76335b7017d8f67c08a19d103c0504298c9
   notes: Pre-trained 14B base for Qwen2.5 — complements existing 14B instruct
-- id: Qwen/Qwen2.5-32B
-  hf_repo: Qwen/Qwen2.5-32B
+- id: IntervitensInc/internlm2_5-20b-llamafied
+  hf_repo: IntervitensInc/internlm2_5-20b-llamafied
   tier: A
   drive: d1
   priority: 1
   licence: Apache-2.0
   requires_auth: false
-  commit_sha: 1818d35814b8319459f4bd55ed1ac8709630f003
-  notes: Pre-trained 32B base for Qwen2.5 — large dense base; pairs with 32B instruct
-- id: IntervitensInc/internlm2_5-20b-llamafied
-  hf_repo: IntervitensInc/internlm2_5-20b-llamafied
-  tier: A
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
   commit_sha: null
   notes: Top ~20B pretrained model on HF Open LLM leaderboard; llamafied InternLM2.5
-    base
-- id: upstage/solar-pro-preview-instruct
-  hf_repo: upstage/solar-pro-preview-instruct
-  tier: A
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: High-ranking ~20B chat/instruct model from Open LLM leaderboard best-models
-    collection
-- id: tiiuae/Falcon3-10B-Instruct
-  hf_repo: tiiuae/Falcon3-10B-Instruct
-  tier: A
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: 10B Falcon3 instruct model — strong open chat baseline
+    base. [d1-completion-queue] Finish / reconcile manifest on D1.
 - id: unsloth/phi-4-unsloth-bnb-4bit
   hf_repo: unsloth/phi-4-unsloth-bnb-4bit
   tier: C
@@ -1375,17 +1196,6 @@ models:
   commit_sha: null
   notes: Intel 7B chat model with preference-style tuning; useful DPO-style alignment
     baseline
-- id: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
-  hf_repo: CombinHorizon/zetasepic-abliteratedV2-Qwen2.5-32B-Inst-BaseMerge-TIES
-  tier: D
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: d976a5d6768d54c5e59a88fe63238a055c30c06a
-  parent_model: Qwen/Qwen2.5-32B-Instruct
-  method: abliteration+merge
-  notes: High-performing uncensored Qwen2.5-32B merge from HF best-models collection
 - id: rombodawg/Rombos-LLM-V2.5-Qwen-72b
   hf_repo: rombodawg/Rombos-LLM-V2.5-Qwen-72b
   tier: D
@@ -1397,16 +1207,6 @@ models:
   parent_model: Qwen/Qwen2.5-72B-Instruct
   method: merge
   notes: Large uncensored Qwen2.5-72B merge; popular power-user model
-- id: FINGU-AI/Chocolatine-Fusion-14B
-  hf_repo: FINGU-AI/Chocolatine-Fusion-14B
-  tier: D
-  drive: d1
-  priority: 2
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: 49b7b720ddd40ccdca303922037a4bb34b1ca33b
-  method: merge
-  notes: 14B fusion/merge chat model — uncensored-leaning; strong single-GPU option
 - id: FINGU-AI/RomboUltima-32B
   hf_repo: FINGU-AI/RomboUltima-32B
   tier: D
@@ -1435,7 +1235,8 @@ models:
   licence: Falcon-180B-TII
   requires_auth: true
   commit_sha: null
-  notes: TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF. drive d5 — LFS scratch under d5/.tmp after d1 tmp removed (2026-04).
+  notes: TII Falcon 180B base; no Falcon3 at this scale; accept licence on HF. drive
+    d5 — LFS scratch under d5/.tmp after d1 tmp removed (2026-04).
 - id: tiiuae/falcon-180B-chat
   hf_repo: tiiuae/falcon-180B-chat
   tier: A
@@ -1453,7 +1254,8 @@ models:
   licence: other
   requires_auth: false
   commit_sha: null
-  notes: Community DBRX base mirror (ungated); disk-space retry; drive d2 vs tight d5.
+  notes: Community DBRX base mirror (ungated); disk-space retry; drive d2 vs tight
+    d5.
 - id: mosaicml/mpt-7b
   hf_repo: mosaicml/mpt-7b
   tier: A
@@ -1508,24 +1310,6 @@ models:
   requires_auth: true
   commit_sha: null
   notes: Meta 1B instruct; still current
-- id: HuggingFaceTB/SmolLM2-360M
-  hf_repo: HuggingFaceTB/SmolLM2-360M
-  tier: A
-  drive: d3
-  priority: 1
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: SmolLM2 360M pre-trained base; minimum viable modern LM ladder; pairs with SmolLM2-360M-Instruct
-- id: HuggingFaceTB/SmolLM2-360M-Instruct
-  hf_repo: HuggingFaceTB/SmolLM2-360M-Instruct
-  tier: A
-  drive: d3
-  priority: 3
-  licence: Apache-2.0
-  requires_auth: false
-  commit_sha: null
-  notes: SmolLM2 360M instruct; edge / on-device baseline alongside 1.7B-Instruct
 - id: HuggingFaceTB/SmolLM2-1.7B-Instruct
   hf_repo: HuggingFaceTB/SmolLM2-1.7B-Instruct
   tier: A
@@ -1599,24 +1383,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: DiffuCoder 7B cpGRPO post-trained variant; RL for diffusion LMs; research
-- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
-  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-Base-BF16
-  tier: D
-  drive: d1
-  priority: 4
-  licence: nvidia-open-model-license
-  requires_auth: false
-  commit_sha: null
-  notes: Nemotron 3 Super base; 124B MoE A12B, 1M ctx; lowest priority. drive d1 — aligned with .tmp partials on D1 after d5 space move (2026-03).
-- id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
-  hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16
-  tier: D
-  drive: d1
-  priority: 4
-  licence: nvidia-open-model-license
-  requires_auth: false
-  commit_sha: null
-  notes: Nemotron 3 Super BF16 (HF id without Base-); matches historical run_state skew; drive d1.
 - id: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
   hf_repo: nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-FP8
   tier: D
@@ -1635,25 +1401,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Nemotron 3 Super NVFP4 quant; lowest priority
-- id: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  hf_repo: nvidia/Llama-3_1-Nemotron-Ultra-253B-v1
-  tier: D
-  drive: d1
-  priority: 4
-  licence: llama3.1
-  requires_auth: true
-  commit_sha: null
-  notes: Nemotron Ultra 253B; Llama-3.1-based flagship; lowest priority
-- id: meta-llama/Llama-4-Scout-17B-16E
-  hf_repo: meta-llama/Llama-4-Scout-17B-16E
-  tier: A
-  drive: d1
-  priority: 4
-  licence: llama4
-  requires_auth: true
-  commit_sha: null
-  notes: Llama 4 Scout base MoE (17B params, 16 experts); core pre-trained checkpoint
-    for future fine-tunes
 - id: meta-llama/Llama-4-Scout-17B-16E-Instruct
   hf_repo: meta-llama/Llama-4-Scout-17B-16E-Instruct
   tier: A
@@ -1664,16 +1411,6 @@ models:
   commit_sha: null
   notes: Llama 4 Scout instruct chat model; smaller of the Llama 4 family; general-purpose
     open assistant
-- id: meta-llama/Llama-4-Maverick-17B-128E
-  hf_repo: meta-llama/Llama-4-Maverick-17B-128E
-  tier: A
-  drive: d1
-  priority: 4
-  licence: llama4
-  requires_auth: true
-  commit_sha: 10751cb97a4d7c90f7ed89196b98eb8220cfa1c2
-  notes: Llama 4 Maverick base MoE (17B params, 128 experts); high-capability foundation
-    model
 - id: meta-llama/Llama-4-Maverick-17B-128E-Instruct
   hf_repo: meta-llama/Llama-4-Maverick-17B-128E-Instruct
   tier: A

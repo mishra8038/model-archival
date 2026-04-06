@@ -1,0 +1,153 @@
+# Optional archiver registry: same HF repos as vllm-hosting/config/vllm-immediate-targets.yaml
+# Use when you want manifest.json + SHA sidecars under d*/raw (fleet parity) instead of
+# huggingface-cli into VLLM_ARCHIVE_ROOT only.
+#
+#   cd model-archival
+#   uv run archiver download --registry config/registry-vllm-immediate.yaml --all
+#
+# Edit ``drive:`` per host capacity (default d5 for “vLLM-sized” checkpoints).
+models:
+- id: mistralai/Mistral-Small-24B-Instruct-2501
+  hf_repo: mistralai/Mistral-Small-24B-Instruct-2501
+  tier: G
+  drive: d5
+  priority: 10
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general] See vllm-hosting/config/vllm-immediate-targets.yaml'
+- id: Qwen/Qwen3.5-27B
+  hf_repo: Qwen/Qwen3.5-27B
+  tier: G
+  drive: d2
+  priority: 20
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general]'
+- id: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+  hf_repo: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+  tier: G
+  drive: d5
+  priority: 30
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general]'
+- id: Qwen/QwQ-32B
+  hf_repo: Qwen/QwQ-32B
+  tier: G
+  drive: d5
+  priority: 40
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general]'
+- id: Qwen/Qwen2.5-Coder-32B-Instruct
+  hf_repo: Qwen/Qwen2.5-Coder-32B-Instruct
+  tier: G
+  drive: d2
+  priority: 50
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general]'
+- id: deepseek-ai/deepseek-coder-33b-instruct
+  hf_repo: deepseek-ai/deepseek-coder-33b-instruct
+  tier: G
+  drive: d1
+  priority: 60
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general]'
+- id: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  hf_repo: deepseek-ai/DeepSeek-Coder-V2-Lite-Instruct
+  tier: G
+  drive: d2
+  priority: 70
+  licence: DeepSeek
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general] MoE'
+- id: google/gemma-4-26B-A4B-it
+  hf_repo: google/gemma-4-26B-A4B-it
+  tier: F
+  drive: d2
+  priority: 80
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general] Gemma multimodal MoE; gated ToU on HF'
+- id: google/gemma-3-27b-it
+  hf_repo: google/gemma-3-27b-it
+  tier: F
+  drive: d2
+  priority: 90
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+  notes: '[vllm-immediate][general]'
+- id: Qwen/Qwen3.5-35B-A3B
+  hf_repo: Qwen/Qwen3.5-35B-A3B
+  tier: G
+  drive: d5
+  priority: 100
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general] MoE'
+- id: mistralai/Mixtral-8x7B-Instruct-v0.1
+  hf_repo: mistralai/Mixtral-8x7B-Instruct-v0.1
+  tier: A
+  drive: d2
+  priority: 110
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general] Sparse MoE'
+- id: Qwen/Qwen2.5-VL-32B-Instruct
+  hf_repo: Qwen/Qwen2.5-VL-32B-Instruct
+  tier: F
+  drive: d5
+  priority: 120
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][general] VLM'
+- id: open-r1/OlympicCoder-32B
+  hf_repo: open-r1/OlympicCoder-32B
+  tier: G
+  drive: d2
+  priority: 200
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][specialist]'
+- id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
+  hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
+  tier: D
+  drive: d2
+  priority: 300
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][uncensored]'
+- id: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
+  hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
+  tier: D
+  drive: d2
+  priority: 310
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][uncensored]'
+- id: FINGU-AI/RomboUltima-32B
+  hf_repo: FINGU-AI/RomboUltima-32B
+  tier: D
+  drive: d3
+  priority: 320
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-immediate][uncensored]'

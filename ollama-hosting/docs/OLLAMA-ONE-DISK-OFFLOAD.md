@@ -6,7 +6,7 @@
 
 ## Loop (repeat until you change policy)
 
-1. **Sync** supermicro `~/.ollama` → VM **d5** (timer runs `ollama-sync.sh` every 4h, or run manually).
+1. **Sync** supermicro `~/.ollama` → VM **d5** (run **`ollama-registry-sync`** manually when needed).
 2. **Verify** the model you want to retire is represented on the archive:
    - `ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md`
    - `ollama-hosting/docs/data/ollama-archival-global-manifest.yaml`

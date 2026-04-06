@@ -15,7 +15,7 @@ model-archival/
   scripts/stop.sh     graceful shutdown — always use before rebooting
   config/
     registry.yaml     master model list (source of truth)
-    drives.yaml       drive mount points and roles
+    drives.yaml       drive mount points and roles (includes **d5_vllm** → `/mnt/models/d5/vllm` for vLLM archiver slice)
   src/archiver/
     cli.py            click commands: download, verify, status, list, drives, tokens, pin, queue-plan, audit-tmp, failed-registry
     queue_plan.py     approximate queue order + per-drive free space (ENOSPC planning)

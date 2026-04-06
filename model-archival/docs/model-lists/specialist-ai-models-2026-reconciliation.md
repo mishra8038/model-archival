@@ -23,7 +23,7 @@ Status buckets used:
 
 | Source Item | Project Mapping (registry IDs) | Status | Estimated Size |
 |---|---|---|---|
-| Llama 4 Scout | `meta-llama/Llama-4-Scout-17B-16E`, `meta-llama/Llama-4-Scout-17B-16E-Instruct` | planned | ~202.4 GB (base) |
+| Llama 4 Scout | `meta-llama/Llama-4-Scout-17B-16E` (failed / purged — `failed-models-registry.yaml`), `meta-llama/Llama-4-Scout-17B-16E-Instruct` | instruct planned | ~202.4 GB each |
 | Gemma 3 | `google/gemma-3-4b-it`, `google/gemma-3-12b-it`, `google/gemma-3-27b-it`, `bartowski/google_gemma-3-27b-it-GGUF` | have | 8.0 / 22.7 / 51.1 / 26.7 GB |
 | Qwen3 (0.6B-8B) | `Qwen/Qwen3-8B`, `Qwen/Qwen3-4B-Instruct-2507`, `unsloth/Qwen3-4B-Instruct-2507-GGUF` | have | 15.3 / 7.5 / 4.0 GB |
 | Phi-3.5 Mini | `microsoft/Phi-3-mini-128k-instruct` | planned | 7.1 GB |

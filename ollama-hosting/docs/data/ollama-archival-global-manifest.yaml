@@ -1,5 +1,5 @@
 schema_version: 1
-updated_at_utc: '2026-04-04T07:24:37Z'
+updated_at_utc: '2026-04-05T02:53:25Z'
 canonical_preference:
 - d5
 - d2
@@ -65,6 +65,14 @@ models:
   size_bytes: 17987581215
   size_human: 16.75 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: gemma4:31b-it-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 19868981791
+  size_human: 18.50 GiB
+  supermicro_cleared: unknown
 - ollama_descriptor: gemma4:e2b-it-q4_K_M
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro
@@ -113,6 +121,14 @@ models:
   size_bytes: 8988124298
   size_human: 8.37 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: qwen2.5-coder:32b-instruct-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 19851349898
+  size_human: 18.49 GiB
+  supermicro_cleared: unknown
 - ollama_descriptor: qwen2.5-coder:7b
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro

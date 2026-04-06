@@ -13,8 +13,21 @@
 
 set -u
 export OLLAMA_HOST="${OLLAMA_HOST:-127.0.0.1:11434}"
+THROTTLE_KBPS="${THROTTLE_KBPS:-4096}"
+THROTTLE_UPLOAD_KBPS="${THROTTLE_UPLOAD_KBPS:-512}"
+USE_TRICKLE="${USE_TRICKLE:-1}"
 
 log() { printf '%s %s\n' "$(date -Iseconds)" "$*"; }
+
+run_pull() {
+  local m="$1"
+  if [[ "$USE_TRICKLE" != "0" && "$USE_TRICKLE" != "false" ]] && command -v trickle >/dev/null 2>&1; then
+    trickle -s -d "${THROTTLE_KBPS}" -u "${THROTTLE_UPLOAD_KBPS}" ollama pull "$m"
+  else
+    [[ "$USE_TRICKLE" != "0" && "$USE_TRICKLE" != "false" ]] && log "WARN: trickle not installed — unthrottled pull: $m"
+    ollama pull "$m"
+  fi
+}
 
 MODELS=(
   # --- Dense instruct (70B-class, Q4_K_M) ---
@@ -33,11 +46,11 @@ main() {
     exit 1
   fi
   log "OLLAMA_HOST=$OLLAMA_HOST"
-  log "Pulling ${#MODELS[@]} large models (expect ~40GB+ each)…"
+  log "Pulling ${#MODELS[@]} large models (sequential, ${THROTTLE_KBPS} KiB/s down if trickle)…"
   local ok=0 fail=0
   for m in "${MODELS[@]}"; do
     log ">>> pull $m"
-    if ollama pull "$m"; then
+    if run_pull "$m"; then
       log "OK   $m"
       ok=$((ok + 1))
     else

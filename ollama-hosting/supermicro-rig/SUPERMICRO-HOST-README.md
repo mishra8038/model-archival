@@ -32,7 +32,7 @@ Performed on host `x@192.168.8.106`:
 - `set-gpu-power-limits.service` (system boot oneshot)
 - `ollama.service` (custom unit, listens on `0.0.0.0:11434`)
 
-**Ollama** — scripts, registry, docs, systemd timer: **`~/z/dev/ollama`** (see **`~/z/env/dev-environment/supermicro/OLLAMA.md`**). Archival sync job: **`ollama-hosting/scripts/ollama-sync.sh`**; optional wrapper **`~/z/dev/ollama/scripts/ollama-sync`** merges the VM manifest into the registry. Workstation timer: **`~/z/dev/ollama/systemd/`**. Policy: **`ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`**. Before **`ollama rm`**: **`ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md`** / **`ollama-archival-global-manifest.yaml`**. Often an **sshfs bridge** from a workstation is used.
+**Ollama** — scripts, registry, docs: **`~/z/dev/ollama`** (see **`~/z/env/dev-environment/supermicro/OLLAMA.md`**). Archival sync: run **`ollama-hosting/scripts/ollama-registry-sync`** manually from a bridge host (no repo systemd timer). Policy: **`ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`**. Before **`ollama rm`**: **`ollama-hosting/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md`** / **`ollama-archival-global-manifest.yaml`**. Often an **sshfs bridge** from a workstation is used.
 
 ### vm_host_gpu tuning (dev-environment)
 

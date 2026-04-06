@@ -1,4 +1,10 @@
 
+## 2026-04-06 (UTC) — Graphcore on D1 (move + consolidate)
+
+- **Host:** archive VM `192.168.8.65` (user `x`).
+- **Move:** `mv /mnt/models/d5/graphcore /mnt/models/d1/graphcore` (cross-filesystem: **~47 GiB** copied to **D1**, then source removed). **D1** had **~728 GiB** free before op. **`/mnt/models/d5/graphcore`** removed from disk; **`/mnt/models/d1/graphcore`** present (`du -sh` ~47 G at time of move). Exit **0**.
+- **Consolidation:** Remaining Graphcore-related top-level trees on **D5** (**`graphcore-archive`**, **`graphcore-downloads`**, **`graphcore-projects`**) were merged into **`/mnt/models/d1/graphcore/`** as subdirectories of the same names (no separate **`/mnt/models/d5/graphcore*`** siblings afterward). **Repo:** `gdrive-archival/logs/*.md` + `registry-uploaded-models.json` path prefixes updated to **`d1/graphcore/...`**.
+
 ## 2026-04-03 (UTC) — Specialist run: Gemma 4 first + disk-space failed retries
 
 - **Registry (workspace → VM `config/`):** `registry-specialists.yaml` — `deepseek-ai/deepseek-vl2` **d1→d3**; added **`nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`** (matches `run_state` id); **`Undi95/dbrx-base`**, **`tiiuae/falcon-180B-chat`** on **d2** for retries; **`registry.yaml`** — same Nemotron row; **`Undi95/dbrx-base`**; **`falcon-180B-chat` d1→d2**.

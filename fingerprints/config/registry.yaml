@@ -11376,17 +11376,6 @@ models:
   hf_downloads: 858156
   hf_likes: 35
   registry_date: '2026-03-13'
-- hf_repo: meta-llama/Llama-3.1-405B
-  family: llama
-  tier: A
-  importance: high
-  licence: unknown
-  requires_auth: true
-  params_b: 0
-  merged: false
-  hf_downloads: 536601
-  hf_likes: 965
-  registry_date: '2026-03-13'
 - hf_repo: JackFram/llama-68m
   family: llama
   tier: A

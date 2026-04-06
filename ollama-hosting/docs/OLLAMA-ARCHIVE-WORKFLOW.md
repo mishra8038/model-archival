@@ -13,7 +13,7 @@ This file is the **conceptual source of truth** for that loop. **Machine-readabl
 1. **Finalize queue** in **`registry/`** (this repo).
 2. **Deploy** to Supermicro **`~/z/dev/ollama/`**: **`scripts/deploy-ollama-pull-kit-to-supermicro.sh`** (rsync `registry/` + pull scripts).
 3. **Pull** on Supermicro: **`~/z/dev/ollama/scripts/ollama-pull-queue`** (or **`trigger-ollama-pull-on-supermicro.sh`** from your workstation).
-4. **Poll / copy cache to archive VM disks** — from a bridge host with SSH to Supermicro + VM: **`scripts/ollama-registry-sync`** (runs **`ollama-sync.sh`** rsync, then manifest + registry merges). Re-run on a timer or after known completes; partial blobs stay on Supermicro until pulls finish.
+4. **Poll / copy cache to archive VM disks** — from a bridge host with SSH to Supermicro + VM: **`scripts/ollama-registry-sync`** (runs **`ollama-sync.sh`** rsync, then manifest + registry merges). Re-run **manually** (or your own scheduler) after known completes; partial blobs stay on Supermicro until pulls finish.
 
 ---
 
@@ -86,7 +86,7 @@ It does **not** (today):
 
 # Supermicro (GPU host); copy or mount this repo, then:
 export OLLAMA_HOST=127.0.0.1:11434
-./scripts/ollama-pull-queue --one
+./scripts/ollama-pull-queue                # one model per run by default (~4 MiB/s via trickle)
 ```
 
 **Registry maintenance (from `ollama-hosting/registry/`):**
@@ -124,7 +124,7 @@ python3 ollama_registry_tool.py apply-default-groups
 | `model-archival/…/docs/data/ollama-archival-global-manifest.yaml` | **Authoritative** “which tag on which disk” after inventory |
 | `model-archival/…/docs/OLLAMA-ARCHIVAL-MODEL-MAP.md` | Human-readable map |
 | `ollama-hosting/docs/OLLAMA-ONE-DISK-OFFLOAD.md` | Short operator loop before `ollama rm` |
-| `ollama-hosting/systemd/` | User systemd timer for **`ollama-registry-sync`** |
+| `ollama-hosting/systemd/` | **Timer removed** — see **`README-ollama-sync-timer.md`** to disable any previously installed units |
 
 ---
 

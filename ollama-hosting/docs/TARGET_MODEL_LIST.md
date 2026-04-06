@@ -1,5 +1,7 @@
 # Target model list (Ollama) — history, queue, HF mapping
 
+**vLLM path:** For Hugging Face–native archival of the same *intent* (deduped repos, `d5/vllm`, one repo per pull), see repo **`vllm-hosting/`** and **`vllm-hosting/docs/VLLM-ARCHIVE.md`**.
+
 **Purpose:** Operational notes (sizes, throttle policy, HF mapping). **Single picture for download → archive → offload** is **[OLLAMA-ARCHIVE-WORKFLOW.md](OLLAMA-ARCHIVE-WORKFLOW.md)**. **Machine-readable state** (queue order, pull status, archive disk / `supermicro_cleared` merged from ollama-hosting) lives in **`OLLAMA_MODEL_REGISTRY.json`**, maintained with **`ollama_registry_tool.py`** (`init`, `merge-pull-history`, `merge-manifest`, `status`).
 
 ### Acquisition priorities (order of preference when we expand or reorder the queue)
@@ -34,9 +36,9 @@ Each model in **`OLLAMA_MODEL_REGISTRY.json`** has a **`group`** field (classifi
 | **`moe_instruct`** | Censored MoE instruct (e.g. Mixtral 8×7B instruct). |
 | **`instruct_70b`** | Dense ~70B instruct class (Llama 3.x 70B, Qwen2.5 72B, Nemotron 70B). |
 | **`qwen3`** | Qwen3 library line (`qwen3:…`, not `qwen3.5:`). |
-| **`embedding`** | `bge-m3`. |
+| **`embedding`** | `bge-m3`, `granite-embedding`, `nomic-embed-text`, `embeddinggemma`, `snowflake-arctic-embed`, `mxbai-embed-large`, `bge-large`, `qwen3-embedding`. |
 | **`vlm`** | Qwen2.5-VL. |
-| **`specialist`** | Qwen3.5, Mathstral, Phi-4, Mistral Small 3.2, and other frontier picks in the queue tail. |
+| **`specialist`** | Qwen3.5 (Q4 and dense **BF16** variants), Mathstral, Phi-4, Mistral Small 3.2, and other frontier picks in the queue tail. |
 
 **Commands**
 
@@ -46,7 +48,7 @@ python3 ollama_registry_tool.py list-group uncensored
 python3 ollama_registry_tool.py status   # table includes Group column
 ```
 
-**Pull only uncensored pending models:** `OLLAMA_PULL_GROUP=uncensored ./scripts/ollama-pull-queue --one` (from **`ollama-hosting/`**; registry mode; see script header).
+**Pull only uncensored pending models:** `OLLAMA_PULL_GROUP=uncensored ./scripts/ollama-pull-queue` (from **`ollama-hosting/`**; registry mode; one model per run by default; see script header).
 
 The narrative sections below (sizes, HF IDs) remain useful; **which tags are “uncensored”** is defined by **`group: uncensored`** in the registry, not by a separate markdown-only list.
 
@@ -65,11 +67,13 @@ Install throttle helper: `sudo apt install trickle`
 ```bash
 # Canonical pull driver (registry + CSV); cwd = ollama-hosting/ on the Ollama host
 export OLLAMA_HOST=127.0.0.1:11434
-./scripts/ollama-pull-queue --one
+./scripts/ollama-pull-queue                # default: **one** next pending model (~4 MiB/s via trickle)
 
-IGNORE_PULL_HISTORY=1 ./scripts/ollama-pull-queue --one   # re-pull after ~/.ollama wipe
+./scripts/ollama-pull-queue --one          # same as no args
 
-./scripts/ollama-pull-queue   # drain all pending models
+IGNORE_PULL_HISTORY=1 ./scripts/ollama-pull-queue   # re-pull after ~/.ollama wipe (still one model unless --all)
+
+./scripts/ollama-pull-queue --all            # drain all pending models (sequential; one ollama pull at a time)
 ```
 
 `registry/pull-queue-throttled.sh` is a **thin wrapper** that calls **`../scripts/ollama-pull-queue`**.
@@ -129,7 +133,7 @@ Same order as `TARGET_QUEUE_ORDERED.txt`. Sizes are **approximate** from Ollama 
 | 6 | `deepseek-coder-v2:16b` | 8.9 GB |
 | 7 | `deepseek-r1:14b-qwen-distill-q4_K_M` | 9.0 GB |
 | 8 | `qwen2.5-coder:14b-instruct-q4_K_M` | 9.0 GB |
-| 9 | `starcoder2:15b` | ~9.1 GB (library tag; `…-instruct-q4_K_M` not on registry) |
+| 9 | `starcoder2:15b` | ~9.1 GB (`starcoder2:15b-instruct-q4_K_M` — **not** on Ollama registry; HF `bartowski/starcoder2-15b-instruct-GGUF`) |
 | 10 | `gemma4:e2b-it-q8_0` | 8.1 GB |
 | 11 | `gemma4:e4b-it-q4_K_M` | 9.6 GB |
 | 12 | `gemma4:e4b-it-q8_0` | 11 GB |
@@ -166,18 +170,29 @@ Source: `/home/x/z/dev/model-archival/model-archival/model-archival/docs/SPECIAL
 | Priority | Ollama tag | ~Size | Representative HF `id` (pending doc) | Notes |
 |----------|------------|-------|----------------------------------------|--------|
 | small | `bge-m3` | ~1.2 GB | `BAAI/bge-m3` | Embedding / RAG; MTEB-useful multilingual dense retrieval. |
+| `embedding` | `granite-embedding` | ~0.06 GB | *(IBM Granite embed)* | Tiny baseline embedder. |
+| `embedding` | `nomic-embed-text` | ~0.27 GB | *(Nomic)* | Widely used Ollama default; fast / CPU-friendly. |
+| `embedding` | `embeddinggemma` | ~0.62 GB | *(Google Gemma embed)* | Pairs with Gemma chat/VLM lines. |
+| `embedding` | `snowflake-arctic-embed` | ~0.67 GB | *(Snowflake)* | Strong MTEB-class dense retrieval. |
+| `embedding` | `mxbai-embed-large` | ~0.67 GB | *(MixedBread)* | See also `OLLAMA_HOSTABLE_LEADER_PICKS.md`. |
+| `embedding` | `bge-large` | ~0.67 GB | `BAAI/bge-large-en-v1.5` (family) | English dense; complements multilingual `bge-m3`. |
+| `embedding` | `qwen3-embedding` | ~4.7 GB | `Qwen/Qwen3-Embedding-…` (family) | Larger Qwen3 embedding checkpoint. |
 | small | `qwen3.5:4b-q4_K_M` | ~3.4 GB | `Qwen/Qwen3.5-4B`, `Qwen/Qwen3.5-4B-Base` | Qwen 3.5 multimodal line; compact frontier workhorse. |
+| small | `qwen3.5:4b-bf16` | ~9.3 GB | `Qwen/Qwen3.5-4B` | Same dense checkpoint, **BF16** on Ollama (not GGUF Q4); pulls after `…-q4_K_M`. |
 | small | `gemma3:4b-it-q4_K_M` | ~3.3 GB | `google/gemma-3-4b-it` | Gemma 3 small VLM/text-image; HF BF16 failed — Ollama path. |
+| small | `alibayram/medgemma:4b` | ~2.5 GB (manifest ~2.49 GB) | `google/medgemma-4b-it` | Community Ollama port; **not** first-party Google — verify licence/size before pull. |
 | small | `mathstral:7b` | ~4.1 GB | `mistralai/Mathstral-7B-v0.1` | Mistral math / science specialist. |
 | small | `deepseek-r1:8b-llama-distill-q4_K_M` | ~4.9 GB | `deepseek-ai/DeepSeek-R1-Distill-Llama-8B` | R1 distill on Llama 8B (distinct from queued `…-0528-qwen3-…`). |
 | small | `deepseek-r1:7b-qwen-distill-q4_K_M` | ~4.7 GB | `deepseek-ai/DeepSeek-R1-Distill-Qwen-7B` | Smallest official R1 Qwen distill. |
 | small | `qwen2.5vl:7b` | ~6.0 GB | `Qwen/Qwen2.5-VL-7B-Instruct` | Flagship-tier open VLM (7B). |
 | small | `qwen3.5:9b-q4_K_M` | ~6.6 GB | `Qwen/Qwen3.5-9B`, `Qwen/Qwen3.5-9B-Base` | Mid Qwen 3.5 multimodal. |
+| small | `qwen3.5:9b-bf16` | ~19 GB | `Qwen/Qwen3.5-9B` | Dense **BF16**; verify VRAM/disk before pull. |
 | small | `phi4:14b-q4_K_M` | ~9.1 GB | `unsloth/Phi-4-mini-instruct-GGUF`, `unsloth/phi-4-unsloth-bnb-4bit` | Microsoft Phi-4 14B instruct (library). |
 | `uncensored` (group) | `closex/neuraldaredevil-8b-abliterated:latest` | ~5.6 GB | `mlabonne/NeuralDaredevil-8B-GGUF` | Same **`group`** as Dolphin / other abliterated queue tags. |
 | specialist | `mistral-small3.2:24b-instruct-2506-q4_K_M` | ~15 GB | `mistralai/Mistral-Small-24B-Instruct-2501`, `tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF` | Mistral Small 3.2 instruct + vision; official quant. |
 | specialist | `gemma3:27b-it-q4_K_M` | ~17 GB | `bartowski/google_gemma-3-27b-it-GGUF` | Gemma 3 27B instruct VLM; complements Gemma 4 queue. |
 | specialist | `qwen3.5:27b-q4_K_M` | ~17 GB | `Qwen/Qwen3.5-27B` | Dense Qwen 3.5; HF BF16 failed on archive host. |
+| specialist | `qwen3.5:27b-bf16` | ~56 GB | `Qwen/Qwen3.5-27B` | Largest **dense** Qwen3.5 on Ollama in BF16; MoE lines use separate tags (`35b-a3b`, `122b-a10b`). |
 | specialist | `deepseek-r1:32b-qwen-distill-q4_K_M` | ~20 GB | `deepseek-ai/DeepSeek-R1-Distill-Qwen-32B`, `tensorblock/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF` | Large R1 Qwen distill. |
 | specialist | `qwq:32b-q4_K_M` | ~20 GB | `Qwen/QwQ-32B` | Qwen “think” / reasoning line. |
 | specialist | `qwen2.5vl:32b-q4_K_M` | ~21 GB | *(VL flagship; pairs with failed `Qwen2.5-VL-72B`)* | Hostable VLM step below 72B Q4. |
@@ -197,8 +212,10 @@ Rows below are **not** appended to `TARGET_QUEUE_ORDERED.txt` until there is a *
 
 | HF repo / file | Suggested Ollama tag (or N/A) | ~Size | Status |
 |----------------|------------------------------|-------|--------|
-| `google/medgemma-*`, `OpenDFM/*`, discipline LMs | N/A (check library periodically) | — | Import or new library tags |
-| `Alibaba-NLP/gte-Qwen2-7B-instruct`, `intfloat/e5-mistral-7b-instruct` | Search [ollama.com/library](https://ollama.com/library) for `gte`, `e5` | — | Embedding alternates to `bge-m3` |
+| `google/medgemma-4b-it` | **`alibayram/medgemma:4b`** (queued) | ~2.5 GB | Community port — confirm on [ollama.com](https://ollama.com) before production |
+| `google/medgemma-27b-it`, `google/medgemma-27b-text-it` | HF archival (no Ollama queue) | — | Prefer Hugging Face for 27B MedGemma; **`alibayram/medgemma:27b`** not targeted |
+| `OpenDFM/*`, other discipline LMs | N/A (check library periodically) | — | Import or new library tags |
+| `Alibaba-NLP/gte-Qwen2-7B-instruct`, `intfloat/e5-mistral-7b-instruct` | Search [ollama.com/library](https://ollama.com/library) for `gte`, `e5` | — | Not queued; queue already has **`bge-m3`**, **`bge-large`**, **`qwen3-embedding`**, etc. |
 
 When a row is resolved, add the Ollama tag to `TARGET_QUEUE_ORDERED.txt` and move the row out of this table.
 

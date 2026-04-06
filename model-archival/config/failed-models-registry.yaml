@@ -3,7 +3,7 @@
 # Optional: --state PATH  --include-skipped  --no-historical
 #   --reports-dir /mnt/models/d3/logs  (repeatable; default: <state-dir>/logs)
 
-generated_at_utc: '2026-04-04T00:57:08.148555+00:00'
+generated_at_utc: '2026-04-05T20:00:00+00:00'
 source_state: /mnt/models/d3/run_state.json
 historical:
   enabled: true
@@ -16,11 +16,11 @@ summary:
   total_failed: 29
   total_skipped_included: 0
   by_category:
-    disk_space: 5
+    disk_space: 6
     unavailable: 7
     auth: 2
     failed_shards: 31
-  total_rows: 45
+  total_rows: 46
 categories:
   disk_space:
   - id: deepseek-ai/deepseek-vl2
@@ -144,6 +144,21 @@ categories:
       report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
       kind: download_fail
       error: '[Errno 28] No space left on device: ''/mnt/models/d5/quantized'''
+  - id: meta-llama/Llama-4-Scout-17B-16E
+    failure_category: disk_space
+    reason_kind: operator purge / abandoned
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-05T20:00:00+00:00'
+    error: 'Removed from registry.yaml; D1 tree purged (incomplete ~202 GiB target).
+      Retained for audit in failed-models-registry only. Re-add to registry to retry.'
+    primary_source: operator
+    historical_only: false
+    historical_incidents: []
+    hf_repo: meta-llama/Llama-4-Scout-17B-16E
+    tier: A
+    registry_drive: d1
+    requires_auth: true
   unavailable:
   - id: mistralai/Leanstral-120B-A6B
     failure_category: unavailable
@@ -344,6 +359,27 @@ categories:
     registry_drive: d3
     requires_auth: false
   failed_shards:
+  - id: meta-llama/Llama-3.3-70B-Instruct
+    failure_category: failed_shards
+    reason_kind: download retries exhausted (d1 scratch ENOSPC / fallocate)
+    run_state_status: failed
+    drive: d1
+    updated_at: '2026-04-05T17:18:36+00:00'
+    error: 'Failed to download original/consolidated.05.pth after 5 attempts: aria2c error for original/consolidated.05.pth:
+      fallocate failed. cause: No space left on device (then Download aborted on retries). Operator removed d1/.tmp scratch
+      and parked model in failed-models-registry.'
+    primary_source: run_state
+    historical_only: false
+    historical_incidents:
+    - report_file: /mnt/models/d3/logs/run-report-2026-04-05_09-09-54.md
+      report_mtime_utc: '2026-04-05T13:16:02+00:00'
+      kind: download_fail
+      error: 'Failed to download original/consolidated.05.pth after 5 attempts: aria2c error for original/consolidated.05.pth:
+        fallocate failed. cause: No space left on device'
+    hf_repo: meta-llama/Llama-3.3-70B-Instruct
+    tier: A
+    registry_drive: d1
+    requires_auth: true
   - id: alpindale/dbrx-instruct
     failure_category: failed_shards
     reason_kind: download retries exhausted
@@ -943,34 +979,6 @@ categories:
     tier: A
     registry_drive: d5
     requires_auth: true
-  - id: unsloth/DeepSeek-V3-GGUF
-    failure_category: failed_shards
-    reason_kind: download retries exhausted
-    run_state_status: pending
-    drive: d1
-    updated_at: '2026-04-02T22:24:01.499693+00:00'
-    error: 'Failed to download DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf after 5 attempts: aria2c error for
-      DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf: Download aborted.'
-    primary_source: run_report
-    historical_only: true
-    historical_incidents:
-    - report_file: /mnt/models/d3/logs/run-report-2026-04-01_03-22-55.md
-      report_mtime_utc: '2026-04-02T17:29:51.866000+00:00'
-      kind: download_fail
-      error: 'Failed to download DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf after 5 attempts: aria2c error
-        for DeepSeek-V3-Q4_K_M/DeepSeek-V3-Q4_K_M-00002-of-00009.gguf: Download aborted.'
-    - report_file: /mnt/models/d3/logs/run-report-2026-03-29_21-45-34.md
-      report_mtime_utc: '2026-03-30T14:20:17.325000+00:00'
-      kind: download_fail
-      error: '[Errno 28] No space left on device: ''/mnt/models/d5/quantized/unsloth/DeepSeek-V3-GGUF'''
-    - report_file: /mnt/models/d3/logs/run-report-2026-03-28_02-00-05.md
-      report_mtime_utc: '2026-03-28T16:42:27.418000+00:00'
-      kind: download_fail
-      error: '[Errno 28] No space left on device: ''/mnt/models/d5/quantized'''
-    hf_repo: unsloth/DeepSeek-V3-GGUF
-    tier: C
-    registry_drive: d1
-    requires_auth: false
   - id: xai-org/grok-2
     failure_category: failed_shards
     reason_kind: download retries exhausted

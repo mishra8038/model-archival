@@ -77,6 +77,17 @@ uv run python -m integrity_tools.parity_cli verify /mnt/models/d1/org/ModelName
 uv run python -m integrity_tools.parity_cli repair /mnt/models/d1/org/ModelName
 ```
 
+### 3. Fleet PAR2 backfill (D2 / D3)
+
+For many revision trees on the archive VM, use the batch driver (writes reports under `model-archival/reports/`):
+
+```bash
+python3 model-archival/scripts/par2_backfill_d2_d3.py --dry-run   # plan
+python3 model-archival/scripts/par2_backfill_d2_d3.py             # execute
+```
+
+See **`model-archival/reports/PAR2-BACKFILL-D2-D3.md`** for flags, abandonment rules, and output filenames.
+
 ### Notes and future integration
 
 - These tools do not currently talk to `run_state.json` or `STATUS.md` — they

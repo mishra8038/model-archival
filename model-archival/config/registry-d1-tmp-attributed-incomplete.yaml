@@ -1,0 +1,7 @@
+# After d1/.tmp wipe (~91 GiB): scratch trees removed; final install dirs are NOT under .tmp.
+# Cross-check (VM 2026-04-05): every repo that had a slug under d1/.tmp has a complete
+# manifest on its registry drive (d1/d2/d3) when resolving `latest` or sole commit SHA dir.
+# => No models remain that are incomplete *because* only .tmp held their weights.
+# This file intentionally lists zero models; use registry-d1-manifest-incomplete.yaml to resume
+# other incomplete d1 assignments (separate from tmp causality).
+models: []

@@ -56,6 +56,36 @@ models:
   commit_sha: null
   notes: '[discipline:chemistry][retrosynthesis] RetroDFM-R; DeepRetro is application
     code — archive this HF checkpoint; also in main registry.yaml'
+- id: language-plus-molecules/molt5-base-smiles2caption-LPM24
+  hf_repo: language-plus-molecules/molt5-base-smiles2caption-LPM24
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:chemistry][seq2seq] MolT5 SMILES↔caption (LPM24); complements
+    ChemLLM / ChemDFM generative chemistry.'
+- id: DeepChem/ChemBERTa-77M-MLM
+  hf_repo: DeepChem/ChemBERTa-77M-MLM
+  tier: B
+  drive: d3
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:chemistry][classification] ChemBERTa 77M MLM encoder; molecular
+    NLP baseline alongside seyonec/ChemBERTa-zinc.'
+- id: Derify/ModChemBERT-MLM-DAPT-TAFT
+  hf_repo: Derify/ModChemBERT-MLM-DAPT-TAFT
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:chemistry][classification] ModernBERT-style chemistry encoder
+    (SMILES MLM); property-prediction / embedding workflows.'
 - id: cambridgeltl/SapBERT-from-PubMedBERT-fulltext
   hf_repo: cambridgeltl/SapBERT-from-PubMedBERT-fulltext
   tier: G
@@ -118,9 +148,9 @@ models:
   licence: MIT
   requires_auth: false
   commit_sha: null
-  notes: '[ollama:deepseek-r1:32b-class] [discipline:strategic_reasoning][game_theory]
-    Full-precision parent of tensorblock DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF;
-    archive for non-quant workflows.'
+  notes: '[ollama:deepseek-r1:32b-qwen-distill-q4_K_M] [discipline:strategic_reasoning][game_theory]
+    Official Ollama Q4 distill (use this tag; avoid placeholder 32b-class). Full-precision
+    HF parent of tensorblock DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF; archive for non-quant workflows.'
 - id: Qwen/QwQ-32B
   hf_repo: Qwen/QwQ-32B
   tier: G
@@ -219,6 +249,68 @@ models:
   commit_sha: null
   notes: '[discipline:legal][classification] Specialist legal instruct model from
     LLM_ARCHIVE_v2; small-first anchor.'
+- id: nlpaueb/legal-bert-base-uncased
+  hf_repo: nlpaueb/legal-bert-base-uncased
+  tier: B
+  drive: d3
+  priority: 1
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:legal][classification] Legal-domain BERT (EU legislation + ECHR);
+    encoder for IR / classification / NER; complements Saul generative line.'
+- id: nlpaueb/legal-bert-small-uncased
+  hf_repo: nlpaueb/legal-bert-small-uncased
+  tier: B
+  drive: d3
+  priority: 1
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:legal][classification] Small Legal-BERT; fast legal-text encoding
+    baseline.'
+- id: pile-of-law/legalbert-large-1.7M-2
+  hf_repo: pile-of-law/legalbert-large-1.7M-2
+  tier: B
+  drive: d3
+  priority: 1
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:legal][classification] RoBERTa-large LegalBERT on Pile of Law
+    (English legal/admin text); CC BY-NC-SA dataset terms — review model card before
+    commercial use.'
+- id: ibm-granite/granite-3.3-8b-instruct
+  hf_repo: ibm-granite/granite-3.3-8b-instruct
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:management][enterprise] IBM Granite 8B instruct — long-context
+    enterprise doc QA, summarization, structured extraction; general management /
+    ops writing baseline.'
+- id: AdaptLLM/finance-chat
+  hf_repo: AdaptLLM/finance-chat
+  tier: G
+  drive: d3
+  priority: 2
+  licence: llama2
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:management][finance] Finance-domain dialogue LLM; Llama-2 lineage
+    — confirm HF licence / acceptable-use before commercial deployment.'
+- id: ProsusAI/finbert
+  hf_repo: ProsusAI/finbert
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:management][finance][classification] FinBERT encoder for financial
+    sentiment / NLP on earnings and filings; pairs with finance-chat generative line.'
 - id: google/gemma-3-4b-it
   hf_repo: google/gemma-3-4b-it
   tier: F
@@ -632,6 +724,74 @@ models:
   commit_sha: null
   notes: '[discipline:math] DeepSeek Math 7B instruct — distinct from Mathstral/Qwen2.5-Math
     line; RL-tuned math reasoning.'
+- id: Qwen/Qwen2.5-Math-1.5B-Instruct
+  hf_repo: Qwen/Qwen2.5-Math-1.5B-Instruct
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] Instruct variant of Qwen2.5-Math-1.5B; pairs with base
+    Qwen/Qwen2.5-Math-1.5B for SFT vs pretrain.'
+- id: Qwen/Qwen2-Math-7B-Instruct
+  hf_repo: Qwen/Qwen2-Math-7B-Instruct
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] Prior-gen Qwen2 math instruct; useful cross-check vs Qwen2.5-Math-7B.'
+- id: AI-MO/NuminaMath-7B-TIR
+  hf_repo: AI-MO/NuminaMath-7B-TIR
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] Tool-integrated reasoning (TIR); olympiad / competition
+    math line from AI-MO.'
+- id: AI-MO/NuminaMath-7B-CoT
+  hf_repo: AI-MO/NuminaMath-7B-CoT
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] Chain-of-thought math specialist; pairs with NuminaMath-7B-TIR.'
+- id: qingy2019/Qwen2.5-Math-14B-Instruct
+  hf_repo: qingy2019/Qwen2.5-Math-14B-Instruct
+  tier: G
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] Community Qwen2.5-Math-14B instruct (Apache-2.0 on HF);
+    mid-size step between 7B specialists and 72B main-registry line.'
+- id: meta-math/MetaMath-Mistral-7B
+  hf_repo: meta-math/MetaMath-Mistral-7B
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] MetaMath rewrite data on Mistral-7B; strong GSM8K/MATH-style
+    baseline next to WizardMath / Qwen math.'
+- id: WizardLMTeam/WizardMath-7B-V1.1
+  hf_repo: WizardLMTeam/WizardMath-7B-V1.1
+  tier: G
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:math] WizardMath 7B; verify HF model card license / base weights
+    (Mistral-class build per HF tags).'
 - id: EleutherAI/llemma_7b
   hf_repo: EleutherAI/llemma_7b
   tier: G
@@ -652,6 +812,86 @@ models:
   commit_sha: null
   notes: '[discipline:science] Open 7B LM for reproducible science / NLP research
     workflows.'
+- id: allenai/OLMo-2-1124-7B-Instruct
+  hf_repo: allenai/OLMo-2-1124-7B-Instruct
+  tier: G
+  drive: d3
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science] Instruct variant of OLMo-2-1124-7B; reproducible open
+    science / NLP experiments and SFT baselines.'
+- id: allenai/scibert_scivocab_uncased
+  hf_repo: allenai/scibert_scivocab_uncased
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][classification] SciBERT uncased — scientific paper / abstract
+    NLP (NER, classification, search features).'
+- id: m3rg-iitd/matscibert
+  hf_repo: m3rg-iitd/matscibert
+  tier: B
+  drive: d3
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][materials] MatSciBERT — materials-science language encoder
+    for abstracts and property extraction.'
+- id: nvidia/OpenMath-Nemotron-1.5B
+  hf_repo: nvidia/OpenMath-Nemotron-1.5B
+  tier: G
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][math] NVIDIA OpenMath Nemotron 1.5B; CC-BY-4.0 on HF —
+    STEM math tooling / small reasoning anchor.'
+- id: nvidia/OpenMath-Nemotron-7B
+  hf_repo: nvidia/OpenMath-Nemotron-7B
+  tier: G
+  drive: d3
+  priority: 2
+  licence: other
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][math] OpenMath Nemotron 7B; CC-BY-4.0 — complements Qwen
+    / DeepSeek math lines with NVIDIA open weights.'
+- id: TIGER-Lab/MAmmoTH2-8B
+  hf_repo: TIGER-Lab/MAmmoTH2-8B
+  tier: G
+  drive: d3
+  priority: 2
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][math] MAmmoTH2 8B — tool-augmented math / science reasoning
+    (MIT licence on HF).'
+- id: Snowflake/snowflake-arctic-embed-l-v2.0
+  hf_repo: Snowflake/snowflake-arctic-embed-l-v2.0
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][embeddings] Arctic Embed L v2 — strong retrieval for
+    technical / doc corpora; distinct from core-queue snowflake-arctic-embed-m-long.'
+- id: HuggingFaceTB/fineweb-edu-classifier
+  hf_repo: HuggingFaceTB/fineweb-edu-classifier
+  tier: B
+  drive: d3
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:science][classification] FineWeb educational-quality classifier
+    — filter/rank STEM training and research text (small DeBERTa-style encoder).'
 - id: stanford-crfm/BioMedLM
   hf_repo: stanford-crfm/BioMedLM
   tier: G
@@ -680,8 +920,8 @@ models:
   licence: Gemma-ToU
   requires_auth: true
   commit_sha: null
-  notes: '[discipline:biomedical] MedGemma 27B text — Health AI Developer Foundation
-    ToU on HF; also in main registry.yaml'
+  notes: '[discipline:biomedical] MedGemma 27B text — Health AI Developer Foundation ToU on HF;
+    archival via HF (Ollama `alibayram/medgemma:27b` not queued). Also in main registry.yaml'
 - id: google/medgemma-4b-it
   hf_repo: google/medgemma-4b-it
   tier: F
@@ -690,7 +930,9 @@ models:
   licence: Gemma-ToU
   requires_auth: true
   commit_sha: null
-  notes: '[discipline:biomedical][vision] MedGemma 4B multimodal; also in main registry.yaml'
+  notes: '[ollama:alibayram/medgemma:4b] [discipline:biomedical][vision] MedGemma 4B multimodal;
+    Ollama: community `alibayram/medgemma:4b` (~2.5 GB manifest); verify licence. Also in
+    main registry.yaml'
 - id: google/medgemma-27b-it
   hf_repo: google/medgemma-27b-it
   tier: F
@@ -699,7 +941,9 @@ models:
   licence: Gemma-ToU
   requires_auth: true
   commit_sha: null
-  notes: '[discipline:biomedical][vision] MedGemma 27B multimodal; also in main registry.yaml'
+  notes: '[discipline:biomedical][vision] MedGemma 27B multimodal; prefer HF archival (e.g.
+    `google/medgemma-27b-it`) — Ollama community 27B fallback not on target queue. Also in main
+    registry.yaml'
 - id: emilyalsentzer/Bio_ClinicalBERT
   hf_repo: emilyalsentzer/Bio_ClinicalBERT
   tier: B

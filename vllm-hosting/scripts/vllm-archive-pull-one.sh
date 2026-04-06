@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Pull the next single HF repo from vllm-archive-manifest.yaml (sequential queue).
+# Pull the next single HF repo from vllm-immediate-targets.yaml (focused >21B queue).
+# Full catalog: pass --manifest .../vllm-archive-manifest.yaml to the Python script.
 # Run on archival VM after: source vllm-hosting/config/env-archive-vm-vllm.sh
 #
 # Default: trickle 2048 KiB/s down (~2 MiB/s). Override: THROTTLE_KBPS=4096 USE_TRICKLE=1
