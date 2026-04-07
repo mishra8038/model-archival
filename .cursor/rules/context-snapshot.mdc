@@ -1,0 +1,27 @@
+---
+description: Context snapshot handoff via repo-root .dump/ — reload prior thread state without transcripts.
+alwaysApply: true
+---
+
+# Context snapshot (`.dump/`)
+
+This repository uses **`.dump/`** at the **workspace root** for a **user-edited context snapshot**.
+
+## Reading
+
+- When the user asks to **reload context**, **continue where we left off**, **restore the snapshot**, or **@-references** a path under **`.dump/`**, read **only** the referenced file(s). Do **not** bulk-enumerate **`.dump/`** unless the user asks.
+- Default handoff file: **`.dump/CONTEXT_SNAPSHOT.md`**. Dated checkpoints: **`.dump/YYYY-MM-DD-context.md`** (if present).
+- Treat the snapshot as **hints**: verify against the codebase when something may be stale.
+
+## Writing
+
+- After substantive work, if the user wants continuity, **offer** to refresh **`.dump/CONTEXT_SNAPSHOT.md`** (or add a dated **`.dump/YYYY-MM-DD-context.md`**) using the template already in **`CONTEXT_SNAPSHOT.md`**.
+- Keep snapshots **compact** (goal, decisions, files touched, open items, **one** next step). No secrets.
+
+## Indexing
+
+- **`.dump/`** is **not** listed in **`.cursorignore`** so **@-search** can find these files. If a snapshot ever contains sensitive material, split: public template here, private notes elsewhere (and/or **`.gitignore`**).
+
+## Global rule
+
+- Cross-project behavior is also described in **`~/z/env/ai/cursor/rules/chat-context-and-transcripts.mdc`** (section **Context snapshot**).

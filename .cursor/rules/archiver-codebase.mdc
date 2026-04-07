@@ -7,6 +7,8 @@ alwaysApply: true
 
 **Compact map for agents:** `model-archival/docs/AI_CONTEXT.md` and `model-archival/AGENTS.md` — read before whole-repo exploration.
 
+**Cross-session context snapshot:** repo root **`.dump/CONTEXT_SNAPSHOT.md`** — user-maintained handoff; read when @-referenced or when the user asks to reload context (**`context-snapshot.mdc`**).
+
 ## Project structure
 
 ```

@@ -11,11 +11,13 @@ Mirrors **`~/z/env/ai/cursor/rules/chat-context-and-transcripts.mdc`** and **`me
 
 - Do **not** bulk-read **`~/.cursor/projects/.../agent-transcripts/`** or **`.chat/`**.
 - Prefer **`docs/AGENT_TRANSCRIPT_SUMMARY.md`**, then **`docs/AGENT_TRANSCRIPT_DIGEST.md`** if present, then **`docs/AI_CONTEXT.md`**, **`AGENTS.md`**, **`docs/PROJECT_PROMPT.md`**.
+- **Context snapshot:** when the user @-mentions **`.dump/`** or asks to reload prior context, read **`.dump/CONTEXT_SNAPSHOT.md`** (or the dated file they name). See **`context-snapshot.mdc`**.
 
 ## Writing
 
 - Compact session notes: **`.chat/YYYY-MM-DD-topic.md`**.
 - Substantive outcomes: append to **`docs/AGENT_TRANSCRIPT_SUMMARY.md`**.
+- Optional cross-session handoff: update **`.dump/CONTEXT_SNAPSHOT.md`** (see **`context-snapshot.mdc`**).
 
 ## Indexing
 
