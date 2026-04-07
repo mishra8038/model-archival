@@ -4,6 +4,8 @@
 **Primary script:** `../scripts/ollama-sync.sh`  
 **Policy:** **Additive archive** — rsync **never** uses `--delete*`; destination files absent from the source are retained.
 
+**Inverse:** there is **no** operational rsync of pull kits, registry, or Ollama trees **from the archival VM to Supermicro** — VM is sink-only for this job; refresh Supermicro from git (`deploy-ollama-pull-kit-to-supermicro.sh`). See **`OLLAMA-ARCHIVE-WORKFLOW.md`**.
+
 ## Actors and paths
 
 | Role | Default SSH | Default path |

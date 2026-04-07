@@ -203,6 +203,24 @@ models:
   licence: Gemma-ToU
   requires_auth: true
   commit_sha: null
+- id: google/gemma-4-31B
+  hf_repo: google/gemma-4-31B
+  tier: F
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 31B dense base; 256K ctx.
+- id: google/gemma-4-31B-it
+  hf_repo: google/gemma-4-31B-it
+  tier: F
+  drive: d1
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Gemma 4 31B dense instruct for vLLM/Transformers workflows.
 - id: google/medgemma-27b-text-it
   hf_repo: google/medgemma-27b-text-it
   tier: G

@@ -8,6 +8,10 @@
 
 This file is the **conceptual source of truth** for that loop. **Machine-readable state** for “what we want, what pulled, what landed on archive, what we cleared locally” lives in **`OLLAMA_MODEL_REGISTRY.json`**, updated with **`ollama_registry_tool.py`** (see below). Heavy automation (rsync, integrity, inventory YAML) stays in **`model-archival/ollama-hosting`**.
 
+### Policy: one-way from archival VM to Supermicro (weights and kits)
+
+**Do not** rsync, scp, or otherwise **deploy from the archival VM back to Supermicro** — no pushing the pull kit, registry edits, or Ollama trees from `192.168.8.65` → `192.168.8.106`. The archive VM is a **sink** for blobs and HF data; Supermicro is refreshed from **git + workstation** (or CI) via **`deploy-ollama-pull-kit-to-supermicro.sh`**, and weight flow is **Supermicro → archival VM** only (`ollama-sync.sh` / `ollama-registry-sync`).
+
 ### Operator sequence (expected)
 
 1. **Finalize queue** in **`registry/`** (this repo).

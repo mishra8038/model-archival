@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Push canonical pull queue + registry + on-host pull scripts to Supermicro: ~/z/dev/ollama/
 #
+# Source of truth for this push: this git repo (or your workstation clone) — NOT the archival VM.
+# Policy: never deploy Ollama kit/registry from the archive VM back to Supermicro; VM is sink-only
+# for synced weights; refresh Supermicro from git via this script (or equivalent rsync from dev).
+#
 # Expected layout on the GPU host (after deploy):
 #   ~/z/dev/ollama/registry/{OLLAMA_MODEL_REGISTRY.json,ollama_registry_tool.py,...}
 #   ~/z/dev/ollama/scripts/{ollama-pull-queue,...}

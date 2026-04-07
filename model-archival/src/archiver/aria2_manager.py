@@ -68,18 +68,24 @@ class Aria2Manager:
         bandwidth_schedule: Optional[BandwidthSchedule] = None,
         port: int = ARIA2_PORT,
         secret: str = ARIA2_SECRET,
+        taper_after_seconds: Optional[float] = None,
+        taper_to_mbps: Optional[float] = None,
     ) -> None:
         self.tmp_dir = tmp_dir
         self.connections_per_file = connections_per_file
         self.max_concurrent = max_concurrent
         self.max_overall_download_limit_mbps = max_overall_download_limit_mbps
         self.bandwidth_schedule = bandwidth_schedule
+        self.taper_after_seconds = taper_after_seconds
+        self.taper_to_mbps = taper_to_mbps
         self.port = port
         self.secret = secret
         self._proc: Optional[subprocess.Popen] = None
         self._api: Optional[aria2p.API] = None
         self._schedule_stop = threading.Event()
         self._schedule_thread: Optional[threading.Thread] = None
+        self._taper_stop = threading.Event()
+        self._taper_thread: Optional[threading.Thread] = None
         self._last_applied_limit_mbps: Optional[float] = None
 
     # ------------------------------------------------------------------
@@ -134,6 +140,16 @@ class Aria2Manager:
             aria2p.Client(host="http://localhost", port=self.port, secret=self.secret)
         )
         for _ in range(20):
+            # If port 6800 is still held by a *stale* aria2 from a crashed/killed archiver,
+            # our child exits immediately but RPC still answers — we would then talk to the
+            # old daemon and keep its bandwidth cap (e.g. 1 MiB/s). Fail fast instead.
+            if self._proc.poll() is not None:
+                code = self._proc.returncode
+                raise RuntimeError(
+                    f"aria2c exited on startup (exit {code}) — port {self.port} is probably "
+                    "in use by another aria2c. Stop the stale daemon "
+                    f"(e.g. `pkill -f 'aria2c.*rpc-listen-port={self.port}'`) and retry."
+                )
             try:
                 self._api.get_stats()
                 log.info("aria2c daemon ready")
@@ -146,6 +162,27 @@ class Aria2Manager:
                         daemon=True,
                     )
                     self._schedule_thread.start()
+                elif (
+                    self.taper_after_seconds is not None
+                    and self.taper_after_seconds > 0
+                    and self.taper_to_mbps is not None
+                    and self.taper_to_mbps > 0
+                    and self.max_overall_download_limit_mbps is not None
+                    and self.max_overall_download_limit_mbps > 0
+                ):
+                    self._taper_stop.clear()
+                    self._taper_thread = threading.Thread(
+                        target=self._bandwidth_taper_loop,
+                        name="aria2-bandwidth-taper",
+                        daemon=True,
+                    )
+                    self._taper_thread.start()
+                    log.info(
+                        "Bandwidth taper: %.4g MB/s for %.0f s, then %.4g MB/s",
+                        self.max_overall_download_limit_mbps,
+                        self.taper_after_seconds,
+                        self.taper_to_mbps,
+                    )
                 return
             except Exception:
                 time.sleep(0.5)
@@ -153,9 +190,13 @@ class Aria2Manager:
 
     def stop(self) -> None:
         self._schedule_stop.set()
+        self._taper_stop.set()
         if self._schedule_thread is not None:
             self._schedule_thread.join(timeout=5)
             self._schedule_thread = None
+        if self._taper_thread is not None:
+            self._taper_thread.join(timeout=5)
+            self._taper_thread = None
         if self._proc is not None:
             log.info("Stopping aria2c daemon (pid %d)", self._proc.pid)
             try:
@@ -281,11 +322,13 @@ class Aria2Manager:
         if not force and limit_mbps == self._last_applied_limit_mbps:
             return
 
-        options = {
-            "max-overall-download-limit": "0"
-            if limit_mbps is None or limit_mbps <= 0
-            else f"{int(limit_mbps)}M"
-        }
+        # Use bytes/sec (same as aria2 CLI) so RPC matches startup argv and sub-integer
+        # caps (e.g. 0.75 MB/s) are not truncated by int() + "M".
+        if limit_mbps is None or limit_mbps <= 0:
+            limit_opt = "0"
+        else:
+            limit_opt = str(int(round(limit_mbps * 1024 * 1024)))
+        options = {"max-overall-download-limit": limit_opt}
         self.api.set_global_options(options)
         self._last_applied_limit_mbps = limit_mbps
 
@@ -300,3 +343,28 @@ class Aria2Manager:
                 self._apply_bandwidth_policy()
             except Exception as exc:
                 log.warning("Failed to refresh bandwidth cap schedule: %s", exc)
+
+    def _bandwidth_taper_loop(self) -> None:
+        """After ``taper_after_seconds``, lower flat cap to ``taper_to_mbps`` (aria2 RPC)."""
+        assert self.taper_after_seconds is not None and self.taper_after_seconds > 0
+        deadline = time.monotonic() + float(self.taper_after_seconds)
+        while time.monotonic() < deadline:
+            remaining = deadline - time.monotonic()
+            if self._taper_stop.wait(timeout=min(1.0, max(0.01, remaining))):
+                return
+        if self._proc is not None and self._proc.poll() is not None:
+            return
+        if self._api is None:
+            return
+        prev = self.max_overall_download_limit_mbps
+        self.max_overall_download_limit_mbps = self.taper_to_mbps
+        try:
+            log.info(
+                "Bandwidth taper: after %.0f s, cap %.4g → %.4g MB/s",
+                self.taper_after_seconds,
+                prev or 0,
+                self.taper_to_mbps,
+            )
+            self._apply_bandwidth_policy(force=True)
+        except Exception as exc:
+            log.warning("Bandwidth taper apply failed: %s", exc)

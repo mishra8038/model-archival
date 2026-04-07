@@ -80,6 +80,10 @@ class RunState:
             entry = self._data["models"].setdefault(model_id, {})
             entry["status"] = status
             entry["updated_at"] = datetime.now(timezone.utc).isoformat()
+            # New in-flight attempt must not keep a stale `error` from a prior failed run
+            # (operators and tooling read run_state.json directly).
+            if status == STATUS_IN_PROGRESS:
+                entry.pop("error", None)
             if commit_sha:
                 entry["commit_sha"] = commit_sha
             if total_bytes is not None:

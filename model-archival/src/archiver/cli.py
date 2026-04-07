@@ -237,6 +237,19 @@ def cli(ctx: click.Context, registry: str, drives: str, verbose: bool) -> None:
               help="Only add another model if aggregate/(n+1) >= this (MB/s; ignored in serial queue mode)")
 @click.option("--bandwidth-cap", type=float, default=None, help="Total bandwidth cap in MB/s (0.75 = 6 Mbps)")
 @click.option(
+    "--bandwidth-taper-after-seconds",
+    type=float,
+    default=None,
+    help="After this many seconds from aria2 start, lower --bandwidth-cap to "
+         "--bandwidth-taper-to-mbps (flat cap only; not with scheduled bandwidth).",
+)
+@click.option(
+    "--bandwidth-taper-to-mbps",
+    type=float,
+    default=None,
+    help="Second-phase cap (MB/s) after --bandwidth-taper-after-seconds.",
+)
+@click.option(
     "--queue-mode",
     type=click.Choice(["adaptive", "serial"]),
     default="adaptive",
@@ -299,6 +312,8 @@ def cmd_download(
     max_per_drive: int,
     min_speed_mbps: float,
     bandwidth_cap: Optional[float],
+    bandwidth_taper_after_seconds: Optional[float],
+    bandwidth_taper_to_mbps: Optional[float],
     queue_mode: str,
     scheduled_bandwidth_cap: Optional[float],
     scheduled_bandwidth_window: Optional[str],
@@ -354,6 +369,17 @@ def cmd_download(
             "Provide both --scheduled-bandwidth-cap and --scheduled-bandwidth-window."
         )
 
+    if (bandwidth_taper_after_seconds is not None) != (bandwidth_taper_to_mbps is not None):
+        raise click.UsageError(
+            "Provide both --bandwidth-taper-after-seconds and --bandwidth-taper-to-mbps, or neither."
+        )
+    if bandwidth_taper_after_seconds is not None:
+        assert bandwidth_taper_to_mbps is not None
+        if bandwidth_taper_after_seconds <= 0:
+            raise click.UsageError("--bandwidth-taper-after-seconds must be positive.")
+        if bandwidth_taper_to_mbps <= 0:
+            raise click.UsageError("--bandwidth-taper-to-mbps must be positive.")
+
     bandwidth_schedule: Optional[BandwidthSchedule] = None
     if scheduled_bandwidth_cap is not None and scheduled_bandwidth_window is not None:
         start_time, end_time = _parse_bandwidth_window(scheduled_bandwidth_window)
@@ -362,6 +388,14 @@ def cmd_download(
             start_time=start_time,
             end_time=end_time,
         )
+
+    if bandwidth_taper_after_seconds is not None and bandwidth_schedule is not None:
+        raise click.UsageError(
+            "Do not combine bandwidth taper with --scheduled-bandwidth-cap / --scheduled-bandwidth-window."
+        )
+    if bandwidth_taper_after_seconds is not None:
+        if bandwidth_cap is None or bandwidth_cap <= 0:
+            raise click.UsageError("Bandwidth taper requires --bandwidth-cap > 0.")
 
     # Approximate aggregate cap: aria2 applies a global limit for LFS. Hub/XET does not share
     # that knob; disabling hf_transfer env opt-in avoids huge bursts past the intended ballpark.
@@ -471,6 +505,8 @@ def cmd_download(
         "max_per_drive": effective_max_per_drive,
         "min_speed_mbps": effective_min_speed_mbps,
         "bandwidth_cap": bandwidth_cap or "unlimited",
+        "bandwidth_taper_after_seconds": bandwidth_taper_after_seconds or "disabled",
+        "bandwidth_taper_to_mbps": bandwidth_taper_to_mbps or "disabled",
         "scheduled_bandwidth_cap": scheduled_bandwidth_cap or "disabled",
         "scheduled_bandwidth_window": scheduled_bandwidth_window or "disabled",
         "hf_token": "set" if hf_token else "not set",
@@ -512,6 +548,8 @@ def cmd_download(
         tmp_dir=tmp_dir,
         max_overall_download_limit_mbps=bandwidth_cap,
         bandwidth_schedule=bandwidth_schedule,
+        taper_after_seconds=bandwidth_taper_after_seconds,
+        taper_to_mbps=bandwidth_taper_to_mbps,
     ) as aria2:
         downloader = Downloader(
             aria2=aria2,

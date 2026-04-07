@@ -298,6 +298,30 @@ class StatusDisplay:
         else:
             lines.append("| — | — | — |")
 
+        # run_state can still say in_progress after a crash/kill — no live scheduler → no real throughput.
+        live_active = bool(stats and stats.active)
+        if not live_active:
+            zombies: list[tuple[str, str, str]] = []
+            for m in self.registry.models:
+                data = self.state.get_model_data(m.id)
+                if data.get("status") != "in_progress":
+                    continue
+                err = data.get("error") or data.get("last_error") or ""
+                zombies.append((m.id, (data.get("drive") or m.drive or "?"), err))
+            if zombies:
+                lines += [
+                    "",
+                    "### Persisted in_progress (stale — archiver not running)",
+                    "_These rows are from `run_state.json` only. Throughput above is not real._",
+                    "",
+                    "| Model | Drive | Last note |",
+                    "|-------|-------|-----------|",
+                ]
+                for mid, drv, err in zombies:
+                    note = (err[:120] + "…") if len(err) > 120 else (err or "—")
+                    note = note.replace("|", " ")
+                    lines.append(f"| {mid} | {str(drv).upper()} | {note} |")
+
         lines += ["", "## Completed Models",
                   "| Model | Tier | Drive | Size | Status | Completed At |",
                   "|-------|------|-------|------|--------|--------------|"]

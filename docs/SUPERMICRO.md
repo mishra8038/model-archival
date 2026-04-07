@@ -14,6 +14,8 @@ This document situates the **Supermicro 1028GQ-TXR** in the model-archival monor
 
 Supermicro is **not** the primary home of `run_state.json` or the HF archiver; it is the **hot inference + Ollama pull** box. After models are copied to the archival VM, you may prune the Supermicro cache per **`ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`**.
 
+**Deploy direction:** do **not** push pull kits, registry files, or Ollama data **from the archival VM to Supermicro**. Treat the VM as archive-only for that flow; update Supermicro from **git** (e.g. **`ollama-hosting/scripts/deploy-ollama-pull-kit-to-supermicro.sh`** from a dev machine). See **`ollama-hosting/docs/OLLAMA-ARCHIVE-WORKFLOW.md`**.
+
 ---
 
 ## Canonical paths

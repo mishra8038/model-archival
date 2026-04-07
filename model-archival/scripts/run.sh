@@ -24,6 +24,8 @@
 #   --skip-env-check      Skip the environment pre-check step
 #   --skip-verify         Skip the post-download integrity verification step
 #   --bandwidth-cap N     Cap bandwidth at N MB/s 24/7 (default 4; disables schedule)
+#   --bandwidth-taper-after-seconds S   After S seconds, lower cap to --bandwidth-taper-to-mbps (flat cap only)
+#   --bandwidth-taper-to-mbps N         Second-phase cap (requires taper-after-seconds; not with scheduled cap)
 #   --no-scheduled-bandwidth-cap  Disable schedule (no cap unless --bandwidth-cap set)
 #   --scheduled-bandwidth-cap N   Cap in MB/s **during** the window below (default: 0.75)
 #   --scheduled-bandwidth-window W  Local time HH:MM-HH:MM when cap applies; **outside** = unlimited
@@ -115,6 +117,9 @@ SKIP_VERIFY=false
 # Default flat cap (MB/s), 24/7; clears scheduled day/night cap below. Override: `--bandwidth-cap N`.
 # To use scheduled cap instead, set `BANDWIDTH_CAP=""` here and tune SCHEDULED_* below.
 BANDWIDTH_CAP="4"
+# Optional: after N seconds at BANDWIDTH_CAP, aria2 switches to second cap (flat cap only; omit both to disable).
+BANDWIDTH_TAPER_AFTER_SEC=""
+BANDWIDTH_TAPER_TO_MBPS=""
 # Neighbor-friendly daytime cap; outside this local-time window aria2 is unlimited.
 SCHEDULED_BANDWIDTH_CAP="0.75"       # ~6 Mbps during the window
 SCHEDULED_BANDWIDTH_WINDOW="07:00-23:00"
@@ -150,6 +155,8 @@ while [[ $# -gt 0 ]]; do
         --skip-verify)      SKIP_VERIFY=true;          shift ;;
         --skip-drive-space-check) SKIP_DRIVE_SPACE_CHECK=true; shift ;;
         --bandwidth-cap)    BANDWIDTH_CAP="$2";        shift 2 ;;
+        --bandwidth-taper-after-seconds) BANDWIDTH_TAPER_AFTER_SEC="$2"; shift 2 ;;
+        --bandwidth-taper-to-mbps)      BANDWIDTH_TAPER_TO_MBPS="$2"; shift 2 ;;
         --no-scheduled-bandwidth-cap) SCHEDULED_BANDWIDTH_CAP=""; SCHEDULED_BANDWIDTH_WINDOW=""; shift ;;
         --scheduled-bandwidth-cap) SCHEDULED_BANDWIDTH_CAP="$2"; shift 2 ;;
         --scheduled-bandwidth-window) SCHEDULED_BANDWIDTH_WINDOW="$2"; shift 2 ;;
@@ -173,6 +180,13 @@ if [[ -n "$BANDWIDTH_CAP" ]]; then
     SCHEDULED_BANDWIDTH_WINDOW=""
 fi
 
+if [[ -n "$BANDWIDTH_TAPER_AFTER_SEC" || -n "$BANDWIDTH_TAPER_TO_MBPS" ]]; then
+    if [[ -z "$BANDWIDTH_TAPER_AFTER_SEC" || -z "$BANDWIDTH_TAPER_TO_MBPS" ]]; then
+        echo "run.sh: provide both --bandwidth-taper-after-seconds and --bandwidth-taper-to-mbps, or neither."
+        exit 1
+    fi
+fi
+
 if [[ "$QUEUE_MODE" != "adaptive" && "$QUEUE_MODE" != "serial" ]]; then
     echo "Unknown queue mode: $QUEUE_MODE  (expected: adaptive or serial)"
     exit 1
@@ -188,6 +202,11 @@ init_report "run"        # creates run-report-<ts>.md in REPO_DIR via _common.sh
 _REPORT_FILE="$REPO_DIR/run-report-$(date +%Y-%m-%d_%H-%M-%S).md"
 # Re-write the header now that we have the correct path
 _REPORT_LINES=()
+if [[ -n "$BANDWIDTH_TAPER_AFTER_SEC" ]]; then
+    _TAPER_DESC="after ${BANDWIDTH_TAPER_AFTER_SEC}s → ${BANDWIDTH_TAPER_TO_MBPS} MB/s"
+else
+    _TAPER_DESC="disabled"
+fi
 _rpt "# Archiver Run — Orchestration Report"
 _rpt ""
 _rpt "| Field | Value |"
@@ -203,6 +222,7 @@ _rpt "| Tier filter | ${TIER:-all} |"
 _rpt "| Download all | $DOWNLOAD_ALL |"
 _rpt "| Rehash verify | $REHASH |"
 _rpt "| Bandwidth cap (24/7) | ${BANDWIDTH_CAP:-(use schedule)} MB/s |"
+_rpt "| Bandwidth taper | $_TAPER_DESC |"
 _rpt "| Scheduled cap (inside window) | ${SCHEDULED_BANDWIDTH_CAP:-disabled} MB/s |"
 _rpt "| Scheduled cap window (local) | ${SCHEDULED_BANDWIDTH_WINDOW:-disabled} (outside window = unlimited) |"
 _rpt "| Queue mode | $QUEUE_MODE |"
@@ -232,7 +252,11 @@ info "Rehash:       $REHASH"
 info "Queue mode:   $QUEUE_MODE"
 [[ -n "$MAX_PER_DRIVE" ]] && info "Max per drive:  $MAX_PER_DRIVE"
 if [[ -n "$BANDWIDTH_CAP" ]]; then
-    info "Bandwidth:    ${BANDWIDTH_CAP} MB/s (24/7 cap)"
+    if [[ -n "$BANDWIDTH_TAPER_AFTER_SEC" ]]; then
+        info "Bandwidth:    ${BANDWIDTH_CAP} MB/s, then ${BANDWIDTH_TAPER_TO_MBPS} MB/s after ${BANDWIDTH_TAPER_AFTER_SEC}s"
+    else
+        info "Bandwidth:    ${BANDWIDTH_CAP} MB/s (24/7 cap)"
+    fi
 elif [[ -n "$SCHEDULED_BANDWIDTH_CAP" && -n "$SCHEDULED_BANDWIDTH_WINDOW" ]]; then
     info "Bandwidth:    ${SCHEDULED_BANDWIDTH_CAP} MB/s during ${SCHEDULED_BANDWIDTH_WINDOW} local; unlimited outside"
 else
@@ -451,6 +475,8 @@ DOWNLOAD_ARGS=("--all")   # always pass --all; filters narrow it down
 [[ -n "$TIER" ]]          && DOWNLOAD_ARGS+=("--tier" "$TIER")
 [[ -n "$PRIORITY_ONLY" ]] && DOWNLOAD_ARGS+=("--priority-only" "$PRIORITY_ONLY")
 [[ -n "$BANDWIDTH_CAP" ]] && DOWNLOAD_ARGS+=("--bandwidth-cap" "$BANDWIDTH_CAP")
+[[ -n "$BANDWIDTH_TAPER_AFTER_SEC" ]] && DOWNLOAD_ARGS+=("--bandwidth-taper-after-seconds" "$BANDWIDTH_TAPER_AFTER_SEC")
+[[ -n "$BANDWIDTH_TAPER_TO_MBPS" ]] && DOWNLOAD_ARGS+=("--bandwidth-taper-to-mbps" "$BANDWIDTH_TAPER_TO_MBPS")
 if [[ -z "$BANDWIDTH_CAP" && -n "$SCHEDULED_BANDWIDTH_CAP" && -n "$SCHEDULED_BANDWIDTH_WINDOW" ]]; then
     DOWNLOAD_ARGS+=(
         "--scheduled-bandwidth-cap" "$SCHEDULED_BANDWIDTH_CAP"

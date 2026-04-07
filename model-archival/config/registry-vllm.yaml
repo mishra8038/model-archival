@@ -14,7 +14,7 @@ models:
   hf_repo: FINGU-AI/RomboUltima-32B
   tier: D
   drive: d5_vllm
-  priority: 10
+  priority: 1
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -23,7 +23,7 @@ models:
   hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
   tier: D
   drive: d5_vllm
-  priority: 20
+  priority: 1
   licence: MIT
   requires_auth: false
   commit_sha: null
@@ -32,7 +32,7 @@ models:
   hf_repo: huihui-ai/Mistral-Small-24B-Instruct-2501-abliterated
   tier: D
   drive: d5_vllm
-  priority: 30
+  priority: 1
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -41,7 +41,7 @@ models:
   hf_repo: huihui-ai/Qwen2.5-14B-Instruct-abliterated-v2
   tier: D
   drive: d5_vllm
-  priority: 40
+  priority: 1
   licence: apache-2.0
   requires_auth: false
   commit_sha: null
@@ -50,16 +50,34 @@ models:
   hf_repo: TechxGenus/starcoder2-15b-instruct
   tier: G
   drive: d5_vllm
-  priority: 50
+  priority: 1
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
   notes: '[vllm-target-list-2][code] Community StarCoder2 instruct; verify HF card (BigCode lineage)'
+- id: google/gemma-4-31B
+  hf_repo: google/gemma-4-31B
+  tier: F
+  drive: d5_vllm
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][gemma-dense] Added for dense Gemma 4 base coverage'
+- id: google/gemma-4-31B-it
+  hf_repo: google/gemma-4-31B-it
+  tier: F
+  drive: d5_vllm
+  priority: 1
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][gemma-dense] Added for dense Gemma 4 instruct coverage'
 - id: meta-llama/Llama-3.2-11B-Vision-Instruct
   hf_repo: meta-llama/Llama-3.2-11B-Vision-Instruct
   tier: F
   drive: d5_vllm
-  priority: 60
+  priority: 2
   licence: llama3.2
   requires_auth: true
   commit_sha: null
@@ -68,7 +86,7 @@ models:
   hf_repo: ibm-granite/granite-3.3-8b-instruct
   tier: G
   drive: d5_vllm
-  priority: 70
+  priority: 2
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -77,7 +95,7 @@ models:
   hf_repo: AdaptLLM/finance-chat
   tier: G
   drive: d5_vllm
-  priority: 80
+  priority: 2
   licence: llama2
   requires_auth: false
   commit_sha: null
@@ -86,7 +104,7 @@ models:
   hf_repo: Alibaba-NLP/gte-Qwen2-7B-instruct
   tier: B
   drive: d5_vllm
-  priority: 90
+  priority: 2
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -95,7 +113,7 @@ models:
   hf_repo: allenai/OLMo-2-1124-7B-Instruct
   tier: G
   drive: d5_vllm
-  priority: 100
+  priority: 2
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -104,7 +122,7 @@ models:
   hf_repo: intfloat/e5-mistral-7b-instruct
   tier: B
   drive: d5_vllm
-  priority: 110
+  priority: 2
   licence: MIT
   requires_auth: false
   commit_sha: null
@@ -113,7 +131,7 @@ models:
   hf_repo: Snowflake/snowflake-arctic-embed-l-v2.0
   tier: B
   drive: d5_vllm
-  priority: 120
+  priority: 3
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -122,7 +140,7 @@ models:
   hf_repo: BAAI/bge-en-icl
   tier: B
   drive: d5_vllm
-  priority: 130
+  priority: 3
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -131,7 +149,7 @@ models:
   hf_repo: pile-of-law/legalbert-large-1.7M-2
   tier: B
   drive: d5_vllm
-  priority: 140
+  priority: 3
   licence: other
   requires_auth: false
   commit_sha: null
@@ -140,7 +158,7 @@ models:
   hf_repo: HuggingFaceTB/fineweb-edu-classifier
   tier: B
   drive: d5_vllm
-  priority: 150
+  priority: 3
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -149,7 +167,7 @@ models:
   hf_repo: language-plus-molecules/molt5-base-smiles2caption-LPM24
   tier: G
   drive: d5_vllm
-  priority: 160
+  priority: 3
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -158,7 +176,7 @@ models:
   hf_repo: ProsusAI/finbert
   tier: B
   drive: d5_vllm
-  priority: 170
+  priority: 3
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -167,7 +185,7 @@ models:
   hf_repo: allenai/scibert_scivocab_uncased
   tier: B
   drive: d5_vllm
-  priority: 180
+  priority: 4
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
@@ -176,7 +194,7 @@ models:
   hf_repo: m3rg-iitd/matscibert
   tier: B
   drive: d5_vllm
-  priority: 190
+  priority: 4
   licence: MIT
   requires_auth: false
   commit_sha: null
@@ -185,7 +203,7 @@ models:
   hf_repo: DeepChem/ChemBERTa-77M-MLM
   tier: B
   drive: d5_vllm
-  priority: 200
+  priority: 4
   licence: MIT
   requires_auth: false
   commit_sha: null
@@ -194,7 +212,7 @@ models:
   hf_repo: Derify/ModChemBERT-MLM-DAPT-TAFT
   tier: B
   drive: d5_vllm
-  priority: 210
+  priority: 4
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null

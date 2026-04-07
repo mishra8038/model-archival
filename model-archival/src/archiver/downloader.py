@@ -258,130 +258,6 @@ class Downloader:
         return manifest
 
     # ------------------------------------------------------------------
-    # File resolution
-    # ------------------------------------------------------------------
-
-    def _resolve_files(self, model: ModelEntry) -> list[dict]:
-        """Query the HF API for the model's file list (same filters as the downloader)."""
-        return resolve_model_archive_files(model, self._api)
-
-
-def resolve_model_archive_files(model: ModelEntry, api: HfApi) -> list[dict]:
-    """
-    Query the HF API for files the archiver would download for *model*.
-    Returns list of dicts: {filename, url, size, commit_sha, lfs_sha256, storage, _hf_repo}
-    storage = "lfs" | "xet" | "direct"
-    """
-    revision = model.commit_sha or "main"
-
-    repo_info = api.repo_info(
-        repo_id=model.hf_repo,
-        revision=revision,
-        files_metadata=True,
-    )
-    commit_sha = repo_info.sha or revision
-
-    files = []
-    for sibling in (repo_info.siblings or []):
-        fname = sibling.rfilename
-
-        # Filter by file type
-        if model.tier in ("A", "B", "D"):
-            if not _is_weight_file(fname) and not _is_config_file(fname):
-                continue
-        if model.quant_levels:
-            if not any(q.upper() in fname.upper() for q in model.quant_levels):
-                if not _is_config_file(fname):
-                    continue
-
-        # Detect storage backend.
-        # sibling.lfs is populated for Git LFS files; None for XET and small direct files.
-        lfs_info = getattr(sibling, "lfs", None)
-        if lfs_info is not None:
-            storage = "lfs"
-            lfs_sha256 = getattr(lfs_info, "sha256", None)
-        else:
-            size = sibling.size or 0
-            storage = "xet" if size > 10 * 1024 * 1024 else "direct"
-            lfs_sha256 = None
-
-        url = hf_hub_url(
-            repo_id=model.hf_repo,
-            filename=fname,
-            revision=commit_sha,
-        )
-
-        files.append({
-            "filename": fname,
-            "url": url,
-            "size": sibling.size or 0,
-            "commit_sha": commit_sha,
-            "lfs_sha256": lfs_sha256,
-            "storage": storage,
-            "_hf_repo": model.hf_repo,
-        })
-
-    return files
-
-
-def estimate_remaining_download_bytes(
-    *,
-    file_infos: list[dict],
-    dest_dir: Path,
-    tmp_subdir: Path,
-    repo_base: Path,
-) -> tuple[int, int, int]:
-    """
-    Approximate bytes still to fetch for *file_infos* (HF sizes).
-
-    A file counts as done only when the final path exists and has a matching ``.sha256``
-    sidecar (same rule as the downloader). Otherwise we credit ``max`` bytes found on disk
-    under *dest_dir*, *tmp_subdir*, or any revision directory under *repo_base*.
-
-    Returns ``(remaining_bytes, total_hf_bytes, already_done_count)``.
-    XET/direct partials outside this layout (HF hub ``.incomplete`` cache) are not counted
-    as on-disk progress — estimates for XET-heavy repos may be high.
-
-    ``repo_base`` is ``.../<org>/<repo>`` (parent of revision directories).
-    """
-    total_hf = sum(int(f.get("size") or 0) for f in file_infos)
-    remaining = 0
-    done_n = 0
-
-    for fi in file_infos:
-        fname = fi["filename"]
-        expected = int(fi.get("size") or 0)
-        final_path = dest_dir / fname
-
-        if final_path.exists():
-            stored = read_sidecar(final_path)
-            if stored:
-                done_n += 1
-                continue
-
-        have = 0
-        candidates = [dest_dir / fname, tmp_subdir / fname]
-        if repo_base.is_dir():
-            try:
-                for rev in repo_base.iterdir():
-                    if rev.is_dir():
-                        candidates.append(rev / fname)
-            except OSError:
-                pass
-        for p in candidates:
-            try:
-                if p.is_file():
-                    have = max(have, p.stat().st_size)
-            except OSError:
-                pass
-
-        if expected <= 0:
-            continue
-        remaining += max(0, expected - have)
-
-    return remaining, total_hf, done_n
-
-    # ------------------------------------------------------------------
     # Download dispatch with retry
     # ------------------------------------------------------------------
 
@@ -541,7 +417,7 @@ def estimate_remaining_download_bytes(
             )
 
         final_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(tmp_path), final_path)
+        shutil.move(str(tmp_path), str(final_path))
         # Remove the now-stale .aria2 control file (download is complete).
         control = tmp_dir / (filename + ".aria2")
         if control.exists():
@@ -593,9 +469,133 @@ def estimate_remaining_download_bytes(
             )
 
         final_path.parent.mkdir(parents=True, exist_ok=True)
-        shutil.move(str(tmp_path), final_path)
+        shutil.move(str(tmp_path), str(final_path))
         write_sidecar(final_path, actual)
         return actual
+
+    # ------------------------------------------------------------------
+    # File resolution
+    # ------------------------------------------------------------------
+
+    def _resolve_files(self, model: ModelEntry) -> list[dict]:
+        """Query the HF API for the model's file list (same filters as the downloader)."""
+        return resolve_model_archive_files(model, self._api)
+
+
+def resolve_model_archive_files(model: ModelEntry, api: HfApi) -> list[dict]:
+    """
+    Query the HF API for files the archiver would download for *model*.
+    Returns list of dicts: {filename, url, size, commit_sha, lfs_sha256, storage, _hf_repo}
+    storage = "lfs" | "xet" | "direct"
+    """
+    revision = model.commit_sha or "main"
+
+    repo_info = api.repo_info(
+        repo_id=model.hf_repo,
+        revision=revision,
+        files_metadata=True,
+    )
+    commit_sha = repo_info.sha or revision
+
+    files = []
+    for sibling in (repo_info.siblings or []):
+        fname = sibling.rfilename
+
+        # Filter by file type
+        if model.tier in ("A", "B", "D"):
+            if not _is_weight_file(fname) and not _is_config_file(fname):
+                continue
+        if model.quant_levels:
+            if not any(q.upper() in fname.upper() for q in model.quant_levels):
+                if not _is_config_file(fname):
+                    continue
+
+        # Detect storage backend.
+        # sibling.lfs is populated for Git LFS files; None for XET and small direct files.
+        lfs_info = getattr(sibling, "lfs", None)
+        if lfs_info is not None:
+            storage = "lfs"
+            lfs_sha256 = getattr(lfs_info, "sha256", None)
+        else:
+            size = sibling.size or 0
+            storage = "xet" if size > 10 * 1024 * 1024 else "direct"
+            lfs_sha256 = None
+
+        url = hf_hub_url(
+            repo_id=model.hf_repo,
+            filename=fname,
+            revision=commit_sha,
+        )
+
+        files.append({
+            "filename": fname,
+            "url": url,
+            "size": sibling.size or 0,
+            "commit_sha": commit_sha,
+            "lfs_sha256": lfs_sha256,
+            "storage": storage,
+            "_hf_repo": model.hf_repo,
+        })
+
+    return files
+
+
+def estimate_remaining_download_bytes(
+    *,
+    file_infos: list[dict],
+    dest_dir: Path,
+    tmp_subdir: Path,
+    repo_base: Path,
+) -> tuple[int, int, int]:
+    """
+    Approximate bytes still to fetch for *file_infos* (HF sizes).
+
+    A file counts as done only when the final path exists and has a matching ``.sha256``
+    sidecar (same rule as the downloader). Otherwise we credit ``max`` bytes found on disk
+    under *dest_dir*, *tmp_subdir*, or any revision directory under *repo_base*.
+
+    Returns ``(remaining_bytes, total_hf_bytes, already_done_count)``.
+    XET/direct partials outside this layout (HF hub ``.incomplete`` cache) are not counted
+    as on-disk progress — estimates for XET-heavy repos may be high.
+
+    ``repo_base`` is ``.../<org>/<repo>`` (parent of revision directories).
+    """
+    total_hf = sum(int(f.get("size") or 0) for f in file_infos)
+    remaining = 0
+    done_n = 0
+
+    for fi in file_infos:
+        fname = fi["filename"]
+        expected = int(fi.get("size") or 0)
+        final_path = dest_dir / fname
+
+        if final_path.exists():
+            stored = read_sidecar(final_path)
+            if stored:
+                done_n += 1
+                continue
+
+        have = 0
+        candidates = [dest_dir / fname, tmp_subdir / fname]
+        if repo_base.is_dir():
+            try:
+                for rev in repo_base.iterdir():
+                    if rev.is_dir():
+                        candidates.append(rev / fname)
+            except OSError:
+                pass
+        for p in candidates:
+            try:
+                if p.is_file():
+                    have = max(have, p.stat().st_size)
+            except OSError:
+                pass
+
+        if expected <= 0:
+            continue
+        remaining += max(0, expected - have)
+
+    return remaining, total_hf, done_n
 
 
 # ------------------------------------------------------------------
