@@ -301,6 +301,36 @@ models:
   commit_sha: null
   notes: '[discipline:management][finance] Finance-domain dialogue LLM; Llama-2 lineage
     — confirm HF licence / acceptable-use before commercial deployment.'
+- id: Salesforce/CoDA-v0-Base
+  hf_repo: Salesforce/CoDA-v0-Base
+  tier: G
+  drive: d3
+  priority: 2
+  licence: CC-BY-NC-4.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:management][code-research] Replacement for retired CoDA-1.7B-Base;
+    diffusion-style code model (base).'
+- id: Salesforce/CoDA-v0-Instruct
+  hf_repo: Salesforce/CoDA-v0-Instruct
+  tier: G
+  drive: d3
+  priority: 2
+  licence: CC-BY-NC-4.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:management][code-research] Replacement for retired CoDA-1.7B-Instruct;
+    diffusion-style code model (instruct).'
+- id: Skywork/Skywork-Reward-Llama-3.1-8B-v0.2
+  hf_repo: Skywork/Skywork-Reward-Llama-3.1-8B-v0.2
+  tier: G
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:management][reward-model] Replacement for unavailable 70B reward
+    model; smaller practical RLHF/DPO scorer.'
 - id: ProsusAI/finbert
   hf_repo: ProsusAI/finbert
   tier: B
@@ -1014,6 +1044,51 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Embedding model — strong multilingual; RAG ecosystem utility
+- id: nomic-ai/nomic-embed-text-v1.5
+  hf_repo: nomic-ai/nomic-embed-text-v1.5
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:embeddings] Nomic v1.5 — default for many RAG stacks; complements Gemma/EmbeddingGemma'
+- id: google/embeddinggemma-300m
+  hf_repo: google/embeddinggemma-300m
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+  notes: '[discipline:embeddings] Gemma text embedding — pair with Gemma chat/VLM checkpoints'
+- id: Snowflake/snowflake-arctic-embed-m-long
+  hf_repo: Snowflake/snowflake-arctic-embed-m-long
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:embeddings] Arctic long-context embed — not the same as snowflake-arctic-embed-l-v2.0'
+- id: mixedbread-ai/mxbai-embed-large-v1
+  hf_repo: mixedbread-ai/mxbai-embed-large-v1
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:embeddings] Mixedbread large — MTEB-class dense retriever'
+- id: Qwen/Qwen3-Embedding-4B
+  hf_repo: Qwen/Qwen3-Embedding-4B
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[discipline:embeddings] Qwen3 embedding line — practical mid-size vs smaller Qwen embed repos'
 - id: apple/DiffuCoder-7B-Base
   hf_repo: apple/DiffuCoder-7B-Base
   tier: G

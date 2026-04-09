@@ -16,3 +16,4 @@ iso_utc,ollama_tag,approx_size_gb,status,notes
 2026-04-05T02:53:25Z,starcoder2:15b,9.1,completed,sync-pull-from-archive-vm
 2026-04-05T02:53:25Z,gemma4:31b-it-q4_K_M,?,completed,sync-pull-from-archive-vm
 2026-04-05T02:53:25Z,qwen2.5-coder:32b-instruct-q4_K_M,?,completed,sync-pull-from-archive-vm
+2026-04-09T14:51:56Z,deepseek-coder:33b-instruct-q4_K_M,?,completed,sync-pull-from-archive-vm

@@ -1,5 +1,5 @@
 schema_version: 1
-updated_at_utc: '2026-04-05T02:53:25Z'
+updated_at_utc: '2026-04-09T15:30:03Z'
 canonical_preference:
 - d5
 - d2
@@ -9,6 +9,14 @@ note: canonical_disk is chosen from the first label in canonical_preference that
   a copy; replica_* lists other archival roots that also hold this model.
 ssh_host_vm: x@192.168.8.65
 models:
+- ollama_descriptor: deepseek-coder-v2-16b-ctx8k:latest
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 8905126136
+  size_human: 8.29 GiB
+  supermicro_cleared: unknown
 - ollama_descriptor: deepseek-coder-v2:16b
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro
@@ -17,6 +25,14 @@ models:
   size_bytes: 8905126121
   size_human: 8.29 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: deepseek-coder:33b-instruct-q4_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 19940674986
+  size_human: 18.57 GiB
+  supermicro_cleared: unknown
 - ollama_descriptor: deepseek-coder:6.7b
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro
@@ -57,6 +73,14 @@ models:
   size_bytes: 4108940323
   size_human: 3.83 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: gemma4-26b-a4b-q4-ctx8k:latest
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 17987581230
+  size_human: 16.75 GiB
+  supermicro_cleared: unknown
 - ollama_descriptor: gemma4:26b-a4b-it-q4_K_M
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro
@@ -113,6 +137,14 @@ models:
   size_bytes: 4920753328
   size_human: 4.58 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: nomic-embed-text:latest
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 274302450
+  size_human: 261.60 MiB
+  supermicro_cleared: unknown
 - ollama_descriptor: qwen2.5-coder:14b-instruct-q4_K_M
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro
@@ -121,6 +153,14 @@ models:
   size_bytes: 8988124298
   size_human: 8.37 GiB
   supermicro_cleared: 'no'
+- ollama_descriptor: qwen2.5-coder:32b-instruct-q3_K_M
+  canonical_disk: d5
+  canonical_root: /mnt/models/d5/supermicro
+  replica_disks: []
+  replica_roots: []
+  size_bytes: 15935061898
+  size_human: 14.84 GiB
+  supermicro_cleared: unknown
 - ollama_descriptor: qwen2.5-coder:32b-instruct-q4_K_M
   canonical_disk: d5
   canonical_root: /mnt/models/d5/supermicro

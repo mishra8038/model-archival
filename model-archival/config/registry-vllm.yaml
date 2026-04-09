@@ -100,6 +100,33 @@ models:
   requires_auth: false
   commit_sha: null
   notes: '[vllm-target-list-2][finance] Llama-2 lineage — verify HF licence'
+- id: Salesforce/CoDA-v0-Base
+  hf_repo: Salesforce/CoDA-v0-Base
+  tier: G
+  drive: d5_vllm
+  priority: 2
+  licence: CC-BY-NC-4.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][code-research] Replacement for unavailable CoDA-1.7B-Base'
+- id: Salesforce/CoDA-v0-Instruct
+  hf_repo: Salesforce/CoDA-v0-Instruct
+  tier: G
+  drive: d5_vllm
+  priority: 2
+  licence: CC-BY-NC-4.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][code-research] Replacement for unavailable CoDA-1.7B-Instruct'
+- id: Skywork/Skywork-Reward-Llama-3.1-8B-v0.2
+  hf_repo: Skywork/Skywork-Reward-Llama-3.1-8B-v0.2
+  tier: G
+  drive: d5_vllm
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][reward] Replacement for unavailable Skywork 70B reward model'
 - id: Alibaba-NLP/gte-Qwen2-7B-instruct
   hf_repo: Alibaba-NLP/gte-Qwen2-7B-instruct
   tier: B
@@ -145,6 +172,87 @@ models:
   requires_auth: false
   commit_sha: null
   notes: '[vllm-target-list-2][embedding]'
+- id: nomic-ai/nomic-embed-text-v1.5
+  hf_repo: nomic-ai/nomic-embed-text-v1.5
+  tier: B
+  drive: d5_vllm
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Nomic v1.5 — common RAG default; pairs with Gemma/Ollama nomic-embed lines'
+- id: google/embeddinggemma-300m
+  hf_repo: google/embeddinggemma-300m
+  tier: B
+  drive: d5_vllm
+  priority: 2
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Gemma-family text embedding — accept HF Gemma licence'
+- id: BAAI/bge-m3
+  hf_repo: BAAI/bge-m3
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Multilingual dense retrieval baseline'
+- id: BAAI/bge-large-en-v1.5
+  hf_repo: BAAI/bge-large-en-v1.5
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] English BGE-large'
+- id: jinaai/jina-embeddings-v3
+  hf_repo: jinaai/jina-embeddings-v3
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Jina v3 — strong general retrieval'
+- id: Snowflake/snowflake-arctic-embed-m-long
+  hf_repo: Snowflake/snowflake-arctic-embed-m-long
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Long-context Arctic Embed (distinct from arctic-embed-l-v2.0)'
+- id: mixedbread-ai/mxbai-embed-large-v1
+  hf_repo: mixedbread-ai/mxbai-embed-large-v1
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Mixedbread large — popular MTEB-class embed'
+- id: Qwen/Qwen3-Embedding-4B
+  hf_repo: Qwen/Qwen3-Embedding-4B
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Qwen3 embedding line — mid-size vs 0.6B/8B'
+- id: intfloat/e5-large-v2
+  hf_repo: intfloat/e5-large-v2
+  tier: B
+  drive: d5_vllm
+  priority: 3
+  licence: MIT
+  requires_auth: false
+  commit_sha: null
+  notes: '[vllm-target-list-2][embedding] Compact e5-large — widely used baseline'
 - id: pile-of-law/legalbert-large-1.7M-2
   hf_repo: pile-of-law/legalbert-large-1.7M-2
   tier: B

@@ -626,6 +626,60 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Embedding — 7B instruct; strong for local RAG
+- id: nomic-ai/nomic-embed-text-v1.5
+  hf_repo: nomic-ai/nomic-embed-text-v1.5
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Nomic embed v1.5 — common RAG default; complements Gemma/EmbeddingGemma workflows
+- id: google/embeddinggemma-300m
+  hf_repo: google/embeddinggemma-300m
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Gemma-ToU
+  requires_auth: true
+  commit_sha: null
+  notes: Gemma-family text embedding checkpoint; accept HF Gemma licence
+- id: Snowflake/snowflake-arctic-embed-m-long
+  hf_repo: Snowflake/snowflake-arctic-embed-m-long
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Snowflake Arctic long-context embed — distinct from arctic-embed-l-v2.0
+- id: mixedbread-ai/mxbai-embed-large-v1
+  hf_repo: mixedbread-ai/mxbai-embed-large-v1
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Mixedbread large embedding — strong MTEB-class baseline
+- id: jinaai/jina-embeddings-v3
+  hf_repo: jinaai/jina-embeddings-v3
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Jina embeddings v3 — general retrieval / routing
+- id: Qwen/Qwen3-Embedding-4B
+  hf_repo: Qwen/Qwen3-Embedding-4B
+  tier: B
+  drive: d3
+  priority: 2
+  licence: Apache-2.0
+  requires_auth: false
+  commit_sha: null
+  notes: Qwen3 mid-size embedding checkpoint for RAG
 - id: bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
   hf_repo: bartowski/DeepSeek-R1-Distill-Qwen-32B-GGUF
   tier: C

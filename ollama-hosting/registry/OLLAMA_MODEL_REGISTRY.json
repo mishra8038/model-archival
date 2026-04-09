@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "updated_at_utc": "2026-04-05T13:07:39Z",
+  "updated_at_utc": "2026-04-09T15:30:04Z",
   "queue": [
     "deepseek-coder:6.7b",
     "qwen2.5-coder:7b",
@@ -326,16 +326,16 @@
     "deepseek-coder:33b-instruct-q4_K_M": {
       "approx_size_gb": null,
       "pull": {
-        "status": "pending",
-        "last_completed_utc": null,
+        "status": "complete",
+        "last_completed_utc": "2026-04-09T14:51:56Z",
         "last_failed_utc": null,
-        "history_note": null
+        "history_note": "sync-pull-from-archive-vm"
       },
       "archive": {
-        "on_canonical_disk": null,
-        "canonical_root": null,
-        "supermicro_cleared": null,
-        "size_human": null,
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "18.57 GiB",
         "replica_disks": []
       },
       "notes": "",
@@ -1276,6 +1276,78 @@
         "replica_disks": []
       },
       "notes": "IBM Granite embedding; tiny baseline for RAG / eval."
+    },
+    "deepseek-coder-v2-16b-ctx8k:latest": {
+      "group": "coding",
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "8.29 GiB",
+        "replica_disks": []
+      },
+      "notes": ""
+    },
+    "gemma4-26b-a4b-q4-ctx8k:latest": {
+      "group": "general",
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "16.75 GiB",
+        "replica_disks": []
+      },
+      "notes": ""
+    },
+    "nomic-embed-text:latest": {
+      "group": "embedding",
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "261.60 MiB",
+        "replica_disks": []
+      },
+      "notes": ""
+    },
+    "qwen2.5-coder:32b-instruct-q3_K_M": {
+      "group": "coding",
+      "approx_size_gb": null,
+      "pull": {
+        "status": "pending",
+        "last_completed_utc": null,
+        "last_failed_utc": null,
+        "history_note": null
+      },
+      "archive": {
+        "on_canonical_disk": "d5",
+        "canonical_root": "/mnt/models/d5/supermicro",
+        "supermicro_cleared": false,
+        "size_human": "14.84 GiB",
+        "replica_disks": []
+      },
+      "notes": ""
     }
   },
   "links": {
