@@ -18,7 +18,7 @@
 #
 # Usage:
 #   bash archive.sh                             # archive all (skip existing)
-#   bash archive.sh --output /mnt/models/d5     # explicit output dir
+#   bash archive.sh --output /mnt/models/d1     # explicit output dir
 #   bash archive.sh --dry-run                   # list what would run, no writes
 #   bash archive.sh --update                    # re-download all (refresh)
 #   bash archive.sh --repo ggml-org/llama.cpp   # single repo only
@@ -44,7 +44,7 @@ set -uo pipefail
 
 # ── Config ────────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OUTPUT_ROOT="/mnt/models/d5"
+OUTPUT_ROOT="/mnt/models/d1"
 
 # Auto-load GITHUB_TOKEN from .secrets if not already in environment
 if [[ -z "${GITHUB_TOKEN:-}" && -f "$SCRIPT_DIR/.secrets" ]]; then

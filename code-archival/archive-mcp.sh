@@ -7,16 +7,16 @@
 # adapters, build/convert tools, official SDKs.
 #
 # Usage:
-#   bash archive-mcp.sh                  # archive all MCP repos to D5
+#   bash archive-mcp.sh                  # archive all MCP repos to D1
 #   bash archive-mcp.sh --dry-run        # list only
 #   bash archive-mcp.sh --update         # refresh existing
-#   bash archive-mcp.sh --output /path   # override output root (default /mnt/models/d5)
+#   bash archive-mcp.sh --output /path   # override output root (default /mnt/models/d1)
 # =============================================================================
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REGISTRY="$SCRIPT_DIR/registry-mcp.yaml"
-OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/models/d5}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/models/d1}"
 PASSTHROUGH=()
 
 while [[ $# -gt 0 ]]; do

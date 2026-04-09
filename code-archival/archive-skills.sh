@@ -5,17 +5,17 @@
 # Runs code-archival with registry-skills.yaml. Optionally mirrors agentskills.io.
 #
 # Usage:
-#   bash archive-skills.sh                  # archive all skills repos to D5
+#   bash archive-skills.sh                  # archive all skills repos to D1
 #   bash archive-skills.sh --dry-run         # list only
 #   bash archive-skills.sh --update          # refresh existing
 #   bash archive-skills.sh --site            # also mirror agentskills.io (wget)
-#   bash archive-skills.sh --output /path   # override output root (default /mnt/models/d5)
+#   bash archive-skills.sh --output /path   # override output root (default /mnt/models/d1)
 # =============================================================================
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REGISTRY="$SCRIPT_DIR/registry-skills.yaml"
-OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/models/d5}"
+OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/models/d1}"
 SKILLS_SITE_ROOT="${SKILLS_SITE_ROOT:-$OUTPUT_ROOT/skills-archives/agentskills.io}"
 
 DO_SITE=false

@@ -16,7 +16,7 @@ The list is built from the awesome-llm-skills README: every `https://github.com/
 
 ## 1. Download GitHub repos (tarballs)
 
-Uses the same pipeline as code-archival: latest release tarball per repo (or HEAD of default branch if no release), plus `metadata.json` and README snapshot. Output goes to the same `code-archives/` tree so you can share D5 with the main code-archival run.
+Uses the same pipeline as code-archival: latest release tarball per repo (or HEAD of default branch if no release), plus `metadata.json` and README snapshot. Output goes to the same `code-archives/` tree so you can share D1 with the main code-archival run.
 
 **From the `code-archival/` directory:**
 
@@ -28,7 +28,7 @@ bash archive.sh --registry registry-skills.yaml --dry-run
 bash archive.sh --registry registry-skills.yaml
 
 # Optional: restrict output directory
-bash archive.sh --registry registry-skills.yaml --output /mnt/models/d5
+bash archive.sh --registry registry-skills.yaml --output /mnt/models/d1
 
 # Re-download / refresh all
 bash archive.sh --registry registry-skills.yaml --update
@@ -48,8 +48,8 @@ A `GITHUB_TOKEN` in the environment or in `code-archival/.secrets` is recommende
 The spec and docs live at [agentskills.io](https://agentskills.io/home); the site points to the [agentskills/agentskills](https://github.com/agentskills/agentskills) repo for the spec and validation. To keep a static copy of the docs:
 
 ```bash
-# Create a directory for the site snapshot (e.g. on D5)
-SKILLS_SITE_ROOT="/mnt/models/d5/skills-archives/agentskills.io"
+# Create a directory for the site snapshot (e.g. on D1)
+SKILLS_SITE_ROOT="/mnt/models/d1/skills-archives/agentskills.io"
 mkdir -p "$SKILLS_SITE_ROOT"
 cd "$SKILLS_SITE_ROOT"
 
@@ -80,7 +80,7 @@ bash archive-skills.sh                  # archive all skills repos (same as --re
 bash archive-skills.sh --dry-run        # list only
 bash archive-skills.sh --update         # refresh existing tarballs
 bash archive-skills.sh --site           # also mirror agentskills.io (wget)
-bash archive-skills.sh --output /path   # override output root (default /mnt/models/d5)
+bash archive-skills.sh --output /path   # override output root (default /mnt/models/d1)
 ```
 
 Overrides: `OUTPUT_ROOT`, `SKILLS_SITE_ROOT` (for `--site`).

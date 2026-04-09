@@ -774,7 +774,7 @@ def main() -> None:
             "max_approx_disk_gib_per_model": MAX_APPROX_DISK_GIB,
             "excluded_over_limit": EXCLUDED_OVER_LIMIT,
         },
-        "default_archive_root": "/mnt/models/d5/vllm",
+        "default_archive_root": "/mnt/models/d1/vllm",
         "bandwidth_mib_per_s_default": 2,
         "approx_total_disk_gib_sum": total,
         "approx_total_disk_gib_disclaimer": "Rough order-of-magnitude; HF revisions change. Entries capped at 120 GiB each; see policy.excluded_over_limit for dropped large checkpoints.",

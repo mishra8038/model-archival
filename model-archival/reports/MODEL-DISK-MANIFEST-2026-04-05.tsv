@@ -362,5 +362,5 @@ d5	raw	google/gemma-2-2b-it	299a8560bedf22ed1c72a8a11e7dce4a7f9f51f8	4.890	/mnt/
 d5	raw	google/gemma-2-2b-it	latest	4.890	/mnt/models/d5/raw/google/gemma-2-2b-it/latest
 d5	raw	microsoft/Phi-3.5-mini-instruct	2fe192450127e6a83f7441aef6e3ca586c338b77	7.120	/mnt/models/d5/raw/microsoft/Phi-3.5-mini-instruct/2fe192450127e6a83f7441aef6e3ca586c338b77
 d5	raw	microsoft/Phi-3.5-mini-instruct	latest	7.120	/mnt/models/d5/raw/microsoft/Phi-3.5-mini-instruct/latest
-d5	specialist/science/uncensored	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1	5b47def5b8957142d82faeb44bfad9349d02840d	149.315	/mnt/models/d5/specialist/science/uncensored/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1/5b47def5b8957142d82faeb44bfad9349d02840d
-d5	specialist/science/raw	xai-org/grok-2	daf4395a80ad177386cfe39641b64fc12b1d70ed	4.000	/mnt/models/d5/specialist/science/raw/xai-org/grok-2/daf4395a80ad177386cfe39641b64fc12b1d70ed
+d1	specialist/science/uncensored	nvidia/Llama-3_1-Nemotron-Ultra-253B-v1	5b47def5b8957142d82faeb44bfad9349d02840d	149.315	/mnt/models/d1/specialist/science/uncensored/nvidia/Llama-3_1-Nemotron-Ultra-253B-v1/5b47def5b8957142d82faeb44bfad9349d02840d
+d1	specialist/science/raw	xai-org/grok-2	daf4395a80ad177386cfe39641b64fc12b1d70ed	4.000	/mnt/models/d1/specialist/science/raw/xai-org/grok-2/daf4395a80ad177386cfe39641b64fc12b1d70ed

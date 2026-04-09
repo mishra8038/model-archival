@@ -4,7 +4,7 @@
 Usage (from code-archival/):
     python3 gen-manifest.py
 
-Outputs under /mnt/models/d5/code-archives:
+Outputs under /mnt/models/d1/code-archives:
     - manifest.json
     - MANIFEST.md
 """
@@ -19,7 +19,7 @@ import yaml
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REGISTRY_PATH = SCRIPT_DIR / "registry.yaml"
-ARCHIVE_DIR = Path("/mnt/models/d5/code-archives")
+ARCHIVE_DIR = Path("/mnt/models/d1/code-archives")
 MANIFEST_JSON = ARCHIVE_DIR / "manifest.json"
 MANIFEST_MD = ARCHIVE_DIR / "MANIFEST.md"
 

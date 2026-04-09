@@ -132,18 +132,18 @@ models:
 - id: mistralai/Mistral-Small-24B-Instruct-2501
   hf_repo: mistralai/Mistral-Small-24B-Instruct-2501
   tier: G
-  drive: d5
+  drive: d1
   priority: 2
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
   notes: '[discipline:strategic_reasoning] Instruct 24B for nuanced dialogue / negotiation-style
     tasks; pair with tensorblock/Mistral-Small-24B-Instruct-2501-abliterated-GGUF
-    for low-refusal variant. Large BF16 — prefer d5.'
+    for low-refusal variant. Large BF16 — on D1 (specialist tree).'
 - id: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
   hf_repo: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
   tier: G
-  drive: d5
+  drive: d1
   priority: 3
   licence: MIT
   requires_auth: false
@@ -154,7 +154,7 @@ models:
 - id: Qwen/QwQ-32B
   hf_repo: Qwen/QwQ-32B
   tier: G
-  drive: d5
+  drive: d1
   priority: 3
   licence: Apache-2.0
   requires_auth: false
@@ -212,16 +212,16 @@ models:
 - id: Qwen/Qwen3.5-35B-A3B-Base
   hf_repo: Qwen/Qwen3.5-35B-A3B-Base
   tier: G
-  drive: d5
+  drive: d1
   priority: 2
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
-  notes: '[discipline:frontier][qwen3.5] MoE base (~35B, ~3B active); needs D5+ space.'
+  notes: '[discipline:frontier][qwen3.5] MoE base (~35B, ~3B active); on D1 specialist tree.'
 - id: Qwen/Qwen3.5-35B-A3B
   hf_repo: Qwen/Qwen3.5-35B-A3B
   tier: G
-  drive: d5
+  drive: d1
   priority: 2
   licence: Apache-2.0
   requires_auth: false
@@ -983,25 +983,6 @@ models:
   requires_auth: false
   commit_sha: null
   notes: Nemotron 3 Nano FP8 quant; efficient inference for agent workloads
-- id: Salesforce/CoDA-1.7B-Base
-  hf_repo: Salesforce/CoDA-1.7B-Base
-  tier: G
-  drive: d3
-  priority: 1
-  licence: CC-BY-NC-4.0
-  requires_auth: false
-  commit_sha: null
-  notes: Salesforce CoDA 1.7B diffusion code model (base); research / diffusion coding
-- id: Salesforce/CoDA-1.7B-Instruct
-  hf_repo: Salesforce/CoDA-1.7B-Instruct
-  tier: G
-  drive: d3
-  priority: 1
-  licence: CC-BY-NC-4.0
-  requires_auth: false
-  commit_sha: null
-  notes: Salesforce CoDA 1.7B diffusion code model (instruct); research / diffusion
-    coding
 - id: tensorblock/Llama-3.2-3B-Instruct-GGUF
   hf_repo: tensorblock/Llama-3.2-3B-Instruct-GGUF
   tier: C
@@ -1273,7 +1254,7 @@ models:
 - id: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   hf_repo: tensorblock/Llama-3.3-70B-Instruct-abliterated-GGUF
   tier: D
-  drive: d5
+  drive: d1
   priority: 4
   licence: llama3.3
   requires_auth: false
@@ -1282,8 +1263,8 @@ models:
   - Q3_K_M
   parent_model: meta-llama/Llama-3.3-70B-Instruct
   method: abliteration
-  notes: 'tensorblock Q2_K/Q3_K_M; partial Q3_K_M + aria2 under d5/.tmp/ (d3 .tmp empty
-    for this id). Schedule on D5.'
+  notes: 'tensorblock Q2_K/Q3_K_M; partial Q3_K_M + aria2 under d1/.tmp/ when active.
+    Large GGUF on D1 specialist tree.'
 - id: unsloth/phi-4-unsloth-bnb-4bit
   hf_repo: unsloth/phi-4-unsloth-bnb-4bit
   tier: C

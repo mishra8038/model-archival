@@ -19,7 +19,7 @@ alwaysApply: true
 - **`code-archival/`** — source/code snapshotter. Start at `code-archival/AGENTS.md`.
 - **`gh-archival/`** — snapshot GitHub repos you own (`main` by default) and upload via rclone. Start at `gh-archival/README.md`.
 - **`ollama-hosting/`** — Supermicro Ollama rig mirror + `ollama-sync.sh` (VM archive), inventory, prune planner. Start at `ollama-hosting/README.md`. Repo-level overview: `docs/SUPERMICRO.md`.
-- **`vllm-hosting/`** — Hugging Face downloads for vLLM (deduped queue, `d5/vllm` on archive VM). Start at `vllm-hosting/README.md` / `vllm-hosting/docs/VLLM-ARCHIVE.md`.
+- **`vllm-hosting/`** — Hugging Face downloads for vLLM (deduped queue, `d1/vllm` on archive VM; `d5/vllm` may symlink). Start at `vllm-hosting/README.md` / `vllm-hosting/docs/VLLM-ARCHIVE.md`.
 - **`full-stack/`** — full-stack archive utility. Start at `full-stack/AGENTS.md`.
 - **`integrity_tools/`** — misc integrity helpers. Start at `integrity_tools/AGENTS.md`.
 

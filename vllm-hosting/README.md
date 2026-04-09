@@ -6,7 +6,7 @@ This directory lives in the **same monorepo** as `model-archival/` and `ollama-h
 
 ## Layout (archival VM)
 
-- **Root:** `/mnt/models/d5/vllm` (`VLLM_ARCHIVE_ROOT`)
+- **Root:** `/mnt/models/d1/vllm` (`VLLM_ARCHIVE_ROOT`; `d5/vllm` may symlink here)
 - **HF cache:** `$VLLM_ARCHIVE_ROOT/hf_hub` → `HF_HOME`
 - **State:** `$VLLM_ARCHIVE_ROOT/state/completed_repos.txt` (one `org/repo` per line)
 
@@ -21,7 +21,7 @@ chmod +x vllm-hosting/scripts/*.sh
 ./vllm-hosting/scripts/vllm-archive-setup-dirs.sh
 ```
 
-If `huggingface-cli` is not on `PATH`, either install **`pip install --user 'huggingface_hub[cli]' pyyaml`** or use the existing **`/mnt/models/d5/vllm/venv`** (the env script prepends that `bin/` when present). **Bandwidth cap:** `trickle` — Debian/Ubuntu: `sudo apt install trickle`; Artix: `sudo pacman -S trickle`.
+If `huggingface-cli` is not on `PATH`, either install **`pip install --user 'huggingface_hub[cli]' pyyaml`** or use the existing **`/mnt/models/d1/vllm/venv`** (the env script prepends that `bin/` when present). **Bandwidth cap:** `trickle` — Debian/Ubuntu: `sudo apt install trickle`; Artix: `sudo pacman -S trickle`.
 
 Ensure `~/.hf_token` exists for gated models (Meta Llama, Gemma, Nemotron, MedGemma, …).
 

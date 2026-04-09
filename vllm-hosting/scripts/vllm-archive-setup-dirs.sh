@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Create layout on archival VM under D5. Run once (or anytime after new mount).
+# Create layout on archival VM (default D1/vllm). Run once (or anytime after new mount).
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # shellcheck source=/dev/null

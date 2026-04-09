@@ -5,7 +5,7 @@
 ## Intent
 
 - **Was:** pull quantized **Ollama** blobs to `d5/supermicro` (and related sync).
-- **Now:** pull **Hugging Face** checkpoints that **vLLM** can load (typically **safetensors**, BF16/FP16-class), into **`/mnt/models/d5/vllm`** (override with `VLLM_ARCHIVE_ROOT`).
+- **Now:** pull **Hugging Face** checkpoints that **vLLM** can load (typically **safetensors**, BF16/FP16-class), into **`/mnt/models/d1/vllm`** (override with `VLLM_ARCHIVE_ROOT`; **`/mnt/models/d5/vllm`** may symlink here).
 
 ## Immediate target queue (default for pulls)
 
@@ -29,7 +29,7 @@
 | Path | When to use |
 |------|-------------|
 | **`vllm_archive_pull_one.py` + `huggingface-cli download`** | Fast, simple drops into **`HF_HOME` / hub cache** under **`VLLM_ARCHIVE_ROOT`**; good when you only need weights for vLLM and accept **no** archiver `manifest.json` + `.sha256` fleet layout. |
-| **`uv run archiver download`** + **`model-archival/config/registry-vllm.yaml`** | **Final vLLM list** (from **`vllm-target-list-2.yaml`**) with **`drive: d5_vllm`** → trees under **`/mnt/models/d5/vllm/raw/…`** and **`…/uncensored/…`** (separate from **`d5/raw`**). Run: **`bash model-archival/scripts/run-vllm-d5-archiver.sh`** (2 MiB/s cap). Scratch stays on **D1/.tmp**; infra on **D3**. |
+| **`uv run archiver download`** + **`model-archival/config/registry-vllm.yaml`** | **Final vLLM list** (from **`vllm-target-list-2.yaml`**) with **`drive: d5_vllm`** → trees under **`/mnt/models/d1/vllm/raw/…`** and **`…/uncensored/…`** (logical label **`d5_vllm`**; separate from **`d5/raw`**). Run: **`bash model-archival/scripts/run-vllm-d5-archiver.sh`** (2 MiB/s cap). Scratch stays on **D1/.tmp**; infra on **D3**. |
 | **`model-archival/config/registry-vllm-immediate.yaml`** | Older **16-repo** immediate slice; edit **`drive:`** if **ENOSPC** on a disk. |
 
 Edit **`drive:`** fields if a host is **ENOSPC** (for **registry-vllm**, the canonical vLLM tree is **`d5_vllm`** only).
@@ -44,11 +44,11 @@ The manifest derived from the former Ollama queue + many specialists/encoders re
 | `vllm-hosting/config/vllm-archive-manifest.yaml` | Broad HF list + `target_category` + `covers_ollama_tags` + `approx_disk_gib` + policy block |
 | `vllm-hosting/config/vllm-archive-manifest-pared-by-family.yaml` | One model per family (core/uncensored) + full specialist set; regen `_pare_vllm_manifest_by_family.py` |
 | `vllm-hosting/config/vllm-target-list-2.yaml` | Pared list + prunes (incl. Gemma-4-26B) + no math + legal large-only + **drops rows whose `covers_ollama_tags` match `ollama-hosting/registry/TARGET_QUEUE_ORDERED.txt`** (no HF duplicate of Ollama queue); regen `_build_vllm_target_list_2.py`; use with `vllm_archive_pull_one.py --manifest …` |
-| `model-archival/config/registry-vllm.yaml` | Archiver registry mirroring target-list **21**; **`d5_vllm`** → **`/mnt/models/d5/vllm/`** |
+| `model-archival/config/registry-vllm.yaml` | Archiver registry mirroring target-list **21**; **`d5_vllm`** → **`/mnt/models/d1/vllm/`** |
 | `model-archival/scripts/run-vllm-d5-archiver.sh` | **`run.sh`** wrapper: **`--registry registry-vllm.yaml`**, **`--drive d5_vllm`**, **`--bandwidth-cap 2`** |
 | `vllm-hosting/scripts/_generate_vllm_immediate_targets.py` | Regenerates **immediate** YAML from the curated Python table |
 | `vllm-hosting/config/env-archive-vm-vllm.sh` | `HF_HOME`, `VLLM_ARCHIVE_ROOT`, optional `HF_TOKEN` from `~/.hf_token` |
-| `vllm-hosting/scripts/vllm-archive-setup-dirs.sh` | Creates `d5/vllm` tree once |
+| `vllm-hosting/scripts/vllm-archive-setup-dirs.sh` | Creates **`VLLM_ARCHIVE_ROOT`** tree once (default **`d1/vllm`**) |
 | `vllm-hosting/scripts/vllm-archive-pull-one.sh` | Wrapper: **one** `huggingface-cli download` per invocation |
 | `vllm-hosting/scripts/vllm_archive_pull_one.py` | Queue + lock + `completed_repos.txt` |
 | `vllm-hosting/scripts/_generate_vllm_manifest.py` | Regenerates the YAML from the Python table |

@@ -209,7 +209,7 @@ def main() -> None:
             "min_params_b": MIN_PARAMS_B,
             "roles": ["general", "specialist", "uncensored"],
         },
-        "default_archive_root": "/mnt/models/d5/vllm",
+        "default_archive_root": "/mnt/models/d1/vllm",
         "approx_total_disk_gib_sum": total,
         "approx_total_disk_gib_disclaimer": "Order-of-magnitude per HF snapshot; MoE totals use published total parameter counts.",
         "entries": sorted_entries,

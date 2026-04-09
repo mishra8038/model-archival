@@ -1,6 +1,6 @@
 # Target model list (Ollama) — history, queue, HF mapping
 
-**vLLM path:** For Hugging Face–native archival of the same *intent* (deduped repos, `d5/vllm`, one repo per pull), see repo **`vllm-hosting/`** and **`vllm-hosting/docs/VLLM-ARCHIVE.md`**.
+**vLLM path:** For Hugging Face–native archival of the same *intent* (deduped repos, `d1/vllm`, one repo per pull), see repo **`vllm-hosting/`** and **`vllm-hosting/docs/VLLM-ARCHIVE.md`**.
 
 **Purpose:** Operational notes (sizes, throttle policy, HF mapping). **Single picture for download → archive → offload** is **[OLLAMA-ARCHIVE-WORKFLOW.md](OLLAMA-ARCHIVE-WORKFLOW.md)**. **Machine-readable state** (queue order, pull status, archive disk / `supermicro_cleared` merged from ollama-hosting) lives in **`OLLAMA_MODEL_REGISTRY.json`**, maintained with **`ollama_registry_tool.py`** (`init`, `merge-pull-history`, `merge-manifest`, `status`).
 

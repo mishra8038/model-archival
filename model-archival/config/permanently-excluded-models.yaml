@@ -11,3 +11,11 @@ permanently_excluded:
     reason: Orphan partial removed from d1/.tmp; permanently dropped from archival scope
   - id: xai-org/grok-2
     reason: Abandoned after persistent download failures; d1 scratch removed (~177 GiB partial)
+  - id: mistralai/Leanstral-120B-A6B
+    reason: User-approved skip; oversized/non-hostable for current archival hardware plan
+  - id: Salesforce/CoDA-1.7B-Base
+    reason: User-approved skip; low current utility for this archive scope
+  - id: Salesforce/CoDA-1.7B-Instruct
+    reason: User-approved skip; low current utility for this archive scope
+  - id: Skywork/Skywork-Reward-Llama-3.1-70B
+    reason: User-approved skip; low current utility for this archive scope

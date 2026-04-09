@@ -10,6 +10,14 @@
 
 ---
 
+## 2026-04-08 — vLLM + D5 `specialist` → D1 (repo + VM)
+
+- **`model-archival/config/drives.yaml`:** **`d5_vllm.mount_point`** → **`/mnt/models/d1/vllm`** (label **`d5_vllm`** unchanged; **`/mnt/models/d5/vllm`** may symlink after move).
+- **`registry-specialists.yaml`:** **`drive: d1`** for former D5 rows (Mistral-Small-24B, DeepSeek-R1-Distill-Qwen-32B, QwQ-32B, Qwen3.5-35B-A3B{,-Base}, tensorblock Llama-3.3-70B GGUF) + note tweaks.
+- **vLLM paths:** **`vllm-hosting/config/*.yaml`**, **`env-archive-vm-vllm.sh`**, **`vllm_archive_pull_one.py`**, **`_generate_vllm_*.py`**, **`registry-vllm.yaml` header**, **`VLLM-ARCHIVE.md`**, **`run-vllm-d5-archiver.sh`**, **`.cursor/rules/archiver-codebase.mdc`**, **`docs/AGENTS.md`**, **`ollama-hosting/docs/TARGET_MODEL_LIST.md`** — default root **`/mnt/models/d1/vllm`**.
+- **Disk manifest TSV:** **`model-archival/reports/MODEL-DISK-MANIFEST-2026-04-05.tsv`** — **d5** specialist/science rows → **d1** + absolute paths under **`/mnt/models/d1/specialist/...`**.
+- **VM (`192.168.8.65`):** Long **`rsync`** **d5/vllm → d1/vllm** then **`mv`**, **`ln -s`**, remove backup (prior agent shell). **`/tmp/wait-vllm-then-specialist.sh`** (nohup): waits until **`/mnt/models/d5/vllm`** is a **symlink**, then **`rsync` specialist → d1**, same **`mv`/`ln -s`** pattern for **`d5/specialist`**. Log: **`/tmp/d1-specialist-after-vllm.log`**.
+
 ## 2026-04-06 — VM: Graphcore on D1 (move + D5 `graphcore-*` into tree)
 
 - **`x@192.168.8.65`:** moved **`/mnt/models/d5/graphcore`** → **`/mnt/models/d1/graphcore`** (~**47 GiB**, cross-fs `mv`). User then merged **`d5/graphcore-archive`**, **`d5/graphcore-downloads`**, **`d5/graphcore-projects`** into **`/mnt/models/d1/graphcore/`** as **`graphcore-archive/`**, **`graphcore-downloads/`**, **`graphcore-projects/`**.
