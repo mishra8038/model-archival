@@ -1,7 +1,8 @@
 # Archiver registry: final vLLM priority list (HF BF16 / safetensors-class).
+# Sole registry for vLLM archiver runs — use scripts/run-vllm-d5-archiver.sh (not main run.sh / final_registry).
 # Source manifest: ../../vllm-hosting/config/vllm-target-list-2.yaml (regen _build_vllm_target_list_2.py).
 #
-# Storage: drive **d5_vllm** → ``/mnt/models/d1/vllm/{raw,uncensored}/<org>/<repo>/<rev>/``
+# Storage: drive **d5_vllm** → ``/mnt/models/d5/vllm/{raw,uncensored}/<org>/<repo>/<rev>/``
 # (logical label; ``/mnt/models/d5/vllm`` may symlink here). Scratch stays on **D1/.tmp**.
 #
 # Run (archive VM, from ``model-archival/``):
@@ -18,7 +19,7 @@ models:
   licence: Apache-2.0
   requires_auth: false
   commit_sha: null
-  notes: '[vllm-target-list-2][uncensored] 32B merge; vLLM weights on d1/vllm'
+  notes: '[vllm-target-list-2][uncensored] 32B merge; vLLM weights on d5/vllm'
 - id: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
   hf_repo: huihui-ai/DeepSeek-R1-Distill-Qwen-32B-abliterated
   tier: D

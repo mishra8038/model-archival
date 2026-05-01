@@ -12,6 +12,12 @@
       models: {
         "ollama-lan/gemma4:26b-a4b-it-q4_K_M": { alias: "Gemma4 (LAN Ollama)" },
       },
+      // Token budget for compaction / overflow precheck (not GPU VRAM). OpenClaw default
+      // reserveTokensFloor is 24000; with local Ollama catalog contextWindow 16k–32k that
+      // floor can consume the entire window → false "context overflow". Lower for LAN MoE.
+      compaction: {
+        reserveTokensFloor: 4096,
+      },
     },
   },
   models: {

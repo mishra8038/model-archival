@@ -43,7 +43,7 @@ source ~/.bashrc
 bash run.sh --dry-run
 
 # 6. Start downloads inside screen (survives SSH disconnect)
-# Default run.sh behavior is neighbor-friendly: 6 Mbps cap + serial queue
+# Default run.sh behavior is neighbor-friendly: 2 MB/s flat cap + serial queue
 screen -S archiver bash run.sh --all
 # Ctrl+A D  → detach   |   screen -r archiver  → reattach
 ```
@@ -67,7 +67,7 @@ bash run.sh --rehash               # full SHA-256 re-hash after download
 bash run.sh --skip-env-check       # skip environment verification step
 ```
 
-`run.sh` now defaults to a strict `6 Mbps` (`0.75 MB/s`) cap and a serial queue so the archiver only downloads one model at a time unless you explicitly opt back into adaptive parallelism.
+`run.sh` defaults to a flat **`2 MB/s`** bandwidth cap (aria2 / LFS aggregate) and **`serial`** queue mode. Use `--queue-mode adaptive` and/or `--bandwidth-cap N` when you want different behaviour. Scheduled day/night caps apply only if you clear the flat cap (`BANDWIDTH_CAP=""` in `run.sh` or omit `--bandwidth-cap` after editing defaults).
 
 ### `stop.sh` — graceful shutdown
 

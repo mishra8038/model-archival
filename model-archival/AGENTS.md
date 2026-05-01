@@ -7,3 +7,5 @@
 **Cursor rules:** Repository `.cursor/rules/` (`archiver-codebase.mdc`, `vm-operations.mdc`, `model-archival-project.mdc`).
 
 **Orchestrator:** `scripts/run.sh` · **Stop before reboot:** `scripts/stop.sh`
+
+**LTFS / tape vault (plans, PAR2 policy, inventory snapshot):** [`tape-archive/`](tape-archive/) — regenerate plan with `python3 tape-archive/scripts/build_tape_allocation.py --write` (reads `config/registry.yaml` for tiers).

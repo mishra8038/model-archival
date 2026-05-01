@@ -12,6 +12,10 @@
       models: {
         "ollama-lan/gemma4:26b-a4b-it-q4_K_M": { alias: "Gemma4 (LAN Ollama)" },
       },
+      // See main ollama-hosting/config/openclaw-ollama.json.example for reserveTokensFloor rationale.
+      compaction: {
+        reserveTokensFloor: 4096,
+      },
     },
   },
   models: {

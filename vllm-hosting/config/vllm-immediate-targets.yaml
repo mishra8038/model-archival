@@ -9,7 +9,7 @@ policy:
   - general
   - specialist
   - uncensored
-default_archive_root: /mnt/models/d1/vllm
+default_archive_root: /mnt/models/d5/vllm
 approx_total_disk_gib_sum: 948.0
 approx_total_disk_gib_disclaimer: Order-of-magnitude per HF snapshot; MoE totals use
   published total parameter counts.

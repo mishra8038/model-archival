@@ -47,7 +47,7 @@ policy:
     approx_disk_gib: 228.0
     former_covers_ollama_tags:
     - qwen3.5:122b-a10b-q4_K_M
-default_archive_root: /mnt/models/d1/vllm
+default_archive_root: /mnt/models/d5/vllm
 bandwidth_mib_per_s_default: 2
 approx_total_disk_gib_sum: 330.0
 approx_total_disk_gib_disclaimer: Rough order-of-magnitude; HF revisions change. Entries capped at 120 GiB each; see policy.excluded_over_limit for dropped large checkpoints.

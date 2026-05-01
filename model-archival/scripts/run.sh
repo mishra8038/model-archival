@@ -23,7 +23,7 @@
 #   --rehash              After download, do full SHA-256 re-hash (slow)
 #   --skip-env-check      Skip the environment pre-check step
 #   --skip-verify         Skip the post-download integrity verification step
-#   --bandwidth-cap N     Cap bandwidth at N MB/s 24/7 (default 4; disables schedule)
+#   --bandwidth-cap N     Cap bandwidth at N MB/s 24/7 (default 2; disables schedule)
 #   --bandwidth-taper-after-seconds S   After S seconds, lower cap to --bandwidth-taper-to-mbps (flat cap only)
 #   --bandwidth-taper-to-mbps N         Second-phase cap (requires taper-after-seconds; not with scheduled cap)
 #   --no-scheduled-bandwidth-cap  Disable schedule (no cap unless --bandwidth-cap set)
@@ -116,7 +116,7 @@ SKIP_ENV_CHECK=false
 SKIP_VERIFY=false
 # Default flat cap (MB/s), 24/7; clears scheduled day/night cap below. Override: `--bandwidth-cap N`.
 # To use scheduled cap instead, set `BANDWIDTH_CAP=""` here and tune SCHEDULED_* below.
-BANDWIDTH_CAP="4"
+BANDWIDTH_CAP="2"
 # Optional: after N seconds at BANDWIDTH_CAP, aria2 switches to second cap (flat cap only; omit both to disable).
 BANDWIDTH_TAPER_AFTER_SEC=""
 BANDWIDTH_TAPER_TO_MBPS=""

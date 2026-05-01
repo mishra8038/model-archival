@@ -40,10 +40,10 @@ d5:
   by_id: ""
   serial: ""
 
-# Logical slice **d5_vllm**: vLLM BF16/safetensors tree. Payload lives on **D1**; ``/mnt/models/d5/vllm``
-# may be a symlink for backward compatibility. Do not set tmp_dir — partials stay on D1/.tmp.
+# Logical slice **d5_vllm**: vLLM BF16/safetensors + HF hub cache under **D5** (consolidated).
+# Do not set tmp_dir — archiver scratch stays on **D1/.tmp**.
 d5_vllm:
-  mount_point: /mnt/models/d1/vllm
-  role: "vLLM weights at d1/vllm/{raw,uncensored}/… (label d5_vllm); d5/vllm symlink if present"
+  mount_point: /mnt/models/d5/vllm
+  role: "vLLM + HF hub at d5/vllm/{raw,uncensored,hf_hub/…}; label d5_vllm"
   by_id: ""
   serial: ""

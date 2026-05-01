@@ -115,7 +115,7 @@ def main() -> None:
     if not manifest.is_file():
         raise SystemExit(f"Missing manifest: {manifest}")
 
-    archive_root = pathlib.Path(os.environ.get("VLLM_ARCHIVE_ROOT", "/mnt/models/d1/vllm"))
+    archive_root = pathlib.Path(os.environ.get("VLLM_ARCHIVE_ROOT", "/mnt/models/d5/vllm"))
     completed_file, failed_file = _state_paths(archive_root)
     done = _completed_set(completed_file)
 
