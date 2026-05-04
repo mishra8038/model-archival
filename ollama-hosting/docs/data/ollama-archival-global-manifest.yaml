@@ -7,7 +7,7 @@ canonical_preference:
 - d1
 note: canonical_disk is chosen from the first label in canonical_preference that has
   a copy; replica_* lists other archival roots that also hold this model.
-ssh_host_vm: x@192.168.8.65
+ssh_host_vm: ubuntu@192.168.8.32
 models:
 - ollama_descriptor: deepseek-coder-v2-16b-ctx8k:latest
   canonical_disk: d5

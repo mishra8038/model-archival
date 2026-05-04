@@ -21,6 +21,8 @@ alwaysApply: true
 - If rclone says “didn’t find section (gdrive)”, ensure the process is using the intended config file:
   - export `RCLONE_CONFIG=/path/to/gdrive-archival/rclone.conf`
   - registry uploader must pass `rclone --config "$RCLONE_CONFIG" ...` to avoid falling back to `~/.config/rclone/rclone.conf`.
+- If `models_mount not found`: set `MODELS_MOUNT` to the parent of `d1`/`d2`/`d3` (e.g. `/mnt` when disks are `/mnt/d3/specialist/...`).
+- Specialist-only upload without the full `d5/` gate: `python3 backup.py backup-registry --roots d3/specialist,d5/specialist` (omit `d5/specialist` if that disk is absent).
 
 ## Entry points
 

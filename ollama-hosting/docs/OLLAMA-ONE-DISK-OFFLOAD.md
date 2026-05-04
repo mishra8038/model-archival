@@ -2,7 +2,7 @@
 
 **See first:** [`OLLAMA-ARCHIVE-WORKFLOW.md`](OLLAMA-ARCHIVE-WORKFLOW.md) (full pipeline + **`registry/OLLAMA_MODEL_REGISTRY.json`**). This page is the short operator checklist.
 
-**Policy:** Default is **one** canonical Ollama archive root (often `/mnt/models/d5/supermicro`). To use **multiple VM disks** without duplicate full mirrors, set **`ARCHIVAL_VM_SITE_CYCLE`** in `ollama-sync.sh` / env (see `OLLAMA-CACHE-POLICY.md`). Rotation does **not** yet auto-pick “most free space.”
+**Policy:** Default is **one** canonical Ollama archive root (**`/mnt/models-d5/ollama`** on **`ubuntu@192.168.8.32`**). To use **multiple VM disks** without duplicate full mirrors, set **`ARCHIVAL_VM_SITE_CYCLE`** in `ollama-sync.sh` / env (see `OLLAMA-CACHE-POLICY.md`). Rotation does **not** yet auto-pick “most free space.”
 
 ## Loop (repeat until you change policy)
 
@@ -26,8 +26,8 @@
 Set a fixed destination for one run, then update defaults:
 
 ```bash
-export ARCHIVAL_VM_SITE_CYCLE='d3=/mnt/models/d3/supermicro'
-# or ARCHIVAL_VM_DEST=/mnt/models/d3/supermicro for a single run
+export ARCHIVAL_VM_SITE_CYCLE='d3=/mnt/models-d3/ollama'
+# or ARCHIVAL_VM_DEST=/mnt/models-d3/ollama for a single run
 ```
 
 Update `ollama_archival_rotation.py` / inventory defaults if this becomes permanent.

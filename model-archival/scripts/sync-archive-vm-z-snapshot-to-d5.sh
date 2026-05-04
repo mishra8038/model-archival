@@ -3,17 +3,15 @@
 #
 # From a machine that can SSH to the VM (LAN / VPN):
 #   SNAP_NAME=z05012026 ./scripts/sync-archive-vm-z-snapshot-to-d5.sh
-#   ARCHIVAL_VM=x@192.168.8.65 SNAP_NAME=z05012026 ./scripts/sync-archive-vm-z-snapshot-to-d5.sh --dry-run
+#   ARCHIVAL_VM=ubuntu@192.168.8.32 SNAP_NAME=z05012026 ./scripts/sync-archive-vm-z-snapshot-to-d5.sh --dry-run
 #
 # Optional: VM_SSHPASS in env for sshpass (same pattern as ollama-sync / ollama-archive-vm-maintain).
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO="$(cd "$SCRIPT_DIR/.." && pwd)"
-cd "$REPO"
 
-ARCHIVAL_VM="${ARCHIVAL_VM:-x@192.168.8.65}"
+ARCHIVAL_VM="${ARCHIVAL_VM:-ubuntu@192.168.8.32}"
 SNAP_NAME="${SNAP_NAME:-z05012026}"
-DEST_PARENT="${DEST_PARENT:-/mnt/models/d5}"
+DEST_PARENT="${DEST_PARENT:-/mnt/models-d5}"
 
 _remote_args=("$SNAP_NAME" "$DEST_PARENT")
 if [[ "${1:-}" == "--dry-run" ]]; then
@@ -26,7 +24,7 @@ if [[ -n "${VM_SSHPASS:-}" ]]; then
 fi
 
 echo "Archival VM: $ARCHIVAL_VM  snap: $SNAP_NAME  dest: $DEST_PARENT/$SNAP_NAME" >&2
-# Remote: mirror contents of $HOME/z into dated dir on D5 (/mnt/models/d5 per vm-operations.mdc).
+# Remote: mirror contents of $HOME/z into dated dir on D5 (/mnt/models-d5 per vm-operations.mdc).
 "${vm_ssh[@]}" "$ARCHIVAL_VM" bash -s "${_remote_args[@]}" <<'REMOTE'
 set -euo pipefail
 snap="${1:?snap name}"

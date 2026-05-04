@@ -8,4 +8,4 @@
 
 **Orchestrator:** `scripts/run.sh` · **Stop before reboot:** `scripts/stop.sh`
 
-**LTFS / tape vault (plans, PAR2 policy, inventory snapshot):** [`tape-archive/`](tape-archive/) — regenerate plan with `python3 tape-archive/scripts/build_tape_allocation.py --write` (reads `config/registry.yaml` for tiers).
+**LTFS / tape vault:** moved to **`/home/x/z/ai/ai-model-backup-tape/`** (see `tape-archive/README.md` here for the pointer). **Run on `dp75k-mxl`** with local **`/mnt/d1`–`/mnt/d3`** and **`/dev/sg1`**. This repo still owns **`config/registry.yaml`** (tiers, HF list); the tape project symlinks it for planners. Numbered tape plan and workstation model inventories live under the tape repo’s `plans/` and `inventories/`.

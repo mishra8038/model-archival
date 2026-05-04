@@ -1,32 +1,31 @@
 #!/usr/bin/env bash
-# Merge scattered Ollama + vLLM (HF) caches onto D5 on the archival VM (192.168.8.65).
+# Merge scattered Ollama + vLLM (HF) caches onto D5 on the archival VM (ubuntu@192.168.8.32).
 #
-# Run ON the VM as user x (or set SSH jump). Stop Ollama first — both caches use dense small files.
+# Run ON the VM. Stop Ollama first — both caches use dense small files.
 #
-#   dinitctl stop ollama   # Artix; adjust if your unit name differs
-#   bash /home/x/dev/model-archival/model-archival/deploy/consolidate-ollama-vllm-caches-to-d5.sh
+#   sudo systemctl stop ollama   # adjust unit name if different
+#   bash ./deploy/consolidate-ollama-vllm-caches-to-d5.sh
 #   # review output, then without dry-run:
 #   CONSOLIDATE_DRY_RUN=0 bash .../consolidate-ollama-vllm-caches-to-d5.sh
 #
-# Does NOT merge /mnt/models/d5/supermicro (Supermicro rsync mirror) into OLLAMA_HOME — that stays
-# a separate tree unless you explicitly unify layouts yourself.
+# Does not merge any separate Supermicro rsync mirror tree into OLLAMA_HOME unless you aim at that path.
 #
 # Environment:
 #   CONSOLIDATE_DRY_RUN=1  (default) — rsync -n only
 #   CONSOLIDATE_DRY_RUN=0 — perform merges
-#   OLLAMA_DEST   default /mnt/models/d5/ollama
-#   VLLM_DEST     default /mnt/models/d5/vllm
+#   OLLAMA_DEST   default /mnt/models-d5/ollama
+#   VLLM_DEST     default /mnt/models-d5/vllm
 #   OLLAMA_SOURCES  space-separated extra roots (after defaults)
 #   VLLM_SOURCES    space-separated extra roots (after defaults)
 #
 set -euo pipefail
 
 DRY="${CONSOLIDATE_DRY_RUN:-1}"
-OLLAMA_DEST="${OLLAMA_DEST:-/mnt/models/d5/ollama}"
-VLLM_DEST="${VLLM_DEST:-/mnt/models/d5/vllm}"
+OLLAMA_DEST="${OLLAMA_DEST:-/mnt/models-d5/ollama}"
+VLLM_DEST="${VLLM_DEST:-/mnt/models-d5/vllm}"
 
-DEFAULT_OLLAMA_SRCS=(/mnt/models/d2/ollama /mnt/models/d3/ollama /mnt/models/d1/ollama)
-DEFAULT_VLLM_SRCS=(/mnt/models/d1/vllm /mnt/models/d2/vllm /mnt/models/d3/vllm)
+DEFAULT_OLLAMA_SRCS=(/mnt/models-d2/ollama /mnt/models-d3/ollama /mnt/models-d1/ollama)
+DEFAULT_VLLM_SRCS=(/mnt/models-d1/vllm /mnt/models-d2/vllm /mnt/models-d3/vllm)
 
 read -r -a USER_OLLAMA <<<"${OLLAMA_SOURCES:-}"
 read -r -a USER_VLLM <<<"${VLLM_SOURCES:-}"
@@ -46,7 +45,7 @@ need_rw_dest() {
 
 df_warn() {
   banner "D5 free space"
-  df -hP /mnt/models/d5 2>/dev/null || df -hP "${OLLAMA_DEST%/ollama}" 2>/dev/null || true
+  df -hP /mnt/models-d5 2>/dev/null || df -hP "${OLLAMA_DEST%/ollama}" 2>/dev/null || true
 }
 
 merge_tree() {
@@ -102,8 +101,8 @@ cat <<EOF
      source vllm-hosting/config/env-archive-vm-vllm.sh    # VLLM_ARCHIVE_ROOT → $VLLM_DEST
 2. Point your Ollama service / dinit unit at OLLAMA_HOME=$OLLAMA_DEST (and restart).
 3. After verifying workloads, reclaim space:
-     mv /mnt/models/d2/ollama /mnt/models/d2/ollama.bak.\$(date +%Y%m%d)   # then delete when happy
-     ln -s "$OLLAMA_DEST" /mnt/models/d2/ollama   # optional compat symlink
+     mv /mnt/models-d2/ollama /mnt/models-d2/ollama.bak.\$(date +%Y%m%d)   # then delete when happy
+     ln -s "$OLLAMA_DEST" /mnt/models-d2/ollama   # optional compat symlink
    Same pattern for old vLLM roots → symlink to $VLLM_DEST if needed.
-4. D5 is ~916 GiB — confirm total cache size fits:  du -sh $OLLAMA_DEST $VLLM_DEST /mnt/models/d1/vllm ...
+4. D5 is ~916 GiB — confirm total cache size fits:  du -sh $OLLAMA_DEST $VLLM_DEST /mnt/models-d1/vllm ...
 EOF

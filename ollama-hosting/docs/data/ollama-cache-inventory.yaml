@@ -1,7 +1,7 @@
 # Ollama cache inventory — extend as you sync. Paths are relative to
 # models/manifests/registry.ollama.ai/library/ on each host.
 #
-# Last VM snapshot: 2026-04-03 (x@192.168.8.65); re-run SSH find and paste updates.
+# Last VM snapshot: 2026-04-03 (legacy x@192.168.8.65); current host ubuntu@192.168.8.32 — re-run SSH find and paste updates.
 # Machine-readable descriptors + sizes + supermicro_cleared: docs/data/ollama-vm-models-inventory.yaml
 # (regenerate: scripts/update_ollama_vm_inventory.py, often via ollama-sync.sh).
 

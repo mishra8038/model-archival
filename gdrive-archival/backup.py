@@ -834,6 +834,12 @@ def main():
     action="store_true",
     help="Disable remote check even if registry_verify_remote is set in config.",
   )
+  p_reg.add_argument(
+    "--roots",
+    action="append",
+    metavar="PATH",
+    help="Only these gdrive-registry.yaml root paths (repeat or comma-separated), e.g. d3/specialist.",
+  )
   sub.add_parser("list-registry", help="List model revision dirs implied by gdrive-registry.yaml.")
   sub.add_parser(
     "uploaded-registry-list",
@@ -886,7 +892,7 @@ def main():
   elif args.cmd == "list-staging":
     list_staging(cfg, archiver_root)
   elif args.cmd == "backup-registry":
-    from upload_registry import run_registry_upload
+    from upload_registry import parse_roots_filter_list, run_registry_upload
 
     reg_path = Path(__file__).resolve().parent / "gdrive-registry.yaml"
     reg = load_yaml(reg_path)
@@ -907,6 +913,7 @@ def main():
         no_verify=args.no_verify,
         resync_all=getattr(args, "resync_all", False),
         verify_remote=verify_remote,
+        roots_filter=parse_roots_filter_list(getattr(args, "roots", None)),
       )
     )
   elif args.cmd == "list-registry":

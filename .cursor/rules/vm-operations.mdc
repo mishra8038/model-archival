@@ -5,72 +5,81 @@ alwaysApply: true
 
 # VM Operations
 
-## Environment
+## Primary hardware — **dp75k-mxl** (local D1–D3 + tape drive)
 
-- **VM IP**: 192.168.8.65, user: `x`
-- **OS**: Artix Linux, init: dinit (not systemd — use `dinitctl`, not `systemctl`)
-- **Project path**: `/home/x/dev/model-archival/model-archival/`
-- **Screen session**: `archiver` (`screen -S archiver bash run.sh --all`). **`deploy/setup-artix.sh`** / **`deploy/setup-mxlinux.sh`** also install **tmux**, **powerline** (`python-powerline` / `python3-powerline`), **powerline-fonts** (`fonts-powerline` on Debian), clone **tmux-powerline** to `~/.tmux-powerline` (configure `~/.tmux.conf` per [erikw/tmux-powerline](https://github.com/erikw/tmux-powerline)), **fish**, and **Oh My Fish** (non-interactive; skip with `OMF_SKIP=1`).
+The workstation **dp75k-mxl** is the **physical host** for both the **model disks** and the **tape library** used in this repo’s LTFS workflows:
 
-## Disk layout
+- **D1–D3:** mounted at **`/mnt/d1`**, **`/mnt/d2`**, **`/mnt/d3`** (ext4; UUID fstab via **`model-archival/scripts/install-archive-d123-fstab.sh`**). Verify with **`findmnt /mnt/d1`** etc.
+- **LTO‑5 + LTFS:** **`/dev/sg1`**, **`/dev/nst0`** / **`/dev/st0`**; typical LTFS mount **`~/ltfs-mount`**. Tape scripts and plans live in **`/home/x/z/ai/ai-model-backup-tape/tape-archive/scripts/`** (e.g. **`ltfs-specialist-per-model-sequential-write.sh`**, **`specialist-tape-plan-split.py`**); run **`mkltfs`** and **`ltfs`** **on this machine** when operating the local tape drive.
+- **Discovery caveat:** per‑model tape / plan scripts only queue revision directories that contain **`manifest.json`** (and a `main` or 40‑hex revision folder name). A **`/mnt/d1/specialist`** tree without those manifests will not appear in the plan until the archiver layout exists.
 
-| Label | Device | Mount | Size | Role |
-|-------|--------|-------|------|------|
-| D1 | /dev/sdc | /mnt/models/d1 | 5.5 TB | Large models + `.tmp/` scratch |
-| D2 | /dev/sdd | /mnt/models/d2 | 2.7 TB | Mid-size models + Tier D |
-| D3 | /dev/sde | /mnt/models/d3 | 2.7 TB | GGUF quants + archiver infra (logs, state, archive/) |
-| D5 | /dev/sdb | /mnt/models/d5 | 916 GB | Completed models only when `drive: d5` in registry |
+The SSH archival VM below (**`192.168.8.32`**) is a **different** machine (Ollama/D5, etc.) — **not** where this desk‑side tape drive is attached.
 
-In-progress downloads land in `D1/.tmp/` (then `D3/.tmp` if needed) — never on D5 or root SSD.
+## Environment (archival VM — current)
 
-**Download size cap (default):** `run.sh` passes **`--max-model-download-gib 80`** (binary GiB, summed HF file sizes). Checkpoints above that are marked **`deferred_large`** in `run_state.json` and are not retried until state is cleared or you use **`--no-max-model-download`** / a higher limit for a dedicated run.
+- **SSH:** `ubuntu@192.168.8.32` (hostname **k80-ollama**). Set **`ARCHIVAL_VM=ubuntu@192.168.8.32`** for scripts; override anytime for another host.
+- **OS:** Ubuntu (systemd). Use **`systemctl`** for services unless you know a unit is managed differently.
+- **Project path:** use the model-archival checkout on that machine (historically **`/home/x/dev/model-archival/model-archival/`** on the old VM — resolve with `git -C ~ rev-parse --show-toplevel` on the new host).
 
-**Ollama cache sync** (`model-archival/scripts/ollama-sync.sh`): default destination is **`/mnt/models/d5/supermicro`**. If **D5 is full**, continue syncs on **D2** with **`ARCHIVAL_VM_DEST=/mnt/models/d2/supermicro`** (create the directory first). Sync is additive-only; existing trees under `d5/supermicro` stay until you move or delete them.
+**Legacy (retired Artix box):** `x@192.168.8.65` with mounts under **`/mnt/models/d1`** … **`/mnt/models/d5`**. Older docs and logs may still cite that layout; defaults in-repo now target **`.32`** and **`/mnt/models-d5`**.
 
-**Live Ollama + vLLM HF cache on D5:** Prefer **`OLLAMA_HOME=/mnt/models/d5/ollama`** and **`VLLM_ARCHIVE_ROOT=/mnt/models/d5/vllm`** (`ollama-hosting/config/env-archive-vm.sh`, `vllm-hosting/config/env-archive-vm-vllm.sh`). To merge older **`d2/ollama`**, **`d1/vllm`**, etc. onto D5, run **`deploy/consolidate-ollama-vllm-caches-to-d5.sh`** on the VM (dry-run first). **D5 ~916 GiB** — confirm **`du -sh`** totals fit before applying.
+## Disk layout (192.168.8.32)
+
+| Label | Typical mount | Size (approx.) | Role |
+|-------|---------------|----------------|------|
+| D1 | `/mnt/models-d1` | 5.5 TB | Large models + scratch |
+| D2 | `/mnt/models-d2` | 2.7 TB | Mid-size / overflow |
+| D3 | `/mnt/models-d3` | 2.7 TB | GGUF / archiver infra |
+| D5 | `/mnt/models-d5` | ~916 GB | D5-tier models, Ollama archive (`ollama/`), `~/z` snapshots (e.g. `z05012026/`) |
+
+Paths use the **`/mnt/models-dN`** hyphenated prefix on this host (not **`/mnt/models/dN`**).
+
+## dp75k-mxl — path cheat sheet (same host as tape)
+
+| Disk | Mount point |
+|------|-------------|
+| models-d1 | `/mnt/d1` |
+| models-d2 | `/mnt/d2` |
+| models-d3 | `/mnt/d3` |
+
+Automedia paths such as **`/media/x/models-d1`** may appear before fstab is installed; prefer **`/mnt/d*`** once configured.
+
+Use these paths for **`verify-archive.py`**, **`par2_backfill_d2_d3.py`** (`--d1` / `--d2` / `--d3`), and **tape** scripts when working **on dp75k-mxl**. For SSH jobs targeting the archival VM, keep using **`/mnt/models-d*`** on **`.32`**. D5 may still follow the VM layout unless migrated.
+
+**Ollama cache sync** (`model-archival/scripts/ollama-sync.sh`): default VM destination is **`/mnt/models-d5/ollama`**. Override with **`ARCHIVAL_VM_DEST`** or **`ARCHIVAL_VM_SITE_CYCLE`**. Sync is additive-only.
+
+**Live Ollama + vLLM on D5:** defaults in **`ollama-hosting/config/env-archive-vm.sh`** and **`vllm-hosting/config/env-archive-vm-vllm.sh`** use **`/mnt/models-d5/ollama`** and **`/mnt/models-d5/vllm`**. Run **`deploy/consolidate-ollama-vllm-caches-to-d5.sh`** on the VM (dry-run first) if caches are still scattered on other disks.
 
 ## Before rebooting — always stop gracefully
 
+From the model-archival repo on the VM:
+
 ```bash
-bash /home/x/dev/model-archival/model-archival/stop.sh   # wait for "stopped cleanly"
-# then reboot — skipping this can corrupt D1/D2 (requires fsck to fix)
+bash ./stop.sh   # wait for "stopped cleanly"
+# then reboot — skipping this can corrupt large disks (fsck recovery)
 ```
 
 ## If drives not mounted after reboot
 
-```bash
-sudo bash /home/x/dev/model-archival/model-archival/deploy/vm-mount-disks.sh
-```
+Use your fstab / provisioning playbooks; there is no single shared `vm-mount-disks.sh` path guaranteed on **`.32`** — check **`deploy/vm-mount-disks.sh`** in-repo only if that script was installed for this host.
 
 ## If a drive shows "Structure needs cleaning"
 
 ```bash
 sudo fsck.ext4 -y /dev/sdXN   # fix filesystem
-sudo mount /mnt/models/dN     # then remount
+sudo mount <mountpoint>       # then remount
 ```
 
-## VPN (Surfshark via OpenVPN)
+## VPN (optional)
+
+Some deployments route downloads through Surfshark/OpenVPN. If this host uses that stack, see historical notes in git history for **`openvpn-surfshark`** / **`.65`** Artix setup; otherwise use your standard VPN/docs for **`.32`**.
+
+## Monitor downloads / archiver
 
 ```bash
-# Status check
-surfshark-vpn status 2>/dev/null; curl -s https://ipinfo.io | grep -E '"ip"|"org"'
-# Should show: "AS9009 M247 Europe SRL" — not your ISP
-
-# Connect (if not auto-started by dinit)
-sudo openvpn --config /etc/openvpn/client/surfshark/nl-ams.prod.surfshark.com_udp.ovpn \
-             --auth-user-pass /etc/openvpn/client/surfshark.auth \
-             --daemon --log /var/log/surfshark-openvpn.log
-
-# Auto-starts via dinit: /etc/dinit.d/boot.d/openvpn-surfshark (service: openvpn-surfshark)
-# If bandwidth is poor, try another EU server: de-fra, uk-lon, fr-par (configs in /etc/openvpn/client/surfshark/).
+watch -n 30 cat /mnt/models-d5/STATUS.md 2>/dev/null || true
 ```
 
-Note: Surfshark AUR CLI (`surfshark-vpn` binary) is broken — use OpenVPN + openvpn-surfshark service.
-Note: Surfshark flatpak GUI fails with "No internet connection" on connman systems — use OpenVPN.
+## Local `~/.ssh/config`
 
-## Monitor downloads
-
-```bash
-screen -S archiver -X hardcopy /tmp/s.txt && cat /tmp/s.txt   # snapshot screen
-watch -n 30 cat /mnt/models/d3/STATUS.md                       # live status file
-```
+If **`Host model-archival`** still points at **`192.168.8.65`**, update it to **`HostName 192.168.8.32`** and **`User ubuntu`** so muscle-memory matches the current box.

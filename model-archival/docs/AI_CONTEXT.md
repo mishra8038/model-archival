@@ -1,6 +1,6 @@
 # AI_CONTEXT — compact project map (read this first)
 
-**Purpose:** Give agents enough signal to work without walking the whole tree. For narrative detail use `PROJECT_PROMPT.md`; for pipelines use `ARCHITECTURE.md`; for day-2 ops use `OPERATIONS.md`. **Live VM facts:** `.cursor/rules/vm-operations.mdc` (IP, paths, disks, VPN).
+**Purpose:** Give agents enough signal to work without walking the whole tree. For narrative detail use `PROJECT_PROMPT.md`; for pipelines use `ARCHITECTURE.md`; for day-2 ops use `OPERATIONS.md`. **Live ops facts:** `.cursor/rules/vm-operations.mdc` (archival VM SSH, **dp75k-mxl** local **`/mnt/d1`–`/mnt/d3`**, **LTO/LTFS `/dev/sg1`**, VPN).
 
 **Agent session outcomes (skip raw transcripts):** repo root [`docs/AGENT_TRANSCRIPT_SUMMARY.md`](../../docs/AGENT_TRANSCRIPT_SUMMARY.md) — curated changelog; do not depend on `~/.cursor/.../agent-transcripts/`.
 
@@ -28,6 +28,8 @@ Python CLI + bash orchestration that downloads Hugging Face model weights to **m
 | `deploy/` | VM setup, token helper, mount scripts |
 
 **On disk (runtime):** `d3/run_state.json`, `d3/STATUS.md`, `d3/logs/`, `d3/archive/` (canonical; **`archive/`** replicated to **d1, d2, d5** after each successful model complete); scratch **`d1/.tmp/`** then **`d3/.tmp`** — never D5 for infra or partials; D5 only for completed `drive: d5` model trees — never root SSD for weights.
+
+**Physical archive + tape host:** **dp75k-mxl** holds **local** **`/mnt/d1`**, **`/mnt/d2`**, **`/mnt/d3`** and the **desk-side LTO drive** (**`/dev/sg1`**, **`/dev/nst0`**). Tape and specialist per-model writers run here. **`ubuntu@192.168.8.32`** is a separate archival VM (e.g. Ollama/D5) — not the tape machine.
 
 ---
 

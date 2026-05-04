@@ -1,0 +1,28 @@
+{
+  "completed_models": [
+    "d3/specialist/chemistry/raw/AI4Chem/ChemLLM-7B-Chat/b8b2ea19e48f53d190fe8dced94572717f8e89a2",
+    "d3/specialist/chemistry/raw/OpenDFM/ChemDFM-v1.5-8B/f5790d56a903ce480b1eff8d0adf9613d8acee0c",
+    "d3/specialist/chemistry/raw/seyonec/ChemBERTa-zinc-base-v1/761d6a18cf99db371e0b43baf3e2d21b3e865a20",
+    "d3/specialist/embeddings/raw/jinaai/jina-embeddings-v3/f1944de8402dcd5f2b03f822a4bc22a7f2de2eb9",
+    "d3/specialist/law/raw/Equall/Saul-7B-Instruct-v1/2133ba7923533934e78f73848045299dd74f08d2",
+    "d3/specialist/math/raw/EleutherAI/llemma_7b/e223eee41c53449e6ea6548c9b71c50865e4a85c",
+    "d3/specialist/math/raw/Qwen/Qwen2.5-Math-1.5B/4a83ca6e4526a4f2da3aa259ec36c259f66b2ab2",
+    "d3/specialist/math/raw/deepseek-ai/deepseek-math-7b-instruct/0a5828f800a36df0fd7f0ed581b983246c0677ff",
+    "d3/specialist/medicine/raw/FreedomIntelligence/HuatuoGPT2-7B/1490cc91a93d2d0d2fdc9d3681bc1c5099cde163",
+    "d3/specialist/medicine/raw/aaditya/Llama3-OpenBioLLM-8B/70d6bb521cab6ca755b675ade38831eedf89d31c",
+    "d3/specialist/medicine/raw/cambridgeltl/SapBERT-from-PubMedBERT-fulltext/090663c3ae57bf35ffe4d0d468a2a88d03051a4d",
+    "d3/specialist/medicine/raw/dmis-lab/biobert-base-cased-v1.2/67c9c25b46986521ca33df05d8540da1210b3256",
+    "d3/specialist/medicine/raw/emilyalsentzer/Bio_ClinicalBERT/d5892b39a4adaed74b92212a44081509db72f87b",
+    "d3/specialist/medicine/raw/microsoft/BiomedNLP-PubMedBERT-base-uncased-abstract-fulltext/e1354b7a3a09615f6aba48dfad4b7a613eef7062",
+    "d3/specialist/medicine/raw/stanford-crfm/BioMedLM/3e1a0abb814b8398bc34b4b6680ecf2c26d6a66f",
+    "d3/specialist/science/quantized/tensorblock/Llama-3.2-3B-Instruct-GGUF/a95b197289958265f8eb95fc455b5766aed89b02",
+    "d3/specialist/science/raw/OpenDFM/RetroDFM-R-v0-8B/c828b32bf1da3143ed1d8402dd09cc7f8747727f",
+    "d3/specialist/science/raw/apple/DiffuCoder-7B-Base/a2c33054cbe99b9ab7af074f09b1d13943157ff1",
+    "d3/specialist/science/raw/apple/DiffuCoder-7B-Instruct/4fdd4580064ca5d11808069ce78f88d068753c96",
+    "d3/specialist/science/raw/apple/DiffuCoder-7B-cpGRPO/98bc42bfd871eeec92fd0a8439ab34f75b405204"
+  ],
+  "d5_complete": false,
+  "d5_completed_at": null,
+  "updated_at": "2026-05-04T03:10:50Z",
+  "version": 1
+}

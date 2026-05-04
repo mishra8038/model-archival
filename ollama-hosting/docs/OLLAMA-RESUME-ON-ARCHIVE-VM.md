@@ -4,10 +4,10 @@
 
 **Yes**, with two conditions:
 
-1. **Same tree layout** — Ollama expects `models/manifests/…` and `models/blobs/…` under a single data root (`OLLAMA_HOME` / `~/.ollama`). If you rsync Supermicro’s `~/.ollama/` into **`/mnt/models/d5/supermicro/`** on the VM, point Ollama at that directory:
+1. **Same tree layout** — Ollama expects `models/manifests/…` and `models/blobs/…` under a single data root (`OLLAMA_HOME` / `~/.ollama`). If you rsync Supermicro’s `~/.ollama/` into **`/mnt/models-d5/ollama/`** on the VM, point Ollama at that directory:
 
    ```bash
-   export OLLAMA_HOME=/mnt/models/d5/supermicro
+   export OLLAMA_HOME=/mnt/models-d5/ollama
    export PATH="$HOME/.local/bin:$PATH"
    ollama serve
    ```
@@ -43,7 +43,7 @@ OLLAMA_MAINTAIN_KEEP_PARTIALS=1 ./scripts/ollama-sync.sh
 Manual maintain on the VM with partials kept:
 
 ```bash
-cat scripts/ollama_archive_vm_maintain.py | ssh x@192.168.8.65 python3 - --keep-ollama-partials /mnt/models/d5/supermicro
+cat scripts/ollama_archive_vm_maintain.py | ssh ubuntu@192.168.8.32 python3 - --keep-ollama-partials /mnt/models-d5/ollama
 ```
 
 ## Record: which blob belongs to which model
@@ -52,7 +52,7 @@ Ollama’s mapping is **manifest JSON → digest list → files under `models/bl
 
 ```bash
 cd ollama-hosting
-./scripts/ollama_blob_model_map.py /mnt/models/d5/supermicro --format csv --out docs/data/ollama-blob-model-map.csv
+./scripts/ollama_blob_model_map.py /mnt/models-d5/ollama --format csv --out docs/data/ollama-blob-model-map.csv
 # or on Supermicro:
 ./scripts/ollama_blob_model_map.py ~/.ollama --format tsv
 ```

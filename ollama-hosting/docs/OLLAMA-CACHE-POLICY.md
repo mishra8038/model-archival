@@ -4,13 +4,13 @@
 
 ## Current policy (single copy on VM)
 
-- **One full Ollama archive** on the archival VM: **`/mnt/models/d5/supermicro`** only (no duplicate mirrors on d2/d3/d1 unless you change `ARCHIVAL_VM_SITE_CYCLE`).
+- **One full Ollama archive** on the archival VM: **`/mnt/models-d5/ollama`** only (no duplicate mirrors on d2/d3/d1 unless you change `ARCHIVAL_VM_SITE_CYCLE`).
 - **Supermicro offload loop:** after a model is **fully** on that archive (sync + integrity OK), **remove it from supermicro** (`ollama rm …`) per your keep rules — see **Offload loop** below and `OLLAMA-ONE-DISK-OFFLOAD.md` under `dev-environment/supermicro/`.
 - **Sync timing:** run **`ollama-registry-sync`** / **`ollama-sync.sh`** **manually** (or your own cron) when you want a copy on the VM — the repo **does not** ship a systemd timer (see **`systemd/README-ollama-sync-timer.md`** if you need to remove old installed units).
 
 ## Goals
 
-1. **Free space on supermicro** by deleting Ollama blobs *only after* the same model is **fully synced** to the archival VM (`ollama-hosting/scripts/ollama-sync.sh` → `x@192.168.8.65`, default destination **`d5`** only; override with `ARCHIVAL_VM_DEST` / `ARCHIVAL_VM_SITE_CYCLE` if you add disks).
+1. **Free space on supermicro** by deleting Ollama blobs *only after* the same model is **fully synced** to the archival VM (`ollama-hosting/scripts/ollama-sync.sh` → **`ubuntu@192.168.8.32`**, default destination **`/mnt/models-d5/ollama`**; override with `ARCHIVAL_VM_DEST` / `ARCHIVAL_VM_SITE_CYCLE` if you add disks).
 2. **Keep on supermicro** (hot subset for the GPU box):
    - **Gemma 4** — entire product line on disk (`gemma4/…` manifests: MoE, dense, E2B/E4B, any quant you still pull).
    - **Qwen Coder** only — `qwen2.5-coder/…`, and future `qwen3*coder*` paths — **not** base Qwen chat, **not** DeepSeek-R1 distills, **not** Llama/Dolphin/DeepSeek Coder unless you widen `keep_tag` again.
@@ -24,16 +24,16 @@ Ollama expects a **single** coherent `models/` tree (`blobs/` + `manifests/`). *
 
 | Mount | Typical use |
 |-------|-------------|
-| **`/mnt/models/d5/supermicro`** | **Default and only** archive root in rotation (single copy policy). |
-| **`/mnt/models/d2` … `d1`** | Optional **future** targets — set `ARCHIVAL_VM_SITE_CYCLE` if you move the archive; do **not** keep two full copies of the same cache unless you intend redundant mirrors. |
+| **`/mnt/models-d5/ollama`** | **Default and only** archive root in rotation (single copy policy). |
+| **`/mnt/models-d2` … `d1`** (hyphenated mounts) | Optional **future** targets — set `ARCHIVAL_VM_SITE_CYCLE`; do **not** keep two full copies unless you intend redundant mirrors. |
 
-Refresh free space before large syncs: `ssh x@192.168.8.65 'df -h /mnt/models/d5'`.
+Refresh free space before large syncs: `ssh ubuntu@192.168.8.32 'df -h /mnt/models-d5'`.
 
 ### Per-sync destination rotation
 
 - Leave **`ARCHIVAL_VM_DEST` unset** (empty): each successful `ollama-sync.sh` run picks the **next** path in the cycle and **advances** the counter in `docs/data/ollama-sync-rotation.state` (JSON: `next_index`, `sync_history`).
-- Set **`ARCHIVAL_VM_DEST=/mnt/models/dX/supermicro`** explicitly: that path is used; rotation **does not** advance (use for one-off or recovery).
-- Override the cycle with **`ARCHIVAL_VM_SITE_CYCLE`** (comma-separated `LABEL=PATH` or bare paths under `/mnt/models/`). Default cycle is **`d5`** only (`/mnt/models/d5/supermicro`).
+- Set **`ARCHIVAL_VM_DEST=/mnt/models-d5/ollama`** (or another absolute path) explicitly: that path is used; rotation **does not** advance (use for one-off or recovery).
+- Override the cycle with **`ARCHIVAL_VM_SITE_CYCLE`** (comma-separated `LABEL=PATH` or bare paths). Default cycle is **`d5`** only (`/mnt/models-d5/ollama`).
 - Implementation: `ollama-hosting/scripts/ollama_archival_rotation.py` (called from `ollama-sync.sh`).
 
 ### Completed models only (sync) + archive hygiene (VM)
@@ -55,7 +55,7 @@ After every sync (when inventory refresh is enabled), the repo regenerates:
 To refresh the map without re-syncing:
 
 ```bash
-cd ollama-hosting && uv run python scripts/update_ollama_vm_inventory.py --ssh x@192.168.8.65 \
+cd ollama-hosting && uv run python scripts/update_ollama_vm_inventory.py --ssh ubuntu@192.168.8.32 \
   --infer-supermicro-cleared --supermicro-ssh x@192.168.8.106
 uv run python scripts/generate_ollama_archival_map.py
 ```
@@ -79,7 +79,7 @@ After each **`ollama-sync.sh`** run, the script attempts (unless `OLLAMA_SYNC_UP
 cd ollama-hosting
 OLLAMA_VM_INVENTORY_EXTRA='--infer-supermicro-cleared --supermicro-ssh x@192.168.8.106' ./scripts/ollama-sync.sh
 # or manually:
-uv run python scripts/update_ollama_vm_inventory.py --ssh x@192.168.8.65 \
+uv run python scripts/update_ollama_vm_inventory.py --ssh ubuntu@192.168.8.32 \
   --infer-supermicro-cleared --supermicro-ssh x@192.168.8.106
 ```
 
@@ -88,7 +88,7 @@ Without `--infer-supermicro-cleared`, existing **`supermicro_cleared`** values i
 Refresh the legacy YAML **transferred** section (optional; mirrors manifest paths) after each sync:
 
 ```bash
-ssh x@192.168.8.65 'find /mnt/models/d5/supermicro/models/manifests/registry.ollama.ai/library -type f | sed "s|.*/library/||" | sort'
+ssh ubuntu@192.168.8.32 'find /mnt/models-d5/ollama/models/manifests/registry.ollama.ai/library -type f | sed "s|.*/library/||" | sort'
 # paste into ollama-cache-inventory.yaml under transferred_ollama_cache.d5_supermicro.manifest_paths
 ```
 

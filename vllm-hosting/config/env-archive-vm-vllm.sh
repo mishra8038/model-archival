@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Source on archival VM (192.168.8.65) before vLLM weight downloads.
+# Source on archival VM (ubuntu@192.168.8.32) before vLLM weight downloads.
 # Usage: source /path/to/model-archival/vllm-hosting/config/env-archive-vm-vllm.sh
 
-export VLLM_ARCHIVE_ROOT="${VLLM_ARCHIVE_ROOT:-/mnt/models/d5/vllm}"
+export VLLM_ARCHIVE_ROOT="${VLLM_ARCHIVE_ROOT:-/mnt/models-d5/vllm}"
 export VLLM_HF_HOME="${VLLM_HF_HOME:-${VLLM_ARCHIVE_ROOT}/hf_hub}"
 export HF_HOME="${HF_HOME:-${VLLM_HF_HOME}}"
 export HF_HUB_CACHE="${HF_HUB_CACHE:-${HF_HOME}/hub}"

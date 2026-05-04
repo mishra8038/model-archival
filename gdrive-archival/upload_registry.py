@@ -57,6 +57,25 @@ def load_yaml(path: Path) -> dict:
     return yaml.safe_load(f) or {}
 
 
+def resolve_models_mount(cfg: Dict) -> Path:
+  """Local tree root for registry paths (`d3/specialist/...`). Override with MODELS_MOUNT."""
+  raw = os.environ.get("MODELS_MOUNT") or cfg.get("models_mount") or "/mnt/models"
+  return Path(raw).expanduser().resolve()
+
+
+def parse_roots_filter_list(opts: Optional[List[str]]) -> Optional[Set[str]]:
+  """Normalize `--roots` / `backup-registry --roots` (comma-separated or repeated)."""
+  if not opts:
+    return None
+  out: Set[str] = set()
+  for chunk in opts:
+    for piece in str(chunk).split(","):
+      p = piece.strip().strip("/")
+      if p:
+        out.add(p)
+  return out or None
+
+
 def _tmp_in_path(p: Path) -> bool:
   return ".tmp" in p.parts
 
@@ -405,7 +424,7 @@ def write_registry_upload_status(cfg: Dict, reg: Dict) -> Path:
   Refresh logs/GDRIVE-REGISTRY-UPLOAD-STATUS.md from gdrive-registry discovery + uploaded.log.
   Atomic write (tmp + replace).
   """
-  mount = Path(cfg.get("models_mount", "/mnt/models")).resolve()
+  mount = resolve_models_mount(cfg)
   roots = reg.get("roots") or []
   model_dirs = collect_all_model_dirs(mount, roots, reg)
   discovered: Set[str] = set()
@@ -510,7 +529,7 @@ def write_uploaded_models_catalog(cfg: Dict, reg: Dict) -> Tuple[Path, Path]:
   Source of truth: registry-upload-state.json completed_models.
   Enriched with discovered size and latest uploaded.log timestamp when present.
   """
-  mount = Path(cfg.get("models_mount", "/mnt/models")).resolve()
+  mount = resolve_models_mount(cfg)
   state = load_registry_upload_state()
   completed: List[str] = sorted({str(x) for x in state.get("completed_models", []) if x})
 
@@ -593,7 +612,7 @@ def write_uploaded_models_catalog(cfg: Dict, reg: Dict) -> Tuple[Path, Path]:
 
 
 def print_registry_plan(cfg: Dict, reg: Dict) -> None:
-  mount = Path(cfg.get("models_mount", "/mnt/models")).resolve()
+  mount = resolve_models_mount(cfg)
   roots = reg.get("roots") or []
   print(f"models_mount: {mount}")
   print(f"roots ({len(roots)}):")
@@ -1000,16 +1019,24 @@ def run_registry_upload(
   no_verify: bool,
   resync_all: bool = False,
   verify_remote: bool = False,
+  roots_filter: Optional[Set[str]] = None,
 ) -> int:
   maybe_start_remote_tree_cache_refresh_bg(cfg)
-  mount = Path(cfg.get("models_mount", "/mnt/models")).resolve()
+  mount = resolve_models_mount(cfg)
   if not mount.is_dir():
     print(f"error: models_mount not found or not a directory: {mount}", file=sys.stderr)
     return 2
 
   roots = reg.get("roots") or []
+  if roots_filter is not None:
+    roots = [
+      r
+      for r in roots
+      if (r.get("path") or "").strip().strip("/") in roots_filter
+    ]
+    print(f"roots filter: {sorted(roots_filter)} → {len(roots)} registry root(s)")
   if not roots:
-    print("error: gdrive-registry.yaml has no roots", file=sys.stderr)
+    print("error: gdrive-registry.yaml has no roots (after filter)", file=sys.stderr)
     return 2
 
   g = cfg.get("gdrive") or {}
@@ -1364,6 +1391,12 @@ def main() -> int:
     action="store_true",
     help="Only refresh remote tree metadata cache (listings/hash metadata), then exit.",
   )
+  parser.add_argument(
+    "--roots",
+    action="append",
+    metavar="PATH",
+    help="Only registry root `path` values (repeat or comma-separated), e.g. d3/specialist — skips d5 gate when d5 not listed.",
+  )
   args = parser.parse_args()
 
   cfg = load_yaml(args.config)
@@ -1376,6 +1409,8 @@ def main() -> int:
   if args.refresh_remote_tree_cache:
     return refresh_remote_tree_cache(cfg, reg)
 
+  roots_filter = parse_roots_filter_list(getattr(args, "roots", None))
+
   return run_registry_upload(
     cfg,
     reg,
@@ -1385,6 +1420,7 @@ def main() -> int:
     no_verify=args.no_verify,
     resync_all=args.resync_all,
     verify_remote=verify_remote,
+    roots_filter=roots_filter,
   )
 
 

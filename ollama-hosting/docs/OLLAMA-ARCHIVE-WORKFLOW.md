@@ -10,7 +10,7 @@ This file is the **conceptual source of truth** for that loop. **Machine-readabl
 
 ### Policy: one-way from archival VM to Supermicro (weights and kits)
 
-**Do not** rsync, scp, or otherwise **deploy from the archival VM back to Supermicro** — no pushing the pull kit, registry edits, or Ollama trees from `192.168.8.65` → `192.168.8.106`. The archive VM is a **sink** for blobs and HF data; Supermicro is refreshed from **git + workstation** (or CI) via **`deploy-ollama-pull-kit-to-supermicro.sh`**, and weight flow is **Supermicro → archival VM** only (`ollama-sync.sh` / `ollama-registry-sync`).
+**Do not** rsync, scp, or otherwise **deploy from the archival VM back to Supermicro** — no pushing the pull kit, registry edits, or Ollama trees from the archival VM (e.g. `ubuntu@192.168.8.32`) → `192.168.8.106`. The archive VM is a **sink** for blobs and HF data; Supermicro is refreshed from **git + workstation** (or CI) via **`deploy-ollama-pull-kit-to-supermicro.sh`**, and weight flow is **Supermicro → archival VM** only (`ollama-sync.sh` / `ollama-registry-sync`).
 
 ### Operator sequence (expected)
 

@@ -2,6 +2,7 @@
 #   python3 upload_registry.py --dry-run
 #   python3 backup.py list-registry
 #   bash run-registry-upload.sh
+# Unified layout: /mnt/models/d3/... — workstation layout: export MODELS_MOUNT=/mnt (paths like d3/specialist/...).
 models_mount: /mnt/models
 
 archiver_root: /home/x/z/dev/model-archival/model-archival/model-archival
@@ -17,7 +18,7 @@ gdrive:
   # ~50% of upload: measure uplink (Mbps) with VPN as used for GDrive, then
   #   target_Mbps = 0.5 * measured_upload_Mbps
   #   bwlimit ≈ (target_Mbps / 8) as "NM" (e.g. 100 Mbps up → 50 Mbps → ~6M)
-  bwlimit: "1M"
+  bwlimit: "2M"
   # Tracker-skipped dirs: run `rclone check --checksum --one-way` vs Drive before skipping (no full download).
   # Disable for a run: `backup-registry --no-verify-remote`
   registry_verify_remote: true

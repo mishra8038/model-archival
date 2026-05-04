@@ -2,13 +2,13 @@
 # Remove Ollama *partial* blobs and .rsync-partial dirs on all configured archival roots; verify
 # manifest↔blob integrity. Run from a workstation with SSH to the archival VM (same as ollama-sync).
 #
-#   ARCHIVAL_VM=x@192.168.8.65 ./scripts/ollama-archive-vm-maintain.sh
+#   ARCHIVAL_VM=ubuntu@192.168.8.32 ./scripts/ollama-archive-vm-maintain.sh
 #   ARCHIVAL_VM_SITE_CYCLE='d5=/mnt/models/d5/foo,...' ./scripts/ollama-archive-vm-maintain.sh
 #
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(cd "$SCRIPT_DIR/.." && pwd)"
-ARCHIVAL_VM="${ARCHIVAL_VM:-x@192.168.8.65}"
+ARCHIVAL_VM="${ARCHIVAL_VM:-ubuntu@192.168.8.32}"
 
 vm_ssh=(ssh -o ConnectTimeout=20 -o BatchMode=yes)
 if [[ -n "${VM_SSHPASS:-}" ]]; then

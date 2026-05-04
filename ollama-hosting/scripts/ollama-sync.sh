@@ -28,12 +28,12 @@
 #
 # Env:
 #   SUPER_OLLAMA_REMOTE   Ollama host (default: x@192.168.8.106)
-#   ARCHIVAL_VM           Archival VM (default: x@192.168.8.65)
+#   ARCHIVAL_VM           Archival VM (default: ubuntu@192.168.8.32)
 #   ARCHIVAL_VM_DEST      Path on VM. If **unset or empty**, the next path from the rotation cycle
 #                           is chosen (see docs/OLLAMA-CACHE-POLICY.md). If **set**, that path is used
 #                           and the rotation counter is not advanced.
 #   ARCHIVAL_VM_SITE_CYCLE  Optional comma-separated cycle: LABEL=PATH pairs or bare paths under
-#                           /mnt/models/. Default: d5=/mnt/models/d5/supermicro only.
+#                           /mnt/models* paths. Default: d5=/mnt/models-d5/ollama only.
 #   OLLAMA_SYNC_DEST      vm | local (default: vm)
 #   OLLAMA_D5_DEST        local directory when OLLAMA_SYNC_DEST=local (default under D5; use a d2 path if D5 full)
 #   OLLAMA_REMOTE_DIR     path under ~ on supermicro (default: .ollama)
@@ -63,11 +63,11 @@ REPO="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 REMOTE="${SUPER_OLLAMA_REMOTE:-x@192.168.8.106}"
 REMOTE_REL="${OLLAMA_REMOTE_DIR:-.ollama}"
-ARCHIVAL_VM="${ARCHIVAL_VM:-x@192.168.8.65}"
+ARCHIVAL_VM="${ARCHIVAL_VM:-ubuntu@192.168.8.32}"
 # Empty → rotation (see sync_vm). Non-empty → fixed destination for this run.
 ARCHIVAL_VM_DEST="${ARCHIVAL_VM_DEST:-}"
 SYNC_DEST="${OLLAMA_SYNC_DEST:-vm}"
-LOCAL_DEST="${OLLAMA_D5_DEST:-/mnt/models/d5/supermicro}"
+LOCAL_DEST="${OLLAMA_D5_DEST:-/mnt/models-d5/ollama}"
 
 # rsync --bwlimit is KiB/s. Default unlimited: Supermicro ↔ archive VM is LAN; do not confuse with Ollama pull caps.
 RSYNC_BW_KB="${OLLAMA_SYNC_BWLIMIT_KB:-0}"

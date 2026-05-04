@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Archive two Ollama GitHub bundles on the archival VM under **/mnt/models/d5/ollama**:
+# Archive two Ollama GitHub bundles on the archival VM under **/mnt/models-d5/ollama**:
 #
 #   **pinned/<tag>/**  — release that matches **SUPER_OLLAMA_REMOTE** `ollama --version` (Supermicro parity).
 #   **latest/**        — **GitHub releases/latest** (rolling); overwritten each run when upstream moves.
@@ -12,8 +12,8 @@
 # under that bundle changes.
 #
 # Env:
-#   ARCHIVAL_VM              default x@192.168.8.65
-#   OLLAMA_VM_D5_OLLAMA_ROOT default /mnt/models/d5/ollama
+#   ARCHIVAL_VM              default ubuntu@192.168.8.32
+#   OLLAMA_VM_D5_OLLAMA_ROOT default /mnt/models-d5/ollama
 #   SUPER_OLLAMA_REMOTE      default x@192.168.8.106 (for pinned tag probe)
 #   OLLAMA_PINNED_VERSION    e.g. 0.20.0 — skip SSH probe if set
 #   OLLAMA_LATEST_TAG        e.g. v0.20.2 — skip GitHub /releases/latest if set
@@ -30,8 +30,8 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 HOSTING="$(cd "$SCRIPT_DIR/.." && pwd)"
-ARCHIVAL_VM="${ARCHIVAL_VM:-x@192.168.8.65}"
-VM_ROOT="${OLLAMA_VM_D5_OLLAMA_ROOT:-/mnt/models/d5/ollama}"
+ARCHIVAL_VM="${ARCHIVAL_VM:-ubuntu@192.168.8.32}"
+VM_ROOT="${OLLAMA_VM_D5_OLLAMA_ROOT:-/mnt/models-d5/ollama}"
 STAGING="${OLLAMA_BUNDLE_STAGING:-$HOSTING/archives/ollama-d5-bundle/root}"
 SUPER_REMOTE="${SUPER_OLLAMA_REMOTE:-x@192.168.8.106}"
 PRIMARY_ASSET="${OLLAMA_ARCHIVE_ASSET:-ollama-linux-amd64.tar.zst}"

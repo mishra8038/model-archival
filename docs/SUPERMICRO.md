@@ -10,7 +10,7 @@ This document situates the **Supermicro 1028GQ-TXR** in the model-archival monor
 |----------|---------------|-------------------------|
 | **Served Ollama weights** (GGUF-class blobs, multi-GPU inference) | Supermicro LAN host | Mirror of pull scripts, model queues, `ollama.service`, and client env **examples** under **`ollama-hosting/supermicro-rig/`** |
 | **Rsync archive** of `~/.ollama` → disk VM | Workstation or VM triggers | **`ollama-hosting/scripts/ollama-sync.sh`**, rotation state, inventory — see **`ollama-hosting/docs/SYNC-JOB.md`** |
-| **HF weight archival** (safetensors / full trees) | Archival VM (`/mnt/models/…`) | **`model-archival/`** — separate from Ollama’s blob layout |
+| **HF weight archival** (safetensors / full trees) | Archival VM (`/mnt/models-d1` … **`/mnt/models-d5`**) | **`model-archival/`** — separate from Ollama’s blob layout |
 
 Supermicro is **not** the primary home of `run_state.json` or the HF archiver; it is the **hot inference + Ollama pull** box. After models are copied to the archival VM, you may prune the Supermicro cache per **`ollama-hosting/docs/OLLAMA-CACHE-POLICY.md`**.
 
@@ -35,7 +35,7 @@ When the dev-environment tree changes, copy updated files into **`ollama-hosting
 | Host | Role | Default SSH (examples in scripts) |
 |------|------|-----------------------------------|
 | Supermicro | Ollama `:11434`, pulls | `x@192.168.8.106` |
-| Archival VM | `/mnt/models/d1`–`d5`, HF archiver, Ollama **archive** roots | `x@192.168.8.65` |
+| Archival VM | `/mnt/models-d1` … `/mnt/models-d5`, HF archiver, Ollama **archive** roots | `ubuntu@192.168.8.32` |
 
 Adjust with **`SUPER_OLLAMA_REMOTE`**, **`ARCHIVAL_VM`**, and related env vars documented in **`ollama-hosting/docs/SYNC-JOB.md`**.
 

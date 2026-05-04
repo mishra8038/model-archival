@@ -1,6 +1,6 @@
 schema_version: 1
 updated_at_utc: '2026-04-09T15:30:03Z'
-ssh_host_vm: x@192.168.8.65
+ssh_host_vm: ubuntu@192.168.8.32
 roots_scanned:
 - disk_label: d5
   root_abs: /mnt/models/d5/supermicro
